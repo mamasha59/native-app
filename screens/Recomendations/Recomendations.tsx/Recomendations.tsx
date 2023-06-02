@@ -2,9 +2,10 @@ import { View, Text } from "react-native";
 import React from "react";
 import MainLayout from "../../../components/MainLayout/MainLayout";
 
-const Recomendations = () => {
+const Recomendations = ({route}) => {
+  const routeName = route.name;
   return (
-    <MainLayout>
+    <MainLayout routeName={routeName}>
         <View>
             <Text>Recomendations</Text>
         </View> 

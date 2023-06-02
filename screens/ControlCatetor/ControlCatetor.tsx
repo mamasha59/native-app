@@ -5,7 +5,7 @@ import MainLayout from "../../components/MainLayout/MainLayout";
 const ControlCatetor = () => {
   return (
     <MainLayout>
-        <View>
+        <View className="h-full flex-1">
         <Text>ControlCatetor</Text>
         </View>  
     </MainLayout>

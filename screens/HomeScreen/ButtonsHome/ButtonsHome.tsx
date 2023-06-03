@@ -3,7 +3,7 @@ import { Drop, Graphic } from "../../../imgs/icons";
 
 const ButtonsHome = () => {
   return (
-    <View className="flex-row gap-[13px] justify-between mt-[67px] px-6">
+    <View className="flex-row gap-[13px] justify-between mt-[67px]">
         <Pressable className="flex-1 bg-[#9966AA] pl-[18px] pr-[25px] py-[13px] rounded-[89px] flex-row items-center justify-center">
             <Drop width={16} height={17} color={'#fff'}/>
             <Text className="ml-4 text-[#FFFFFF] font-bold text-sm">Подтекание</Text>

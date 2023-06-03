@@ -1,26 +1,49 @@
 import { StatusBar } from "expo-status-bar";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { Text, ScrollView, Pressable, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRoute, useNavigation } from '@react-navigation/native';
-
-import { ArrowBack, Bell } from "../../imgs/icons";
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useCallback, useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import TopBar from "../TopBar/TopBar";
+import { useRoute } from "@react-navigation/native";
 
 interface iMainLayout {
     children: React.ReactNode;
+    title?: string;
+    buttonBottomTitle?: string;
+    buttonAction?: () => void;
 }
 
-const MainLayout = ({children}:iMainLayout) => {
-  const route = useRoute(); // берем именя маршрутов
-  const navigation = useNavigation(); // берем навигацию, так как это лейаут то не можем через пропс скринов
-  const showLogo = route.name === 'Home';
+const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLayout) => {
 
-  const goBack = () => { // проверяем есть ли куда назад еще идти 
-    if (navigation.canGoBack()) {
-      navigation.goBack();
+  const route = useRoute(); // берем именя маршрутов
+  const [show , setShow] = useState<boolean>(false);
+  
+  useEffect(()=>{ // показываем кнопку только на опр страницах
+    if (route.name === 'Recomendations' || route.name === 'FeedbackScreen') {
+      setShow(true);
+    } else {
+      setShow(false);
     }
-  };
-    
+  },[route.name])
+  
+  // загружаем шрифт
+  const [fontsLoader] = useFonts({
+    'Geometria' : require('../../assets/fonts/geometria_extrabold.otf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => { 
+    if (fontsLoader) {
+      await SplashScreen.hideAsync();
+      }
+    }, [fontsLoader]);
+
+    if (!fontsLoader) {
+      return null;
+    }
+
   return (
     <LinearGradient
       colors={['#4BAAC5', '#7076B0']}
@@ -28,26 +51,22 @@ const MainLayout = ({children}:iMainLayout) => {
       end={[1, 0.505]}
       style={{ flex: 1 }}
     >
-    <SafeAreaView className="font-geometrica flex-1">
-  
-      
-        <View className="mt-7 px-6 flex-row justify-between items-center">
-            {showLogo 
-                ? (<Text className="text-xl leading-7 font-bold text-[#FFFFFF]">Uro<Text className="italic text-xl leading-7 font-bold">Control</Text></Text>)
-                : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
-            <TouchableOpacity>
-                <Bell width={20} height={20}/>
-            </TouchableOpacity>
-        </View>
+      <SafeAreaView onLayout={onLayoutRootView} className="font-geometrica flex-1">
 
-        <ScrollView className="h-full flex-1 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
+        <TopBar/>
+        <ScrollView className="h-full relative px-6 flex-1 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
+            {title && <Text className=" text-[#101010] font-bold text-[22px] leading-[26px] pb-5">{title}</Text>}
             {children} 
         </ScrollView>
-
-        <StatusBar style="auto" /> 
- 
-    </SafeAreaView>
-
+        <StatusBar style="auto"/>
+        <View className="absolute flex items-center left-0 right-0 bottom-5">
+          {show ? 
+            <Pressable onPress={() => buttonAction()} className="min-w-[300px] bg-[#4BAAC5] px-[53px] py-[18px] rounded-[89px]">
+              <Text className="text-[#FFFFFF] font-bold text-center text-base leading-5">{buttonBottomTitle}</Text>
+            </Pressable> : ''
+          }
+        </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 };

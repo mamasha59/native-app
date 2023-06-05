@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-import { ArrowBack, Bell } from "../../imgs/icons";
+import { ArrowBack, Bell } from "../../../imgs/icons";
 
 const TopBar = () => {
 

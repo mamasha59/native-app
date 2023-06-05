@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import TopBar from "../TopBar/TopBar";
+import TopBar from "./TopBar/TopBar";
 import Button from "../Button/Button";
 
 interface iMainLayout {
@@ -43,6 +43,7 @@ const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLa
             {children} 
         </ScrollView>
         <StatusBar style="auto"/>
+        {/* button нужен не на всех экранах */}
         <Button buttonBottomTitle={buttonBottomTitle} buttonAction={buttonAction}/>
 
       </SafeAreaView>

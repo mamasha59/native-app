@@ -1,9 +1,11 @@
 import { View, Text, TextInput } from "react-native";
-import React from "react";
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
+import { NavigationPropsWelcome } from "../UserData";
 
-const ThirdDataScreen = ({navigation}) => {
+interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
+
+const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const { control, handleSubmit, formState: { errors}} = useForm({
         defaultValues: {
             amount: '',
@@ -13,7 +15,7 @@ const ThirdDataScreen = ({navigation}) => {
         }
     })
 
-    const onSubmit = (data) => {
+    const onSubmit = (data:any) => {
        console.log(data);
        navigation.navigate('FirstOptionalScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
     }

@@ -3,12 +3,11 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
+import { NavigationPropsWelcome } from "../UserData";
 
-interface iUserData {
-    
-}
+interface iUserData extends NavigationPropsWelcome<'FirstDataScreen'> {}
 
-const FirstDataScreen = ({navigation}) => {
+const FirstDataScreen = ({navigation}:iUserData) => {
     const { control, handleSubmit, formState: { errors}} = useForm({
         defaultValues: {
             weight: '',

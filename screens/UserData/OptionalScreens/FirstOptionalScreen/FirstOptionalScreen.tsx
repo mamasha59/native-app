@@ -1,9 +1,12 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import  {useState } from "react";
 import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { Picker } from "@react-native-picker/picker";
+import { NavigationPropsWelcome } from "../../UserData";
 
-const FirstOptionalScreen = ({navigation}) => {
+interface FirstOptionalScreen extends NavigationPropsWelcome<'FirstOptionalScreen'>{}
+
+const FirstOptionalScreen = ({navigation}:FirstOptionalScreen) => {
 
     const [signal, setSignal] = useState();
 

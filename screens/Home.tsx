@@ -1,4 +1,5 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { RouteProp } from '@react-navigation/native';
 
 import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
@@ -11,7 +12,21 @@ import HomeIcon from '../imgs/iconsComponent/HomeIcon';
 import ControllCatetor from '../imgs/iconsComponent/ControllCatetor';
 import ProfileIcon from '../imgs/iconsComponent/ProfileIcon';
 
-const Tab = createBottomTabNavigator();
+export type RootStackParamList = {
+  Profile: undefined;
+  ControlCatetor: undefined;
+  Home: undefined;
+  JournalScreen: undefined;
+  Recomendations: undefined;
+};
+
+// Определение типов для navigation и route в каждом экране
+export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
+  navigation: BottomTabNavigationProp<RootStackParamList, RouteName>;
+  route: RouteProp<RootStackParamList, RouteName>;
+};
+
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function Home() {
 

@@ -1,8 +1,11 @@
 import { Text, TouchableOpacity, Animated } from "react-native";
 import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
 import { useState, useRef } from "react";
+import { NavigationPropsStart } from "../../App";
 
-const LanguageScreen = ({navigation}) => {
+interface iLanguageScreen extends NavigationPropsStart<'SetLanguageScreen'>{}
+
+const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
 
     const languages = [
         {
@@ -58,4 +61,4 @@ const LanguageScreen = ({navigation}) => {
   );
 };
 
-export default LanguageScreen;
+export default SetLanguageScreen;

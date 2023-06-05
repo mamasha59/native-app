@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 interface iWelcomeLayout {
     children: React.ReactNode;
-    title: string;
+    title?: string;
     handleProceed: () => void;
     buttonTitle: string;
     index?: number;

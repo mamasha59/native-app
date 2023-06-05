@@ -1,9 +1,11 @@
 import { View, Text, TextInput, Pressable } from "react-native";
-import React from "react";
 import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
+import { NavigationPropsWelcome } from "../../UserData";
 
-const ThirdOptionalScreen = ({navigation}) => {
+interface iThirdOptionalScreen extends NavigationPropsWelcome<'ThirdOptionalScreen'>{}
+
+const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
 
     const { control, handleSubmit, formState: { errors}} = useForm({
         defaultValues: {
@@ -15,9 +17,9 @@ const ThirdOptionalScreen = ({navigation}) => {
         }
     })
 
-    const onSubmit = (data) => {
+    const onSubmit = (data:any) => {
         console.log(data);
-        navigation.navigate('ThirdOptionalScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
+        navigation.navigate('Slider'); // перенаправляем юзера на слайдер
      }
 
   return (

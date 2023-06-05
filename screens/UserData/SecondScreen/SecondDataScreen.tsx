@@ -1,9 +1,11 @@
 import { View, Text, TextInput } from "react-native";
-import React from "react";
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
+import { NavigationPropsWelcome } from "../UserData";
 
-const SecondDataScreen = ({navigation}) => {
+interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'> {} // типизация navigation
+
+const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
 
     const { control, handleSubmit, formState: { errors}} = useForm({
         defaultValues: {
@@ -13,7 +15,7 @@ const SecondDataScreen = ({navigation}) => {
         }
     })
 
-    const onSubmit = (data) => {
+    const onSubmit = (data:any) => {
        console.log(data);
        navigation.navigate('ThirdDataScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
     }

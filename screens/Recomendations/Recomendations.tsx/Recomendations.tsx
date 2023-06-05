@@ -5,7 +5,11 @@ import { DropDown } from "../../../imgs/icons";
 import MainLayout from "../../../components/MainLayout/MainLayout";
 import data from './qustions.json';
 
-const Recomendations = ({navigation}) => {
+import { NavigationPropsHome } from "../../Home";
+
+interface iRecomendations extends NavigationPropsHome<'Recomendations'>{}
+
+const Recomendations = ({navigation}:iRecomendations) => {
 
   const [activeIndex, setActiveIndex] = useState<number | null>(); // текущий индекс открытого блока
 
@@ -33,7 +37,6 @@ const Recomendations = ({navigation}) => {
       )}
       </View>
     </MainLayout>
-
   );
 };
 

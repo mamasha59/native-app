@@ -1,34 +1,40 @@
-import { Text, TouchableOpacity, Animated } from "react-native";
-import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
+import { Text, TouchableOpacity, Animated, View } from "react-native";
 import { useState, useRef } from "react";
+
+import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsStart } from "../../App";
+import { iLanguage } from "../../Types";
 
 interface iLanguageScreen extends NavigationPropsStart<'SetLanguageScreen'>{}
 
 const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
 
-    const languages = [
+  const [chosenLanguage, setChosenLanguage] = useState<string>(''); // берем выбранный язык
+  const shakeAnimation = useRef(new Animated.Value(0)).current;
+
+    const languages: iLanguage[] = [
         {
           id: 'Русский',
           title: 'Русский',
+          chosed: false,
         },
         {
           id: 'Английский',
           title: 'Английский',
+          chosed: false,
         },
         {
           id: 'Немецкий',
           title: 'Немецкий',
+          chosed: false,
         },
         {
           id: 'Французкий',
           title: 'Французкий',
+          chosed: false,
         },
       ];
       
-    const [chosenLanguage, setChosenLanguage] = useState<string>(''); // берем выбранный язык
-    const shakeAnimation = useRef(new Animated.Value(0)).current;
-
     const startShakeAnimation = () => {
         Animated.sequence([
           Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver:true }),
@@ -38,7 +44,7 @@ const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
         ]).start();
       };
     
-    const handleBegin = () => {
+    const handleBegin = () => { // начать пользоваться
         if(chosenLanguage.length > 0){
             // перенаправляем пользователя на следующую страницу заполнений данных
             navigation.navigate('WelcomeScreens');
@@ -48,14 +54,21 @@ const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
         }
     }
 
+    const handleClickLang = (title:string) => {
+      setChosenLanguage(title);
+    }
+
   return (
     <WelcomeLayout title={'Выберите язык'} buttonTitle="Начать пользоваться" handleProceed={handleBegin}>
             <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
-              {languages.map((e,index)=>
-              <TouchableOpacity key={index} onPress={() => setChosenLanguage(e.title)}>
-                    <Text className="mb-[30px] text-center text-lg leading-[22px] font-normal">{e.title}</Text>
+              {languages.map((el:iLanguage,index:number)=>
+              <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
+                    <Text className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px] font-normal`}>{el.title}</Text>
               </TouchableOpacity>
               )}
+              {chosenLanguage && <View className="items-center mt-32">
+                  <Text>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
+              </View>}
             </Animated.View>
     </WelcomeLayout>
   );

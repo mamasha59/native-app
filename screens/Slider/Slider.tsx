@@ -1,13 +1,12 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Onboarding from "react-native-onboarding-swiper";
 
 import { NavigationPropsStart } from "../../App";
+import SliderDot from "./SliderDot/SliderDot";
 
-interface iSlider extends NavigationPropsStart<'Slider'> {
-    // Дополнительные свойства, специфичные для экрана Slider
-    // ...
-  }
+interface iSlider extends NavigationPropsStart<'Slider'> {}
 
 const Slider = ({navigation}:iSlider) => {
 
@@ -28,19 +27,41 @@ const Slider = ({navigation}:iSlider) => {
                 Uro<Text className="italic text-[40px] leading-[48px] font-bold">Control</Text>
             </Text>
         </View>
-        <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl border pt-[60px] px-[38px] h-full justify-between">
-            <View className="items-center flex-1 border">
-                {/* <FlatList
-                    horizontal
-                    data={}
-                    renderItem={({item}) => <SlideItem item={item}/>}
-                    keyExtractor={(item) => item.id}
-                    pagingEnabled={true}
-                /> */}
-                <View className="items-center mt-10">
-                    <Text>тут пагинация</Text>
-                </View>
-            </View>
+        <View className="bg-[#FFFFFF] flex-1 h-full rounded-t-2xl justify-center pt-[90px]">
+
+            <Onboarding
+                DotComponent={SliderDot}
+                showNext={false}
+                showSkip={false}
+                imageContainerStyles={{paddingBottom:77}}
+                
+                containerStyles={{justifyContent:"flex-start",backgroundColor:'#FFFFFF'}}
+                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010'}}
+                bottomBarHeight={100}
+                bottomBarColor="#FFFFFF"
+                bottomBarHighlight={false}
+                pages={[
+                    {
+                        backgroundColor: '#ffffff',
+                        image: <Image className="max-w-[280px] flex-row justify-start w-full" source={require('../../imgs/slider/img-slide-1.png')} />,
+                        title: 'Уведомления и удобный отчет',
+                        subtitle: '',
+                    },
+                    {
+                        backgroundColor: '#fff',
+                        image: <Image className="max-w-[280px] w-full" source={require('../../imgs/slider/img-slide-2.png')} />,
+                        title: 'Контроль расхода катетеров',
+                        subtitle: '',
+                    },
+                    {
+                        backgroundColor: '#fff',
+                        image: <Image className="max-w-[280px] w-full" source={require('../../imgs/slider/img-slide-3.png')} />,
+                        title: 'Расчет интервалов катеризации',
+                        subtitle: '',
+                    },
+                  
+                ]}
+            />
             
             <View className="w-full items-center mb-5">
                 <Pressable onPress={() => handleStart()} className="max-w-[300px] w-full py-[19px] bg-[#4BAAC5] rounded-[89px] items-center">

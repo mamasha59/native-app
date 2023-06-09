@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, ScrollView } from "react-native";
+import { Text, ScrollView, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -35,16 +35,16 @@ const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLa
       end={[1, 0.505]}
       style={{ flex: 1 }}
     >
-      <SafeAreaView onLayout={onLayoutRootView} className="font-geometrica flex-1">
-
+      <SafeAreaView onLayout={onLayoutRootView} className="flex-1 h-full">
         <TopBar/>
-        <ScrollView className="h-full relative px-6 flex-1 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
-            {title && <Text className=" text-[#101010] font-bold text-[22px] leading-[26px] pb-5">{title}</Text>}
-            {children} 
-        </ScrollView>
-        <StatusBar style="auto"/>
+
+        <View className="font-geometrica flex-1 px-6 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
+          {title && <Text className=" text-[#101010] font-bold text-[22px] leading-[26px] pb-5">{title}</Text>}
+          {children}
+          <StatusBar style="auto"/>
         {/* button нужен не на всех экранах */}
         <Button buttonBottomTitle={buttonBottomTitle} buttonAction={buttonAction}/>
+        </View>
 
       </SafeAreaView>
     </LinearGradient>

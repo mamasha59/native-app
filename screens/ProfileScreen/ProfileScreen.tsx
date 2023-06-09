@@ -12,8 +12,10 @@ const ProfileScreen = ({  }) => {
               <Text className="text-[#101010] font-normal text-xs leading-[14px]">Основные данные</Text>
               <Text className="text-[#4BAAC5] font-normal text-xs leading-[14px] opacity-50">Изменить</Text>
           </View>
-          <UserInfo/>
-          <Selects/>
+          <ScrollView>
+            <UserInfo/>
+            <Selects/>
+          </ScrollView>
     </MainLayout>
   );
 };

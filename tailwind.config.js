@@ -10,9 +10,9 @@ module.exports = {
       fontFamily: {
         geometrica: ['Geometria'],
       },
-      backgroundColor:{
-        'bg-main' : 'linear-gradient(90.21deg, #4BAAC5 0.16%, #7076B0 101.13%)'
-      },
+      // boxShadow: {
+      //   // 'main-button': '0px 7px 11px -3px rgba(131, 183, 89, 0.47)',
+      // }
     },
   },
   plugins: [],

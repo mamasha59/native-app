@@ -32,11 +32,11 @@ export default function App() {
   // все роуты стоят по порядку их повяления при загрузки app
   return (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName={exist ? 'Main' : 'SetLanguageScreen'} screenOptions={{headerShown:false}}>
-      <Stack.Screen name='SetLanguageScreen' component={SetLanguageScreen}/>
-      <Stack.Screen name='WelcomeScreens' component={WelcomeScreens}/>
-      <Stack.Screen name='Slider' component={Slider}/>
-      <Stack.Screen name='Main' component={Home}/>
+    <Stack.Navigator initialRouteName={!exist ? 'Main':'SetLanguageScreen'} screenOptions={{headerShown:false}}>
+      <Stack.Screen name='SetLanguageScreen'component={SetLanguageScreen}/>
+      <Stack.Screen name='WelcomeScreens'component={WelcomeScreens}/>
+      <Stack.Screen name='Slider'component={Slider}/>
+      <Stack.Screen name='Main'component={Home}/>
       <Stack.Screen name='FeedbackScreen' component={FeedbackScreen}/>
     </Stack.Navigator>
   </NavigationContainer>

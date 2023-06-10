@@ -8,15 +8,12 @@ const InnerCircle = () => {
     const [countdown, setCountdown] = useState<any>();
     const [timeString, setTimeString] = useState<string>("04:00:00");
     const [isRunning, setIsRunning] = useState(false); // Состояние для отслеживания работы таймера
-    const [leftTime, setLeftTime] = useState(''); // Состояние для отслеживания работы таймера
-console.log(leftTime);
 
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
     
         const createTimerAnimator = () => {
-          if (countdown) {
-            setIsRunning(true);
+          setIsRunning(true);
             intervalId = setInterval(() => {
               setCountdown((prevCountdown:number) => {
   
@@ -24,23 +21,21 @@ console.log(leftTime);
                   const hours = Math.floor(prevCountdown / 3600);
                   const minutes = Math.floor((prevCountdown % 3600) / 60);
                   const seconds = prevCountdown % 60;
-                  const timeString = `${hours.toString().padStart(2, "0")}:${minutes
-                    .toString()
-                    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+                  const timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
                     
                   setTimeString(timeString); // записываем значение в переменную
                   return prevCountdown - 1;
                 } else{
-                  setLeftTime(timeString) // записываем значение времени когда сделана катеризация
                   clearInterval(intervalId);
                   return 0;
                 }
               });
-            }, 10);
-          }
+            }, 1);
         };
     
-        createTimerAnimator();
+        if (countdown) {
+            createTimerAnimator();
+        }
     
         return () => clearInterval(intervalId);
       }, [countdown]);
@@ -51,13 +46,14 @@ console.log(leftTime);
         } else {
             setIsRunning(false); // стейт когда таймер начать и закончен
             setCountdown(false); // останавливаем таймер
-            setTimeString("04:00:00"); // сбрасываем значение 
+            setTimeString("04:00:00"); // сбрасываем значение
+            console.log('время при остановке ' + timeString);// записываем значение времени когда сделана катеризация
         }
     };
 
   return (
-    <View className="min-h-[254px] min-w-[254px] border-[#DADADA] border-[2px] border-solid m-12 rounded-full relative">
-
+    <View className="min-h-[254px] min-w-[254px] border-[2px] border-solid rounded-full m-12 ">
+  
         <View className="items-center flex-1 mt-14">
             <View className="items-center mb-8">
                 <Text className="text-xs leading-[15px] text-[#77787B] font-normal">До катетеризации:</Text>

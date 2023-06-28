@@ -1,7 +1,8 @@
 import { View } from "react-native";
 import  {useState } from "react";
-import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { Picker } from "@react-native-picker/picker";
+
+import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
 
 interface FirstOptionalScreen extends NavigationPropsWelcome<'FirstOptionalScreen'>{}

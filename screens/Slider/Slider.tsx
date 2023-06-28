@@ -6,12 +6,12 @@ import Onboarding from "react-native-onboarding-swiper";
 import { NavigationPropsStart } from "../../App";
 import SliderDot from "./SliderDot/SliderDot";
 
-interface iSlider extends NavigationPropsStart<'Slider'> {}
+interface iSlider extends NavigationPropsStart<'SliderScreen'> {}
 
 const Slider = ({navigation}:iSlider) => {
 
     const handleStart = () => {
-        navigation.navigate("Main");
+        navigation.navigate("MainScreen");
     }
 
   return (

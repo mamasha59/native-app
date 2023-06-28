@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput } from "react-native";
+import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput, Pressable } from "react-native";
 import { Slider } from '@miblanchard/react-native-slider';
 
 interface iModalLiquidAmount {
@@ -19,7 +19,7 @@ const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) =
         setInputValue(''); // очищаем инпут при сабмите
         setLiquidValue(0); // сбрасываем рейдж при сабмите
         setFocus(false); // очищаем состояние фокуса
-        console.log(focus ? inputValue : Math.floor(liquidValue)); // отправляем данные в сторедж
+        console.log(focus ? inputValue : Math.floor(liquidValue)); // отправляем данные в сторедж TODO
     }
 
     const handleInputChange = (value:string) => {
@@ -34,11 +34,12 @@ const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) =
     visible={modalVisible}
     onRequestClose={() => {setModalVisible(!modalVisible)}}
     animationType="fade">
-      <View className="justify-end flex-1 bg-[#10101035]">
+      <Pressable onPress={(event) => event.target === event.currentTarget && setModalVisible(false)} className="justify-end flex-1 bg-[#10101035]">
         <View style={{minHeight: windowHeight * 0.4}} className="bg-[#ffff] rounded-t-[30px] pt-10 pb-[30px] px-6">
         <View>
-            <Text className="text-base leading-4 font-normal mb-3">Сколько вы выпили жидкости?</Text>
+            <Text style={{fontFamily:'geometria-regullar'}} className="text-base leading-4 mb-3">Сколько вы выпили жидкости?</Text>
             <TextInput
+                style={{fontFamily:'geometria-regullar'}}
                 onFocus={()=> setFocus(!focus)}
                 keyboardType="numeric"
                 value={inputValue}
@@ -56,7 +57,7 @@ const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) =
                     maximumValue={1000}
                     animationType="timing"
                     renderAboveThumbComponent={() =>
-                        <Text className="text-[12px] justify-center items-center leading-3 text-[#101010] opacity-70">{Math.floor(liquidValue)+ ' мл'}</Text>}
+                        <Text style={{fontFamily:'geometria-regullar'}} className="text-[12px] justify-center items-center leading-3 text-[#101010] opacity-70">{Math.floor(liquidValue)+ ' мл'}</Text>}
                     thumbStyle={{backgroundColor:'#4BAAC5'}}
                     minimumTrackStyle={{backgroundColor:'#4BAAC5',height:7}}
                     maximumTrackStyle={{backgroundColor:'#4babc56b', height:7}}
@@ -66,10 +67,10 @@ const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) =
           </View>
 
           <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="justify-end py-[19px] px-[61px] items-center bg-[#4BAAC5] rounded-[89px]">
-            <Text className="text-base leading-5 font-bold text-[#FFFFFF]">Сохранить изменения</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Сохранить изменения</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Pressable>
   </Modal>
   );
 };

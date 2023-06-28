@@ -11,12 +11,12 @@ const ButtonsHome = () => {
     <View className="flex-row">
         <TouchableOpacity activeOpacity={0.6} className="flex-1 bg-[#9966AA] pl-[18px] pr-[25px] py-[13px] mr-[13px] rounded-[89px] flex-row items-center justify-center">
             <Drop width={16} height={17} color={'#fff'}/>
-            <Text className="ml-4 text-[#FFFFFF] font-bold text-sm">Подтекание</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="ml-4 text-[#FFFFFF] text-sm">Подтекание</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.6} className="flex-1 bg-[#4BAAC5] pl-[15px] pr-[30px] py-[8px] rounded-[89px] flex-row items-center justify-center">
             <Graphic width={16} height={16} color={'#fff'}/>
-            <Text className="ml-4 text-[#FFFFFF] font-bold text-center text-sm">Учет выпитой жидкости</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="ml-4 text-[#FFFFFF] text-center text-sm">Учет выпитой жидкости</Text>
         </TouchableOpacity>
 
         <ModalLiquidAmount modalVisible={modalVisible} setModalVisible={setModalVisible}/>

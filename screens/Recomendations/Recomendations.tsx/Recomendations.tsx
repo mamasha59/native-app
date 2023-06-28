@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import { DropDown } from "../../../imgs/icons";
 import MainLayout from "../../../components/MainLayout/MainLayout";
-import data from './qustions.json';
+import data from './questions.json';
 
-import { NavigationPropsHome } from "../../Home";
+import { NavigationPropsRecomendations } from ".";
 
-interface iRecomendations extends NavigationPropsHome<'Recomendations'>{}
+interface iRecomendations extends NavigationPropsRecomendations<'Recomendations'>{}
 
 const Recomendations = ({navigation}:iRecomendations) => {
 
@@ -18,7 +18,7 @@ const Recomendations = ({navigation}:iRecomendations) => {
   };
 
   const handleClickButton = () => {
-    navigation.navigate('FeedbackScreen');
+    navigation.navigate('FeedBack');
   }
 
   return (

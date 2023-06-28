@@ -5,9 +5,9 @@ import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsStart } from "../../App";
 import { iLanguage } from "../../Types";
 
-interface iLanguageScreen extends NavigationPropsStart<'SetLanguageScreen'>{}
+interface iLanguageScreen extends NavigationPropsStart<'LanguageScreen'>{}
 
-const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
+const LanguageScreen = ({navigation}:iLanguageScreen) => {
 
   const [chosenLanguage, setChosenLanguage] = useState<string>(''); // берем выбранный язык
   const shakeAnimation = useRef(new Animated.Value(0)).current;
@@ -74,4 +74,4 @@ const SetLanguageScreen = ({navigation}:iLanguageScreen) => {
   );
 };
 
-export default SetLanguageScreen;
+export default LanguageScreen;

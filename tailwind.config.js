@@ -7,12 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        geometrica: ['Geometria'],
-      },
-      // boxShadow: {
-      //   // 'main-button': '0px 7px 11px -3px rgba(131, 183, 89, 0.47)',
-      // }
+
     },
   },
   plugins: [],

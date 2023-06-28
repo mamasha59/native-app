@@ -5,19 +5,19 @@ import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import ControlCatetor from './ControlCatetor/ControlCatetor';
 import JournalScreen from './JournalScreen/JournalScreen';
-import Recomendations from './Recomendations/Recomendations.tsx/Recomendations';
 import RecomendationIcon from '../imgs/iconsComponent/RecomendationIcon';
 import JournalIcon from '../imgs/iconsComponent/JournalIcon';
 import HomeIcon from '../imgs/iconsComponent/HomeIcon';
 import ControllCatetor from '../imgs/iconsComponent/ControllCatetor';
 import ProfileIcon from '../imgs/iconsComponent/ProfileIcon';
+import RecomendationsStack from './Recomendations/Recomendations.tsx';
 
 export type RootStackParamList = {
   Profile: undefined;
   ControlCatetor: undefined;
   Home: undefined;
   JournalScreen: undefined;
-  Recomendations: undefined;
+  RecomendationsStack: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -86,8 +86,8 @@ export default function Home() {
         }}
       />
       <Tab.Screen
-        name='Recomendations'
-        component={Recomendations}
+        name='RecomendationsStack'
+        component={RecomendationsStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <RecomendationIcon width={size} color={color}/>

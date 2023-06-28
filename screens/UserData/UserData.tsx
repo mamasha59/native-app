@@ -7,7 +7,7 @@ import ThirdDataScreen from "./ThirdScreen/ThirdScreen";
 import FirstOptionalScreen from "./OptionalScreens/FirstOptionalScreen/FirstOptionalScreen";
 import SecondOptionalScreen from "./OptionalScreens/SecondOptionalScreen/SecondOptionalScreen";
 import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOptionalScreen";
-import { RootStacNativekParamList } from "../../App";
+import { RootStacNativeParamList } from "../../App";
 
 export type RootStackParamList = {
   FirstDataScreen: undefined;
@@ -20,16 +20,16 @@ export type RootStackParamList = {
 
 // Определение типов для navigation и route в каждом экране
 export type NavigationPropsWelcome<RouteName extends keyof RootStackParamList> = {
-  navigation: CompositeNavigationProp<  // обьеденияем роуты для типизации
+  navigation: CompositeNavigationProp<  // объединяем роуты для типизации, чтобы с последней страницы перенаправить юзера на стек других экранов
     StackNavigationProp<RootStackParamList, RouteName>, // тут роуты UserData
-    StackNavigationProp<RootStacNativekParamList> // тут роуты App 
+    StackNavigationProp<RootStacNativeParamList> // тут роуты App 
   > 
   route: RouteProp<RootStackParamList, RouteName>;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const WelcomeScreens = () => {
+const UserData = () => {
 // компонент который содержит все начальные страницы где нужно вводить данные юзера
   return (
     <Stack.Navigator initialRouteName="FirstDataScreen" screenOptions={{headerShown:false}}>
@@ -44,4 +44,4 @@ const WelcomeScreens = () => {
   );
 };
 
-export default WelcomeScreens;
+export default UserData;

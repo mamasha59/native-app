@@ -4,40 +4,40 @@ import { useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import Home from './screens/Home';
-import FeedbackScreen from './screens/FeedbackScreen/FeedbackScreen';
-import SetLanguageScreen from './screens/LanguageScreen/LanguageScreen';
-import WelcomeScreens from './screens/UserData/UserData';
+import LanguageScreen from './screens/LanguageScreen/LanguageScreen';
+import UserData from './screens/UserData/UserData'; ///
 import Slider from './screens/Slider/Slider';
+import NoticeMainScreen from './screens/NoticeAccessScreens/NoticeMainScreen';
 
-
-export type RootStacNativekParamList = {
-  SetLanguageScreen: undefined;
+export type RootStacNativeParamList = {
+  LanguageScreen: undefined;
   WelcomeScreens: undefined;
-  Slider: undefined;
-  Main: undefined;
+  SliderScreen: undefined;
+  MainScreen: undefined;
   FeedbackScreen: undefined;
+  NotificationScreen: undefined;
+  NoticeAccessScreens: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
-export type NavigationPropsStart<RouteName extends keyof RootStacNativekParamList> = {
-  navigation: StackNavigationProp<RootStacNativekParamList, RouteName>;
-  route: RouteProp<RootStacNativekParamList, RouteName>;
+export type NavigationPropsStart<RouteName extends keyof RootStacNativeParamList> = {
+  navigation: StackNavigationProp<RootStacNativeParamList, RouteName>;
+  route: RouteProp<RootStacNativeParamList, RouteName>;
 };
 
-
-const Stack = createNativeStackNavigator<RootStacNativekParamList>();
+const Stack = createNativeStackNavigator<RootStacNativeParamList>();
 
 export default function App() {
-  const [exist, setexist] = useState(false); // если юзер уже ввел данные раньше, то перенаправляет сразу на главный экран приложения
+  const [exist, setExist] = useState(false); // если юзер уже ввел данные раньше, то перенаправляет сразу на главный экран приложения
   // все роуты стоят по порядку их повяления при загрузки app
   return (
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName={!exist ? 'Main':'SetLanguageScreen'} screenOptions={{headerShown:false}}>
-      <Stack.Screen name='SetLanguageScreen'component={SetLanguageScreen}/>
-      <Stack.Screen name='WelcomeScreens'component={WelcomeScreens}/>
-      <Stack.Screen name='Slider'component={Slider}/>
-      <Stack.Screen name='Main'component={Home}/>
-      <Stack.Screen name='FeedbackScreen' component={FeedbackScreen}/>
+  <NavigationContainer fallback>
+    <Stack.Navigator initialRouteName={!exist ? 'MainScreen' : 'LanguageScreen'} screenOptions={{headerShown:false}}>
+      <Stack.Screen name='LanguageScreen'component={LanguageScreen}/>
+      <Stack.Screen name='WelcomeScreens'component={UserData}/>
+      <Stack.Screen name='SliderScreen'component={Slider}/>
+      <Stack.Screen name='MainScreen'component={Home}/>
+      <Stack.Screen name='NoticeAccessScreens'component={NoticeMainScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
   );

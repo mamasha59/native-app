@@ -1,14 +1,15 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Dimensions, Text, StyleSheet } from "react-native";
 import InnerCircle from "../InnerCircle/InnerCircle";
 
-const OutsideCircle = () => {
+const OutSideCircle = () => {
+    const windowWidth = Dimensions.get('window').width;
+
+
   return (
-        <View className="justify-center items-center border-[#DADADA] border-[2px] border-solid rounded-full relative">
-            
+        <View className="flex-1 min-h-[327px] min-w-[327px] border-dashed border border-[#DADADA] rounded-full my-14">
             <InnerCircle/>
         </View>
   );
 };
 
-export default OutsideCircle;
+export default OutSideCircle;

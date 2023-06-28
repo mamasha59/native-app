@@ -10,7 +10,7 @@ interface iWelcomeLayout {
     buttonTitle: string;
     index?: number;
     skip?: boolean;
-    skipNextScreen?: (() => void | undefined) | undefined
+    skipNextScreen?: (() => void | undefined);
 }
 
 const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, skipNextScreen}:iWelcomeLayout) => {
@@ -33,10 +33,10 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
     <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl pt-[60px] px-[38px] h-full justify-between items-center">
 
         <ScrollView className="flex-1 w-full">
-        <View className="w-full">
-            <Text className="text-[#4BAAC5] text-center text-lg leading-5 font-bold mb-10">{title}</Text>
-            {children}
-        </View>
+            <View className="w-full">
+                <Text className="text-[#4BAAC5] text-center text-lg leading-5 font-bold mb-10">{title}</Text>
+                {children}
+            </View>
         </ScrollView>
  
         <View className="w-full items-center mb-5">

@@ -19,7 +19,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
 
     const onSubmit = (data:any) => {
         console.log(data);
-        navigation.navigate('Slider'); // перенаправляем юзера на слайдер
+        navigation.navigate('SliderScreen'); // перенаправляем юзера на слайдер
      }
 
   return (

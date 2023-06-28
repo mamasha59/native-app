@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, ScrollView, View } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -16,11 +16,16 @@ interface iMainLayout {
     buttonAction?: () => void;
 }
 
+SplashScreen.preventAutoHideAsync();
+
 const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLayout) => {
   // загружаем шрифт
-  const [fontsLoader] = useFonts({'Geometria' : require('../../assets/fonts/geometria_extrabold.otf')});
+  const [fontsLoader] = useFonts({
+    'geometria-bold' : require('../../assets/fonts/geometria-bold.ttf'),
+    'geometria-regullar' : require('../../assets/fonts/geometria-regular.ttf')
+    });
 
-  const onLayoutRootView = useCallback(async () => { 
+  const onLayoutRootView = useCallback(async () => { // работа загрузочного экрана
     if (fontsLoader) {
       await SplashScreen.hideAsync();
       }
@@ -35,11 +40,10 @@ const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLa
       end={[1, 0.505]}
       style={{ flex: 1 }}
     >
-      <SafeAreaView onLayout={onLayoutRootView} className="flex-1 h-full">
+      <SafeAreaView className="flex-1 h-full">
         <TopBar/>
-
-        <View className="font-geometrica flex-1 px-6 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
-          {title && <Text className=" text-[#101010] font-bold text-[22px] leading-[26px] pb-5">{title}</Text>}
+        <View onLayout={onLayoutRootView} className="flex-1 px-6 bg-white mt-[15px] rounded-t-2xl pt-[25px]">
+          {title && <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px] pb-5">{title}</Text>}
           {children}
           <StatusBar style="auto"/>
         {/* button нужен не на всех экранах */}

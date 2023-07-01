@@ -8,6 +8,8 @@ import FirstOptionalScreen from "./OptionalScreens/FirstOptionalScreen/FirstOpti
 import SecondOptionalScreen from "./OptionalScreens/SecondOptionalScreen/SecondOptionalScreen";
 import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOptionalScreen";
 import { RootStacNativeParamList } from "../../App";
+import LanguageScreen from "../LanguageScreen/LanguageScreen";
+import Slider from "../Slider/Slider";
 
 export type RootStackParamList = {
   FirstDataScreen: undefined;
@@ -16,6 +18,8 @@ export type RootStackParamList = {
   FirstOptionalScreen: undefined;
   SecondOptionalScreen: undefined;
   ThirdOptionalScreen: undefined;
+  LanguageScreen: undefined;
+  SliderScreen: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -30,9 +34,11 @@ export type NavigationPropsWelcome<RouteName extends keyof RootStackParamList> =
 const Stack = createStackNavigator<RootStackParamList>();
 
 const UserData = () => {
-// компонент который содержит все начальные страницы где нужно вводить данные юзера
+// компонент который содержит все начальные страницы где нужно вводить данные юзера, расставлены по порядку появления 
   return (
-    <Stack.Navigator initialRouteName="FirstDataScreen" screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName="LanguageScreen" screenOptions={{headerShown:false}}>
+        <Stack.Screen name="LanguageScreen" component={LanguageScreen}/>
+
         <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
@@ -40,6 +46,8 @@ const UserData = () => {
         <Stack.Screen name="FirstOptionalScreen" component={FirstOptionalScreen}/>
         <Stack.Screen name="SecondOptionalScreen" component={SecondOptionalScreen}/>
         <Stack.Screen name="ThirdOptionalScreen" component={ThirdOptionalScreen}/>
+
+        <Stack.Screen name='SliderScreen'component={Slider}/>
     </Stack.Navigator>
   );
 };

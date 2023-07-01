@@ -3,10 +3,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Onboarding from "react-native-onboarding-swiper";
 
-import { NavigationPropsStart } from "../../App";
 import SliderDot from "./SliderDot/SliderDot";
+import { NavigationPropsWelcome } from "../UserData/UserData";
 
-interface iSlider extends NavigationPropsStart<'SliderScreen'> {}
+interface iSlider extends NavigationPropsWelcome<'SliderScreen'> {}
 
 const Slider = ({navigation}:iSlider) => {
 
@@ -33,7 +33,7 @@ const Slider = ({navigation}:iSlider) => {
                 DotComponent={SliderDot}
                 showNext={false}
                 showSkip={false}
-                imageContainerStyles={{paddingBottom:77}}
+                imageContainerStyles={{paddingBottom:65}}
                 
                 containerStyles={{justifyContent:"flex-start",backgroundColor:'#FFFFFF'}}
                 titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010'}}

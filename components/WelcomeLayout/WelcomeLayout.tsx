@@ -1,7 +1,7 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import GradientBackground from "../GradientBackground/GradientBackground";
 
 interface iWelcomeLayout {
     children: React.ReactNode;
@@ -16,17 +16,12 @@ interface iWelcomeLayout {
 const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, skipNextScreen}:iWelcomeLayout) => {
 
   return (
-    <LinearGradient
-        colors={['#4BAAC5', '#7076B0']}
-        start={[0.001, 0.495]}
-        end={[1, 0.505]}
-        style={{ flex: 1 }}
-    >
+    <GradientBackground>
     <SafeAreaView className="flex-1">
-        
+        {/* исправить border */}
     <View className="items-center">
-        <Text className="text-[40px] leading-[48px] font-bold text-[#FFFFFF] my-[50px]">
-            Uro<Text className="italic text-[40px] leading-[48px] font-bold">Control</Text>
+        <Text style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px] text-[#FFFFFF] my-[50px] border-transparent border">
+            Uro<Text className="italic text-[40px] leading-[48px]">Control</Text>
         </Text>
     </View>
 
@@ -34,20 +29,20 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
 
         <ScrollView className="flex-1 w-full">
             <View className="w-full">
-                <Text className="text-[#4BAAC5] text-center text-lg leading-5 font-bold mb-10">{title}</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#4BAAC5] text-center text-lg leading-5 mb-10">{title}</Text>
                 {children}
             </View>
         </ScrollView>
  
         <View className="w-full items-center mb-5">
             <Pressable onPress={handleProceed} className="max-w-[300px] w-full py-[19px] bg-[#4BAAC5] rounded-[89px] items-center">
-                <Text className="text-base leading-5 text-[#FFFFFF]">{buttonTitle}</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">{buttonTitle}</Text>
             </Pressable>
             {(index || skip) && 
             <View className="w-full items-center justify-center mt-10">
                 {index 
                 ? <Text className="text-xs leading-[14px] text-[#101010] opacity-50">Шаг {index} из 3</Text>
-                : skip && <Pressable onPress={()=>skipNextScreen()}><Text className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
+                : skip && <Pressable onPress={()=> skipNextScreen()}><Text className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
                 }
             </View>}
         </View>
@@ -56,7 +51,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
 
     <StatusBar style="auto"/>
     </SafeAreaView>
-    </LinearGradient>
+    </GradientBackground>
   );
 };
 

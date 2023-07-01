@@ -2,7 +2,7 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import Recomendations from './Recomendations';
 import FeedbackScreen from '../../FeedbackScreen/FeedbackScreen';
 import { RouteProp } from '@react-navigation/native';
-import NoticeAndAccess from '../../NoticeAccessScreens/NoticeMainScreen';
+import NoticeAndAccess from '../../NoticeAccessScreens/NoticeNavigationScreen';
 
 export type RootRecomendationsStack = { // экраны
   Recomendations: undefined;

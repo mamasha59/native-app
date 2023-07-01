@@ -2,10 +2,10 @@ import { Text, TouchableOpacity, Animated, View } from "react-native";
 import { useState, useRef } from "react";
 
 import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
-import { NavigationPropsStart } from "../../App";
 import { iLanguage } from "../../Types";
+import { NavigationPropsWelcome } from "../UserData/UserData";
 
-interface iLanguageScreen extends NavigationPropsStart<'LanguageScreen'>{}
+interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}
 
 const LanguageScreen = ({navigation}:iLanguageScreen) => {
 
@@ -47,7 +47,7 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
     const handleBegin = () => { // начать пользоваться
         if(chosenLanguage.length > 0){
             // перенаправляем пользователя на следующую страницу заполнений данных
-            navigation.navigate('WelcomeScreens');
+            navigation.navigate('FirstDataScreen');
             //TODO - менять язык, сетить язык в сторе
         }else{
            startShakeAnimation()
@@ -63,11 +63,11 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
             <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
               {languages.map((el:iLanguage,index:number)=>
               <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
-                    <Text className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px] font-normal`}>{el.title}</Text>
+                    <Text style={{fontFamily:'geometria-regullar'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
               </TouchableOpacity>
               )}
               {chosenLanguage && <View className="items-center mt-32">
-                  <Text>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
+                  <Text style={{fontFamily:'geometria-regullar'}}>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
               </View>}
             </Animated.View>
     </WelcomeLayout>

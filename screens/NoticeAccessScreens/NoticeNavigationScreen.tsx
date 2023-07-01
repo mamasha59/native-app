@@ -1,4 +1,4 @@
-import { NavigationContainer, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp, createStackNavigator } from "@react-navigation/stack";
 import NoticeAccessHomeScreen from "./NoticeAccessHomeScreen/NoticeAccessHomeScreen";
 
@@ -14,7 +14,7 @@ export type NoticeAndAccessScreens = {
   
   const Stack = createStackNavigator<NoticeAndAccessScreens>();
   
-  export default function NoticeMainScreen() {
+  export default function NoticeNavigationScreen() {
 
     return (
       <Stack.Navigator initialRouteName='NoticeAccessHomeScreen' screenOptions={{headerShown:false, presentation:'modal'}}>

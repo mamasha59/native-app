@@ -22,7 +22,7 @@ const Recomendations = ({navigation}:iRecomendations) => {
   }
 
   return (
-    <MainLayout title={'Рекомендации'} buttonBottomTitle="Отзывы и предложения" buttonAction={handleClickButton}>
+    <MainLayout title={'Рекомендации'} buttonBottomTitle="Отзывы и предложения" buttonAction={handleClickButton} >
       <ScrollView>
       <View className="pb-24">
         {data.map((e,index:number) =>

@@ -54,6 +54,7 @@ const IntervalInfo = () => {
                         onChangeText={handleChangeCatetor}
                         onSubmitEditing={handleClosePopup}
                         className="w-1/2 text-center"
+                        autoFocus={true}
                        />
                 </View>
 

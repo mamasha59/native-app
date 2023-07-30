@@ -14,7 +14,6 @@ interface iMainLayout {
 }
 
 const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLayout) => {
-  // загружаем шрифт
 
   return (
     <GradientBackground>

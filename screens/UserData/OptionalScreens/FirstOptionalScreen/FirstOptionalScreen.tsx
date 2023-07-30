@@ -23,8 +23,7 @@ const FirstOptionalScreen = ({navigation}:FirstOptionalScreen) => {
     <WelcomeLayout title="Настройки уведомлений" buttonTitle="Сохранить изменения" handleProceed={onSubmit} skip={true} skipNextScreen={skipScreen}>
      
             <View className="border-b border-[#4babc526] mb-10">
-                <Picker 
-                    
+                <Picker
                     mode="dropdown"
                     itemStyle={{fontSize:18}}
                     selectedValue={signal}

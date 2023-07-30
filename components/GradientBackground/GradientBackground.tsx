@@ -10,8 +10,8 @@ interface iGradientBackground {
 SplashScreen.preventAutoHideAsync();
 
 const GradientBackground = ({children}:iGradientBackground) => {
-      // загружаем шрифт
-  const [fontsLoader] = useFonts({
+      
+  const [fontsLoader] = useFonts({  // загружаем шрифт
     'geometria-bold' : require('../../assets/fonts/geometria-bold.ttf'),
     'geometria-regullar' : require('../../assets/fonts/geometria-regular.ttf')
     });

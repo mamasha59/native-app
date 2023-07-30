@@ -31,6 +31,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
+                            style={{fontFamily:'geometria-regullar'}}
                             inputMode="numeric"
                             placeholder="Ваш вес"
                             className="text-lg w-full text-center leading-[22px]"
@@ -41,7 +42,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     )}
                     name="weight"
                 />
-                {errors.weight && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.weight && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
 
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
@@ -49,6 +50,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
+                            style={{fontFamily:'geometria-regullar'}}
                             inputMode="numeric"
                             placeholder="Ваш рост"
                             className="text-lg w-full text-center leading-[22px]"
@@ -59,13 +61,14 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     )}
                     name="height"
                 />
-                {errors.height && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.height && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
+                            style={{fontFamily:'geometria-regullar'}}
                             inputMode="text"
                             placeholder="Ваш пол"
                             className="text-lg w-full text-center leading-[22px]"
@@ -76,13 +79,14 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     )}
                     name="sex"
                 />
-                {errors.sex && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.sex && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
+                            style={{fontFamily:'geometria-regullar'}}
                             inputMode="numeric"
                             placeholder="Ваш возраст"
                             className="text-lg w-full text-center leading-[22px]"
@@ -93,7 +97,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                     )}
                     name="age"
                 />
-                {errors.age && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.age && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
         </View>
     </WelcomeLayout>

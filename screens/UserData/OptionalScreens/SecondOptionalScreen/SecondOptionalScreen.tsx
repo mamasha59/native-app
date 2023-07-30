@@ -33,6 +33,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="numeric"
                         placeholder="Введите имя и фамилию"
                         className="text-lg w-full text-center leading-[22px]"
@@ -51,6 +52,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="email"
                         placeholder="Эл. почта"
                         className="text-lg w-full text-center leading-[22px]"
@@ -68,6 +70,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="tel"
                         placeholder="Номер телефона"
                         className="text-lg w-full text-center leading-[22px]"
@@ -88,6 +91,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="numeric"
                         placeholder="Введите имя и фамилию"
                         className="text-lg w-full text-center leading-[22px]"
@@ -105,6 +109,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="email"
                         placeholder="Эл. почта"
                         className="text-lg w-full text-center leading-[22px]"
@@ -122,6 +127,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        style={{fontFamily:'geometria-regullar'}}
                         inputMode="numeric"
                         placeholder="Когда уведомлять"
                         className="text-lg w-full text-center leading-[22px]"

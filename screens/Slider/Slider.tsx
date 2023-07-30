@@ -34,9 +34,8 @@ const Slider = ({navigation}:iSlider) => {
                 showNext={false}
                 showSkip={false}
                 imageContainerStyles={{paddingBottom:65}}
-                
                 containerStyles={{justifyContent:"flex-start",backgroundColor:'#FFFFFF'}}
-                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010'}}
+                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010',fontFamily:'geometria-regullar'}}
                 bottomBarHeight={100}
                 bottomBarColor="#FFFFFF"
                 bottomBarHighlight={false}
@@ -65,7 +64,7 @@ const Slider = ({navigation}:iSlider) => {
             
             <View className="w-full items-center mb-5">
                 <Pressable onPress={() => handleStart()} className="max-w-[300px] w-full py-[19px] bg-[#4BAAC5] rounded-[89px] items-center">
-                    <Text className="text-base leading-5 text-[#FFFFFF]">Начать пользоваться</Text>
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Начать пользоваться</Text>
                 </Pressable>
             </View>
 

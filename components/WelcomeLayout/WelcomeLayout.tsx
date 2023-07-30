@@ -10,7 +10,7 @@ interface iWelcomeLayout {
     buttonTitle: string;
     index?: number;
     skip?: boolean;
-    skipNextScreen?: (() => void | undefined);
+    skipNextScreen?: () => void;
 }
 
 const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, skipNextScreen}:iWelcomeLayout) => {
@@ -41,8 +41,8 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
             {(index || skip) && 
             <View className="w-full items-center justify-center mt-10">
                 {index 
-                ? <Text className="text-xs leading-[14px] text-[#101010] opacity-50">Шаг {index} из 3</Text>
-                : skip && <Pressable onPress={()=> skipNextScreen()}><Text className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
+                ? <Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[14px] text-[#101010] opacity-50">Шаг {index} из 3</Text>
+                : skip && <Pressable onPress={()=> skipNextScreen()}><Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
                 }
             </View>}
         </View>

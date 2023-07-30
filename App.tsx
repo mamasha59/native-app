@@ -2,7 +2,6 @@ import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Text} from 'react-native'
 import Home from './screens/Home';
 import UserData from './screens/UserData/UserData'; ///
 import NoticeNavigationScreen from './screens/NoticeAccessScreens/NoticeNavigationScreen';
@@ -28,7 +27,7 @@ export default function App() {
   return (
   <SafeAreaProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
+      <Stack.Navigator initialRouteName={!exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
 
               <Stack.Screen name='MainScreen'component={Home}/>
               <Stack.Screen name='WelcomeScreens'component={UserData}/>

@@ -1,10 +1,10 @@
 import { View } from "react-native";
-import OutSideCircle from "./OutSideCircle/OutSideCircle";
+import OutsideCircle from "./OutsideCircle/OutsideCircle";
 
 const Timer = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <OutSideCircle/>
+      <OutsideCircle/>
     </View>
   );
 };

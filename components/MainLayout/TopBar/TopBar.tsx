@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { ArrowBack, Bell } from "../../../imgs/icons";
 import { NavigationPropsStart } from "../../../App";
 
-interface iNoticeAndAccess extends NavigationPropsStart<'MainScreen'> {}
+interface iNoticeAndAccess extends NavigationPropsStart<'NoticeAccessScreens'> {}
 
 const TopBar = () => {
 // TODO СДЕЛАТЬ ТИП ДЛЯ useNavigation

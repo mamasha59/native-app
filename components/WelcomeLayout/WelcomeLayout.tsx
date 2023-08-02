@@ -42,7 +42,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
             <View className="w-full items-center justify-center mt-10">
                 {index 
                 ? <Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[14px] text-[#101010] opacity-50">Шаг {index} из 3</Text>
-                : skip && <Pressable onPress={()=> skipNextScreen()}><Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
+                : skip && <Pressable onPress={skipNextScreen}><Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[14px] text-[#4BAAC5] opacity-50">Изменить позже</Text></Pressable>
                 }
             </View>}
         </View>

@@ -32,7 +32,7 @@ const Recomendations = ({navigation}:iRecomendations) => {
               <DropDown width={10} height={10} color={'#101010'}/>      
             </View>
             <View className={`mt-3 ${activeIndex === index ? 'block' : 'hidden'}`}>
-              <Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[17px] ">{e.answer}</Text>
+              <Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[17px]">{e.answer}</Text>
             </View>
           </TouchableOpacity>
         )}

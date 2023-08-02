@@ -9,9 +9,9 @@ const NoticeAccessHomeScreen = () => {
   
         <Text style={{fontFamily:'geometria-regullar'}} className="text-[#4BAAC5] text-sm leading-4 mb-4 mt-3">Настройки уведомлений</Text>
         {/* настройки уведомлений */}
-            <SettingsNotice text="Будильник 1" title="Тип сигнала"/>
-            <SettingsNotice text="Время принять таблетку" title="Текст уведомления"/>
-            <SettingsNotice text="Заход в приложение" title="Подтверждение"/>
+            <SettingsNotice text="Будильник 1" title="Тип сигнала" goTo="TypeOfSignalScreen"/>
+            <SettingsNotice text="Время принять таблетку" title="Текст уведомления" goTo={'TextOfNotice'}/>
+            <SettingsNotice text="Заход в приложение" title="Подтверждение" goTo={'Confirmation'}/>
 
         <Text style={{fontFamily:'geometria-regullar'}} className="text-[#4BAAC5] text-sm leading-4 mb-4 mt-8">Настройки доступа</Text>
         {/* настройки доступа */}

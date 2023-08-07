@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useState } from "react";
 
-import { DropDown } from "../../../imgs/icons";
+import { DropDown } from "../../../assets/images/icons";
 import MainLayout from "../../../components/MainLayout/MainLayout";
 import data from './questions.json';
 

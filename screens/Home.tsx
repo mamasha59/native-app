@@ -1,16 +1,18 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
 import ControlCatetor from './ControlCatetor/ControlCatetor';
 import JournalScreen from './JournalScreen/JournalScreen';
-import RecomendationIcon from '../imgs/iconsComponent/RecomendationIcon';
-import JournalIcon from '../imgs/iconsComponent/JournalIcon';
-import HomeIcon from '../imgs/iconsComponent/HomeIcon';
-import ControllCatetor from '../imgs/iconsComponent/ControllCatetor';
-import ProfileIcon from '../imgs/iconsComponent/ProfileIcon';
+import RecomendationIcon from '../assets/images/iconsComponent/RecomendationIcon';
+import JournalIcon from '../assets/images/iconsComponent/JournalIcon';
+import HomeIcon from '../assets/images/iconsComponent/HomeIcon';
+import ControllCatetor from '../assets/images/iconsComponent/ControllCatetor';
+import ProfileIcon from '../assets/images/iconsComponent/ProfileIcon';
 import RecomendationsStack from './Recomendations/Recomendations.tsx';
+
 
 export type RootStackParamList = {
   Profile: undefined;
@@ -27,7 +29,7 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
-
+const Stack = createNativeStackNavigator();
 export default function Home() {
 
   return (
@@ -49,6 +51,7 @@ export default function Home() {
         },
         tabBarShowLabel: false,
       }}>
+      <Tab.Group >
       <Tab.Screen
         name='Profile'
         component={ProfileScreen}
@@ -94,6 +97,16 @@ export default function Home() {
           ),
         }}
       />
+      </Tab.Group>
+
+        {/* <Tab.Screen
+          name='NoticeAccessScreens'
+          component={NoticeNavigationScreen}
+          options={{tabBarStyle:{display:'none'}, tabBarBadgeStyle:{display:'none'}}}
+        /> */}
+            {/* <Stack.Navigator screenOptions={{headerShown:false}}>
+              <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>
+            </Stack.Navigator> */}
     </Tab.Navigator>
   );
 }

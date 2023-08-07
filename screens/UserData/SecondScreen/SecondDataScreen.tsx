@@ -2,6 +2,8 @@ import { View, Text, TextInput } from "react-native";
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
 import { NavigationPropsWelcome } from "../UserData";
+import { useAppDispatch } from "../../../store/hooks";
+import { secondDataScreen } from "../../../store/slices/createUserSlice";
 
 interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'> {} // типизация navigation
 
@@ -14,9 +16,10 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
             catetorSize: '',
         }
     })
+    const dispatch = useAppDispatch();
 
     const onSubmit = (data:any) => {
-       console.log(data);
+       dispatch(secondDataScreen(data));
        navigation.navigate('ThirdDataScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
     }
 

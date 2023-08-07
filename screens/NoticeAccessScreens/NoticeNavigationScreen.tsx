@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp, createStackNavigator } from "@react-navigation/stack";
+
 import NoticeAccessHomeScreen from "./NoticeAccessHomeScreen/NoticeAccessHomeScreen";
 import TypeOfSignalScreen from "./TypeOfSignalSreen/TypeOfSignalScreen";
 import TextOfNotice from "./TextOfNotice/TextOfNotice";
@@ -33,6 +34,7 @@ export type NoticeAndAccessScreens = {
         <Stack.Screen name='TextOfNotice'component={TextOfNotice}/>
 
         <Stack.Screen name='Confirmation'component={Confirmation}/>
+        {/* TODO сделать экраны - Доступ и Пропуск */}
       </Stack.Navigator>
     )
 }

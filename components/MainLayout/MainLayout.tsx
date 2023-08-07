@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import TopBar from "./TopBar/TopBar";
 import Button from "../Button/Button";
@@ -12,6 +13,8 @@ interface iMainLayout {
     buttonBottomTitle?: string;
     buttonAction?: () => void;
 }
+
+const Stack = createNativeStackNavigator();
 
 const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLayout) => {
 

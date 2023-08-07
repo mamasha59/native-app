@@ -4,6 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 
 import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
+import { useAppSelector } from "../../../../store/hooks";
 
 interface FirstOptionalScreen extends NavigationPropsWelcome<'FirstOptionalScreen'>{}
 
@@ -14,6 +15,9 @@ const FirstOptionalScreen = ({navigation}:FirstOptionalScreen) => {
     const onSubmit = () => { // функция при клике на кнопку 'Сохранить'
         navigation.navigate('SecondOptionalScreen');
     }
+
+    const useSeclector = useAppSelector(state => state.user);
+    console.log(useSeclector);
 
     const skipScreen = () => { // функция при клике на кнопку 'Изменить позже'
         navigation.navigate('SecondOptionalScreen');

@@ -42,19 +42,19 @@ const Slider = ({navigation}:iSlider) => {
                 pages={[
                     {
                         backgroundColor: '#ffffff',
-                        image: <Image className="max-w-[280px] flex-row justify-start w-full" source={require('../../imgs/slider/img-slide-1.png')} />,
+                        image: <Image className="max-w-[280px] flex-row justify-start w-full" source={require('../../assets/images/slider/img-slide-1.png')} />,
                         title: 'Уведомления и удобный отчет',
                         subtitle: '',
                     },
                     {
                         backgroundColor: '#fff',
-                        image: <Image className="max-w-[280px] w-full" source={require('../../imgs/slider/img-slide-2.png')} />,
+                        image: <Image className="max-w-[280px] w-full" source={require('../../assets/images/slider/img-slide-2.png')} />,
                         title: 'Контроль расхода катетеров',
                         subtitle: '',
                     },
                     {
                         backgroundColor: '#fff',
-                        image: <Image className="max-w-[280px] w-full" source={require('../../imgs/slider/img-slide-3.png')} />,
+                        image: <Image className="max-w-[280px] w-full" source={require('../../assets/images/slider/img-slide-3.png')} />,
                         title: 'Расчет интервалов катеризации',
                         subtitle: '',
                     },

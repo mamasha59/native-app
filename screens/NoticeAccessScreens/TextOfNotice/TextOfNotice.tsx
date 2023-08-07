@@ -3,7 +3,7 @@ import { useState } from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 import MainLayout from "../../../components/MainLayout/MainLayout";
-import { CheckedIcom } from "../../../imgs/icons";
+import { CheckedIcom } from "../../../assets/images/icons";
 
 const TextOfNotice = () => {
   const [chosen, setChosen] = useState(false);

@@ -4,10 +4,10 @@
     "slug": "sterilno",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/appIcon.jpeg",
+    "icon": "./assets/images/splash-screen/appIcon.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splashScreen.png",
+      "image": "./assets/images/splash-screen/splashScreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#4BAAC5"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splashScreen.png",
+        "foregroundImage": "./assets/images/splash-screen/splashScreen.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/images/appIcon.jpeg"
+      "favicon": "./assets/images/splash-screen/appIcon.jpeg"
     }
   }
 }

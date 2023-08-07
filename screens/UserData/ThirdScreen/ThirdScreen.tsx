@@ -2,6 +2,8 @@ import { View, Text, TextInput } from "react-native";
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
 import { NavigationPropsWelcome } from "../UserData";
+import { useAppDispatch } from "../../../store/hooks";
+import { thirdDataScreen } from "../../../store/slices/createUserSlice";
 
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
@@ -15,8 +17,11 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
         }
     })
 
+    const dispatch = useAppDispatch();
+
     const onSubmit = (data:any) => {
-       console.log(data);
+    //    console.log(data);
+       dispatch(thirdDataScreen(data))
        navigation.navigate('FirstOptionalScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
     }
 

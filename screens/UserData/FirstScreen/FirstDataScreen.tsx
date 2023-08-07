@@ -4,6 +4,8 @@ import { useForm, Controller } from "react-hook-form";
 
 import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
+import { useAppDispatch } from "../../../store/hooks";
+import { firstDataScreen } from "../../../store/slices/createUserSlice";
 
 interface iUserData extends NavigationPropsWelcome<'FirstDataScreen'> {}
 
@@ -16,9 +18,11 @@ const FirstDataScreen = ({navigation}:iUserData) => {
             age: ''
         }
     })
+    const dispatch = useAppDispatch();
 
     const onSubmit = (data:any) => {
-       console.log(data);
+       //console.log(data);
+       dispatch(firstDataScreen(data)) // сетим данные в сторе редакса, формируем пользователя
        navigation.navigate('SecondDataScreen'); // перенаправляем юзера на 2й скрин (инфа про катеторы и моч. пузырь)
     }
 

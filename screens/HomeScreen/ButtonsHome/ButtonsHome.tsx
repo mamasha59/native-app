@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { Drop, Graphic } from "../../../imgs/icons";
+import { Drop, Graphic } from "../../../assets/images/icons";
 import {useState} from 'react';
 import ModalLiquidAmount from "./ModalLiquidAmount/ModalLiquidAmount";
 

@@ -5,7 +5,6 @@ import { SvgComponentText } from "../Text/Text";
 const OutsideCircle = () => {
     const windowWidth = Dimensions.get('window').width;
 
-
   return (
         <View className="flex-1 min-h-[327px] min-w-[327px]  border-[#DADADA] rounded-full  my-14 relative">
           <View className="-rotate-90">

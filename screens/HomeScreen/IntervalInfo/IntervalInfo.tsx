@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, Pressable, Dimensions, TextInput } from "react-native";
-import { ClosePopup } from "../../../imgs/icons";
+import { ClosePopup } from "../../../assets/images/icons";
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

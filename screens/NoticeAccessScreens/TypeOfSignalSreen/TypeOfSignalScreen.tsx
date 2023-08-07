@@ -1,7 +1,7 @@
 import { View, Text, Dimensions } from "react-native";
 import MainLayout from "../../../components/MainLayout/MainLayout";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { CheckedIcom } from "../../../imgs/icons";
+import { CheckedIcom } from "../../../assets/images/icons";
 
 const windowWidth = Dimensions.get('window').width;
 

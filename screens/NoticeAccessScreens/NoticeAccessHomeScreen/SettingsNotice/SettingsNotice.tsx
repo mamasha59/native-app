@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import ArrowProceed from "../../../../imgs/iconsComponent/ArrowProceed";
+import ArrowProceed from "../../../../assets/images/iconsComponent/ArrowProceed";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigation } from "../../NoticeNavigationScreen";
 

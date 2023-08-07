@@ -1,7 +1,9 @@
 import { View, Text, TextInput } from "react-native";
-import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
+
+import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
+import { useAppDispatch } from "../../../../store/hooks";
 
 interface iSecondOptionalScreen extends NavigationPropsWelcome<'SecondOptionalScreen'>{}
 
@@ -11,13 +13,13 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
         defaultValues: {
             nameSurname: '',
             email: '',
-            phoeNumber: '',
+            phoneNumber: '',
             urineMeasure: ''
         }
     })
-
+    
     const onSubmit = (data:any) => {
-        console.log(data);
+        // console.log(data);
         navigation.navigate('ThirdOptionalScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
      }
 
@@ -79,9 +81,9 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                         value={value}
                     />
                 )}
-                name="phoeNumber"
+                name="phoneNumber"
             />
-            {errors.phoeNumber && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+            {errors.phoneNumber && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
             <Text className="text-[#4BAAC5] text-center text-lg leading-5 font-bold mb-10">Пропуск катетеризации</Text>

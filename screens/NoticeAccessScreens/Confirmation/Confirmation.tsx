@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import {useState} from "react";
-import { CheckedIcom } from "../../../imgs/icons";
+
+import { CheckedIcom } from "../../../assets/images/icons";
 import MainLayout from "../../../components/MainLayout/MainLayout";
 
 const Confirmation = () => {

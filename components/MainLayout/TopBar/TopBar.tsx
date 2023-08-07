@@ -1,15 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-import { ArrowBack, Bell } from "../../../imgs/icons";
-import { NavigationPropsStart } from "../../../App";
+import { ArrowBack, Bell } from "../../../assets/images/icons";
+import { NavigationPropsStart, StackNavigation } from "../../../App";
 
 interface iNoticeAndAccess extends NavigationPropsStart<'NoticeAccessScreens'> {}
 
 const TopBar = () => {
 // TODO СДЕЛАТЬ ТИП ДЛЯ useNavigation
     const route = useRoute(); // берем имена маршрутов
-    const navigation = useNavigation(); // берем навигацию, так как это лейаут то не можем через пропс скринов
+    const navigation = useNavigation<StackNavigation>(); // берем навигацию, так как это лейаут то не можем через пропс скринов
     const showLogo = route.name === 'Home';
 
     const goBack = () => { navigation.canGoBack() && navigation.goBack() } // проверяем есть ли куда назад еще идти 

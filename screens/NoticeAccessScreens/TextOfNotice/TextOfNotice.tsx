@@ -13,13 +13,13 @@ console.log(chosen);
   return (
     <MainLayout title="Текст уведомления">
       <Text
-        style={{ fontFamily: "geometria-regullar" }}
+        style={{ fontFamily: "geometria-regular" }}
         className="mt-[10px] text-[#77787B] text-sm"
       >
         Введите текст уведомления
       </Text>
       <Text
-        style={{ fontFamily: "geometria-regullar" }}
+        style={{ fontFamily: "geometria-regular" }}
         className="mt-[10px] text-[#4BAAC5] text-sm my-5"
       >
         Текст уведомления
@@ -29,7 +29,7 @@ console.log(chosen);
           size={16}
           unfillColor="#FFFFFF"
           text="Время принять таблетку"
-          textStyle={{ fontFamily: "geometria-regullar", color:'#101010', fontSize:12, lineHeight:16, textDecorationLine: 'none', paddingLeft:50}}
+          textStyle={{ fontFamily: "geometria-regular", color:'#101010', fontSize:12, lineHeight:16, textDecorationLine: 'none', paddingLeft:50}}
           innerIconStyle={{borderColor:'transparent'}}
           isChecked={chosen}
           onPress={(isChecked: boolean) => {setChosen(!isChecked)}}
@@ -49,7 +49,7 @@ console.log(chosen);
             </View>
           )}
           <Text
-            style={{ fontFamily: "geometria-regullar" }}
+            style={{ fontFamily: "geometria-regular" }}
             className="text-[#101010] text-xs"
           >
             Мама просит перезвонить
@@ -65,7 +65,7 @@ console.log(chosen);
             </View>
           )}
           <Text
-            style={{ fontFamily: "geometria-regullar" }}
+            style={{ fontFamily: "geometria-regular" }}
             className="text-[#101010] text-xs"
           >
             Пришло новое сообщене
@@ -81,7 +81,7 @@ console.log(chosen);
             </View>
           )}
           <Text
-            style={{ fontFamily: "geometria-regullar" }}
+            style={{ fontFamily: "geometria-regular" }}
             className="text-[#101010] text-xs"
           >
             Свой текст

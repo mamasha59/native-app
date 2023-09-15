@@ -63,11 +63,11 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
             <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
               {languages.map((el:iLanguage,index:number)=>
               <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
-                    <Text style={{fontFamily:'geometria-regullar'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
+                    <Text style={{fontFamily:'geometria-regular'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
               </TouchableOpacity>
               )}
               {chosenLanguage && <View className="items-center mt-32">
-                  <Text style={{fontFamily:'geometria-regullar'}}>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
+                  <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
               </View>}
             </Animated.View>
     </WelcomeLayout>

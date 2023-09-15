@@ -1,6 +1,5 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
@@ -12,7 +11,7 @@ import HomeIcon from '../assets/images/iconsComponent/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/ProfileIcon';
 import RecomendationsStack from './Recomendations/Recomendations.tsx';
-
+import { StatusBar } from 'expo-status-bar';
 
 export type RootStackParamList = {
   Profile: undefined;
@@ -29,15 +28,20 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
-const Stack = createNativeStackNavigator();
 export default function Home() {
 
   return (
     <Tab.Navigator
       initialRouteName='Home'
-      backBehavior='history'
+      backBehavior='history' 
+      safeAreaInsets={{
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      }}
       screenOptions = {{
-        headerShown:false, 
+        headerShown:false,
         tabBarActiveBackgroundColor:'#4BAAC5',  // цвет кнопки когда мы на странице
         tabBarActiveTintColor: '#ffffff', // цвет иконки когда активна color
         tabBarItemStyle: { // стили самой кнопки перехода по страницам(дом, профиль и тд.)
@@ -98,15 +102,6 @@ export default function Home() {
         }}
       />
       </Tab.Group>
-
-        {/* <Tab.Screen
-          name='NoticeAccessScreens'
-          component={NoticeNavigationScreen}
-          options={{tabBarStyle:{display:'none'}, tabBarBadgeStyle:{display:'none'}}}
-        /> */}
-            {/* <Stack.Navigator screenOptions={{headerShown:false}}>
-              <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>
-            </Stack.Navigator> */}
     </Tab.Navigator>
   );
 }

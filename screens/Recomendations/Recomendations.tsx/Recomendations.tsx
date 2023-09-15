@@ -27,12 +27,12 @@ const Recomendations = ({navigation}:iRecomendations) => {
       <View className="pb-24">
         {data.map((e,index:number) =>
           <TouchableOpacity key={index} onPress={() => handleItemClick(index)} className="relative py-[15px] pl-[15px] pr-8 mb-5 border border-[#4BAAC5] rounded-md">
-            <Text style={{fontFamily:'geometria-regullar'}} className={`${activeIndex === index ? 'text-[#4BAAC5]' : 'text-[#101010]'} text-sm leading-[17px]`}>{e.question}</Text>
+            <Text style={{fontFamily:'geometria-regular'}} className={`${activeIndex === index ? 'text-[#4BAAC5]' : 'text-[#101010]'} text-sm leading-[17px]`}>{e.question}</Text>
             <View className={`absolute right-[15px] top-[19px] ${activeIndex === index && 'rotate-180'}`}>
               <DropDown width={10} height={10} color={'#101010'}/>      
             </View>
             <View className={`mt-3 ${activeIndex === index ? 'block' : 'hidden'}`}>
-              <Text style={{fontFamily:'geometria-regullar'}} className="text-xs leading-[17px]">{e.answer}</Text>
+              <Text style={{fontFamily:'geometria-regular'}} className="text-xs leading-[17px]">{e.answer}</Text>
             </View>
           </TouchableOpacity>
         )}

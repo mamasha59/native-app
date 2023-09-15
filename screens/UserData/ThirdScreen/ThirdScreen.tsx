@@ -33,7 +33,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Количество катетеризаций"
                         className="text-lg w-full text-center leading-[22px]"
@@ -44,7 +44,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 )}
                 name="amount"
             />
-            {errors.amount && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+            {errors.amount && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
@@ -52,7 +52,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Интервалы"
                         className="text-lg w-full text-center leading-[22px]"
@@ -63,14 +63,14 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 )}
                 name="interval"
             />
-            {errors.interval && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+            {errors.interval && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="text"
                         placeholder="Использование на ночь"
                         className="text-lg w-full text-center leading-[22px]"
@@ -81,14 +81,14 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 )}
                 name="useAtNight"
             />
-            {errors.useAtNight && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+            {errors.useAtNight && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Измерение кол-ва мочи"
                         className="text-lg w-full text-center leading-[22px]"
@@ -99,7 +99,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                 )}
                 name="urineMeasure"
             />
-            {errors.urineMeasure && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+            {errors.urineMeasure && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
         </View>
     </WelcomeLayout>

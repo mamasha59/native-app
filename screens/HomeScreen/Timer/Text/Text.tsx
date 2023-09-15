@@ -1,7 +1,7 @@
 import {Svg, Circle, Text, TextPath, TSpan, G, Pattern, Rect} from 'react-native-svg';
 
 export const SvgComponentText = () => (
-  <Svg height="100%" width="100%" viewBox="0 0 300 300">
+<Svg height="100%" width="100%" viewBox="0 0 300 300">
 {/* КРУГ С DASHED ПОЛОСКИ */}
     <G id="circle">
       <Circle
@@ -11,7 +11,7 @@ export const SvgComponentText = () => (
         fill="#fefefe"
         stroke="#cec8c8"
         strokeDasharray={'1,7'}
-        strokeWidth={10}
+        strokeWidth={13}
       />
     </G>
 {/* КРУГ С ТЕКСТОМ */}

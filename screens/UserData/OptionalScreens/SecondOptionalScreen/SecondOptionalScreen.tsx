@@ -1,9 +1,8 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, FlatList } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 
 import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
-import { useAppDispatch } from "../../../../store/hooks";
 
 interface iSecondOptionalScreen extends NavigationPropsWelcome<'SecondOptionalScreen'>{}
 
@@ -30,12 +29,12 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
   return (
     <WelcomeLayout title="Доступ к журналу мочеиспускания" buttonTitle="Сохранить изменения" handleProceed={handleSubmit(onSubmit)} skip={true} skipNextScreen={skipScreen}>
         <View className="mb-[60px]">
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Введите имя и фамилию"
                         className="text-lg w-full text-center leading-[22px]"
@@ -54,7 +53,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="email"
                         placeholder="Эл. почта"
                         className="text-lg w-full text-center leading-[22px]"
@@ -72,7 +71,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="tel"
                         placeholder="Номер телефона"
                         className="text-lg w-full text-center leading-[22px]"
@@ -93,7 +92,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Введите имя и фамилию"
                         className="text-lg w-full text-center leading-[22px]"
@@ -111,7 +110,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="email"
                         placeholder="Эл. почта"
                         className="text-lg w-full text-center leading-[22px]"
@@ -129,7 +128,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         inputMode="numeric"
                         placeholder="Когда уведомлять"
                         className="text-lg w-full text-center leading-[22px]"

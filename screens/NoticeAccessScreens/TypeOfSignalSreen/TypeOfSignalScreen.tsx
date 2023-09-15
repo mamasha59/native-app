@@ -11,15 +11,15 @@ const TypeOfSignalScreen = () => {
     
   return (
     <MainLayout title="Тип сигнала" >
-      <Text style={{fontFamily:'geometria-regullar'}} className="text-sm mt-[10px] text-[#4BAAC5]">Выберите тип сигнала для уведомления</Text>
-      <Text style={{fontFamily:'geometria-regullar'}} className="text-sm mt-[10px] my-5 text-[#77787B]">Тип сигнала</Text>
+      <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] text-[#4BAAC5]">Выберите тип сигнала для уведомления</Text>
+      <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] my-5 text-[#77787B]">Тип сигнала</Text>
       <View>
         <TouchableOpacity className="min-w-[327px] border border-[#4babc543] rounded-xl py-4 pl-[71px] relative justify-center">
             <View className="absolute left-[5%]">
                 <CheckedIcom width={16} height={16}/>
             </View>
             <Text
-                style={{fontFamily:'geometria-regullar'}}
+                style={{fontFamily:'geometria-regular'}}
                 className="text-[#101010] text-xs">
                     Будильник 1 (по умолчанию)
             </Text>
@@ -29,7 +29,7 @@ const TypeOfSignalScreen = () => {
                 <CheckedIcom width={16} height={16}/>
             </View>
             <Text
-                style={{fontFamily:'geometria-regullar'}}
+                style={{fontFamily:'geometria-regular'}}
                 className="text-[#101010] text-xs">
                     Радар
             </Text> 
@@ -39,7 +39,7 @@ const TypeOfSignalScreen = () => {
                 <CheckedIcom width={16} height={16}/>
             </View>
             <Text
-                style={{fontFamily:'geometria-regullar'}}
+                style={{fontFamily:'geometria-regular'}}
                 className="text-[#101010] text-xs">
                     Звук смс
             </Text>
@@ -49,7 +49,7 @@ const TypeOfSignalScreen = () => {
                 <CheckedIcom width={16} height={16}/>
             </View>
             <Text
-                style={{fontFamily:'geometria-regullar'}}
+                style={{fontFamily:'geometria-regular'}}
                 className="text-[#101010] text-xs">
                     Вступление
             </Text>

@@ -32,7 +32,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
-                            style={{fontFamily:'geometria-regullar'}}
+                            style={{fontFamily:'geometria-regular'}}
                             inputMode="numeric"
                             placeholder="Обьем мочевого музыря"
                             className="text-lg w-full text-center leading-[22px]"
@@ -43,7 +43,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
                     )}
                     name="volume"
                 />
-                {/* {errors.volume && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>} */}
+                {/* {errors.volume && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>} */}
             </View>
 
             <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
@@ -51,7 +51,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
-                            style={{fontFamily:'geometria-regullar'}}
+                            style={{fontFamily:'geometria-regular'}}
                             inputMode="text"
                             placeholder="Тип катетера"
                             className="text-lg w-full text-center leading-[22px]"
@@ -69,7 +69,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
-                            style={{fontFamily:'geometria-regullar'}}
+                            style={{fontFamily:'geometria-regular'}}
                             inputMode="text"
                             placeholder="Размер катетера"
                             className="text-lg w-full text-center leading-[22px]"
@@ -80,7 +80,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
                     )}
                     name="catetorSize"
                 />
-                {errors.catetorSize && <Text style={{fontFamily:'geometria-regullar'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.catetorSize && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
         </View>
     </WelcomeLayout>

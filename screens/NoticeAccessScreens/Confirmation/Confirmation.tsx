@@ -11,13 +11,13 @@ const Confirmation = () => {
   return (
     <MainLayout title="Подтверждение">
     <Text
-      style={{ fontFamily: "geometria-regullar" }}
+      style={{ fontFamily: "geometria-regular" }}
       className="mt-[10px] text-[#77787B] text-sm"
     >
       Тип подтвердения катетеризации
     </Text>
     <Text
-      style={{ fontFamily: "geometria-regullar" }}
+      style={{ fontFamily: "geometria-regular" }}
       className="mt-[10px] text-[#4BAAC5] text-sm my-5"
     >
       Тип подтверждения
@@ -33,7 +33,7 @@ const Confirmation = () => {
           </View>
         )}
         <Text
-          style={{ fontFamily: "geometria-regullar" }}
+          style={{ fontFamily: "geometria-regular" }}
           className="text-[#101010] text-xs"
         >
           Заход в приложение
@@ -49,7 +49,7 @@ const Confirmation = () => {
           </View>
         )}
         <Text
-          style={{ fontFamily: "geometria-regullar" }}
+          style={{ fontFamily: "geometria-regular" }}
           className="text-[#101010] text-xs"
         >
           Нажатие кнопки “катетеризация”
@@ -65,7 +65,7 @@ const Confirmation = () => {
           </View>
         )}
         <Text
-          style={{ fontFamily: "geometria-regullar" }}
+          style={{ fontFamily: "geometria-regular" }}
           className="text-[#101010] text-xs"
         >
           Закрытие уведомления

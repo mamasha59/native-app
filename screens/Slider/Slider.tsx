@@ -35,7 +35,7 @@ const Slider = ({navigation}:iSlider) => {
                 showSkip={false}
                 imageContainerStyles={{paddingBottom:65}}
                 containerStyles={{justifyContent:"flex-start",backgroundColor:'#FFFFFF'}}
-                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010',fontFamily:'geometria-regullar'}}
+                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010',fontFamily:'geometria-regular'}}
                 bottomBarHeight={100}
                 bottomBarColor="#FFFFFF"
                 bottomBarHighlight={false}

@@ -23,11 +23,11 @@ const IntervalInfo = () => {
   }
   return (
   <View className="border-b border-[#DADADA]">
-        <Text style={{fontFamily:'geometria-regullar'}} className="text-[#77787B] text-xs">Интервал катетеризации:</Text>
+        <Text style={{fontFamily:'geometria-regular'}} className="text-[#77787B] text-xs">Интервал катетеризации:</Text>
         <View className="mt-[17px] mb-[15px]  flex-row justify-between items-center">
           <View className="text-[#101010]">
             <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-[5px]">Нелатон</Text>
-            <Text style={{fontFamily:'geometria-regullar'}} className="text-xs">каждые 4 часов</Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="text-xs">каждые 4 часов</Text>
           </View>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -41,11 +41,11 @@ const IntervalInfo = () => {
             animationType="fade">
             <Pressable onPress={(event) => event.target === event.currentTarget && setModalVisible(false)} className="justify-center px-4 flex-1 bg-[#10101035]">
               <View style={{minHeight: windowHeight * 0.3, width:windowWidth * 0.3}} className="relative min-w-[315px] mx-auto bg-[#ffff] rounded-3xl justify-center items-center">
-              <Text style={{fontFamily:'geometria-regullar'}} className="text-base leading-5 text-center mb-8">Напишите колличество новых катететров:</Text>
+              <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-5 text-center mb-8">Напишите колличество новых катететров:</Text>
                 <View className="flex-row items-center">
-                    <Text style={{fontFamily:'geometria-regullar'}} className="text-base leading-5 mr-[10px]">Колличество</Text>
+                    <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-5 mr-[10px]">Колличество</Text>
                     <TextInput
-                        style={{fontFamily:'geometria-regullar'}}
+                        style={{fontFamily:'geometria-regular'}}
                         keyboardType="numeric"
                         value={addCatetor}
                         maxLength={3}

@@ -63,7 +63,7 @@ const Slider = ({navigation}:iSlider) => {
             />
             
             <View className="w-full items-center mb-5">
-                <Pressable onPress={() => handleStart()} className="max-w-[300px] w-full py-[19px] bg-[#4BAAC5] rounded-[89px] items-center">
+                <Pressable onPress={() => handleStart()} className="max-w-[300px] w-full py-[19px] bg-main-blue rounded-[89px] items-center">
                     <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Начать пользоваться</Text>
                 </Pressable>
             </View>

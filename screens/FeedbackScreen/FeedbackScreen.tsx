@@ -12,7 +12,7 @@ const FeedbackScreen = () => {
   return (
     <MainLayout title="Отзывы и предложения" buttonBottomTitle="Отправить" buttonAction={handleSubmit}>
       <View>
-        <Text className="text-[#4BAAC5] text-sm leading-5 font-normal mb-5">Напишите пожалуйста ваши отзывы или предложение</Text>
+        <Text className="text-main-blue text-sm leading-5 font-normal mb-5">Напишите пожалуйста ваши отзывы или предложение</Text>
         <View className="min-w-[320px] min-h-[180px] border border-[#4babc558] flex-1 px-5 py-4 rounded-xl">
           <TextInput
             autoFocus={true}

@@ -66,7 +66,7 @@ const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) =
                 />
           </View>
 
-          <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="justify-end py-[19px] px-[61px] items-center bg-[#4BAAC5] rounded-[89px]">
+          <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="justify-end py-[19px] px-[61px] items-center bg-main-blue rounded-[89px]">
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Сохранить изменения</Text>
           </TouchableOpacity>
         </View>

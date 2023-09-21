@@ -10,7 +10,7 @@ const ProfileScreen = ({  }) => {
     <MainLayout title="Профиль">
           <View className="flex-row justify-between items-center mb-[15px]">
               <Text className="text-[#101010] font-normal text-xs leading-[14px]">Основные данные</Text>
-              <Text className="text-[#4BAAC5] font-normal text-xs leading-[14px] opacity-50">Изменить</Text>
+              <Text className="text-main-blue font-normal text-xs leading-[14px] opacity-50">Изменить</Text>
           </View>
           <ScrollView>
             <UserInfo/>

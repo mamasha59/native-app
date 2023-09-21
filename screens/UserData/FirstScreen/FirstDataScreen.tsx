@@ -30,7 +30,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
     <WelcomeLayout index={1} title="Введите свои данные" buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)}>
         <View className="items-center">
 
-            <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -49,7 +49,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                 {errors.weight && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
 
-            <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -67,7 +67,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                 />
                 {errors.height && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
-            <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -85,7 +85,7 @@ const FirstDataScreen = ({navigation}:iUserData) => {
                 />
                 {errors.sex && <Text style={{fontFamily:'geometria-regular'}} className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
              </View>
-            <View className="mb-10 w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (

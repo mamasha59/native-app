@@ -20,5 +20,17 @@ interface iUser {
     // nameSurname: string | null,
     // phoneNumber: string | null,
 }
+
+type iMonth = {
+    month:string,
+    index: number
+  }
+
+interface iDay {
+    dayNumber: number;
+    weekNumber: number;
+    month: iMonth;
+    year: number;
+}
     
-export {iLanguage, iUser};
+export {iLanguage, iUser, iDay, iMonth};

@@ -11,7 +11,7 @@ const Selects = () => {
         <Text className="text-[#101010] text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
         {/*  Режим катетеризации   */}
         <View className="flex-row mb-5 gap-[10px]">
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[185px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}
@@ -24,7 +24,7 @@ const Selects = () => {
                 </Picker>
             </View>
             
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[130px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[130px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}
@@ -43,7 +43,7 @@ const Selects = () => {
         {/*  Катетеризация в ночное время   */}  
         <Text className="text-[#101010] text-xs leading-[14px] mb-[10px]">Катетеризация в ночное время</Text>
         <View className="flex-row mb-5 gap-[10px]">
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[185px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}
@@ -56,7 +56,7 @@ const Selects = () => {
                 </Picker>
             </View>
             
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[130px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[130px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}
@@ -71,7 +71,7 @@ const Selects = () => {
         </View>
         {/* 2я часть селектов Катетеризация в ночное время   */} 
         <View className="flex-row mb-5 gap-[10px]">
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[185px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}
@@ -84,7 +84,7 @@ const Selects = () => {
                 </Picker>
             </View>
             
-            <View className="border border-[#4BAAC5] rounded-xl min-w-[130px] flex-1">
+            <View className="border border-main-blue rounded-xl min-w-[130px] flex-1">
                 <Picker
                     mode="dialog"
                     itemStyle={{fontSize:12}}

@@ -14,7 +14,7 @@ const ButtonsHome = () => {
             <Text style={{fontFamily:'geometria-bold'}} className="ml-4 text-[#FFFFFF] text-sm">Подтекание</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.6} className="flex-1 bg-[#4BAAC5] pl-[15px] pr-[30px] py-[8px] rounded-[89px] flex-row items-center justify-center">
+        <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.6} className="flex-1 bg-main-blue pl-[15px] pr-[30px] py-[8px] rounded-[89px] flex-row items-center justify-center">
             <Graphic width={16} height={16} color={'#fff'}/>
             <Text style={{fontFamily:'geometria-bold'}} className="ml-4 text-[#FFFFFF] text-center text-sm">Учет выпитой жидкости</Text>
         </TouchableOpacity>

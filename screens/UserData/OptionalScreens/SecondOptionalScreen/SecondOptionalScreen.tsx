@@ -48,7 +48,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -66,7 +66,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             />
             {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -85,9 +85,9 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             {errors.phoneNumber && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
-            <Text className="text-[#4BAAC5] text-center text-lg leading-5 font-bold mb-10">Пропуск катетеризации</Text>
+            <Text className="text-main-blue text-center text-lg leading-5 font-bold mb-10">Пропуск катетеризации</Text>
 
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -105,7 +105,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             />
             {errors.nameSurname && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -123,7 +123,7 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             />
             {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (

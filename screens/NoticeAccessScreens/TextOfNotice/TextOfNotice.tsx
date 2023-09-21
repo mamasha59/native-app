@@ -20,7 +20,7 @@ console.log(chosen);
       </Text>
       <Text
         style={{ fontFamily: "geometria-regular" }}
-        className="mt-[10px] text-[#4BAAC5] text-sm my-5"
+        className="mt-[10px] text-main-blue text-sm my-5"
       >
         Текст уведомления
       </Text>

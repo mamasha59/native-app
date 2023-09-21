@@ -25,7 +25,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
   return (
     <WelcomeLayout title="Настройки профиля" buttonTitle="Сохранить изменения" handleProceed={handleSubmit(onSubmit)}>
         <View className="items-center">
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -43,7 +43,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
             {errors.sex && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -60,7 +60,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
             />
             {errors.age && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -78,7 +78,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
             {errors.volume && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
 
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -95,7 +95,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
             />
             {errors.catetorType && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
-            <View className="w-full border-b border-[#4BAAC5] pb-[10px] items-center relative mb-10">
+            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -113,7 +113,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
             {errors.catetorSize && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
             <Pressable>
-                <Text className="text-[#4BAAC5] opacity-50 text-xs font-normal">Добавить катетер</Text>
+                <Text className="text-main-blue opacity-50 text-xs font-normal">Добавить катетер</Text>
             </Pressable>
         </View>
     </WelcomeLayout>

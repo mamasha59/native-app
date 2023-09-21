@@ -31,7 +31,7 @@ const IntervalInfo = () => {
           </View>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] text-[#4BAAC5]">остаток {catetorAmount} шт</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] text-main-blue">остаток {catetorAmount} шт</Text>
           </TouchableOpacity>
           {/* ПОПАП ПОПОЛНИТЬ КАТЕТОРЫ */}
           <Modal

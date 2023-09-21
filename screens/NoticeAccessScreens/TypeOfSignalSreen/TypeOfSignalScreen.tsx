@@ -11,7 +11,7 @@ const TypeOfSignalScreen = () => {
     
   return (
     <MainLayout title="Тип сигнала" >
-      <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] text-[#4BAAC5]">Выберите тип сигнала для уведомления</Text>
+      <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] text-main-blue">Выберите тип сигнала для уведомления</Text>
       <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] my-5 text-[#77787B]">Тип сигнала</Text>
       <View>
         <TouchableOpacity className="min-w-[327px] border border-[#4babc543] rounded-xl py-4 pl-[71px] relative justify-center">

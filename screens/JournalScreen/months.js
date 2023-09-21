@@ -11,4 +11,13 @@ export const months = [
     { value: 'Октябрь'},
     { value: 'Ноябрь'},
     { value: 'Декабрь'},
+];
+export const daysOfWeek = [
+    { value: 'Воскресенье', short: 'ВС'},
+    { value: 'Понедельник', short: 'ПН'},
+    { value: 'Вторник', short: 'ВТ'},
+    { value: 'Среда', short: 'СР'},
+    { value: 'Четверг', short: 'ЧТ'},
+    { value: 'Пятница', short: 'ПТ'},
+    { value: 'Суббота', short: 'СБ'},
 ]

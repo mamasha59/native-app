@@ -2,10 +2,9 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useState } from "react";
 
 import { DropDown } from "../../../assets/images/icons";
-import MainLayout from "../../../components/MainLayout/MainLayout";
 import data from './questions.json';
-
 import { NavigationPropsRecomendations } from ".";
+import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 
 interface iRecomendations extends NavigationPropsRecomendations<'Recomendations'>{}
 

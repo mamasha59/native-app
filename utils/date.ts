@@ -1,4 +1,7 @@
-export const months = [
+const day = new Date();
+const getCurrentMonth = day.getMonth(); // сегоднящний месяц
+
+ const months = [
     { value: 'Январь'},
     { value: 'Февраль'},
     { value: 'Март'},
@@ -12,7 +15,8 @@ export const months = [
     { value: 'Ноябрь'},
     { value: 'Декабрь'},
 ];
-export const daysOfWeek = [
+
+ const daysOfWeek = [
     { value: 'Воскресенье', short: 'ВС'},
     { value: 'Понедельник', short: 'ПН'},
     { value: 'Вторник', short: 'ВТ'},
@@ -21,3 +25,10 @@ export const daysOfWeek = [
     { value: 'Пятница', short: 'ПТ'},
     { value: 'Суббота', short: 'СБ'},
 ]
+
+export {
+    day, 
+    getCurrentMonth,
+    months,
+    daysOfWeek
+};

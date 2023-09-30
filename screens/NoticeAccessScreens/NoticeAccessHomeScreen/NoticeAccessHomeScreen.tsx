@@ -1,7 +1,8 @@
 import { Text } from "react-native";
-import MainLayout from "../../../components/MainLayout/MainLayout";
+
 import SettingsNotice from "./SettingsNotice/SettingsNotice";
 import SettingsAccess from "./SettingsAccess/SettingsAccess";
+import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 
 const NoticeAccessHomeScreen = () => {
   return (

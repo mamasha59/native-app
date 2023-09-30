@@ -13,7 +13,7 @@ const TopBar = ({}) => {
     const goBack = () => { navigation.canGoBack() && navigation.goBack() } // проверяем есть ли куда назад еще идти 
 
   return (
-    <View className="p-6 flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center p-6">
         {showLogo 
             ? (<Text style={{fontFamily: 'geometria-bold'}} className="text-xl flex-1 leading-7 text-[#FFFFFF]">
                 Uro<Text className="italic text-xl leading-7 font-bold">Control</Text> {/*UROCONTROL LOGO*/}

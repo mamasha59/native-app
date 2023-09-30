@@ -2,7 +2,7 @@ import { View } from "react-native";
 import  {useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 
-import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
+import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
 import { useAppSelector } from "../../../../store/hooks";
 

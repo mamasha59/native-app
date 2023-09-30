@@ -1,7 +1,7 @@
 import { View, Text, TextInput, FlatList } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 
-import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
+import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
 
 interface iSecondOptionalScreen extends NavigationPropsWelcome<'SecondOptionalScreen'>{}

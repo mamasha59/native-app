@@ -1,19 +1,29 @@
-import MainLayout from "../../components/MainLayout/MainLayout";
+import { View } from 'react-native';
+import { useState} from 'react';
+
 import IntervalInfo from "./IntervalInfo/IntervalInfo";
 import Timer from "./Timer/Timer";
-import ButtonsHome from "./ButtonsHome/ButtonsHome";
-
-import { View } from 'react-native';
+import ModalLiquidAmount from "./ModalLiquidAmount/ModalLiquidAmount";
+import DoubleButton from '../../components/DoubleButton/DoubleButton';
+import MainLayout from '../../Layouts/MainLayout/MainLayout';
 
 const HomeScreen = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const opneModal = () => setModalVisible(true);
 
   return (
     <MainLayout>
-      <View className="flex-1 justify-between h-full mb-[15px]">
+      <View className="flex-1 justify-between h-full">
         <IntervalInfo />
         <Timer />
-        <ButtonsHome />
+        <DoubleButton
+            handlePressRightButton={opneModal}
+            textOfLeftButton='Учет выделенной мочи'
+            textOfRightButton='Учет выпитой жидкости'
+            showIcon={true}
+        />
       </View>
+      <ModalLiquidAmount modalVisible={modalVisible} setModalVisible={setModalVisible}/>
     </MainLayout>
   );
 };

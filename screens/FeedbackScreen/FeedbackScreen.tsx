@@ -1,6 +1,6 @@
 import { View, Text, TextInput } from "react-native";
-import MainLayout from "../../components/MainLayout/MainLayout";
 import { useState } from "react";
+import MainLayout from '../../Layouts/MainLayout/MainLayout';
 
 const FeedbackScreen = () => {
   const [text, setText] = useState('');

@@ -1,14 +1,11 @@
-import { View, Text, Dimensions } from "react-native";
-import MainLayout from "../../../components/MainLayout/MainLayout";
+import { View, Text } from "react-native";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { CheckedIcom } from "../../../assets/images/icons";
-
-const windowWidth = Dimensions.get('window').width;
+import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 
 const TypeOfSignalScreen = () => {
 
-    const padding = windowWidth * 0.2;
-    
   return (
     <MainLayout title="Тип сигнала" >
       <Text style={{fontFamily:'geometria-regular'}} className="text-sm mt-[10px] text-main-blue">Выберите тип сигнала для уведомления</Text>

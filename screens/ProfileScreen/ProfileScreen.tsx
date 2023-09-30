@@ -1,8 +1,8 @@
 import { View, Text, ScrollView } from "react-native";
-import MainLayout from "../../components/MainLayout/MainLayout";
 
 import Selects from "./Selects/Selects";
 import UserInfo from "./UserInfo/UserInfo";
+import MainLayout from '../../Layouts/MainLayout/MainLayout';
 
 const ProfileScreen = ({  }) => {
 

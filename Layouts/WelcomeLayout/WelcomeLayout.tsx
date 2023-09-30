@@ -15,10 +15,9 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
 
   return (
     <GradientBackground> 
-    {/* исправить border */}
     <View className="items-center">
-        <Text style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px] text-[#FFFFFF] my-[50px] border-transparent border">
-            Uro<Text className="italic text-[40px] leading-[48px]">Control</Text>
+        <Text style={{fontFamily:'geometria-bold'}} className="w-full text-center text-[40px] leading-[48px] text-[#FFFFFF] my-[50px]">
+            Uro<Text className="italic">Control</Text>
         </Text>
     </View>
 

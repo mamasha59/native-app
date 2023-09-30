@@ -1,8 +1,8 @@
 import { Text, TouchableOpacity, Animated, View } from "react-native";
 import { useState, useRef } from "react";
 
-import WelcomeLayout from "../../components/WelcomeLayout/WelcomeLayout";
-import { iLanguage } from "../../Types";
+import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
+import { iLanguage } from "../../Types/index";
 import { NavigationPropsWelcome } from "../UserData/UserData";
 
 interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}
@@ -67,7 +67,7 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
               </TouchableOpacity>
               )}
               {chosenLanguage && <View className="items-center mt-32">
-                  <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-[#9966AA]">{chosenLanguage}</Text></Text>
+                  <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-purple-button">{chosenLanguage}</Text></Text>
               </View>}
             </Animated.View>
     </WelcomeLayout>

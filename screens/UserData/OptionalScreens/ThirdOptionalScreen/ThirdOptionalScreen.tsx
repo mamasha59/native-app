@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Pressable } from "react-native";
-import WelcomeLayout from "../../../../components/WelcomeLayout/WelcomeLayout";
+import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { Controller, useForm } from "react-hook-form";
 import { NavigationPropsWelcome } from "../../UserData";
 

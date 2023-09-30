@@ -1,9 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 
-import MainLayout from "../../../components/MainLayout/MainLayout";
 import { CheckedIcom } from "../../../assets/images/icons";
+import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 
 const TextOfNotice = () => {
   const [chosen, setChosen] = useState(false);

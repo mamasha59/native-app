@@ -11,7 +11,6 @@ import HomeIcon from '../assets/images/iconsComponent/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/ProfileIcon';
 import RecomendationsStack from './Recomendations/Recomendations.tsx';
-import { StatusBar } from 'expo-status-bar';
 
 export type RootStackParamList = {
   Profile: undefined;

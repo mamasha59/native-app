@@ -12,7 +12,7 @@ import UserData from './screens/UserData/UserData';
 import NoticeNavigationScreen from './screens/NoticeAccessScreens/NoticeNavigationScreen';
 import { store } from './store/store';
 import { StatusBar } from 'expo-status-bar';
-import GradientBackground from './components/GradientBackground/GradientBackground';
+import GradientBackground from './Layouts/GradientBackground/GradientBackground';
 
 export type RootStacNativeParamList = {
   WelcomeScreens: undefined;

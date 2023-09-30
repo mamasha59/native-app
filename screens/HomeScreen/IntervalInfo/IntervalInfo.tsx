@@ -9,7 +9,7 @@ const IntervalInfo = () => {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [addCatetor, setAddCatetor] = useState<string>('');
-  const [catetorAmount, setCatetorAmount] = useState<number>(180);
+  const [catetorAmount, setCatetorAmount] = useState<number>(0);
 
   const handleChangeCatetor = (value:string) => {
     setAddCatetor(value);
@@ -31,7 +31,7 @@ const IntervalInfo = () => {
           </View>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] text-main-blue">остаток {catetorAmount} шт</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] text-main-blue">{catetorAmount <= 0 ? 'Введите кол-во катеторов' : `остаток ${catetorAmount} шт `}</Text>
           </TouchableOpacity>
           {/* ПОПАП ПОПОЛНИТЬ КАТЕТОРЫ */}
           <Modal

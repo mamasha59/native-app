@@ -2,7 +2,7 @@ import { View, Text, TextInput } from "react-native";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
-import WelcomeLayout from "../../../components/WelcomeLayout/WelcomeLayout";
+import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
 import { firstDataScreen } from "../../../store/slices/createUserSlice";

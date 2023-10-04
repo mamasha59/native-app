@@ -13,7 +13,7 @@ console.log(chosen);
     <MainLayout title="Текст уведомления">
       <Text
         style={{ fontFamily: "geometria-regular" }}
-        className="mt-[10px] text-[#77787B] text-sm"
+        className="mt-[10px] text-grey text-sm"
       >
         Введите текст уведомления
       </Text>

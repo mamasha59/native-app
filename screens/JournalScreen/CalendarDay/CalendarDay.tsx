@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity } from "react-native";
 
-import { iDay } from "../../Types/index";
-import { daysOfWeek } from "../../utils/date";
+import { iDay } from "../../../Types/index";
+import { daysOfWeek } from "../../../utils/date";
 
 type iCalendarDay = {e: iDay}
 

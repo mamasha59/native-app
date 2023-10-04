@@ -41,9 +41,7 @@ export default function App() {
     });
     
   const onLayoutRootView = useCallback(async () => { // работа загрузочного экрана
-    if (fontsLoader) {
-      await SplashScreen.hideAsync();
-      }
+    if (fontsLoader) await SplashScreen.hideAsync();
     }, [fontsLoader]);
 
     if (!fontsLoader) return null;

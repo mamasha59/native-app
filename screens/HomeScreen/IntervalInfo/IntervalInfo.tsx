@@ -1,69 +1,58 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Pressable, Dimensions, TextInput } from "react-native";
-import { ClosePopup } from "../../../assets/images/icons";
-
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
+import { View, Text, TouchableOpacity} from "react-native";
+import ControllCatetorColorful from "../../../assets/images/iconsComponent/ControllCatetorColorful";
+import ModalWindow from "../../../components/Modal/Modal";
 
 const IntervalInfo = () => {
 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [addCatetor, setAddCatetor] = useState<string>('');
-  const [catetorAmount, setCatetorAmount] = useState<number>(0);
+  const [modalVisible, setModalVisible] = useState<boolean>(false); // состояние попапа
+  const [savedValue, setSavedValue] = useState<string>(''); // сохраняем введенное значение после очистки инпута
+  const [inputValue, setInputValue] = useState<string>(''); // значение инпута
 
   const handleChangeCatetor = (value:string) => {
-    setAddCatetor(value);
-    if(value.length > 0){
-      setCatetorAmount(catetorAmount + +value) 
-    }
+     // Используем регулярное выражение для удаления всех символов, кроме цифр
+      const numericValue = value.replace(/\D/g, ''); // \D соответствует всем не-цифровым символам
+      setInputValue(numericValue);
   }
-  const handleClosePopup = () => {
-    setModalVisible(!modalVisible);
-    setAddCatetor('')
-  }
+
+  const handleClosePopup = () => { // закрыть попап
+    setSavedValue(inputValue);
+    setModalVisible(false);
+    setSavedValue(() => {
+     const newValue = Number(savedValue) + Number(inputValue);
+     return newValue.toString();
+    })
+    setInputValue('');
+  };
+
   return (
   <View className="border-b border-[#DADADA]">
-        <Text style={{fontFamily:'geometria-regular'}} className="text-[#77787B] text-xs">Интервал катетеризации:</Text>
-        <View className="mt-[17px] mb-[15px]  flex-row justify-between items-center">
-          <View className="text-[#101010]">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-[5px]">Нелатон</Text>
-            <Text style={{fontFamily:'geometria-regular'}} className="text-xs">каждые 4 часов</Text>
+        <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации:</Text>
+        <View className="mt-[17px] mb-[15px] flex-row justify-between items-center">
+
+          <View className="flex-row">
+            <View className="mr-[14px]">
+              <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-[5px] text-black">Нелатон</Text>
+              <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">каждые 4 часов</Text>
+            </View>
+            <View className="border border-[#4babc550] rounded-full items-center justify-center flex-1 max-w-[44px] max-h-[44px]">
+              <ControllCatetorColorful/>
+            </View>
           </View>
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] text-main-blue">{catetorAmount <= 0 ? 'Введите кол-во катеторов' : `остаток ${catetorAmount} шт `}</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] max-w-[200px] text-center text-main-blue">
+              {+savedValue <= 0 ? 'Введите кол-во катеторов' : `остаток ${savedValue} шт `}
+            </Text>
           </TouchableOpacity>
           {/* ПОПАП ПОПОЛНИТЬ КАТЕТОРЫ */}
-          <Modal
-            transparent={true}
+          <ModalWindow
             visible={modalVisible}
-            onRequestClose={() => {setModalVisible(!modalVisible)}}
-            animationType="fade">
-            <Pressable onPress={(event) => event.target === event.currentTarget && setModalVisible(false)} className="justify-center px-4 flex-1 bg-[#10101035]">
-              <View style={{minHeight: windowHeight * 0.3, width:windowWidth * 0.3}} className="relative min-w-[315px] mx-auto bg-[#ffff] rounded-3xl justify-center items-center">
-              <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-5 text-center mb-8">Напишите колличество новых катететров:</Text>
-                <View className="flex-row items-center">
-                    <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-5 mr-[10px]">Колличество</Text>
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        keyboardType="numeric"
-                        value={addCatetor}
-                        maxLength={3}
-                        placeholder="нажмите для ввода"
-                        underlineColorAndroid={'#DADADA'}
-                        onChangeText={handleChangeCatetor}
-                        onSubmitEditing={handleClosePopup}
-                        className="w-1/2 text-center"
-                        autoFocus={true}
-                       />
-                </View>
-
-                <TouchableOpacity onPress={handleClosePopup} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
-                  <ClosePopup width={15} height={15}/>
-                </TouchableOpacity>
-              </View>
-            </Pressable>
-          </Modal>
+            onChangeText={handleChangeCatetor}
+            setModalVisible={setModalVisible}
+            value={inputValue}
+            closePopup={handleClosePopup}
+           />
         </View>
   </View>
   );

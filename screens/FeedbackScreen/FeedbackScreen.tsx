@@ -23,7 +23,6 @@ const FeedbackScreen = () => {
             onChangeText={setText}
           />
         </View>
-
     </View>
     </MainLayout>
   );

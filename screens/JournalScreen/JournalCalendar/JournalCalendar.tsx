@@ -1,9 +1,10 @@
 import { ScrollView, RefreshControl } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
-import CalendarDay from "../CalendarDay/CalendarDay";
-import { iDay, iMonth } from "../../Types/index";
 
-import { day, getCurrentMonth, months } from '../../utils/date';
+import CalendarDay from "../CalendarDay/CalendarDay";
+import { iDay, iMonth } from "../../../Types/index";
+
+import { day, getCurrentMonth, months } from '../../../utils/date';
 
 interface iJournalCalendar {
     setSelectedMonth: ({month}:iMonth) => void;

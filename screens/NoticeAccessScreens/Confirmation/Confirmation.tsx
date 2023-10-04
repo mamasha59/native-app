@@ -12,9 +12,9 @@ const Confirmation = () => {
     <MainLayout title="Подтверждение">
     <Text
       style={{ fontFamily: "geometria-regular" }}
-      className="mt-[10px] text-[#77787B] text-sm"
+      className="mt-[10px] text-grey text-sm"
     >
-      Тип подтвердения катетеризации
+      Тип подтверждения катетеризации
     </Text>
     <Text
       style={{ fontFamily: "geometria-regular" }}

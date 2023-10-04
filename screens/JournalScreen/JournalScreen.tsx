@@ -4,9 +4,9 @@ import { Picker } from "@react-native-picker/picker";
 
 import { DropDown } from "../../assets/images/icons";
 
-import JournalRecord from "../../components/JournalRecord/JournalRecord";
+import JournalRecord from "./JournalRecord/JournalRecord";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
-import JournalCalendar from "../../components/JournalCalendar/JournalCalendar";
+import JournalCalendar from "./JournalCalendar/JournalCalendar";
 import { getCurrentMonth, months } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iMonth } from "../../Types";

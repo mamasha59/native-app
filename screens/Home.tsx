@@ -3,18 +3,18 @@ import { RouteProp } from '@react-navigation/native';
 
 import HomeScreen from './HomeScreen/HomeScreen';
 import ProfileScreen from './ProfileScreen/ProfileScreen';
-import ControlCatetor from './ControlCatetor/ControlCatetor';
+import ControlСatheter from './ControlCatheter/ControlСatheter';
 import JournalScreen from './JournalScreen/JournalScreen';
-import RecomendationIcon from '../assets/images/iconsComponent/RecomendationIcon';
-import JournalIcon from '../assets/images/iconsComponent/JournalIcon';
-import HomeIcon from '../assets/images/iconsComponent/HomeIcon';
-import ControllCatetor from '../assets/images/iconsComponent/ControllCatetor';
-import ProfileIcon from '../assets/images/iconsComponent/ProfileIcon';
+import RecomendationIcon from '../assets/images/iconsComponent/TabMenuIcons/RecomendationIcon';
+import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIcon';
+import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
+import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
+import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import RecomendationsStack from './Recomendations/Recomendations.tsx';
 
 export type RootStackParamList = {
   Profile: undefined;
-  ControlCatetor: undefined;
+  ControlСatheter: undefined;
   Home: undefined;
   JournalScreen: undefined;
   RecomendationsStack: undefined;
@@ -65,8 +65,8 @@ export default function Home() {
         }}
       />
       <Tab.Screen
-        name='ControlCatetor'
-        component={ControlCatetor}
+        name='ControlСatheter'
+        component={ControlСatheter}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ControllCatetor width={size} color={color}/>

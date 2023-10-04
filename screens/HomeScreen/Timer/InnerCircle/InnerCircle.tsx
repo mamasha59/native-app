@@ -78,7 +78,7 @@ const InnerCircle = () => {
 
                 return (
                     <>
-                    <Text style={{fontFamily:'geometria-regular'}} ref={timeRef} className="text-xs text-[#77787B]">До катетеризации:</Text>
+                    <Text style={{fontFamily:'geometria-regular'}} ref={timeRef} className="text-xs text-grey">До катетеризации:</Text>
                     <Text style={{fontFamily:'geometria-bold'}} ref={timeRef} className="text-[40px] leading-[48px] my-[15px]">{timeString}</Text>
                     <TouchableOpacity className="flex-grow-0 min-h-[44px] min-w-[141px]" onPress={hanldePressButton} activeOpacity={0.7}>
                         <LinearGradient

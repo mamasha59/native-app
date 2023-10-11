@@ -1,76 +1,60 @@
-import { View, Text, Pressable, Image } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Onboarding from "react-native-onboarding-swiper";
+import { View, Text, Pressable, FlatList, Animated } from "react-native";
+import { useRef, useState } from "react";
 
-import SliderDot from "./SliderDot/SliderDot";
 import { NavigationPropsWelcome } from "../UserData/UserData";
+import OnBoardingItem from "./OnboardingItem/OnboardingItem";
+import sliders from "./sliders";
+import GradientBackground from "../../Layouts/GradientBackground/GradientBackground";
+import SliderDot from "./SliderDot/SliderDot";
+import LogoTop from "../../Layouts/WelcomeLayout/LogoTop/LogoTop";
 
 interface iSlider extends NavigationPropsWelcome<'SliderScreen'> {}
 
 const Slider = ({navigation}:iSlider) => {
+    const scrollX = useRef(new Animated.Value(0)).current;
 
-    const handleStart = () => {
-        navigation.navigate("MainScreen");
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const viewableItemsChanged = useRef(({ viewableItems }:any) => {
+        setCurrentIndex(viewableItems[0].index)
+    }).current;
+
+    const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50}).current;
+
+    const slidesRef = useRef(null);
+
+    const handleStart = () => { // перенаправляем пользователя на следующий экран
+        navigation.navigate("FirstDataScreen");
     }
 
   return (
-    <LinearGradient
-        colors={['#4BAAC5', '#7076B0']}
-        start={[0.001, 0.495]}
-        end={[1, 0.505]}
-        style={{ flex: 1 }}
-    >
-    <SafeAreaView className="flex-1">
-        <View className="items-center">
-            <Text className="text-[40px] leading-[48px] font-bold text-[#FFFFFF] my-[50px]">
-                Uro<Text className="italic text-[40px] leading-[48px] font-bold">Control</Text>
-            </Text>
-        </View>
-        <View className="bg-[#FFFFFF] flex-1 h-full rounded-t-2xl justify-center pt-[90px]">
-
-            <Onboarding
-                DotComponent={SliderDot}
-                showNext={false}
-                showSkip={false}
-                imageContainerStyles={{paddingBottom:65}}
-                containerStyles={{justifyContent:"flex-start",backgroundColor:'#FFFFFF'}}
-                titleStyles={{fontSize:16, lineHeight:20, fontWeight:'400', color:'#101010',fontFamily:'geometria-regular'}}
-                bottomBarHeight={100}
-                bottomBarColor="#FFFFFF"
-                bottomBarHighlight={false}
-                pages={[
-                    {
-                        backgroundColor: '#ffffff',
-                        image: <Image className="max-w-[280px] flex-row justify-start w-full" source={require('../../assets/images/slider/img-slide-1.png')} />,
-                        title: 'Уведомления и удобный отчет',
-                        subtitle: '',
-                    },
-                    {
-                        backgroundColor: '#fff',
-                        image: <Image className="max-w-[280px] w-full" source={require('../../assets/images/slider/img-slide-2.png')} />,
-                        title: 'Контроль расхода катетеров',
-                        subtitle: '',
-                    },
-                    {
-                        backgroundColor: '#fff',
-                        image: <Image className="max-w-[280px] w-full" source={require('../../assets/images/slider/img-slide-3.png')} />,
-                        title: 'Расчет интервалов катеризации',
-                        subtitle: '',
-                    },
-                  
-                ]}
+    <GradientBackground>
+        <LogoTop/>
+        <View className="flex-1 bg-[#FFFFFF] items-center justify-center rounded-t-2xl pt-20">
+            <FlatList
+                data={sliders}
+                renderItem={({item}) => <OnBoardingItem item={item}/>}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+                bounces={false}
+                onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX }}}], {
+                    useNativeDriver: false,
+                })}
+                onViewableItemsChanged={viewableItemsChanged}
+                scrollEventThrottle={32}
+                viewabilityConfig={viewConfig}
+                ref={slidesRef}
+                keyExtractor={(item) => item.id}
             />
-            
+            <SliderDot data={sliders} scrollX={scrollX}/>
             <View className="w-full items-center mb-5">
                 <Pressable onPress={() => handleStart()} className="max-w-[300px] w-full py-[19px] bg-main-blue rounded-[89px] items-center">
                     <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Начать пользоваться</Text>
                 </Pressable>
             </View>
-
         </View>
-    </SafeAreaView>
-    </LinearGradient>
+    </GradientBackground>
   );
 };
 

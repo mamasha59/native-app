@@ -47,7 +47,7 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
     const handleBegin = () => { // начать пользоваться
         if(chosenLanguage.length > 0){
             // перенаправляем пользователя на следующую страницу заполнений данных
-            navigation.navigate('FirstDataScreen');
+            navigation.navigate('SliderScreen');
             //TODO - менять язык, сетить язык в сторе
         }else{
            startShakeAnimation()
@@ -60,16 +60,17 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
 
   return (
     <WelcomeLayout title={'Выберите язык'} buttonTitle="Начать пользоваться" handleProceed={handleBegin}>
-            <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
-              {languages.map((el:iLanguage,index:number)=>
-              <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
-                    <Text style={{fontFamily:'geometria-regular'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
-              </TouchableOpacity>
-              )}
-              {chosenLanguage && <View className="items-center mt-32">
-                  <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-purple-button">{chosenLanguage}</Text></Text>
-              </View>}
-            </Animated.View>
+      <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
+        {languages.map((el:iLanguage,index:number)=>
+        <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
+              <Text style={{fontFamily:'geometria-regular'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
+        </TouchableOpacity>
+        )}
+        {chosenLanguage && 
+        <View className="items-center mt-24">
+            <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-purple-button">{chosenLanguage}</Text></Text>
+        </View>}
+      </Animated.View>
     </WelcomeLayout>
   );
 };

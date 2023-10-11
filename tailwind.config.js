@@ -12,7 +12,8 @@ module.exports = {
       'purple-button' : '#9966AA',
       'black': '#101010',
       'grey': '#77787B',
-      'border-color': '#4babc563'
+      'border-color': '#4babc563',
+      'error': '#d63031',
     }
   },
   plugins: [],

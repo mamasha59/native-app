@@ -1,12 +1,14 @@
 import { StackNavigationProp, createStackNavigator } from "@react-navigation/stack";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 
-import FirstDataScreen from "./FirstScreen/FirstDataScreen";
-import SecondDataScreen from "./SecondScreen/SecondDataScreen";
-import ThirdDataScreen from "./ThirdScreen/ThirdScreen";
+import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
+import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
+import ThirdDataScreen from "./ThirdDataScreen/ThirdDataScreen";
+
 import FirstOptionalScreen from "./OptionalScreens/FirstOptionalScreen/FirstOptionalScreen";
 import SecondOptionalScreen from "./OptionalScreens/SecondOptionalScreen/SecondOptionalScreen";
 import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOptionalScreen";
+
 import { RootStacNativeParamList } from "../../App";
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
 import Slider from "../Slider/Slider";
@@ -39,6 +41,8 @@ const UserData = () => {
     <Stack.Navigator initialRouteName="LanguageScreen" screenOptions={{headerShown:false}}>
         <Stack.Screen name="LanguageScreen" component={LanguageScreen}/>
 
+        <Stack.Screen name='SliderScreen'component={Slider}/>
+
         <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
@@ -47,7 +51,6 @@ const UserData = () => {
         <Stack.Screen name="SecondOptionalScreen" component={SecondOptionalScreen}/>
         <Stack.Screen name="ThirdOptionalScreen" component={ThirdOptionalScreen}/>
 
-        <Stack.Screen name='SliderScreen'component={Slider}/>
     </Stack.Navigator>
   );
 };

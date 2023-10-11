@@ -53,7 +53,7 @@ export default function App() {
         <SafeAreaView className="flex-1 h-full">
         <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
             <NavigationContainer fallback={'loading'}>
-              <Stack.Navigator initialRouteName={!exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
+              <Stack.Navigator initialRouteName={exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
                 <Stack.Screen name='MainScreen'component={Home}/>
                 <Stack.Screen name='WelcomeScreens'component={UserData}/>
                 <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>

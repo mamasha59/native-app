@@ -1,5 +1,6 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import GradientBackground from "../GradientBackground/GradientBackground";
+import LogoTop from "./LogoTop/LogoTop";
 
 interface iWelcomeLayout {
     children: React.ReactNode;
@@ -15,20 +16,14 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
 
   return (
     <GradientBackground> 
-    <View className="items-center">
-        <Text style={{fontFamily:'geometria-bold'}} className="w-full text-center text-[40px] leading-[48px] text-[#FFFFFF] my-[50px]">
-            Uro<Text className="italic">Control</Text>
-        </Text>
-    </View>
-
-    <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl pt-[60px] px-[38px] h-full justify-between items-center">
+    <LogoTop/>
+    <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl pt-[60px] px-[38px] h-full justify-between items-center relative">
         <ScrollView className="flex-1 w-full">
             <View className="w-full">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-main-blue text-center text-lg leading-5 mb-10">{title}</Text>
                 {children}
             </View>
         </ScrollView>
-
         <View className="w-full items-center mb-5">
             <Pressable onPress={handleProceed} className="max-w-[300px] w-full py-[19px] bg-main-blue rounded-[89px] items-center">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">{buttonTitle}</Text>

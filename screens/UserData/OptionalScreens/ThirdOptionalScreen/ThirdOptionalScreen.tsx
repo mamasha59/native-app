@@ -19,7 +19,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
 
     const onSubmit = (data:any) => {
         console.log(data);
-        navigation.navigate('SliderScreen'); // перенаправляем юзера на слайдер
+        navigation.navigate('MainScreen'); // перенаправляем юзера на слайдер
      }
 
   return (
@@ -93,7 +93,7 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
                 )}
                 name="catetorType"
             />
-            {errors.catetorType && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                {errors.catetorType && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
             </View>
             <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
             <Controller

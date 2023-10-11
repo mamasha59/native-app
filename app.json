@@ -1,30 +1,44 @@
 {
   "expo": {
-    "name": "sterilno",
-    "slug": "sterilno",
+    "name": "uro-control",
+    "slug": "sergeitest",
     "version": "1.0.0",
+    "owner": "zinaidamama",
     "orientation": "portrait",
-    "icon": "./assets/images/splash-screen/appIcon.jpeg",
+    "icon": "./assets/images/splash-screen/appIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash-screen/splashScreen.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#4BAAC5"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "urocontrol.sergeikuleshov"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/splash-screen/splashScreen.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "urocontrol.sergeikuleshov"
     },
     "web": {
       "favicon": "./assets/images/splash-screen/appIcon.jpeg"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fc73b2e7-9ffe-4f24-aff0-65b6aaebbc20"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/fc73b2e7-9ffe-4f24-aff0-65b6aaebbc20"
     }
   }
 }

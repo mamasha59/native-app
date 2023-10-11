@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, } from "react-native";
 
 import TopBar from "./TopBar/TopBar";
 import GradientBackground from "../../Layouts/GradientBackground/GradientBackground";

@@ -1,20 +1,22 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
-import { firstDataScreen } from "../../../store/slices/createUserSlice";
-import ModalSelect from "../../../components/ModalSelect/ModalSelect";
+import { changeSex, firstDataScreen } from "../../../store/slices/createUserSlice";
 import InputData from "../../../components/InputData/InputData";
+import InpuDataModalSelect from "../../../components/InpuDataModalSelect/InpuDataModalSelect";
+import { Keyboard } from "../../../utils/enums";
 
 interface iUserData extends NavigationPropsWelcome<'FirstDataScreen'> {}
 
-const FirstDataScreen = ({navigation}:iUserData) => {
+const FirstDataScreen = ({navigation, route}:iUserData) => {
     const dispatch = useAppDispatch();
-    const [openModal, setOpenModal] = useState<boolean>(false);
-    const [selectSex, setSelectSex] = useState<string>('');
+    const [openModalSelectSex, setOpenModalSelectSex] = useState<boolean>(false);
+
+    const fromLastScreenSex = route.params && route.params.cameFrom === 'ThirdOptionalScreen-sex';
 
     const { control, handleSubmit, formState: { errors }, setValue, watch, } = useForm({
         defaultValues: {
@@ -30,39 +32,70 @@ const FirstDataScreen = ({navigation}:iUserData) => {
         if(!inputsValue.sex){
             Alert.alert('Выберите пол!');
             return;
-        }
+        }        
        dispatch(firstDataScreen(data)) // сетим данные в сторе редакса, формируем пользователя
-       navigation.navigate('SecondDataScreen'); // перенаправляем юзера на 2й скрин (инфа про катеторы и моч. пузырь)
+       navigation.navigate('SecondDataScreen', {cameFrom:''}); // перенаправляем юзера на 2й скрин (инфа про катеторы и моч. пузырь)
     }
 
     const onSelectSexPress = (sex:string) => {
-        setSelectSex(sex);
         setValue('sex', sex); // записываем значение пола из попапа
-        setOpenModal(!openModal);
+        if(fromLastScreenSex){
+            dispatch(changeSex({sex:sex}))
+            navigation.navigate('ThirdOptionalScreen');
+        }
+        setOpenModalSelectSex(!openModalSelectSex);
     }
     
   return (
-    <WelcomeLayout index={1} title="Введите свои данные" buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)}>
+    <WelcomeLayout index={1} title="Введите свои данные" showButton={fromLastScreenSex} buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)}>
         <View className="items-center">
-            <InputData control={control} errors={errors.weight} inputsValue={inputsValue.weight} placeholder="Ваш вес" name={"weight"}/>
-            <InputData control={control} errors={errors.height} inputsValue={inputsValue.height} placeholder="Ваш рост" name={"height"}/>
-            {/* попап выбора пола */}
-            <>
-                <TouchableOpacity onPress={() => setOpenModal(!openModal)} className="w-full text-center mb-10 border-b border-main-blue pb-[10px] items-center">
-                    <Text style={{fontFamily:'geometria-regular'}} className={`${inputsValue.sex ? 'text-xs absolute left-0 -top-5' : 'text-lg leading-[22px]'} opacity-60`}>Ваш пол*</Text>
-                    {inputsValue.sex && <Text style={{fontFamily:'geometria-regular'}} className="text-lg leading-[22px]">{selectSex}</Text>}
-                </TouchableOpacity>
-                <ModalSelect
-                    title="Выберите ваш пол"
-                    options={['Женский', 'Мужской', 'Мальчик', 'Девочка']}
-                    key={'SelectSex'}
-                    onItemPress={onSelectSexPress}
-                    openModal={openModal}
-                    setOpenModal={() => setOpenModal(!openModal)}
-                />
-            </>
-            {/* ================ */}
-            <InputData control={control} errors={errors.age} inputsValue={inputsValue.age} placeholder="Ваш возраст" name={"age"}/>
+            <View className={`flex-1 w-full ${fromLastScreenSex && 'opacity-50'}`}>
+                <InputData
+                    canEdite={!fromLastScreenSex}
+                    key={"weight"}
+                    control={control}
+                    errors={errors.weight}
+                    inputsValue={inputsValue.weight}
+                    placeholder="Ваш вес"
+                    name={"weight"}
+                    inputMode={Keyboard.Numeric}
+                    maxLength={3}
+                    />
+            </View>
+           <View className={`flex-1 w-full ${fromLastScreenSex && 'opacity-50'}`}>
+                <InputData
+                    canEdite={!fromLastScreenSex}
+                    key={"height"}
+                    control={control}
+                    errors={errors.height}
+                    inputsValue={inputsValue.height}
+                    placeholder="Ваш рост"
+                    name={"height"}
+                    inputMode={Keyboard.Numeric}
+                    maxLength={3}
+                    />
+           </View>
+            <InpuDataModalSelect
+                inputValue={inputsValue.sex}
+                onItemPress={onSelectSexPress}
+                openModal={openModalSelectSex}
+                options={['Женский', 'Мужской', 'Мальчик', 'Девочка']}
+                setOpenModal={setOpenModalSelectSex}
+                title={'Ваш пол*'}
+                key={inputsValue.sex}
+            />
+            <View className={`flex-1 w-full ${fromLastScreenSex && 'opacity-50'}`}>
+                <InputData
+                    canEdite={!fromLastScreenSex}
+                    control={control}
+                    errors={errors.age}
+                    inputsValue={inputsValue.age}
+                    placeholder="Ваш возраст"
+                    name={"age"}
+                    inputMode={Keyboard.Numeric}
+                    maxLength={3}
+                    />
+            </View>
         </View>
     </WelcomeLayout>
   );

@@ -3,20 +3,29 @@ import { Controller } from "react-hook-form";
 import { useEffect, useState} from 'react';
 
 import InputError from "../InputError/InputError";
+import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
+import { Keyboard } from "../../utils/enums";
+
+
 
 interface iInputData{
     control: any;
     inputsValue: any;
-    errors: any;
+    errors?: any;
     placeholder: string; 
     name: string; // имя инпута
     showPrompt?: boolean; // показывать подсказку к инпуту или нет
     textPrompt?: string; // текст подсказки
+    isRequired?: boolean;
+    canEdite?:boolean;
+    maxLength: number;
+    inputMode: Keyboard;
 }
 
-const InputData = ({control, inputsValue, errors, placeholder, name, showPrompt, textPrompt}:iInputData) => {
+const InputData = (props:iInputData) => {
+    const {control, inputsValue, errors, placeholder, name, showPrompt, textPrompt, canEdite, maxLength, inputMode, isRequired} = props;
     const [prompt, setPrompt] = useState<boolean>(false); // состояние показывать подсказку к инпуту или нет
-
+   
     useEffect(() => { // убирать подсказку через 3 сек после ее показа
         let timerId:number | NodeJS.Timeout;
         if (prompt) {
@@ -31,25 +40,22 @@ const InputData = ({control, inputsValue, errors, placeholder, name, showPrompt,
     <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
         <Controller
             control={control}
-            rules={{required:true, maxLength:3}}
+            rules={{required:isRequired || true, maxLength:3}}
             render={({ field: { onChange, value } }) => (
                 <TextInput
                     style={{fontFamily:'geometria-regular'}}
-                    inputMode="numeric"
+                    inputMode={inputMode}
+                    editable={canEdite}
                     placeholder={placeholder}
                     className="text-lg w-full text-center leading-[22px]"
                     onChangeText={onChange}
                     value={value}
-                    maxLength={3}
+                    maxLength={maxLength}
                 />
             )}
             name={name}
         />
-        {inputsValue &&
-            <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
-                {placeholder}
-            </Text>
-        }
+        {inputsValue && <AnimatedPlaceholder inputValue={inputsValue} placeholder={placeholder}/>}
 
         {showPrompt &&
         <>
@@ -75,4 +81,3 @@ const InputData = ({control, inputsValue, errors, placeholder, name, showPrompt,
 };
 
 export default InputData;
- // TODO анимацию текста

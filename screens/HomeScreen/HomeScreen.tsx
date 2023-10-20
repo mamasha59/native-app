@@ -6,6 +6,7 @@ import Timer from "./Timer/Timer";
 import ModalLiquidAmount from "./ModalLiquidAmount/ModalLiquidAmount";
 import DoubleButton from '../../components/DoubleButton/DoubleButton';
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
+import DoubleTapToClose from '../../components/ExitAppDoublePress/ExitAppDoublePress';
 
 const HomeScreen = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -13,6 +14,7 @@ const HomeScreen = () => {
 
   return (
     <MainLayout>
+      <DoubleTapToClose/>
       <View className="flex-1 justify-between h-full">
         <IntervalInfo />
         <Timer />

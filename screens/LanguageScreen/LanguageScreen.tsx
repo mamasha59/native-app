@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, Animated, View } from "react-native";
+import { Text, TouchableOpacity, Animated, View, Vibration } from "react-native";
 import { useState, useRef } from "react";
 
 import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
@@ -48,8 +48,10 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
         if(chosenLanguage.length > 0){
             // перенаправляем пользователя на следующую страницу заполнений данных
             navigation.navigate('SliderScreen');
+            Vibration.cancel();
             //TODO - менять язык, сетить язык в сторе
         }else{
+           Vibration.vibrate(50, true)
            startShakeAnimation()
         }
     }

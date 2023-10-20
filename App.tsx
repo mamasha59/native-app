@@ -1,18 +1,19 @@
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 import Home from './screens/Home';
 import UserData from './screens/UserData/UserData';
 import NoticeNavigationScreen from './screens/NoticeAccessScreens/NoticeNavigationScreen';
 import { store } from './store/store';
-import { StatusBar } from 'expo-status-bar';
 import GradientBackground from './Layouts/GradientBackground/GradientBackground';
+import useGetLocalStorage from './hooks/useGetLocalStorage';
 
 export type RootStacNativeParamList = {
   WelcomeScreens: undefined;
@@ -33,7 +34,7 @@ const Stack = createNativeStackNavigator<RootStacNativeParamList>();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [exist, setExist] = useState(false); // если юзер уже ввел данные раньше, то перенаправляет сразу на главный экран приложения
+  const { exist } = useGetLocalStorage(); // если юзер уже ввел данные раньше, то перенаправляет сразу на главный экран приложения
 
   const [fontsLoader] = useFonts({  // загружаем шрифт
     'geometria-bold' : require('./assets/fonts/geometria-bold.ttf'),
@@ -45,8 +46,8 @@ export default function App() {
     }, [fontsLoader]);
 
     if (!fontsLoader) return null;
-  // все роуты стоят по порядку их повяления при загрузки app
-  return (
+  
+  return (// все роуты стоят по порядку их повяления при загрузке приложения
   <Provider store={store}>
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <GradientBackground>
@@ -54,9 +55,12 @@ export default function App() {
         <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
             <NavigationContainer fallback={'loading'}>
               <Stack.Navigator initialRouteName={exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
-                <Stack.Screen name='MainScreen'component={Home}/>
-                <Stack.Screen name='WelcomeScreens'component={UserData}/>
-                <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>
+               
+                    <Stack.Screen name='MainScreen'component={Home}/>
+                    <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>
+              
+                    <Stack.Screen name='WelcomeScreens'component={UserData}/>
+               
               </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaView>

@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createUserReducer from "./slices/createUserSlice";
+import setUserDataFromStorage from "./slices/setUserDataLocalSlice";
 
 export const store = configureStore({
     reducer: {
-       user: createUserReducer
+       user: createUserReducer,
+       setUserData: setUserDataFromStorage,
     }
 })
 

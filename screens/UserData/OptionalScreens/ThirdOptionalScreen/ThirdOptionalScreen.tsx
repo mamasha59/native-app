@@ -1,117 +1,105 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableOpacity, TextInput } from "react-native";
+import { useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
-import { Controller, useForm } from "react-hook-form";
 import { NavigationPropsWelcome } from "../../UserData";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { changeAge, changeVolume } from "../../../../store/slices/createUserSlice";
 
 interface iThirdOptionalScreen extends NavigationPropsWelcome<'ThirdOptionalScreen'>{}
 
 const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
+    const userData = useAppSelector(state => state.user);
+    const [ageNew, setAgeNew] = useState(userData.age?.toString());
+    const [volumeNew, setVolumeNew] = useState(userData.volume?.toString());
+    const dispatch = useAppDispatch();
 
-    const { control, handleSubmit, formState: { errors}} = useForm({
-        defaultValues: {
-            sex: '',
-            age: '',
-            volume: '',
-            catetorType: '',
-            catetorSize: '',
-        }
-    })
+    const cnahgeInformation = (where:string) => {
+        if (where === 'sex'){} navigation.navigate('FirstDataScreen', { cameFrom: 'ThirdOptionalScreen-sex' });
+        if (where === 'catheterType') navigation.navigate('SecondDataScreen', { cameFrom: 'ThirdOptionalScreen-catheterType' });
+        if (where === 'catheterSize') navigation.navigate('SecondDataScreen', { cameFrom: 'ThirdOptionalScreen-catheterSize' });
+    }
 
-    const onSubmit = (data:any) => {
-        console.log(data);
-        navigation.navigate('MainScreen'); // перенаправляем юзера на слайдер
-     }
+    const inputAgeNewChange = (value:string) => { // инпут изменение возраста
+        dispatch(changeAge({age:Number(value)}))
+        setAgeNew(value);
+    }
+    const inputVolumeNewChange = (volume:string) => { // инпут изменение обьема мочевого пузыря
+        dispatch(changeVolume({volume:Number(volume)}))
+        setVolumeNew(volume);
+    }
 
+    const onSubmit = async () => {
+        try {
+            const jsonValue = JSON.stringify(userData);
+            await AsyncStorage.setItem('my-key', jsonValue);
+          } catch (e) {
+            console.log(e);
+          }
+        navigation.replace('MainScreen')
+    }
+    
   return (
-    <WelcomeLayout title="Настройки профиля" buttonTitle="Сохранить изменения" handleProceed={handleSubmit(onSubmit)}>
+    <WelcomeLayout title="Настройки профиля" buttonTitle="Сохранить изменения" handleProceed={onSubmit}>
         <View className="items-center">
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        inputMode="text"
-                        placeholder="Ваш пол"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
+
+            <TouchableOpacity onPress={() => cnahgeInformation('sex')} className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
+                <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
+                    Ваш пол*
+                </Text>
+                <Text style={{fontFamily:'geometria-bold',}} className="text-lg w-full text-center">
+                    {userData.sex}
+                </Text>
+            </TouchableOpacity>
+
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
+                <TextInput
+                        style={{fontFamily:'geometria-bold'}}
+                        inputMode="numeric"
+                        placeholder={'Ваш возраст'}
+                        className="text-lg w-full text-center text-black leading-[22px]"
+                        maxLength={3}
+                        onChangeText={inputAgeNewChange}
+                        value={ageNew}
                     />
-                )}
-                name="sex"
-            />
-            {errors.sex && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
+                <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
+                    Ваш возраст
+                </Text>
+            </View>
+            <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
+                <TextInput
+                        style={{fontFamily:'geometria-bold'}}
+                        inputMode="numeric"
+                        placeholder={'Обьем мочевого пузыря'}
+                        className="text-lg w-full text-center text-black leading-[22px]"
+                        maxLength={3}
+                        onChangeText={inputVolumeNewChange}
+                        value={volumeNew}
+                    />
+                <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
+                    Обьем мочевого пузыря
+                </Text>
             </View>
 
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        inputMode="numeric"
-                        placeholder="Ваш возраст"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="age"
-            />
-            {errors.age && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        inputMode="numeric"
-                        placeholder="Обьем мочевого музыря"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="volume"
-            />
-            {errors.volume && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
+            <TouchableOpacity onPress={() => cnahgeInformation('catheterType')} className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
+                <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
+                Тип катетера
+                </Text>
+                <Text style={{fontFamily:'geometria-bold',}} className="text-lg w-full text-center">
+                    {userData.catheterType}
+                </Text>
+            </TouchableOpacity>
 
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        inputMode="text"
-                        placeholder="Тип катетера"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="catetorType"
-            />
-                {errors.catetorType && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        inputMode="numeric"
-                        placeholder="Размер катетера"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="catetorSize"
-            />
-            {errors.catetorSize && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
+            <TouchableOpacity onPress={() => cnahgeInformation('catheterSize')} className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
+                <Text style={{fontFamily:'geometria-regular',}} className="text-xs absolute left-0 -top-5 opacity-60">
+                Размер катетера
+                </Text>
+                <Text style={{fontFamily:'geometria-bold',}} className="text-lg w-full text-center">
+                    {userData.catheterSize} Ch/Fr
+                </Text>
+            </TouchableOpacity>
+
             <Pressable>
                 <Text className="text-main-blue opacity-50 text-xs font-normal">Добавить катетер</Text>
             </Pressable>

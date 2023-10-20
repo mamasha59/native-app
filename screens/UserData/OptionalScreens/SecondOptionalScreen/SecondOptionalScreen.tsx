@@ -1,14 +1,16 @@
-import { View, Text, TextInput, FlatList } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 
 import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
+import InputData from "../../../../components/InputData/InputData";
+import { Keyboard } from "../../../../utils/enums";
 
 interface iSecondOptionalScreen extends NavigationPropsWelcome<'SecondOptionalScreen'>{}
-
+// TODO сделать инпуты для Пропуск катетеризации
 const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
 
-    const { control, handleSubmit, formState: { errors}} = useForm({
+    const { control, handleSubmit, formState: { errors}, watch} = useForm({
         defaultValues: {
             nameSurname: '',
             email: '',
@@ -16,7 +18,8 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
             urineMeasure: ''
         }
     })
-    
+    const inputsValue = watch(); // состояние инпута при его изменении
+
     const onSubmit = (data:any) => {
         // console.log(data);
         navigation.navigate('ThirdOptionalScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
@@ -28,120 +31,72 @@ const SecondOptionalScreen = ({navigation}:iSecondOptionalScreen) => {
 
   return (
     <WelcomeLayout title="Доступ к журналу мочеиспускания" buttonTitle="Сохранить изменения" handleProceed={handleSubmit(onSubmit)} skip={true} skipNextScreen={skipScreen}>
-        <View className="mb-[60px]">
-            <View className="w-full pb-[10px] items-center relative mb-10">
-            <Controller
+        <>
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="numeric"
-                        placeholder="Введите имя и фамилию"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="nameSurname"
-            />
-            {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
+                errors={errors.nameSurname}
+                inputsValue={inputsValue.nameSurname}
+                placeholder="Введите имя и фамилию"
+                name={"nameSurname"}
+                inputMode={Keyboard.String}
+                maxLength={30}
+                showPrompt
+                textPrompt="Этот человек будет иметь доступ к вашему журналу"
+                />
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="email"
-                        placeholder="Эл. почта"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="email"
-            />
-            {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
+                errors={errors.email}
+                inputsValue={inputsValue.email}
+                placeholder="Эл. почта"
+                name={"email"}
+                inputMode={Keyboard.String}
+                maxLength={30}
+                />
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="tel"
-                        placeholder="Номер телефона"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="phoneNumber"
-            />
-            {errors.phoneNumber && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
+                errors={errors.phoneNumber}
+                inputsValue={inputsValue.phoneNumber}
+                placeholder="Номер телефона"
+                name={"phoneNumber"}
+                inputMode={Keyboard.Numeric}
+                maxLength={11}
+                />
 
             <Text className="text-main-blue text-center text-lg leading-5 font-bold mb-10">Пропуск катетеризации</Text>
-
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="numeric"
-                        placeholder="Введите имя и фамилию"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="nameSurname"
-            />
-            {errors.nameSurname && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative mb-10">
-            <Controller
+                errors={errors.nameSurname}
+                inputsValue={inputsValue.nameSurname}
+                placeholder="Введите имя и фамилию"
+                name={"nameSurname"}
+                inputMode={Keyboard.Numeric}
+                maxLength={11}
+                />
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="email"
-                        placeholder="Эл. почта"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="email"
-            />
-            {errors.email && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-            <View className="w-full border-b border-main-blue pb-[10px] items-center relative">
-            <Controller
+                errors={errors.email}
+                inputsValue={inputsValue.email}
+                placeholder="Эл. почта"
+                name={"email"}
+                inputMode={Keyboard.String}
+                maxLength={30}
+                />
+            <InputData
+                isRequired={false}
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={{fontFamily:'geometria-regular'}}
-                        inputMode="numeric"
-                        placeholder="Когда уведомлять"
-                        className="text-lg w-full text-center leading-[22px]"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="nameSurname"
-            />
-            {errors.nameSurname && <Text className="text-red-600 absolute -bottom-5">Заполните поле</Text>}
-            </View>
-        </View>
+                errors={errors.email}
+                inputsValue={inputsValue.email}
+                placeholder="Когда уведомлять"
+                name={"email"}
+                inputMode={Keyboard.String}
+                maxLength={30}
+                />
+        </>
     </WelcomeLayout>
   );
 };

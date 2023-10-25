@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "uro-control",
+    "name": "UroControl",
     "slug": "sergeitest",
     "version": "1.0.0",
     "owner": "zinaidamama",
     "orientation": "portrait",
     "icon": "./assets/images/splash-screen/appIcon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash-screen/splashScreen.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#4BAAC5"
     },
     "assetBundlePatterns": [

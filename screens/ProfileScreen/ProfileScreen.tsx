@@ -1,18 +1,20 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Selects from "./Selects/Selects";
 import UserInfo from "./UserInfo/UserInfo";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import NameSurnameBirthday from "./NameSurnameBirthday/NameSurnameBirthday";
 
 const ProfileScreen = () => {
-  const removeProfile = async () => {
+  const removeProfile = async () => { // удаление инфы из локал стореджа, временно для разработки
     try {
       await AsyncStorage.removeItem('my-key');
     } catch(e) {
       // remove error
     }
   }
+
   return (
     <MainLayout title="Профиль">
       <View className="flex-row justify-between items-center mb-[15px]">
@@ -22,9 +24,12 @@ const ProfileScreen = () => {
       <ScrollView>
         <UserInfo/>
         <Selects/>
-        <TouchableOpacity onPressOut={removeProfile} className="py-4">
+        <NameSurnameBirthday/>
+
+        <TouchableOpacity onPressOut={removeProfile} className="py-4 mt-3">
           <Text style={{fontFamily:'geometria-bold'}} className="opacity-70 text-error">Сбросить профиль</Text>
         </TouchableOpacity>
+
       </ScrollView>
     </MainLayout>
   );

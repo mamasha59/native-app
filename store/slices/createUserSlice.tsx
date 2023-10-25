@@ -27,6 +27,7 @@ const createUserSlice = createSlice({
             state.useAtNight = useAtNight;
             state.urineMeasure = urineMeasure;
         },
+
         changeSex: (state, action:PayloadAction<Pick<iUser,'sex'>>) => {
             const { sex } = action.payload;
             state.sex = sex;
@@ -46,6 +47,12 @@ const createUserSlice = createSlice({
         changeCatheterSize: (state, action:PayloadAction<Pick<iUser,'catheterSize'>>) => {
             const { catheterSize } = action.payload;
             state.catheterSize = catheterSize;
+        },
+
+        setNameSurnameBirthday: (state, action:PayloadAction<Pick<iUser,'nameSurname' | 'birthday'>>) => {
+            const { birthday, nameSurname } = action.payload;
+            state.birthday = birthday;
+            state.nameSurname = nameSurname;
         }
     }
 })
@@ -58,7 +65,8 @@ export const {
     changeAge,
     changeVolume,
     changeCatheterType,
-    changeCatheterSize
+    changeCatheterSize,
+    setNameSurnameBirthday
     } = createUserSlice.actions; // экспортируем экшены, что бы использовать
 
 export default createUserSlice.reducer; // импортируем сам редьюсер

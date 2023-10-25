@@ -9,11 +9,10 @@ const setUserDataFromStorage = createSlice({
     initialState,
     reducers: {
         setUserData: (state, action:PayloadAction<iUser>) => {
-            const { weight, height, sex, age } = action.payload;
-            state.weight = weight;
-            state.height = height;
-            state.sex = sex;
-            state.age = age;
+        return {
+            ...state,
+            ...action.payload
+        };
         },
     }
 })

@@ -7,8 +7,9 @@ import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
 import { changeSex, firstDataScreen } from "../../../store/slices/createUserSlice";
 import InputData from "../../../components/InputData/InputData";
-import InpuDataModalSelect from "../../../components/InpuDataModalSelect/InpuDataModalSelect";
 import { Keyboard } from "../../../utils/enums";
+import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
+import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 
 interface iUserData extends NavigationPropsWelcome<'FirstDataScreen'> {}
 
@@ -18,7 +19,7 @@ const FirstDataScreen = ({navigation, route}:iUserData) => {
 
     const fromLastScreenSex = route.params && route.params.cameFrom === 'ThirdOptionalScreen-sex';
 
-    const { control, handleSubmit, formState: { errors }, setValue, watch, } = useForm({
+    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         defaultValues: {
             weight: '',
             height: '',
@@ -75,15 +76,10 @@ const FirstDataScreen = ({navigation, route}:iUserData) => {
                     maxLength={3}
                     />
            </View>
-            <InpuDataModalSelect
-                inputValue={inputsValue.sex}
-                onItemPress={onSelectSexPress}
-                openModal={openModalSelectSex}
-                options={['Женский', 'Мужской', 'Мальчик', 'Девочка']}
-                setOpenModal={setOpenModalSelectSex}
-                title={'Ваш пол*'}
-                key={inputsValue.sex}
-            />
+            <>
+            <ButtonSelect inputValue={inputsValue.sex} openModal={openModalSelectSex} placeholder={'Ваш пол*'} setOpenModal={setOpenModalSelectSex} key={'Ваш пол*'}/>
+            <ModalSelect onItemPress={onSelectSexPress} openModal={openModalSelectSex} options={['Женский', 'Мужской', 'Мальчик', 'Девочка']} setOpenModal={setOpenModalSelectSex} title={'Ваш пол*'}/>
+            </>
             <View className={`flex-1 w-full ${fromLastScreenSex && 'opacity-50'}`}>
                 <InputData
                     canEdite={!fromLastScreenSex}
@@ -94,6 +90,7 @@ const FirstDataScreen = ({navigation, route}:iUserData) => {
                     name={"age"}
                     inputMode={Keyboard.Numeric}
                     maxLength={3}
+                    key={"age"}
                     />
             </View>
         </View>

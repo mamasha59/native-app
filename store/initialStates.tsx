@@ -14,6 +14,8 @@ import { iUser } from "../Types";
     useAtNight: '',
     urineMeasure: 0,
     //
+    nameSurname: '',
+    birthday: '',
 }
 
 export default initialState;

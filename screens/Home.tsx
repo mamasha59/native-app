@@ -27,6 +27,7 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
+
 export default function Home() {
 
   return (

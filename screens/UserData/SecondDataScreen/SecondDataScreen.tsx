@@ -8,9 +8,10 @@ import { useAppDispatch } from "../../../store/hooks";
 import { changeCatheterSize, changeCatheterType, secondDataScreen } from "../../../store/slices/createUserSlice";
 
 import InputData from "../../../components/InputData/InputData";
-import InpuDataModalSelect from "../../../components/InpuDataModalSelect/InpuDataModalSelect";
 import { catheters } from "../../../utils/const";
 import { Keyboard } from "../../../utils/enums";
+import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
+import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 
 interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'> {} // типизация navigation
 
@@ -58,7 +59,7 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
        navigation.navigate('ThirdDataScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
     }
 
-    const generateEvenNumbersOfSize = () => {
+    const generateEvenNumbersOfSize = () => { // генерируем только четные числа от 6 до 30
         const evenNumbers = [];
         for (let i = 6; i <= 30; i +=2) {
             evenNumbers.push(i)            
@@ -86,27 +87,33 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
             </View>
             {/* попап выбор тип катететора */}
             <View pointerEvents={fromLastScreenCatheterSize ? 'none' : 'auto'} className={`flex-1 w-full ${fromLastScreenCatheterSize && 'opacity-50'}`}>
-                <InpuDataModalSelect
+                <ButtonSelect
                     inputValue={inputsValue.catheterType}
+                    openModal={openModalSelectCatheter}
+                    placeholder={'Тип катететора*'}
+                    setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
+                    key={'Тип катететора*'}/>
+                <ModalSelect
                     onItemPress={onSelectCathetor}
                     openModal={openModalSelectCatheter}
                     options={catheters}
                     setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
-                    title={'Тип катететора*'}
-                    key={inputsValue.catheterType}
-                />
-             </View>
+                    title={'Тип катететора*'}/>
+            </View>
              {/* попап размер катетора */}
             <View pointerEvents={fromLastScreenCatheterType ? 'none' : 'auto'} className={`flex-1 w-full ${fromLastScreenCatheterType && 'opacity-50'}`}>
-                <InpuDataModalSelect
+                <ButtonSelect
                     inputValue={inputsValue.catheterSize}
+                    openModal={openModalSelectSize}
+                    placeholder={'Размер катетера Ch/Fr'}
+                    setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
+                    key={'Размер катетера Ch/Fr'}/>
+                <ModalSelect
                     onItemPress={onSelectCathetorSize}
                     openModal={openModalSelectSize}
                     options={generateEvenNumbersOfSize()}
                     setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                    title={'Размер катетера Ch/Fr'}
-                    key={inputsValue.catheterSize}
-                />
+                    title={'Размер катетера Ch/Fr'}/>
             </View>
         </View>
     </WelcomeLayout>

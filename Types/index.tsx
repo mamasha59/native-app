@@ -18,6 +18,8 @@ interface iUser {
     // email: string | null,
     // nameSurname: string | null,
     // phoneNumber: string | null,
+    nameSurname?: string,
+    birthday?: string,
 }
 
 type iMonth = {

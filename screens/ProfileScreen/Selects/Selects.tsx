@@ -1,28 +1,20 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
+import { DropDown } from "../../../assets/images/icons";
 
 const Selects = () => {
 
     const [selectedLanguage, setSelectedLanguage] = useState();
-
   return (
     <View className="pb-5">
-        <Text className="text-[#101010] text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
+        <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
         {/*  Режим катетеризации   */}
         <View className="flex-row mb-5 gap-[10px]">
-            <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
-                <Picker
-                    mode="dialog"
-                    itemStyle={{fontSize:12}}
-                    selectedValue={selectedLanguage}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedLanguage(itemValue)
-                }>
-                    <Picker.Item label="Кол-во (5 раз в день)" value="Кол-во (5 раз в день)" />
-                    <Picker.Item label="JavaScript" value="js" />
-                </Picker>
-            </View>
+            <TouchableOpacity activeOpacity={.5} className="border border-main-blue items-center rounded-xl min-w-[185px] px-3 flex-row justify-between flex-1">
+                <Text style={{fontFamily:'geometria-regular'}} className="text-black text-sm leading-[14px]">Кол-во (5 раз в день)</Text>
+                <DropDown/>
+            </TouchableOpacity>
             
             <View className="border border-main-blue rounded-xl min-w-[130px] flex-1">
                 <Picker
@@ -33,7 +25,6 @@ const Selects = () => {
                         setSelectedLanguage(itemValue)
                 }>
                     <Picker.Item label="Каждые 3,5 ч" value="Каждые 3,5 ч" />
-                    <Picker.Item label="JavaScript" value="js" />
                 </Picker>
             </View>
 
@@ -41,7 +32,7 @@ const Selects = () => {
         {/*  Режим катетеризации   */}  
 
         {/*  Катетеризация в ночное время   */}  
-        <Text className="text-[#101010] text-xs leading-[14px] mb-[10px]">Катетеризация в ночное время</Text>
+        <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Катетеризация в ночное время</Text>
         <View className="flex-row mb-5 gap-[10px]">
             <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
                 <Picker
@@ -52,7 +43,7 @@ const Selects = () => {
                         setSelectedLanguage(itemValue)
                 }>
                     <Picker.Item label="Нелатон" value="Нелатон" />
-                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="Фолея" value="Фолея" />
                 </Picker>
             </View>
             
@@ -65,7 +56,7 @@ const Selects = () => {
                         setSelectedLanguage(itemValue)
                 }>
                     <Picker.Item label="Да" value="Да" />
-                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="Нет" value="Нет" />
                 </Picker>
             </View>
         </View>
@@ -74,13 +65,12 @@ const Selects = () => {
             <View className="border border-main-blue rounded-xl min-w-[185px] flex-1">
                 <Picker
                     mode="dialog"
-                    itemStyle={{fontSize:12}}
+                    itemStyle={{fontSize:12,fontFamily:'geometria-regular'}}
                     selectedValue={selectedLanguage}
                     onValueChange={(itemValue, itemIndex) =>
                         setSelectedLanguage(itemValue)
                 }>
-                    <Picker.Item label="Измерение кол-ва выделяемой  мочи " value="Измерение кол-ва выделяемой  мочи " />
-                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="Измерение кол-ва выделяемой мочи" value="Измерение кол-ва выделяемой мочи" />
                 </Picker>
             </View>
             
@@ -93,7 +83,7 @@ const Selects = () => {
                         setSelectedLanguage(itemValue)
                 }>
                     <Picker.Item label="Да" value="Да" />
-                    <Picker.Item label="JavaScript" value="js" />
+                    <Picker.Item label="Нет" value="Нет" />
                 </Picker>
             </View>
         </View>

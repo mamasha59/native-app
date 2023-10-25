@@ -6,8 +6,6 @@ import InputError from "../InputError/InputError";
 import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
 import { Keyboard } from "../../utils/enums";
 
-
-
 interface iInputData{
     control: any;
     inputsValue: any;
@@ -40,8 +38,8 @@ const InputData = (props:iInputData) => {
     <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
         <Controller
             control={control}
-            rules={{required:isRequired || true, maxLength:3}}
-            render={({ field: { onChange, value } }) => (
+            rules={{required:isRequired || true}}
+            render={({ field: { onChange, value } }) => (                
                 <TextInput
                     style={{fontFamily:'geometria-regular'}}
                     inputMode={inputMode}

@@ -12,6 +12,7 @@ interface iMainLayout {
 }
 
 const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLayout) => {
+  
   return (
     <GradientBackground>
       <TopBar/>

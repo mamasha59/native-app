@@ -34,10 +34,10 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
         try {
             const jsonValue = JSON.stringify(userData);
             await AsyncStorage.setItem('my-key', jsonValue);
+            navigation.replace('MainScreen')
           } catch (e) {
             console.log(e);
           }
-        navigation.replace('MainScreen')
     }
     
   return (

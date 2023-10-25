@@ -1,6 +1,6 @@
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -46,19 +46,19 @@ export default function App() {
     }, [fontsLoader]);
 
     if (!fontsLoader) return null;
-  
+
   return (// все роуты стоят по порядку их повяления при загрузке приложения
   <Provider store={store}>
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <GradientBackground>
         <SafeAreaView className="flex-1 h-full">
         <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-            <NavigationContainer fallback={'loading'}>
+        <NavigationContainer>
               <Stack.Navigator initialRouteName={exist ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
-               
+  
                     <Stack.Screen name='MainScreen'component={Home}/>
                     <Stack.Screen name='NoticeAccessScreens'component={NoticeNavigationScreen}/>
-              
+          
                     <Stack.Screen name='WelcomeScreens'component={UserData}/>
                
               </Stack.Navigator>

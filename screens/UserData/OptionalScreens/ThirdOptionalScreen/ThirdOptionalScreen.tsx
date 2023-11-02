@@ -1,11 +1,11 @@
 import { View, Text, Pressable, TouchableOpacity, TextInput } from "react-native";
 import { useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { changeAge, changeVolume } from "../../../../store/slices/createUserSlice";
+import { changeField } from "../../../../store/slices/createUserSlice";
+import { changeIsExist } from "../../../../store/slices/appStateSlicer";
 
 interface iThirdOptionalScreen extends NavigationPropsWelcome<'ThirdOptionalScreen'>{}
 
@@ -22,22 +22,17 @@ const ThirdOptionalScreen = ({navigation}:iThirdOptionalScreen) => {
     }
 
     const inputAgeNewChange = (value:string) => { // инпут изменение возраста
-        dispatch(changeAge({age:Number(value)}))
+        dispatch(changeField({field:'age', value: value}))
         setAgeNew(value);
     }
     const inputVolumeNewChange = (volume:string) => { // инпут изменение обьема мочевого пузыря
-        dispatch(changeVolume({volume:Number(volume)}))
+        dispatch(changeField({field:'volume', value:volume}))
         setVolumeNew(volume);
     }
 
     const onSubmit = async () => {
-        try {
-            const jsonValue = JSON.stringify(userData);
-            await AsyncStorage.setItem('my-key', jsonValue);
-            navigation.replace('MainScreen')
-          } catch (e) {
-            console.log(e);
-          }
+        dispatch(changeIsExist(true));
+        navigation.replace('MainScreen');
     }
     
   return (

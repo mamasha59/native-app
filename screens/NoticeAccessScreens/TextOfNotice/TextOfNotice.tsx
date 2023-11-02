@@ -7,7 +7,6 @@ import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 const TextOfNotice = () => {
   const [chosen, setChosen] = useState(false);
 // TODO сделать выбранный с галкой
-console.log(chosen);
 
   return (
     <MainLayout title="Текст уведомления">
@@ -23,21 +22,7 @@ console.log(chosen);
       >
         Текст уведомления
       </Text>
-
-        {/* <BouncyCheckbox
-          size={16}
-          unfillColor="#FFFFFF"
-          text="Время принять таблетку"
-          textStyle={{ fontFamily: "geometria-regular", color:'#101010', fontSize:12, lineHeight:16, textDecorationLine: 'none', paddingLeft:50}}
-          innerIconStyle={{borderColor:'transparent'}}
-          isChecked={chosen}
-          onPress={(isChecked: boolean) => {setChosen(!isChecked)}}
-          className="w-full min-w-[327px] border border-[#4babc543] rounded-xl py-4 px-[15px] relative"
-          // fillColor="#FFFFFF"
-          iconComponent={<CheckedIcom width={16} height={16} />}
-        />
-       */}
-
+      
         <TouchableOpacity
           onPress={() => setChosen(!chosen)}
           className="min-w-[327px] border border-[#4babc543] rounded-xl py-4 pl-[71px] relative justify-center"

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
-import { changeSex, firstDataScreen } from "../../../store/slices/createUserSlice";
+import { setUserData, changeField } from "../../../store/slices/createUserSlice";
 import InputData from "../../../components/InputData/InputData";
 import { Keyboard } from "../../../utils/enums";
 import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
@@ -27,21 +27,21 @@ const FirstDataScreen = ({navigation, route}:iUserData) => {
             age: ''
         }
     })
-    const inputsValue = watch(); // состояние инпута при его изменении
+    const inputsValue = watch();        // состояние инпута при его изменении
 
     const onSubmit = (data:any) => {
         if(!inputsValue.sex){
             Alert.alert('Выберите пол!');
             return;
         }        
-       dispatch(firstDataScreen(data)) // сетим данные в сторе редакса, формируем пользователя
+       dispatch(setUserData(data))                              // сетим данные в сторе редакса, формируем пользователя
        navigation.navigate('SecondDataScreen', {cameFrom:''}); // перенаправляем юзера на 2й скрин (инфа про катеторы и моч. пузырь)
     }
 
     const onSelectSexPress = (sex:string) => {
-        setValue('sex', sex); // записываем значение пола из попапа
+        setValue('sex', sex);                               // записываем значение пола из попапа
         if(fromLastScreenSex){
-            dispatch(changeSex({sex:sex}))
+            dispatch(changeField({field:"sex",value:sex}))
             navigation.navigate('ThirdOptionalScreen');
         }
         setOpenModalSelectSex(!openModalSelectSex);

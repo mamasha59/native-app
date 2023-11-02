@@ -1,14 +1,15 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useState } from "react";
 
+import data from '../questions.json';
+
+import MainLayout from "../../../Layouts/MainLayout/MainLayout";
 import { DropDown } from "../../../assets/images/icons";
-import data from './questions.json';
-import { NavigationPropsRecomendations } from ".";
-import MainLayout from '../../../Layouts/MainLayout/MainLayout';
+import { NavigationPropsRecomendations } from "..";
 
-interface iRecomendations extends NavigationPropsRecomendations<'Recomendations'>{}
+interface iRecomendations extends NavigationPropsRecomendations<'RecomendationsScreen'>{}
 
-const Recomendations = ({navigation}:iRecomendations) => {
+const RecomendationsScreen = ({navigation}:iRecomendations) => {
 
   const [activeIndex, setActiveIndex] = useState<number | null>(); // текущий индекс открытого блока
 
@@ -17,12 +18,12 @@ const Recomendations = ({navigation}:iRecomendations) => {
   };
 
   const handleClickButton = () => {
-    navigation.navigate('FeedBack');
+    navigation.navigate('FeedBackScreen');
   }
 
   return (
     <MainLayout title={'Рекомендации'} buttonBottomTitle="Отзывы и предложения" buttonAction={handleClickButton} >
-      <ScrollView>
+      <ScrollView className="flex-1">
       <View className="pb-24">
         {data.map((e,index:number) =>
           <TouchableOpacity key={index} onPress={() => handleItemClick(index)} className="relative py-[15px] pl-[15px] pr-8 mb-5 border border-main-blue rounded-md">
@@ -41,4 +42,4 @@ const Recomendations = ({navigation}:iRecomendations) => {
   );
 };
 
-export default Recomendations;
+export default RecomendationsScreen;

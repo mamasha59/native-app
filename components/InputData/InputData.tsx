@@ -47,7 +47,7 @@ const InputData = (props:iInputData) => {
                     placeholder={placeholder}
                     className="text-lg w-full text-center leading-[22px]"
                     onChangeText={onChange}
-                    value={value}
+                    value={value || inputsValue}
                     maxLength={maxLength}
                 />
             )}

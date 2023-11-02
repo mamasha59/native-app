@@ -8,8 +8,8 @@
     "icon": "./assets/images/splash-screen/appIcon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash-screen/splashScreen.png",
-      "resizeMode": "contain",
+      "image": "./assets/images/splash-screen/SplashScreenNew.png",
+      "resizeMode": "cover",
       "backgroundColor": "#4BAAC5"
     },
     "assetBundlePatterns": [
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splash-screen/splashScreen.png",
+        "foregroundImage": "./assets/images/splash-screen/SplashScreenNew.png",
         "backgroundColor": "#ffffff"
       },
       "package": "urocontrol.sergeikuleshov"

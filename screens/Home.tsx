@@ -1,8 +1,9 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 import HomeScreen from './HomeScreen/HomeScreen';
-import ProfileScreen from './ProfileScreen/ProfileScreen';
+import ProfileStack from './ProfileStack/index';
 import ControlСatheter from './ControlCatheter/ControlСatheter';
 import JournalScreen from './JournalScreen/JournalScreen';
 import RecomendationIcon from '../assets/images/iconsComponent/TabMenuIcons/RecomendationIcon';
@@ -10,10 +11,11 @@ import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIco
 import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
-import RecomendationsStack from './Recomendations/Recomendations.tsx';
+import RecomendationsStack from './RecomendationsStack/index';
+
 
 export type RootStackParamList = {
-  Profile: undefined;
+  ProfileStack: undefined;
   ControlСatheter: undefined;
   Home: undefined;
   JournalScreen: undefined;
@@ -54,11 +56,13 @@ export default function Home() {
           paddingHorizontal: 15,
         },
         tabBarShowLabel: false,
+        tabBarButton: (props) => <TouchableOpacity activeOpacity={.6} {...props} />,
+        tabBarHideOnKeyboard: true,
       }}>
       <Tab.Group >
       <Tab.Screen
-        name='Profile'
-        component={ProfileScreen}
+        name='ProfileStack'
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon width={size} color={color}/>

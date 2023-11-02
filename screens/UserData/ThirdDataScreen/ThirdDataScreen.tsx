@@ -5,7 +5,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { thirdDataScreen } from "../../../store/slices/createUserSlice";
+import { setUserData } from "../../../store/slices/createUserSlice";
 
 import { catheters } from "../../../utils/const";
 import { day } from "../../../utils/date";
@@ -78,7 +78,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     };
 
     const onSubmit = (data:any) => { // при нажатии кнопки Продолжить
-        dispatch(thirdDataScreen(data))
+        dispatch(setUserData(data))
         navigation.navigate('FirstOptionalScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
      }
 

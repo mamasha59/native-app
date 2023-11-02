@@ -3,7 +3,7 @@ import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
 
 interface iButtonSelect{
     placeholder: string;
-    inputValue: string | null;
+    inputValue: string | null | undefined;
     openModal: boolean;
     setOpenModal: (state: boolean) => void;
 }

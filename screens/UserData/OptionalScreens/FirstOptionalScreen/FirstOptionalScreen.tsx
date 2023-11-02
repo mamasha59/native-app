@@ -17,7 +17,6 @@ const FirstOptionalScreen = ({navigation}:FirstOptionalScreen) => {
     }
 
     const useSeclector = useAppSelector(state => state.user);
-    console.log(useSeclector);
 
     const skipScreen = () => { // функция при клике на кнопку 'Изменить позже'
         navigation.navigate('SecondOptionalScreen');

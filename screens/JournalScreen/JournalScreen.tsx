@@ -12,12 +12,14 @@ import JournalCalendar from "./JournalCalendar/JournalCalendar";
 import { getCurrentMonth, months } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iMonth } from "../../Types";
+import { useAppSelector } from "../../store/hooks";
 
 const JournalScreen = () => { // TODO что бы скачивать файл с помощью expo file sistem мне нужен url с бека, пока что так
   const [month, setSelectedMonth] = useState<iMonth>({
     month: months[getCurrentMonth].value,
     index: getCurrentMonth,
   });
+  const userData = useAppSelector(user => user.user);
 
   const html = `
   <html lang="rus">
@@ -43,19 +45,19 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
           <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
             Дата:
             <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-              >26.03.2020г.</b
+              >${userData.birthday}г.</b
             >
           </p>
           <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
             Фамилия И.О.:
             <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-              >Невзорова Мария Михайловна</b
+              >${userData.nameSurname}</b
             >
           </p>
           <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
             Дата рождения:
             <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-              >26.03.2020г.</b
+              >${userData.birthday}г.</b
             >
           </p>
         </div>

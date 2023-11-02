@@ -8,65 +8,17 @@ const createUserSlice = createSlice({
     name: 'createUser',
     initialState,
     reducers: {
-        firstDataScreen: (state, action:PayloadAction<Pick<iUser, 'weight' | 'height' | 'sex' | 'age'>>) => {
-            const { weight, height, sex, age } = action.payload;
-            state.weight = weight;
-            state.height = height;
-            state.sex = sex;
-            state.age = age;
+        setUserData: (state, action: PayloadAction<Partial<iUser>>) => {
+            Object.assign(state, action.payload);
         },
-        secondDataScreen: (state, action:PayloadAction<Pick<iUser, 'volume' | 'catheterType' | 'catheterSize'>>) => {
-            const { volume, catheterType: catetorType, catheterSize } = action.payload;
-            state.volume = volume;
-            state.catheterType = catetorType;
-            state.catheterSize = catheterSize;
+        changeField: (state, action: PayloadAction<{ field: keyof iUser; value: string } | undefined>) => {
+            if (action.payload) state[action.payload.field] = action.payload.value;
         },
-        thirdDataScreen: (state, action:PayloadAction<Pick<iUser, 'interval' | 'useAtNight' | 'urineMeasure'>>) => {
-            const { interval, useAtNight, urineMeasure } = action.payload;
-            state.interval = interval;
-            state.useAtNight = useAtNight;
-            state.urineMeasure = urineMeasure;
-        },
-
-        changeSex: (state, action:PayloadAction<Pick<iUser,'sex'>>) => {
-            const { sex } = action.payload;
-            state.sex = sex;
-        },
-        changeAge: (state, action:PayloadAction<Pick<iUser,'age'>>) => {
-            const { age } = action.payload;
-            state.age = age;
-        },
-        changeVolume: (state, action:PayloadAction<Pick<iUser,'volume'>>) => {
-            const { volume } = action.payload;
-            state.volume = volume;
-        },
-        changeCatheterType: (state, action:PayloadAction<Pick<iUser,'catheterType'>>) => {
-            const { catheterType } = action.payload;
-            state.catheterType = catheterType;
-        },
-        changeCatheterSize: (state, action:PayloadAction<Pick<iUser,'catheterSize'>>) => {
-            const { catheterSize } = action.payload;
-            state.catheterSize = catheterSize;
-        },
-
-        setNameSurnameBirthday: (state, action:PayloadAction<Pick<iUser,'nameSurname' | 'birthday'>>) => {
-            const { birthday, nameSurname } = action.payload;
-            state.birthday = birthday;
-            state.nameSurname = nameSurname;
+        setNameSurnameBirthday: (state, action: PayloadAction<Pick<iUser,'nameSurname' | 'birthday'>>) => {
+            Object.assign(state, action.payload);
         }
     }
-})
+});
 
-export const { 
-    firstDataScreen,
-    secondDataScreen,
-    thirdDataScreen,
-    changeSex,
-    changeAge,
-    changeVolume,
-    changeCatheterType,
-    changeCatheterSize,
-    setNameSurnameBirthday
-    } = createUserSlice.actions; // экспортируем экшены, что бы использовать
-
-export default createUserSlice.reducer; // импортируем сам редьюсер
+export const { setUserData, changeField, setNameSurnameBirthday } = createUserSlice.actions;
+export default createUserSlice.reducer;

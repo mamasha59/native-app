@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator} from "react-native";
 
 import ControllCatetorColorful from "../../../assets/images/iconsComponent/ControllCatetorColorful";
 import ModalWindow from "../../../components/Modal/Modal";
-import useGetLocalStorage from "../../../hooks/useGetLocalStorage";
+import { useAppSelector } from "../../../store/hooks";
 
 const IntervalInfo = () => {
 
@@ -17,8 +17,8 @@ const IntervalInfo = () => {
       setInputValue(numericValue);
   }
 
-  const {userData} = useGetLocalStorage();
-
+  const userData = useAppSelector(user => user.user); 
+  
   const handleClosePopup = () => { // закрыть попап
     setSavedValue(inputValue);
     setModalVisible(false);
@@ -38,7 +38,7 @@ const IntervalInfo = () => {
             <View className="mr-[14px]">
               <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-[5px] text-black">
               {!userData ? <ActivityIndicator size="small" color="#4BAAC5" />
-                   : userData.catheterType || "Выбирете катетор"}
+                   : userData.catheterType || "Выберите катетор"}
               </Text>
               <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">
               {!userData ? <ActivityIndicator size="small" color="#4BAAC5" />

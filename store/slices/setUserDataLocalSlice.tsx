@@ -12,7 +12,7 @@ const setUserDataFromStorage = createSlice({
         return {
             ...state,
             ...action.payload
-        };
+            };
         },
     }
 })

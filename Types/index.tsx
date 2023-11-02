@@ -5,21 +5,21 @@ interface iLanguage{
 }
 
 interface iUser {
-    weight: number | null,
-    height: number | null,
+    weight: string | null,
+    height: string | null,
     sex: string,
-    age: number | null,
+    age: string | null,
     catheterSize: string | null,
     catheterType: string | null,
-    volume: number | null,
-    interval: number | null,
-    urineMeasure: number | null,
+    volume: string | null,
+    interval: string | null,
+    urineMeasure: string | null,
     useAtNight: string | null,
     // email: string | null,
     // nameSurname: string | null,
     // phoneNumber: string | null,
-    nameSurname?: string,
-    birthday?: string,
+    nameSurname?: string | null,
+    birthday?: string | null,
 }
 
 type iMonth = {

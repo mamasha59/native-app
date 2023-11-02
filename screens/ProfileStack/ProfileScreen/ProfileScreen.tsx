@@ -1,26 +1,33 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import Selects from "./Selects/Selects";
 import UserInfo from "./UserInfo/UserInfo";
-import MainLayout from '../../Layouts/MainLayout/MainLayout';
+import MainLayout from '../../../Layouts/MainLayout/MainLayout';
+import { persistor } from "../../../store/store";
+import Selects from "./Selects/Selects";
 import NameSurnameBirthday from "./NameSurnameBirthday/NameSurnameBirthday";
+import { NavigationPropsProfileStack } from "..";
 
-const ProfileScreen = () => {
+interface iProfileScreen extends NavigationPropsProfileStack<'ProfileScreen'>{}
+
+const ProfileScreen = ({navigation}:iProfileScreen) => {
+
   const removeProfile = async () => { // удаление инфы из локал стореджа, временно для разработки
-    try {
-      await AsyncStorage.removeItem('my-key');
-    } catch(e) {
-      // remove error
-    }
+    persistor.purge();
+  }
+
+  const handleButtonChangeProfile = () => {
+    navigation.navigate('ChangeProfileScreen')
   }
 
   return (
     <MainLayout title="Профиль">
       <View className="flex-row justify-between items-center mb-[15px]">
           <Text style={{fontFamily:'geometria-regular'}} className="text-[#101010] text-xs leading-[14px]">Основные данные</Text>
-          <Text style={{fontFamily:'geometria-regular'}} className="text-main-blue text-xs leading-[14px] opacity-50">Изменить</Text>
+          <TouchableOpacity activeOpacity={.5} onPress={handleButtonChangeProfile}>
+            <Text style={{fontFamily:'geometria-regular'}} className="text-main-blue text-xs leading-[14px] opacity-50">Изменить</Text>
+          </TouchableOpacity>
       </View>
+      
       <ScrollView>
         <UserInfo/>
         <Selects/>

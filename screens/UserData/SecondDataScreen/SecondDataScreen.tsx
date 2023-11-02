@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
+
 import { useAppDispatch } from "../../../store/hooks";
-import { changeCatheterSize, changeCatheterType, secondDataScreen } from "../../../store/slices/createUserSlice";
+import { changeField, setUserData } from "../../../store/slices/createUserSlice";
 
 import InputData from "../../../components/InputData/InputData";
-import { catheters } from "../../../utils/const";
+import { catheters, generateEvenNumbersOfSize } from "../../../utils/const";
 import { Keyboard } from "../../../utils/enums";
 import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
 import ModalSelect from "../../../components/ModalSelect/ModalSelect";
@@ -35,7 +36,7 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
     const onSelectCathetor = (catheterType:string) => { // функция при выборе Катетора
         setValue('catheterType', catheterType); // записываем значение пола из попапа
         if(fromLastScreenCatheterType){
-            dispatch(changeCatheterType({catheterType:catheterType})) // меняен тип катетора
+            dispatch(changeField({field:'catheterType', value: catheterType})) // меняен тип катетора
             navigation.navigate('ThirdOptionalScreen');
         }
         setOpenModalSelectCatheter(!openModalSelectCatheter);
@@ -44,7 +45,7 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
     const onSelectCathetorSize = (catheterSize:string) => { // функция при выборе Размера катетора
         setValue('catheterSize', catheterSize); // записываем значение пола из попапа
         if(fromLastScreenCatheterSize){
-            dispatch(changeCatheterSize({catheterSize:catheterSize})) // меняем размер катетора
+            dispatch(changeField({field: 'catheterSize', value: catheterSize})) // меняем размер катетора
             navigation.navigate('ThirdOptionalScreen');
         }
         setOpenModalSelectSize(!openModalSelectSize);
@@ -55,16 +56,8 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
             Alert.alert('Выберите тип катетора!');
             return;
         }
-       dispatch(secondDataScreen(data));
+       dispatch(setUserData(data));
        navigation.navigate('ThirdDataScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
-    }
-
-    const generateEvenNumbersOfSize = () => { // генерируем только четные числа от 6 до 30
-        const evenNumbers = [];
-        for (let i = 6; i <= 30; i +=2) {
-            evenNumbers.push(i)            
-        }
-        return evenNumbers;
     }
 
   return (

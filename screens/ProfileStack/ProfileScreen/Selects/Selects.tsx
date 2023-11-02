@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
-import { DropDown } from "../../../assets/images/icons";
+
+import { DropDown } from "../../../../assets/images/icons";
 
 const Selects = () => {
 

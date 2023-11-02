@@ -1,13 +1,13 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
-
-import InputData from "../../../components/InputData/InputData";
-import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { useAppDispatch } from "../../../store/hooks";
-import { setNameSurnameBirthday } from "../../../store/slices/createUserSlice";
-import { Keyboard } from "../../../utils/enums";
+
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { setNameSurnameBirthday } from "../../../../store/slices/createUserSlice";
+import { Keyboard } from "../../../../utils/enums";
+import InputData from "../../../../components/InputData/InputData";
+import ButtonSelect from "../../../../components/ButtonSelect/ButtonSelect";
 
 const NameSurnameBirthday = () => {
 
@@ -16,7 +16,8 @@ const NameSurnameBirthday = () => {
     const [save, setSave] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
-    
+    const userData = useAppSelector(user => user.user);
+
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         defaultValues: {
             nameSurname: '',
@@ -55,9 +56,9 @@ const NameSurnameBirthday = () => {
         <InputData
             control={control}
             inputMode={Keyboard.String}
-            inputsValue={inputValue.nameSurname}
+            inputsValue={inputValue.nameSurname  || userData.nameSurname}
             maxLength={50}
-            placeholder="Введите имя и фамилию"
+            placeholder={"Введите имя и фамилию"}
             errors={errors.nameSurname}
             showPrompt
             textPrompt="Для правильной работы pdf файла (который можно скачать\поделиться на экране 'Дневник мочеиспускания') заполните эти данные"
@@ -65,7 +66,7 @@ const NameSurnameBirthday = () => {
             name="nameSurname"
         />
 
-        <ButtonSelect inputValue={timeText} openModal={isDatePickerVisible} setOpenModal={setDatePickerVisibility} placeholder="Дата рождения" key={timeText}/>
+        <ButtonSelect inputValue={timeText || userData.birthday} openModal={isDatePickerVisible} setOpenModal={setDatePickerVisibility} placeholder="Дата рождения" key={timeText}/>
         <DateTimePicker
             isVisible={isDatePickerVisible}
             mode={'date'}

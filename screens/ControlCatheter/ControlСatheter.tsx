@@ -1,5 +1,4 @@
 import { View, Text, ScrollView } from "react-native";
-import { useState } from "react";
 
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import Chart from "./Chart/Chart";

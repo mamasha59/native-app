@@ -1,9 +1,9 @@
 import { View, Text, ActivityIndicator } from "react-native";
 
-import useGetLocalStorage from "../../../hooks/useGetLocalStorage";
+import { useAppSelector } from "../../../../store/hooks";
 
 const UserInfo = () => {
-  const {userData} = useGetLocalStorage();
+  const userData = useAppSelector(user => user.user);
   
   return (
     <View className="flex-row flex-wrap gap-[10px] mb-5">

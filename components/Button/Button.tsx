@@ -12,7 +12,7 @@ const Button = ({buttonAction, buttonBottomTitle}:iButton) => {
     const [show , setShow] = useState<boolean>(false);
     
     useEffect(() => { // показываем кнопку только на опр страницах
-      if (route.name === 'Recomendations' || route.name === 'FeedBack') {
+      if (route.name === 'RecomendationsScreen' || route.name === 'FeedBackScreen' || route.name === 'ChangeProfileScreen') {
         setShow(true);
       } else {
         setShow(false);

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
 import {useState} from "react";
 
 import ControllCatetor from "../../../assets/images/iconsComponent/TabMenuIcons/ControllCatetor";
@@ -42,7 +42,14 @@ const RestOf = () => {
           <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-grey">Текущий остаток</Text>
       </View>
       <View className="flex-row flex-1 gap-2">
-        <TouchableOpacity activeOpacity={.8} onPress={() => handleOpenPopup('nelaton')} className="bg-main-blue flex-1 rounded-xl max-h-[96px] p-[15px] relative">
+        <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
+                                  shadowColor: 'black', 
+                                  shadowOffset: { width: 0, height: 2 }, 
+                                  shadowOpacity: 0.25,
+                                  shadowRadius: 4,}} 
+                                  activeOpacity={.8} 
+                                  onPress={() => handleOpenPopup('nelaton')} 
+                                  className="bg-main-blue flex-1 rounded-xl max-h-[96px] p-[15px] relative">
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">Нелатон</Text>
             <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[10px]">{naletonAmount}шт.</Text>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">Через 3 дня останется 0шт.</Text>
@@ -50,7 +57,14 @@ const RestOf = () => {
             <ControllCatetor width={25} color={'#ffff'}/>
             </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={.8} onPress={() => handleOpenPopup('foley')} className="bg-purple-button flex-1 rounded-xl max-h-[96px] p-[15px] relative">
+        <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
+                                  shadowColor: 'black', 
+                                  shadowOffset: { width: 0, height: 2 }, 
+                                  shadowOpacity: 0.25,
+                                  shadowRadius: 4,}} 
+                                  activeOpacity={.8}
+                                  onPress={() => handleOpenPopup('foley')}
+                                  className="bg-purple-button flex-1 rounded-xl max-h-[96px] p-[15px] relative">
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">Фолея</Text>
             <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[10px]">{foleyAmount}шт.</Text>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">Через 3 дня останется 0шт.</Text>

@@ -1,8 +1,8 @@
 import { View, ScrollView} from "react-native";
 import { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import { Dropdown } from "react-native-element-dropdown";
 
 import { DropDown } from "../../assets/images/icons";
 
@@ -165,30 +165,25 @@ const printToFile = async () => {
   return (
     <MainLayout title="Дневник мочеиспускания">
       {/* Выбор месяца | Отображение нынешнего месяца */}
-      <View className="mb-4 relative p-0 m-0">
-        <Picker
-          mode="dropdown"
-          selectedValue={month.month}
-          onValueChange={(itemValue, index) =>
-            setSelectedMonth({ month: itemValue, index: index })
-          }
-        >
-          {months.map((e, index) => (
-            <Picker.Item
-              fontFamily="geometria-regular"
-              key={index}
-              style={{ fontSize: 12, lineHeight: 15 }}
-              label={e.value}
-              value={e.value}
-            />
-          ))}
-        </Picker>
-        <View className="p-1 absolute left-[20%] bottom-[14px]">
-          <DropDown />
-        </View>
-        <View className="absolute right-0 w-12 h-12 p-3 bg-[#ffff]"></View>
-      </View>
-      {/* календарь */}
+      <Dropdown
+        data={months}
+        style={{width:80, marginBottom:4}}
+        fontFamily="geometria-regular"
+        maxHeight={300}
+        labelField="value"
+        valueField="value"
+        placeholder={month.month}
+        searchPlaceholder="Поиск месяца"
+        containerStyle={{width:200}}
+        autoScroll
+        search
+        value={month.month}
+        accessibilityLabel={month.month}
+        renderRightIcon={() => <DropDown/>}
+        onChange={item => {
+          setSelectedMonth({month: item.value, index: item.index});
+      }}
+      />
       <JournalCalendar month={month} setSelectedMonth={setSelectedMonth} />
       {/* list */}
       <ScrollView className="flex-1 overflow-hidden">

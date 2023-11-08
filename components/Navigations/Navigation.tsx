@@ -28,7 +28,7 @@ const Navigation = () => {
 
     const userData = useAppSelector(isExist => isExist.appStateSlice.isExist);
 
-  return (
+  return (// все роуты стоят по порядку их повяления при загрузке приложения
     <NavigationContainer>
         <Stack.Navigator initialRouteName={userData ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
 

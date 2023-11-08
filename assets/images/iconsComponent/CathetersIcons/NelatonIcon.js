@@ -1,6 +1,6 @@
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 
-const ControllCatetorColorful = () => (
+const NelatonIcon = () => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={28}
@@ -143,4 +143,4 @@ const ControllCatetorColorful = () => (
     </Defs>
   </Svg>
 )
-export default ControllCatetorColorful;
+export default NelatonIcon;

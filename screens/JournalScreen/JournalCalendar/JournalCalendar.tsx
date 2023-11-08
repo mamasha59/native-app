@@ -12,6 +12,8 @@ interface iJournalCalendar {
 }
 
 const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
+  console.log(month);
+  
 
     const scrollViewRef = useRef<ScrollView>(null);
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления

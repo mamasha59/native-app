@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator} from "react-native";
 
-import ControllCatetorColorful from "../../../assets/images/iconsComponent/ControllCatetorColorful";
+import NelatonIcon from "../../../assets/images/iconsComponent/CathetersIcons/NelatonIcon";
 import ModalWindow from "../../../components/Modal/Modal";
 import { useAppSelector } from "../../../store/hooks";
+import FolleyIcon from "../../../assets/images/iconsComponent/CathetersIcons/FoleyIcon";
 
 const IntervalInfo = () => {
 
@@ -46,7 +47,7 @@ const IntervalInfo = () => {
               </Text>
             </View>
             <View className="border border-[#4babc550] rounded-full items-center justify-center flex-1 max-w-[44px] max-h-[44px]">
-              <ControllCatetorColorful/>
+              {userData.catheterType === 'Нелатон' ? <NelatonIcon/> : <FolleyIcon/>}
             </View>
           </View>
 

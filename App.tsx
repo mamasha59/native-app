@@ -26,7 +26,7 @@ export default function App() {
 
     if (!fontsLoader) return null;
 
-  return (// все роуты стоят по порядку их повяления при загрузке приложения
+  return (
   <Provider store={store}>
     <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
 

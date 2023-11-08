@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 
 import UserInfo from "./UserInfo/UserInfo";
 import MainLayout from '../../../Layouts/MainLayout/MainLayout';
@@ -12,11 +12,12 @@ interface iProfileScreen extends NavigationPropsProfileStack<'ProfileScreen'>{}
 const ProfileScreen = ({navigation}:iProfileScreen) => {
 
   const removeProfile = async () => { // удаление инфы из локал стореджа, временно для разработки
+    Alert.alert('Закройте приложение, и откройте снова')
     persistor.purge();
   }
 
   const handleButtonChangeProfile = () => {
-    navigation.navigate('ChangeProfileScreen')
+    navigation.navigate('ChangeProfileScreen');
   }
 
   return (

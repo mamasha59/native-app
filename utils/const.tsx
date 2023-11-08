@@ -1,7 +1,11 @@
 const sex = ['Женский', 'Мужской', 'Мальчик', 'Девочка'];
 const catheters = ['Нелатон', 'Фоллея'];
 
-const generateEvenNumbersOfSize = () => { // генерируем только четные числа от 6 до 30
+const whyLeakageHappenedReasons = [
+    'В Состоянии покоя', 'Кашель', 'Физическая активность'
+  ]
+
+const generateEvenNumbersOfSize = () => { // генерируем только четные числа от 6 до 30 размера катетора
     const evenNumbers = [];
     for (let i = 6; i <= 30; i +=2) {
         evenNumbers.push(i)            
@@ -10,5 +14,5 @@ const generateEvenNumbersOfSize = () => { // генерируем только �
 }
 
 export {
-    sex, catheters, generateEvenNumbersOfSize
+    sex, catheters, generateEvenNumbersOfSize, whyLeakageHappenedReasons
 };

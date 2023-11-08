@@ -6,11 +6,12 @@ interface iModalSelect {
     options: string[] | number[];
     onItemPress: (item: any) => void;
     title: string;
+    children?: any,
 }
 
 const windowWidth = Dimensions.get('window').width;
 
-const ModalSelect = ({setOpenModal, openModal, options: data, onItemPress, title}:iModalSelect) => {
+const ModalSelect = ({setOpenModal, openModal, options: data, onItemPress, title, children}:iModalSelect) => {    
   return (
     <Modal
         transparent={true}
@@ -24,10 +25,11 @@ const ModalSelect = ({setOpenModal, openModal, options: data, onItemPress, title
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center mb-6">{title}</Text>
                 <View className="flex-row gap-4 flex-wrap justify-center">
                     {data.map(item =>
-                    <TouchableOpacity key={item} className={`min-w-[35px] bg-main-blue flex-grow-0`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
+                    <TouchableOpacity key={item} className={`min-w-[35px] bg-main-blue flex-grow-0 w-full`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
                         <Text style={{fontFamily:'geometria-bold'}} className="text-[#ffff] p-2 text-base text-center">{item}</Text>
                     </TouchableOpacity>
                     )}
+                    {children}
                 </View>
             </View>
         </Pressable>

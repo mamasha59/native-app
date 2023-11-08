@@ -12,7 +12,6 @@ import { setUserData } from "../../../store/slices/createUserSlice";
 
 interface iChangeProfileScreen extends NavigationPropsProfileStack<'ChangeProfileScreen'>{}
 
-
 const ChangeProfileScreen = ({navigation}:iChangeProfileScreen) => {
     const userData = useAppSelector(user => user.user);
     const  dispatch = useAppDispatch();
@@ -59,33 +58,34 @@ const ChangeProfileScreen = ({navigation}:iChangeProfileScreen) => {
                 <InputChangeProfile control={control} inputData={userData.age} name={"age"} placeholder="Возраст" prefix={"год"} key={"age"}/>
 
                 <InputChangeProfile control={control} inputData={userData.volume} name={"volume"} placeholder="Обьем мочевого музыря" prefix={"мл"} key={"volume"}/>
-
-                <TouchableOpacity onPress={() => setOpenModalSelectCatheter(!openModalSelectCatheter)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full border border-main-blue rounded-[10px] relative">
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-sm text-main-blue">{values.catheterType}</Text>
-                    <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
-                        Тип катетера
-                    </Text>
-                    <ModalSelect
-                        onItemPress={onSelectCathetor}
-                        openModal={openModalSelectCatheter}
-                        options={catheters}
-                        setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
-                        title={'Тип катететора*'}/>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => setOpenModalSelectSize(!openModalSelectSize)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full border border-main-blue rounded-[10px] relative">
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-sm text-main-blue">{values.catheterSize}</Text>
-                    <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
-                        Размер катетора
-                    </Text>
-                    <ModalSelect
-                        onItemPress={onSelectCathetorSize}
-                        openModal={openModalSelectSize}
-                        options={generateEvenNumbersOfSize()}
-                        setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                        title={'Размер катетера Ch/Fr'}/>
-                </TouchableOpacity>
                 
+                <View className="border border-main-blue rounded-[10px]">
+                    <TouchableOpacity onPress={() => setOpenModalSelectCatheter(!openModalSelectCatheter)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full items-center">
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue">{values.catheterType}</Text>
+                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
+                            Тип катетера
+                        </Text>
+                        <ModalSelect
+                            onItemPress={onSelectCathetor}
+                            openModal={openModalSelectCatheter}
+                            options={catheters}
+                            setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
+                            title={'Тип катететора*'}/>
+                    </TouchableOpacity>
+                    <View className="border border-purple-button w-1/2 items-center mx-auto"></View>
+                    <TouchableOpacity onPress={() => setOpenModalSelectSize(!openModalSelectSize)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full items-center">
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue">{values.catheterSize} Ch/Fr</Text>
+                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
+                            Размер катетора
+                        </Text>
+                        <ModalSelect
+                            onItemPress={onSelectCathetorSize}
+                            openModal={openModalSelectSize}
+                            options={generateEvenNumbersOfSize()}
+                            setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
+                            title={'Размер катетера Ch/Fr'}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     </MainLayout>

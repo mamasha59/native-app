@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
-    leakageReason: ''
+    leakageReason: '',
+    intervalCatheterTime: null,
 }
 
 const journalDataSlice = createSlice({

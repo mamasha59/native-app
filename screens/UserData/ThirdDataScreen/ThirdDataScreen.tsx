@@ -22,7 +22,6 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const minDate = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1); // Минимальная дата через 1 день
     const maxDate = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 31); // Максимальная дата через 31 день
   
-    const [intervalTime, setIntervalTime] = useState<Date>(new Date());
     const [timeText, setTimeText] = useState<string>('')
 
     const dispatch = useAppDispatch();
@@ -52,21 +51,20 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     };
     
     const handleConfirmInterval = (date: Date) => {
-        const currentDate = date || intervalTime;
-        setIntervalTime(currentDate);
+        const currentDate = date || day;
 
         let tempDate = new Date(currentDate);
-        console.log(tempDate);
+        console.log(tempDate.getTime());
         
         let time;
         // Рассчитываем разницу в миллисекундах между выбранной датой (tempDate) и текущей датой (today)
-        let timeDifference = tempDate.getTime() - day.getTime();
+        let timeDifference = tempDate.getTime() - date.getTime();
         // Рассчитываем количество миллисекунд в одном дне
         let millisecondsInDay = 24 * 60 * 60 * 1000;
         // Рассчитываем количество дней, разделив разницу на количество миллисекунд в дне
         let daysDifference = Math.floor(timeDifference / millisecondsInDay);
         const hoursMinutes = ' Часы: ' + tempDate.getHours() + ' | Минуты: ' + tempDate.getMinutes();
-
+   
         if (wichCatheter === 'Фоллея') {
           time = 'Дни: ' + daysDifference + ' |' + hoursMinutes;
         } else {
@@ -96,7 +94,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
             mode={wichCatheter === 'Фоллея' ? 'datetime' : 'time'}
             onConfirm={handleConfirmInterval}
             onCancel={hideDatePicker}
-            is24Hour={true}
+            is24Hour={wichCatheter === 'Фоллея' && true}
             minimumDate={wichCatheter === 'Фоллея' ? minDate : undefined}
             maximumDate={wichCatheter === 'Фоллея' ? maxDate : undefined}/>
         </>

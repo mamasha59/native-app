@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ActivityIndicator } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { persistor, store } from './store/store';
 import GradientBackground from './Layouts/GradientBackground/GradientBackground';
@@ -29,16 +30,16 @@ export default function App() {
   return (
   <Provider store={store}>
     <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-
-      <SafeAreaProvider onLayout={onLayoutRootView}>
-        <GradientBackground>
-          <SafeAreaView className="flex-1 h-full">
-          <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-            <Navigation/>
-          </SafeAreaView>
-        </GradientBackground>
-      </SafeAreaProvider>
-      
+      <RootSiblingParent>
+        <SafeAreaProvider onLayout={onLayoutRootView}>
+          <GradientBackground>
+            <SafeAreaView className="flex-1 h-full">
+            <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+              <Navigation/>
+            </SafeAreaView>
+          </GradientBackground>
+        </SafeAreaProvider>
+      </RootSiblingParent>
     </PersistGate>
   </Provider>
   );

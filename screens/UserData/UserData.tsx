@@ -9,13 +9,13 @@ import FirstOptionalScreen from "./OptionalScreens/FirstOptionalScreen/FirstOpti
 import SecondOptionalScreen from "./OptionalScreens/SecondOptionalScreen/SecondOptionalScreen";
 import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOptionalScreen";
 
-import { RootStacNativeParamList } from "../../App";
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
 import Slider from "../Slider/Slider";
+import { RootStacNativeParamList } from "../../components/Navigations/Navigation";
 
 export type RootStackParamList = {
-  FirstDataScreen: { cameFrom?:string };
-  SecondDataScreen: { cameFrom?:string };
+  FirstDataScreen: { cameFrom?: string };
+  SecondDataScreen: { cameFrom? :string };
   ThirdDataScreen: undefined;
   FirstOptionalScreen: undefined;
   SecondOptionalScreen: undefined;

@@ -9,6 +9,7 @@ import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 import { catheters, generateEvenNumbersOfSize } from "../../../utils/const";
 import { NavigationPropsProfileStack } from "..";
 import { setUserData } from "../../../store/slices/createUserSlice";
+import NelatonIcon from "../../../assets/images/iconsComponent/CathetersIcons/NelatonIcon";
 
 interface iChangeProfileScreen extends NavigationPropsProfileStack<'ChangeProfileScreen'>{}
 
@@ -59,10 +60,10 @@ const ChangeProfileScreen = ({navigation}:iChangeProfileScreen) => {
 
                 <InputChangeProfile control={control} inputData={userData.volume} name={"volume"} placeholder="Обьем мочевого музыря" prefix={"мл"} key={"volume"}/>
                 
-                <View className="border border-main-blue rounded-[10px]">
-                    <TouchableOpacity onPress={() => setOpenModalSelectCatheter(!openModalSelectCatheter)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full items-center">
+                <View className="border border-main-blue rounded-[10px] relative flex-1 justify-center items-center">
+                    <TouchableOpacity onPress={() => setOpenModalSelectCatheter(!openModalSelectCatheter)} activeOpacity={.6} className="py-[15px] px-5 w-full items-center">
                         <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue">{values.catheterType}</Text>
-                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
+                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-black">
                             Тип катетера
                         </Text>
                         <ModalSelect
@@ -72,10 +73,12 @@ const ChangeProfileScreen = ({navigation}:iChangeProfileScreen) => {
                             setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
                             title={'Тип катететора*'}/>
                     </TouchableOpacity>
-                    <View className="border border-purple-button w-1/2 items-center mx-auto"></View>
-                    <TouchableOpacity onPress={() => setOpenModalSelectSize(!openModalSelectSize)} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full items-center">
+                    <View className="p-3 -my-2 justify-center items-center border rounded-full border-border-color">
+                        <NelatonIcon/>
+                    </View>
+                    <TouchableOpacity onPress={() => setOpenModalSelectSize(!openModalSelectSize)} activeOpacity={.6} className="py-[15px] px-5 w-full items-center">
                         <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue">{values.catheterSize} Ch/Fr</Text>
-                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-grey">
+                        <Text style={{fontFamily:'geometria-regular'}} className="text-[10px] leading-3 mt-[5px] text-black">
                             Размер катетора
                         </Text>
                         <ModalSelect

@@ -11,6 +11,8 @@ const IntervalInfo = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false); // состояние попапа
   const [savedValue, setSavedValue] = useState<string>(''); // сохраняем введенное значение после очистки инпута
   const [inputValue, setInputValue] = useState<string>(''); // значение инпута
+  
+  const userData = useAppSelector(user => user.user);
 
   const handleChangeCatetor = (value:string) => {
      // Используем регулярное выражение для удаления всех символов, кроме цифр
@@ -18,8 +20,6 @@ const IntervalInfo = () => {
       setInputValue(numericValue);
   }
 
-  const userData = useAppSelector(user => user.user); 
-  
   const handleClosePopup = () => { // закрыть попап
     setSavedValue(inputValue);
     setModalVisible(false);
@@ -51,7 +51,7 @@ const IntervalInfo = () => {
             </View>
           </View>
 
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity className="flex-1 ml-5" onPress={() => setModalVisible(true)}>
             <Text style={{fontFamily:'geometria-bold'}} className="bg-[#4babc528] px-[10px] py-[6px] rounded-[89px] max-w-[200px] text-center text-main-blue">
               {+savedValue <= 0 ? 'Введите кол-во катеторов' : `остаток ${savedValue} шт `}
             </Text>

@@ -11,13 +11,15 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import ModalSelect from '../../components/ModalSelect/ModalSelect';
 import { whyLeakageHappenedReasons } from '../../utils/const';
 import { whyLeakageHappened } from '../../store/slices/journalDataSlice';
+import ShowToast from '../../components/ShowToast/ShowToast';
 
 const HomeScreen = () => {
   const [modalFluidVisible, setModalFluidVisible] = useState<boolean>(false); // состояние модального окна Подтекание
   const [modalLeakageVisible, setModalLeakageVisible] = useState<boolean>(false); // состояние модального окна Учет випитой жидкости
 
   const [inputLeakageValue, setInputLeakageValue] = useState<string>('');
-
+  const [toastOpened, setToastOpened] = useState<boolean>(false);  // состояние тоста
+  
   const catheter = useAppSelector(data => data.user.catheterType);
   const dispatch = useAppDispatch();
 
@@ -27,16 +29,22 @@ const HomeScreen = () => {
     if (catheter === 'Нелатон') setModalLeakageVisible(!modalLeakageVisible);
   }
 
+  const closeModalOpenToast = () => { // общая функция Закрытия попапа, Показ тоста
+    setModalLeakageVisible(!modalLeakageVisible);
+    setInputLeakageValue('');
+    setToastOpened(true);
+  }
+
   const handlePressReasonItem = (reason:string) => { // при нажатии на причину Подтекания, когда попап открыт
     dispatch(whyLeakageHappened(reason));
-    setModalLeakageVisible(!modalLeakageVisible);
+    closeModalOpenToast();
   }
 
   const handleInput = () => { // при нажатии кнопки Ок
     dispatch(whyLeakageHappened(inputLeakageValue));
-    setModalLeakageVisible(!modalLeakageVisible);
-    setInputLeakageValue('');
+    closeModalOpenToast();
   }
+
   return (
     <MainLayout>
       <DoubleTapToClose/>
@@ -53,7 +61,7 @@ const HomeScreen = () => {
       </View>
 
       <ModalSelect onItemPress={handlePressReasonItem} openModal={modalLeakageVisible} options={whyLeakageHappenedReasons} setOpenModal={setModalLeakageVisible} title='Подтекание случилось:' key={'Подтекание'}>
-        <View className='flex-1 w-full'>
+        <View className='w-full'>
           <TextInput
             inputMode='text'
             multiline
@@ -73,6 +81,7 @@ const HomeScreen = () => {
       </ModalSelect>
 
       <ModalLiquidAmount modalVisible={modalFluidVisible} setModalVisible={setModalFluidVisible} key={'Учет выпитой жидкости'}/>
+      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохраненно!' key={'Подтекание-тоаст'}/>
     </MainLayout>
   );
 };

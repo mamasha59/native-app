@@ -21,11 +21,11 @@ const ModalSelect = ({setOpenModal, openModal, options: data, onItemPress, title
         key={title}
         >
         <Pressable onPress={(event) => event.target === event.currentTarget && setOpenModal(false)} className="justify-center px-4 flex-1 bg-[#10101035]">
-            <View style={{width:windowWidth * 0.3}} className="relative min-w-[315px] mx-auto bg-[#ffff] p-10">
+            <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center mb-6">{title}</Text>
-                <View className="flex-row gap-4 flex-wrap justify-center">
+                <View className="flex-row flex-wrap justify-center gap-3 items-center">
                     {data.map(item =>
-                    <TouchableOpacity key={item} className={`min-w-[35px] bg-main-blue flex-grow-0 w-full`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
+                    <TouchableOpacity key={item} className={`min-w-[35px] bg-main-blue rounded-lg mb-3`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
                         <Text style={{fontFamily:'geometria-bold'}} className="text-[#ffff] p-2 text-base text-center">{item}</Text>
                     </TouchableOpacity>
                     )}

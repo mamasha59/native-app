@@ -17,7 +17,7 @@ const InputChangeProfile = ({inputData, control, name, prefix, placeholder}:iInp
     const focusInput = () =>  inputRef.current && inputRef.current.focus();
 
   return (
-    <TouchableOpacity onPress={focusInput} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full border border-main-blue rounded-[10px] relative">
+    <TouchableOpacity onPress={focusInput} activeOpacity={.6} className="py-[15px] px-5 mb-[10px] w-full border border-main-blue rounded-[10px] relative flex-1">
         <View className="flex-row items-center">
             <Controller
                 control={control}

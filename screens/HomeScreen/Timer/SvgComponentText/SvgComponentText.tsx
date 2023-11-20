@@ -5,12 +5,21 @@ const r = 140;
 const cx = 150;
 const cy = 150;
 
-export const SvgComponentText = () => {
+interface iSvgComponentText {
+  start: boolean;
+  initial: number;
+  partTime: {
+    firstPartTime: boolean,
+    secondPartTime: boolean,
+    thirdPartTime: boolean
+  }
+}
 
+export const SvgComponentText = ({start, initial, partTime}:iSvgComponentText) => {
+  
   return (
-  <Svg height="100%" width="100%" viewBox="0 0 300 300">
+  <Svg height="327" width="327" viewBox="0 0 300 300">
   {/* КРУГ С DASHED ПОЛОСКИ */}
-    <G>
     <Circle
       r={r}
       cx={cx}
@@ -20,42 +29,77 @@ export const SvgComponentText = () => {
       strokeDasharray={[1,7]}
       strokeWidth={strokeWidth}
     />
-    </G>
   {/* КРУГ С ТЕКСТОМ */}
-      <G id="circle">
-        <Circle
-          r={100}
-          x={150}
-          y={150}
-          fill="none"
-          stroke="#ffffff"
-        />
+    <G id="circle">
+      <Circle
+        r={100}
+        x={150}
+        y={150}
+        fill="none"
+        stroke="#ffffff"
+      /> 
 
-      <Text fill="#7b7777" fontSize="11">
+    <G fill={partTime.firstPartTime ? "#048eff" : "#7b7777"}>
+      <Text fontSize="11">
         <TextPath href="#circle" >
           <TSpan dy={-22} >
             о п т и м а л ь н ы й
           </TSpan>
         </TextPath>
       </Text>
+      {Array(Math.floor(initial)) // 105
+          .fill(null)
+          .map((_, index) => (
+            <Text
+              key={index}
+              fill={!start ? "#ff0707" : "#ff0505"}
+              fontSize="14"
+              dy={-36}
+              dx={2.8 + index * 6}>
+            <TextPath href="#circle" >
+                |
+            </TextPath>
+          </Text>
+          ))
+      }
+      <Text fontSize="22"dy={-32} dx={-2.3}>
+        <TextPath href="#circle" >
+            |
+        </TextPath>
+      </Text>
+    </G>
 
-      <Text fill="#77787B" fontSize="11">
-        <TextPath href="#circle" startOffset={200}>
-          <TSpan dy={-24}>
+    <G fill={partTime.secondPartTime ? "#FFB254" : "#7b7777"}>
+      <Text>
+        <TextPath href="#circle" startOffset={210}>
+          <TSpan fontSize="11" dy={-24}>
             н о р м а л ь н ы й
           </TSpan>
         </TextPath>
       </Text>
+      <Text fontSize="22" dy={110} dx={203} translateY={129} translateX={-69}>
+        <TextPath href="#circle" >
+            |
+        </TextPath>
+      </Text>
+    </G>
 
-      <Text fill="#77787B" fontSize="11">
+    <G fill={partTime.thirdPartTime ? "#ff0404" : "#7b7777"}>
+      <Text fontSize="11">
         <TextPath href="#circle" startOffset={420}>
           <TSpan dy={-22}>
             к р и т и ч е с к и й  и н т е р в а л
           </TSpan>
         </TextPath>
       </Text>
-      </G>
+      <Text fontSize="22" dy={118} dx={100} translateY={-112} translateX={-67}>
+        <TextPath href="#circle" >
+            |
+        </TextPath>
+      </Text>
+    </G>
 
-    </Svg>
+    </G>
+  </Svg>
    )
 }

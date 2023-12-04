@@ -8,17 +8,17 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { ActivityIndicator } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-import { persistor, store } from './store/store';
-import GradientBackground from './Layouts/GradientBackground/GradientBackground';
-import Navigation from './components/Navigations/Navigation';
+import { persistor, store } from './src/store/store';
+import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
+import Navigation from './src/components/Navigations/Navigation';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
 
   const [fontsLoader] = useFonts({  // загружаем шрифт
-    'geometria-bold' : require('./assets/fonts/geometria-bold.ttf'),
-    'geometria-regular' : require('./assets/fonts/geometria-regular.ttf')
+    'geometria-bold' : require('./src/assets/fonts/geometria-bold.ttf'),
+    'geometria-regular' : require('./src/assets/fonts/geometria-regular.ttf')
     });
     
   const onLayoutRootView = useCallback(async () => { // работа загрузочного экрана

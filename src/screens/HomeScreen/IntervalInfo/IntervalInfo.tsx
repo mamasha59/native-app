@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator} from "react-native";
 
 import NelatonIcon from "../../../assets/images/iconsComponent/CathetersIcons/NelatonIcon";
@@ -8,15 +8,33 @@ import FolleyIcon from "../../../assets/images/iconsComponent/CathetersIcons/Fol
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 
 const IntervalInfo = () => {
-
   const [modalVisible, setModalVisible] = useState<boolean>(false); // состояние попапа
   const [inputValue, setInputValue] = useState<string>(''); // значение инпута
-  
+  const [textInterval, setTextInterval] = useState<string>('');
+
   const userData = useAppSelector(user => user.user);
   const userJournal = useAppSelector(user => user.journal);
   const useDispatch = useAppDispatch();
 
   const cathether = userData.catheterType === 'Нелатон';
+
+  useEffect(() => {
+    if (userData.interval) {
+      const interval = userData.interval.split('.');
+      if (userData.catheterType === 'Фоллея') {
+        const days = +interval[0] === 0 ? '' : `${interval[0]} д. `;
+        const hours = +interval[1] === 0 ? '' : `${interval[1]} ч.`;
+        const minutes = +interval[2] === 0 ? '' : `${interval[2]} мин.`;
+        const connectedString = days + hours + minutes;
+        setTextInterval(connectedString);
+      } else {
+        const hours = +interval[0] === 0 ? '' : `${interval[0]} ч. `;
+        const minutes = +interval[1] === 0 ? '' : `${interval[1]} мин.`;
+        const connectedString = hours + minutes;
+        setTextInterval(connectedString);
+      }
+    }
+  },[userData.interval, userData.catheterType])
 
   const handleChangeCatetor = (value:string): void => {// Используем регулярное выражение для удаления всех символов, кроме цифр
       const numericValue = value.replace(/\D/g, ''); // \D соответствует всем не-цифровым символам
@@ -42,15 +60,17 @@ const IntervalInfo = () => {
       <View className="flex-1 relative">
         <View className="mr-[14px]">
           <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-[5px] text-black">
-          {!userData ? <ActivityIndicator size="small" color="#4BAAC5" />
+          {!userData 
+                ? <ActivityIndicator size="small" color="#4BAAC5"/>
                 : userData.catheterType || "Выберите катетор"}
           </Text>
           <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">
-          {!userData ? <ActivityIndicator size="small" color="#4BAAC5" />
-                : 'каждые ' + userData.interval + ' ч.' || "Интервал не задан"}
+          {!userData 
+                ? <ActivityIndicator size="small" color="#4BAAC5"/>
+                : `каждые ${textInterval}` || "Интервал не задан"}
           </Text>
         </View>
-        <View className="absolute top-0 flex-1 right-2 border border-[#4babc550] rounded-full items-center p-2">
+        <View className="absolute -top-1 flex-1 right-0 border border-[#4babc550] rounded-full items-center p-2">
           {cathether ? <NelatonIcon/> : <FolleyIcon/>}
         </View>
       </View>

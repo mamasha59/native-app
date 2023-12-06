@@ -17,6 +17,7 @@ export type NavigationPropsRecomendations<RouteName extends keyof RootRecomendat
 const Stack = createNativeStackNavigator<RootRecomendationsStack>();
 
 const RecomendationsStack = () => {
+  
   return (
     <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='RecomendationsScreen'>
       <Stack.Screen name="RecomendationsScreen" component={RecomendationsScreen} />

@@ -5,7 +5,7 @@ import WheelPicker from 'react-native-wheely';
 
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setUserData } from "../../../store/slices/createUserSlice";
 
 import { catheters } from "../../../utils/const";
@@ -15,15 +15,23 @@ import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
 const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
-//TODO сделать для катетора фолея
+// TODO разбить по компонентам
+// TODO сделать модалку для интервалов
     const [openModalUseAtNight, setOpenModalUseAtNight] = useState<boolean>(false);         // состояние попапа использование на ночь
     const [openModalSelectCatheter, setOpenModalSelectCatheter] = useState<boolean>(false); // состояние попапа Тип катетора
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
 
-    const [selectedIndexHour, setSelectedIndexHour] = useState<number>(3); 
-    const [selectedIndexMinutes, setSelectedIndexMinutes] = useState<number>(0);
-    
+    const [interval, setInterval] = useState<{selectedIndexDays:number,selectedIndexHour:number,selectedIndexMinutes:number}>({
+        selectedIndexDays: 0,
+        selectedIndexHour: 3,
+        selectedIndexMinutes: 0,
+    })
+
     const dispatch = useAppDispatch();
+    const wichСatheter = useAppSelector(state => state.user.catheterType);
+    
+    const isFolley = wichСatheter === 'Фоллея';
+    const textDaysFolley = isFolley ? `каждые ${interval.selectedIndexDays + 1} д.` : '';
 
     const { handleSubmit, setValue, watch} = useForm({
         defaultValues: {
@@ -35,10 +43,15 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const inputsValue = watch(); // состояние инпута при его изменении
 
     useEffect(() => {
-        const convert = (selectedIndexHour + 1) + '.' + selectedIndexMinutes;              
+        let convert;
+        if(isFolley) {
+            convert = (interval.selectedIndexDays + 1) + '.' + (isFolley ? interval.selectedIndexHour : interval.selectedIndexHour + 1) + '.' + interval.selectedIndexMinutes;
+        } else {
+            convert = (interval.selectedIndexHour + 1) + '.' + interval.selectedIndexMinutes;
+        }
         setValue('interval', convert);        
-    }, [selectedIndexHour,selectedIndexMinutes]);
-    
+    }, [interval.selectedIndexHour, interval.selectedIndexMinutes, interval.selectedIndexDays]);
+
     const onSelectUrineMeasure = (isCount:string) => { // при выбора из попапа Измерение мочи на ночь
         setValue('urineMeasure', isCount); // записываем значение пола из попапа
         setOpenModalUseAtNight((prevValue) => !prevValue);
@@ -49,37 +62,76 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
         setOpenModalSelectCatheter((prevValue) => !prevValue);
     }
     
-    const generateNumbersArray = ():string[] => { // массив строковых чисел секунд
+    const generateSecondsArray = ():string[] => {
         let numbersArray:string[] = [];
         for (let i = 0; i <= 59; i++) {
           numbersArray.push(i.toString());
         }
         return numbersArray;
-      }
-    const numbers = generateNumbersArray();
+    }
+    const numbers = generateSecondsArray(); // массив строковых чисел секунд ['1','2'...]
 
-    const onSubmit = (data:any) => { // при нажатии кнопки Продолжить
+    const generateDaysArray = ():string[] => { 
+        let numbersArray:string[] = [];
+        for (let i = 1; i <= 31; i++) {
+          numbersArray.push(i.toString());
+        }
+        return numbersArray;
+    }
+    const days = generateDaysArray();// массив строковых чисел дней ['1','2'...]
+
+    const hours = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] // массив часов
+    if (isFolley) hours.unshift('0');
+
+    const onSubmit = (data:any) => {
         dispatch(setUserData(data));
         navigation.navigate('FirstOptionalScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
-     }
+    }
 
   return (
     <WelcomeLayout index={3} title="Введите свои данные" buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)} scrollable={false}>
-        <>{/* попап выбор Интервалы */}
+        <>
         <ButtonSelect
-            inputValue={'каждые '+ (selectedIndexHour + 1) + ' ч. ' + selectedIndexMinutes + ' мин.'}
+            inputValue={`${textDaysFolley} ${isFolley ? interval.selectedIndexHour : interval.selectedIndexHour + 1} ч. ${interval.selectedIndexMinutes} мин.`}
             openModal={isDatePickerVisible}
             placeholder={'Интервалы'}
             setOpenModal={() => setDatePickerVisibility(!isDatePickerVisible)}
             key={'Интервалы'}
         />
         <View className={`-mt-10 flex-row justify-center ${!isDatePickerVisible && 'hidden'}`}>
+            {/* ДНИ */}
+            {textDaysFolley && 
+            <View className="flex-row items-center"> 
+                <WheelPicker
+                    itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
+                    selectedIndex={interval.selectedIndexDays!}
+                    options={days}
+                    onChange={(index) => 
+                        setInterval({
+                            selectedIndexDays: index,
+                            selectedIndexHour: interval.selectedIndexHour,
+                            selectedIndexMinutes:interval.selectedIndexMinutes})
+                        }
+                    containerStyle={{width:60}}
+                    selectedIndicatorStyle={{backgroundColor:'#4babc573'}}
+                />
+                <View>
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">д.</Text>
+                </View>
+            </View>
+            }
+            {/* ЧАСЫ */}
             <View className="flex-row items-center">
                 <WheelPicker
                     itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
-                    selectedIndex={selectedIndexHour}
-                    options={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']}
-                    onChange={(index) => setSelectedIndexHour(index)}
+                    selectedIndex={interval.selectedIndexHour!}
+                    options={hours}
+                    onChange={(index) =>
+                        setInterval({
+                            selectedIndexHour: index,
+                            selectedIndexDays:interval.selectedIndexDays,
+                            selectedIndexMinutes:interval.selectedIndexMinutes})
+                        }
                     containerStyle={{width:55}}
                     selectedIndicatorStyle={{backgroundColor:'#4babc573'}}
                 />
@@ -87,12 +139,18 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                     <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">ч.</Text>
                 </View>
             </View>
+            {/* МИНУТЫ */}
             <View className="flex-row items-center">
                 <WheelPicker
                     itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
-                    selectedIndex={selectedIndexMinutes}
+                    selectedIndex={interval.selectedIndexMinutes!}
                     options={numbers}
-                    onChange={(index) => setSelectedIndexMinutes(index)}
+                    onChange={(index) =>
+                        setInterval({
+                            selectedIndexMinutes: index,
+                            selectedIndexDays:interval.selectedIndexDays,
+                            selectedIndexHour:interval.selectedIndexHour})
+                        }
                     containerStyle={{width:65}}
                     selectedIndicatorStyle={{backgroundColor:'#4babc573'}} decelerationRate={"normal"}
                 />

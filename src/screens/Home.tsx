@@ -12,6 +12,7 @@ import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import RecomendationsStack from './RecomendationsStack/index';
+import { useState } from 'react';
 
 
 export type RootStackParamList = {
@@ -19,7 +20,7 @@ export type RootStackParamList = {
   ControlСatheter: undefined;
   Home: undefined;
   JournalScreen: undefined;
-  RecomendationsStack: undefined;
+  RecomendationsStack: {isLoading:boolean};
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -31,7 +32,7 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function Home() {
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -99,6 +100,7 @@ export default function Home() {
       <Tab.Screen
         name='RecomendationsStack'
         component={RecomendationsStack}
+        initialParams={{isLoading}}
         options={{
           tabBarIcon: ({ color, size }) => (
             <RecomendationIcon width={size} color={color}/>

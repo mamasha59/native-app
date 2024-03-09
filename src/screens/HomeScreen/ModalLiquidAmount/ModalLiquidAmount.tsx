@@ -1,84 +1,107 @@
-import { Dispatch, SetStateAction, memo, useState } from "react";
+import { memo, useState } from "react";
 import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput, Pressable } from "react-native";
 import { Slider } from '@miblanchard/react-native-slider';
-import { ClosePopup } from "../../../assets/images/icons";
+import { v4 as uuidv4 } from 'uuid';
 
-interface iModalLiquidAmount {
-    setModalVisible: Dispatch<SetStateAction<boolean>>;
-    modalVisible: boolean;
-}
+import { ClosePopup } from "../../../assets/images/icons";
+import GlassIcon from "../../../assets/images/iconsComponent/GlassIcon";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
+import { ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
+
 const windowHeight = Dimensions.get('window').height;
 
-const ModalLiquidAmount = ({setModalVisible, modalVisible}:iModalLiquidAmount) => {
+const ModalLiquidAmount = () => {
 
-    const [liquidValue, setLiquidValue] = useState<number>(0); // значение полосы прокрутки
-    const [focusInput, setFocusInput] = useState<boolean>(false); // значение полосы прокрутки
+    const [liquidValue, setLiquidValue] = useState<number>(0);      // значение полосы прокрутки
+    const [focusInput, setFocusInput] = useState<boolean>(false);
+    const dispatch = useAppDispatch();                             // изменение состояние попапа
+    const statePopup = useAppSelector((state) => state.appStateSlice); // состояние попапа
 
-    const handleOnSubmitSave = () => {
-        setModalVisible(!modalVisible);
-        setLiquidValue(liquidValue);
-        console.log(liquidValue); // TODO отправляем данные в сторедж 
+    const handleOnSubmitSave = () => { // при нажатии на кнопку Сохранить изменения
+      dispatch(popupLiquidState(false));
+      if(liquidValue > 0) {
+        setLiquidValue(liquidValue);                //записываем значени жидкости в liquidValue
+        if(statePopup.ifCountUrinePopupLiquidState){                // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
+          dispatch(addUrineDiaryRecord({
+            id: uuidv4(),
+            catheterType:'Нелатон',
+            whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
+            amountOfReleasedUrine:liquidValue,
+            timeStamp: new Date().toISOString().slice(0,10),
+          }));
+          dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
+        }else{
+          dispatch(addUrineDiaryRecord({
+            id: uuidv4(),
+            whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
+            amountOfDrankFluids:liquidValue,
+            timeStamp: new Date().toISOString().slice(0,10),
+          }))
+        }
         setLiquidValue(0);  // сбрасываем рейдж при сабмите
-        setFocusInput(!focusInput);
+        setFocusInput(!focusInput); // убираем фокус с инпута
+      }
     }
 
     const closeByPressButton = () => {
-      setModalVisible(!modalVisible);
+      dispatch(popupLiquidState(false)); // закрываем попап
+      dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние, которое пользователь изменил на экране Timer при нажатии на кнопку, если пользователь выбрал измерение мочи
       setLiquidValue(0);  // сбрасываем рейдж при сабмите
       setFocusInput(!focusInput);
     }
-console.log('hi');
 
-    const handlePressCustomMl1 = (item:string) => {
+    const handlePressCustomMl1 = (item:string) => { // при нажатии на иконки с кол-вом мл
       if(item) setLiquidValue(+item) 
     }
-    const customMl = ['300','400','600','650','700']
+    const customMl = ['200','500','600'];
   return (
   <Modal
     transparent={true}
-    visible={modalVisible}
-    onRequestClose={() => {setModalVisible(!modalVisible)}}
+    visible={statePopup.open}
+    onRequestClose={closeByPressButton}
     animationType="fade">
-      <Pressable onPress={(event) => event.target === event.currentTarget && setModalVisible(false)} className="justify-end flex-1 bg-[#10101035]">
+      <Pressable onPress={(event) => event.target === event.currentTarget && closeByPressButton()} className="justify-end flex-1 bg-[#10101035]">
         <View style={{minHeight: windowHeight * 0.45}} className="bg-[#ffff] rounded-t-[30px] pt-10 pb-[30px] px-6">
-        <View>
-          <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-4 mb-3">Сколько вы выпили жидкости?</Text>
-
-          <View className="flex-row items-center py-2 flex-wrap gap-2">
-            {customMl.map((item, index) => 
-              <TouchableOpacity onPress={() => handlePressCustomMl1(item)} key={index} activeOpacity={.6} className="p-1 rounded-md bg-main-blue">
-                <Text style={{fontFamily:'geometria-regular'}} className="text-[#ffff]">{item} мл.</Text>
-              </TouchableOpacity>
-            )}
-          </View>
           <View>
-            <TextInput
-                style={{fontFamily:'geometria-regular'}}
-                keyboardType="numeric"
-                value={liquidValue.toString()}
-                maxLength={4}
-                onChangeText={value => +value > 1000 ? setLiquidValue(1000) : setLiquidValue(+value.replace(/[^0-9]/g, ""))}
-                onFocus={() => setFocusInput(!focusInput)}
-                className="border-b-[#DADADA] border-b w-1/2 outline-none"
-              />
-             <Text style={{fontFamily:'geometria-regular'}}>{focusInput ? 'просто начните вводить значение' : 'задать вручную'}</Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-4 mb-3">{statePopup.ifCountUrinePopupLiquidState ? 'Сколько ты выссал?' : 'Сколько вы выпили жидкости?'}</Text>
+
+            <View className="flex-row items-center py-2 flex-wrap gap-2">
+              {customMl.map((item, index) => 
+                <TouchableOpacity onPress={() => handlePressCustomMl1(item)} key={index} activeOpacity={.6} className="p-1 items-center border border-main-blue rounded-xl">
+                  <GlassIcon/> 
+                  <Text style={{fontFamily:'geometria-regular'}} className="text-[#000]">{item} мл.</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View>
+              <TextInput
+                  style={{fontFamily:'geometria-regular'}}
+                  keyboardType="numeric"
+                  value={liquidValue.toString()}
+                  maxLength={4}
+                  onChangeText={value => +value > 1000 ? setLiquidValue(1000) : setLiquidValue(+value.replace(/[^0-9]/g, ""))}
+                  onFocus={() => setFocusInput(!focusInput)}
+                  className="border-b-[#DADADA] border-b w-1/2 outline-none"
+                />
+              <Text style={{fontFamily:'geometria-regular'}}>{focusInput ? 'просто начните вводить значение' : 'задать вручную'}</Text>
+            </View>
           </View>
-        </View>
 
           <View className={`flex-1 justify-center pt-6`}>
-                <Slider
-                    trackClickable={true}
-                    minimumValue={0}
-                    maximumValue={1000}
-                    animationType="timing"
-                    renderAboveThumbComponent={() =>
-                        <Text style={{fontFamily:'geometria-regular'}} className="text-[12px] justify-center items-center leading-3 text-[#101010] opacity-70 -ml-5">{Math.floor(liquidValue)+ ' мл'}</Text>}
-                    thumbStyle={{backgroundColor:'#4BAAC5'}}
-                    minimumTrackStyle={{backgroundColor:'#4BAAC5',height:7}}
-                    maximumTrackStyle={{backgroundColor:'#4babc56b', height:7}}
-                    value={liquidValue}
-                    onValueChange={(value)=> setLiquidValue(Math.floor(+value))}
-                />
+            <Slider
+                trackClickable={true}
+                minimumValue={0}
+                maximumValue={1000}
+                animationType="timing"
+                renderAboveThumbComponent={() =>
+                  <Text style={{fontFamily:'geometria-regular'}} className="text-[12px] justify-center items-center leading-3 text-[#101010] opacity-70 -ml-5">{Math.floor(liquidValue)+ ' мл'}</Text>}
+                thumbStyle={{backgroundColor:'#4BAAC5'}}
+                minimumTrackStyle={{backgroundColor:'#4BAAC5',height:7}}
+                maximumTrackStyle={{backgroundColor:'#4babc56b', height:7}}
+                value={liquidValue}
+                onValueChange={(value)=> setLiquidValue(Math.floor(+value))}
+            />
           </View>
 
           <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="justify-end py-[19px] px-[61px] items-center bg-main-blue rounded-[89px]">

@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, Animated, View, Vibration } from "react-native"
 import { useState, useRef } from "react";
 
 import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
-import { iLanguage } from "../../Types/index";
+import { iLanguage } from "../../types/index";
 import { NavigationPropsWelcome } from "../UserData/UserData";
 
 interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}

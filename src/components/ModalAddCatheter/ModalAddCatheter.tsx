@@ -13,7 +13,6 @@ interface iModalWindow {
 }
 
 const ModalWindow = ({visible, setModalVisible, value, onChangeText, closePopup}: iModalWindow) => {
-
   return (
     <Modal
         transparent={true}
@@ -38,7 +37,7 @@ const ModalWindow = ({visible, setModalVisible, value, onChangeText, closePopup}
                         autoFocus={true}
                     />
                 </View>
-                <TouchableOpacity onPress={closePopup} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
+                <TouchableOpacity onPress={() => setModalVisible(false)} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={closePopup} activeOpacity={0.6} className="p-2 bg-main-blue rounded-lg">

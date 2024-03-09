@@ -1,8 +1,9 @@
 import { ScrollView, RefreshControl } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import CalendarDay from "../CalendarDay/CalendarDay";
-import { iDay, iMonth } from "../../../Types/index";
+import { iDay, iMonth } from "../../../types/index";
 
 import { day, getCurrentMonth, months } from '../../../utils/date';
 
@@ -12,9 +13,6 @@ interface iJournalCalendar {
 }
 
 const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
-  console.log(month);
-  
-
     const scrollViewRef = useRef<ScrollView>(null);
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
 
@@ -31,6 +29,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
         const weekDay = currentDate.getDay();
         
         arrayOfDays.push({
+            id: uuidv4(), // генерируем айди
             dayNumber: i,
             weekNumber: weekDay,
             month: month,

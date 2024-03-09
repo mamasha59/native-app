@@ -12,6 +12,7 @@ module.exports = {
       'grey': '#77787B',
       'border-color': '#4babc563',
       'error': '#d63031',
+      'warning' : '#EA3737',
     }
   },
   plugins: [],

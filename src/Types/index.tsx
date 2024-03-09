@@ -28,10 +28,21 @@ type iMonth = {
   }
 
 interface iDay {
+    id: string,
     dayNumber: number;
     weekNumber: number;
     month: iMonth;
     year: number;
 }
+
+interface iDairyRecord {
+    id: string,
+    whenWasCanulisation: string,
+    catheterType?: string,
+    amountOfDrankFluids?: number | null,
+    amountOfReleasedUrine?: number | null,
+    leakageReason?: string,
+    timeStamp?: string,
+}
     
-export {iLanguage, iUser, iDay, iMonth};
+export {iLanguage, iUser, iDay, iMonth, iDairyRecord};

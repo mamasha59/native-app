@@ -6,9 +6,9 @@ import { day } from "../../../utils/date";
 
 const {width} = Dimensions.get("window");
 
-const Chart = () => {
+const ChartReleasedUrine = () => {
 
-  const [weekDays, setWeekDays] = useState<string[]>([]);
+  const [urineMl, setWeekDays] = useState<string[]>([]);
 
   useEffect(() => {
     const sevenDays = () => {
@@ -28,11 +28,11 @@ const Chart = () => {
 
   return (
     <LineChart
-        fromNumber={4}
+        fromNumber={0}
         withOuterLines={false}
         data={{
-        labels: weekDays,
-        datasets: [{data: [10,16,16,16,17,18,18,18,18]}]
+        labels: urineMl,
+        datasets: [{data: [100,160,160,160,170,180,180,180,180]}]
         }}
         width={width / 1.1}
         height={90}
@@ -55,11 +55,11 @@ const Chart = () => {
         }}
         bezier
         style={{
-          paddingRight:25,
+          paddingRight:32,
           paddingBottom:20,
         }}
     />
   );
 };
 
-export default Chart;
+export default ChartReleasedUrine;

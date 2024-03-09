@@ -1,4 +1,4 @@
-import { iUser } from "../Types";
+import { iUser } from "../types";
 
  const initialState:iUser = { // пробелы для удобства, экраны по порядку
     weight: '0',

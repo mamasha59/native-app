@@ -26,21 +26,21 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
     const { control, handleSubmit, formState: { errors}, setValue, watch} = useForm({
         defaultValues: {
             volume: '',
-            catheterType: '',
+            catheterType: 'Нелатон',
             catheterSize: '',
         },
     })
     const dispatch = useAppDispatch();
     const inputsValue = watch(); // состояние инпута при его изменении
 
-    const onSelectCathetor = (catheterType:string) => { // функция при выборе Катетора
-        setValue('catheterType', catheterType); // записываем значение пола из попапа
-        if(fromLastScreenCatheterType){
-            dispatch(changeField({field:'catheterType', value: catheterType})) // меняен тип катетора
-            navigation.navigate('ThirdOptionalScreen');
-        }
-        setOpenModalSelectCatheter(!openModalSelectCatheter);
-    }
+    // const onSelectCathetor = (catheterType:string) => { // функция при выборе Катетора
+    //     setValue('catheterType', catheterType); // записываем значение пола из попапа
+    //     if(fromLastScreenCatheterType){
+    //         dispatch(changeField({field:'catheterType', value: catheterType})) // меняен тип катетора
+    //         navigation.navigate('ThirdOptionalScreen');
+    //     }
+    //     setOpenModalSelectCatheter(!openModalSelectCatheter);
+    // }
     
     const onSelectCathetorSize = (catheterSize:string) => { // функция при выборе Размера катетора
         setValue('catheterSize', catheterSize); // записываем значение пола из попапа
@@ -86,12 +86,13 @@ const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
                     placeholder={'Тип катететора*'}
                     setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
                     key={'Тип катететора*'}/>
-                <ModalSelect
+                    
+                {/* <ModalSelect
                     onItemPress={onSelectCathetor}
                     openModal={openModalSelectCatheter}
                     options={catheters}
                     setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
-                    title={'Тип катететора*'}/>
+                    title={'Тип катететора*'}/> */}
             </View>
              {/* попап размер катетора */}
             <View pointerEvents={fromLastScreenCatheterType ? 'none' : 'auto'} className={`flex-1 w-full ${fromLastScreenCatheterType && 'opacity-50'}`}>

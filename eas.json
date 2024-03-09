@@ -1,6 +1,6 @@
 {
   "build": {
-    "previewAndroid": {
+    "sterilno": {
       "android": {
         "buildType": "apk"
       }

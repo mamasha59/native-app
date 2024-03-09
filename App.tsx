@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import { useCallback } from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -16,31 +17,31 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
 
-  const [fontsLoader] = useFonts({  // загружаем шрифт
+  const [fontsLoader, fontError] = useFonts({     // загружаем шрифт
     'geometria-bold' : require('./src/assets/fonts/geometria-bold.ttf'),
     'geometria-regular' : require('./src/assets/fonts/geometria-regular.ttf')
     });
     
   const onLayoutRootView = useCallback(async () => { // работа загрузочного экрана
-    if (fontsLoader) await SplashScreen.hideAsync();
-    }, [fontsLoader]);
+    if (fontsLoader || fontError) await SplashScreen.hideAsync();
+    }, [fontsLoader, fontError]);
 
-    if (!fontsLoader) return null;
+    if (!fontsLoader && !fontError) return null;
 
   return (
-  <Provider store={store}>
-    <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-      <RootSiblingParent>
-        <SafeAreaProvider onLayout={onLayoutRootView}>
-          <GradientBackground>
-            <SafeAreaView className="flex-1 h-full">
-            <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-              <Navigation/>
-            </SafeAreaView>
-          </GradientBackground>
-        </SafeAreaProvider>
-      </RootSiblingParent>
-    </PersistGate>
-  </Provider>
+    <Provider store={store}>
+      <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
+        <RootSiblingParent>
+          <SafeAreaProvider onLayout={onLayoutRootView}>
+            <GradientBackground>
+              <SafeAreaView className="flex-1 h-full">
+              <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+                <Navigation/>
+              </SafeAreaView>
+            </GradientBackground>
+          </SafeAreaProvider>
+        </RootSiblingParent>
+      </PersistGate>
+    </Provider>
   );
 }

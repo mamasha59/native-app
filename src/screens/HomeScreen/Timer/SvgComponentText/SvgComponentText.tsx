@@ -37,7 +37,7 @@ export const SvgComponentText = ({start, initial, partTime}:iSvgComponentText) =
       <Text
         key={index}
         fill={!start ? "#ff0707" : "#ff0505"}
-        fontSize="14"
+        fontSize="15"
         dy={-36}
         dx={2.8 + index * 6}>
       <TextPath href="#circle" >

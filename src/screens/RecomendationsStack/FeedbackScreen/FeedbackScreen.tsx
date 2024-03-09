@@ -1,14 +1,31 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Linking } from "react-native";
 import { useState } from "react";
+
 import MainLayout from '../../../Layouts/MainLayout/MainLayout';
+import ShowToast from "../../../components/ShowToast/ShowToast";
 
 const FeedbackScreen = () => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState<string>('');
+  const [errorText, setErrorText] = useState<string>('');
+  const [sendMessageError, setSendMessageError] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    console.log('hi');
+  const email = 'example@example.com';
+  const subject = 'Отзывы и предложения';
+  const url = `mailto:${email}?subject=${subject}&body=${text}`;
+
+  const handleSubmit = async () => {
+    if (text.length === 0) {
+      setErrorText('Введите текст!')
+      setSendMessageError(!sendMessageError);
+    } else {
+      try {
+        await Linking.openURL(url);
+      } catch (error) {
+        setErrorText('Упс! Что то пошло не так...')
+        setSendMessageError(!sendMessageError);
+      }
+    }
   }
-
   return (
     <MainLayout title="Отзывы и предложения" buttonBottomTitle="Отправить" buttonAction={handleSubmit}>
       <View>
@@ -24,6 +41,7 @@ const FeedbackScreen = () => {
           />
         </View>
     </View>
+    <ShowToast key={'feedback-error'} setShowToast={setSendMessageError} show={sendMessageError} text={errorText}/>
     </MainLayout>
   );
 };

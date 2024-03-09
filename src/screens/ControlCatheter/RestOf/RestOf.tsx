@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Platform } from "react-native";
 import {useState} from "react";
 
 import ControllCatetor from "../../../assets/images/iconsComponent/TabMenuIcons/ControllCatetor";
-import ModalWindow from "../../../components/Modal/Modal";
+import ModalWindow from "../../../components/ModalAddCatheter/ModalAddCatheter";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 
@@ -37,11 +37,11 @@ const RestOf = () => {
   };
 
   return (
-    <View className="mb-5">
+    <View className="mb-5 flex-1">
       <View className="mb-[10px]">
           <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-grey">Текущий остаток</Text>
       </View>
-      <View className="flex-row flex-1 gap-2">
+      <View className="flex-1 gap-2 justify-center items-center">
         <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
                                   shadowColor: 'black', 
                                   shadowOffset: { width: 0, height: 2 }, 
@@ -49,27 +49,12 @@ const RestOf = () => {
                                   shadowRadius: 4,}} 
                                   activeOpacity={.8} 
                                   onPress={() => handleOpenPopup('nelaton')} 
-                                  className="bg-main-blue flex-1 rounded-xl max-h-[96px] p-[15px] relative">
+                                  className="bg-main-blue rounded-xl w-full max-h-[96px] max-w-[250px] p-[15px] relative">
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">Нелатон</Text>
             <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[10px]">{initial.nelaton}шт.</Text>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">Через 3 дня останется 0шт.</Text>
             <View className="border border-[#ffff] absolute right-[15px] top-[15px] rounded-full p-2">
-            <ControllCatetor width={25} color={'#ffff'}/>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
-                                  shadowColor: 'black', 
-                                  shadowOffset: { width: 0, height: 2 }, 
-                                  shadowOpacity: 0.25,
-                                  shadowRadius: 4,}} 
-                                  activeOpacity={.8}
-                                  onPress={() => handleOpenPopup('foley')}
-                                  className="bg-purple-button flex-1 rounded-xl max-h-[96px] p-[15px] relative">
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">Фолея</Text>
-            <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[10px]">{initial.foley}шт.</Text>
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">Через 3 дня останется 0шт.</Text>
-            <View className="border border-[#ffff] absolute right-[15px] top-[15px] rounded-full p-2">
-            <ControllCatetor width={25} color={'#ffff'}/>
+              <ControllCatetor width={25} color={'#ffff'}/>
             </View>
         </TouchableOpacity>
       </View>

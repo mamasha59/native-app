@@ -12,8 +12,7 @@ import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import RecomendationsStack from './RecomendationsStack/index';
-import { useState } from 'react';
-
+import { useAppSelector } from '../store/hooks';
 
 export type RootStackParamList = {
   ProfileStack: undefined;
@@ -32,7 +31,7 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const badges = useAppSelector((state) => state.appStateSlice.tabBarBadgeJournalScreen);
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -95,12 +94,12 @@ export default function Home() {
           tabBarIcon: ({ color, size }) => (
             <JournalIcon width={size} color={color}/>
           ),
+        tabBarBadge: badges > 0 ? badges : undefined,
         }}
       />
-      <Tab.Screen
+      <Tab.Screen 
         name='RecomendationsStack'
         component={RecomendationsStack}
-        initialParams={{isLoading}}
         options={{
           tabBarIcon: ({ color, size }) => (
             <RecomendationIcon width={size} color={color}/>

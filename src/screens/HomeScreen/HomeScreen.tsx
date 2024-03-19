@@ -13,7 +13,7 @@ import ModalSelect from '../../components/ModalSelect/ModalSelect';
 import { whyLeakageHappenedReasons } from '../../utils/const';
 import { addUrineDiaryRecord } from '../../store/slices/journalDataSlice';
 import ShowToast from '../../components/ShowToast/ShowToast';
-import { popupLiquidState } from '../../store/slices/appStateSlicer';
+import { addBadgesJournalScreen, popupLiquidState } from '../../store/slices/appStateSlicer';
 
 const HomeScreen = () => {
   const [modalLeakageVisible, setModalLeakageVisible] = useState<boolean>(false); // состояние модального окна Учет випитой жидкости
@@ -36,10 +36,11 @@ const HomeScreen = () => {
     setToastOpened(true);
   }
 
-  const handleAction = (reason?: string) => {
+  const handleAction = (reason?: string) => { // при клике на причину подтекания или кнопку Ок
     const leakageReason = reason || inputLeakageValue.trim();
     const whenWasCanulisation = new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0');
     dispatch(addUrineDiaryRecord({ id: uuidv4(), whenWasCanulisation, leakageReason, timeStamp: new Date().toISOString().slice(0,10) }));
+    dispatch(addBadgesJournalScreen(1));
     closeModalOpenToast();
   }
 

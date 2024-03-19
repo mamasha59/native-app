@@ -1,45 +1,42 @@
 import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from "react";
 
 import { day } from "../../../utils/date";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useSevenPreviousDays } from "../../../hooks/useSevenPreviousDays";
+import { addChartValueToCurrentDay } from "../../../store/slices/journalDataSlice";
+import { useUpdateChart } from "../../../hooks/useCalculateAmount";
 
 const {width} = Dimensions.get("window");
 
 const ChartReleasedUrine = () => {
+    const dataUrine = useAppSelector((state) => state.journal);
+    const weekDays = useSevenPreviousDays(day); // хук создание массива предыдущих дней недели
+    useUpdateChart({category:'amountOfReleasedUrine', dispatchAction: addChartValueToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
-  const [urineMl, setWeekDays] = useState<string[]>([]);
-
-  useEffect(() => {
-    const sevenDays = () => {
-      const days = [];
-      for (let index = 0; index <= 6; index++) {
-        const nextDay = new Date(day);
-        nextDay.setDate(day.getDate() + index);
-
-        const dayOfWeek = nextDay.toLocaleDateString('ru-RU', { month:'short', day:'numeric' });
-        days.push(dayOfWeek);
-      }
-      return days;
-    }
-    const calculatedWeekDays = sevenDays();
-    setWeekDays(calculatedWeekDays);
-  },[])
+    const valueArray = dataUrine.urineChart.map(item => typeof item === 'object' ? item.value : item); // делаем масив из чисел
 
   return (
     <LineChart
-        fromNumber={0}
-        withOuterLines={false}
+        withOuterLines={true}
         data={{
-        labels: urineMl,
-        datasets: [{data: [100,160,160,160,170,180,180,180,180]}]
+            labels: weekDays,
+            datasets: [
+                {
+                    data: valueArray,
+                    withScrollableDot: false
+                }
+            ]
         }}
-        width={width / 1.1}
-        height={90}
+        width={width / 1.060}
+        height={138}
         withDots={true}
-        segments={3}
+        segments={0}
         transparent={true}
-        yAxisInterval={3} // optional, defaults to 1
+        yAxisInterval={1} // optional, defaults to 1
+        yAxisSuffix=" мл"
+        onDataPointClick={(value) => console.log(value.value)}
         withVerticalLines={false}
         chartConfig={
         {
@@ -48,15 +45,16 @@ const ChartReleasedUrine = () => {
             backgroundGradientTo: "#7076B0",
             backgroundGradientToOpacity: 0.5,
             color: () => `#4BAAC5`,
-            strokeWidth: 1, // optional, default 3
+            labelColor: () => `#ff5500`,
+            strokeWidth: 1,
             barPercentage: 1,
             useShadowColorFromDataset: false, // optional
             decimalPlaces: 0,
         }}
         bezier
         style={{
-          paddingRight:32,
-          paddingBottom:20,
+          paddingRight:60,
+          paddingBottom:20
         }}
     />
   );

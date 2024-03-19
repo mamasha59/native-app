@@ -7,7 +7,7 @@ import { ClosePopup } from "../../../assets/images/icons";
 import GlassIcon from "../../../assets/images/iconsComponent/GlassIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
-import { ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
+import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -21,7 +21,7 @@ const ModalLiquidAmount = () => {
     const handleOnSubmitSave = () => { // при нажатии на кнопку Сохранить изменения
       dispatch(popupLiquidState(false));
       if(liquidValue > 0) {
-        setLiquidValue(liquidValue);                //записываем значени жидкости в liquidValue
+        setLiquidValue(liquidValue); //записываем значени жидкости в liquidValue
         if(statePopup.ifCountUrinePopupLiquidState){                // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
@@ -32,6 +32,7 @@ const ModalLiquidAmount = () => {
           }));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
         }else{
+          dispatch(addBadgesJournalScreen(1));
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),

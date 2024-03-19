@@ -24,7 +24,7 @@ const Slider = ({navigation}:iSlider) => {
     const slidesRef = useRef(null);
 
     const handleStart = () => { // перенаправляем пользователя на следующий экран
-        navigation.navigate("FirstDataScreen");
+        navigation.navigate("SecondDataScreen");
     }
 
   return (

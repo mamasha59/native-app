@@ -15,7 +15,7 @@ import { RootStacNativeParamList } from "../../components/Navigations/Navigation
 
 export type RootStackParamList = {
   FirstDataScreen: { cameFrom?: string };
-  SecondDataScreen: { cameFrom? :string };
+  SecondDataScreen: any;
   ThirdDataScreen: undefined;
   FirstOptionalScreen: undefined;
   SecondOptionalScreen: undefined;
@@ -43,7 +43,7 @@ const UserData = () => {
 
         <Stack.Screen name='SliderScreen'component={Slider}/>
 
-        <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
+        {/* <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/> */}
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
 

@@ -44,5 +44,12 @@ interface iDairyRecord {
     leakageReason?: string,
     timeStamp?: string,
 }
+
+type SelectedDairyRecord = Pick<iDairyRecord, 'catheterType' | 'amountOfDrankFluids' | 'amountOfReleasedUrine' | 'leakageReason'>;
+
+interface iChart { // день в графике
+    timestamp: string,
+    value: number,
+}
     
-export {iLanguage, iUser, iDay, iMonth, iDairyRecord};
+export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart};

@@ -8,12 +8,12 @@ import { SvgComponentText } from "./SvgComponentText/SvgComponentText";
 import ShowToast from "../../../components/ShowToast/ShowToast";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
-import { ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
+import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
 
 const Timer = () => {
   const userSettings = useAppSelector((state) => state.user); // интервал и Измерениe почи(Да/Нет)
   
-  const addJournalRecord = useAppDispatch();
+  const dispatch = useAppDispatch();
   const catheter = 'Нелатон'; // TODO убрать
   
   const [timerState, setTimerState] = useState<{countdown:boolean, key:number}>({
@@ -43,7 +43,7 @@ const Timer = () => {
         const minutes = +minutesHours[1]; // минуты
         const initialTime = hours * 3600 + minutes * 60;;               // складываем часы и минуты в полное время в миллисекундах
         const extraTime = Math.round(initialTime + (initialTime / 3)); // дополнительное время для Критического интервала
-        setInitialIntervalTime(initialTime);
+        setInitialIntervalTime(120);
         setInitialExtraTime(extraTime); 
       },1000)
     }
@@ -74,31 +74,41 @@ const Timer = () => {
     return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
-const handlePressButton = () => {
+const handlePressButton = () => {// функция при нажатии на кнопку Выполнено
   setTimerState((prev) => ({
     countdown: !prev.countdown,
     key: prev.key + 1,
   }));
-  setToastShow(true);
-  if(timerState.countdown || userSettings.urineMeasure === 'Да') {
+  if(timerState.countdown) {
     const record = addUrineDiaryRecord({
       id: uuidv4(), // генерируем айди для каждой записи
       whenWasCanulisation: new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
       catheterType: catheter,
       timeStamp: new Date().toISOString().slice(0,10),
     });
-    addJournalRecord(record);
-    if(userSettings.urineMeasure === 'Да') {
-      addJournalRecord(popupLiquidState(true));
-      addJournalRecord(ifCountUrineChangeState(true));
-    }
-    setInitialStrip(0);
+    dispatch(addBadgesJournalScreen(1)); // добавляем плюс один к баджету экран Дневник мочеиспускания, над иконкой вкладки 
+    dispatch(record); // добавляем запись в дневник 
+    setToastShow(true); // показываем подсказку вверху экрана
+    setInitialStrip(0); // обнуляем секундные полоски
     setTimerState((prev) => ({
       countdown: true,
       key: prev.key + 1,
     }));
   }
 }
+
+const handlePressIfUrineMeasure = () => { // функция при нажатии на кнопку Выполнено, если выбранно Измерение мочи
+  setTimerState((prev) => ({
+    countdown: true,
+    key: prev.key + 1,
+  }));
+  if(userSettings.urineMeasure === 'Да') {
+    dispatch(popupLiquidState(true)); // показываем попап
+    dispatch(ifCountUrineChangeState(true)); // делаем true что бы изменить внешний вид попапа жидкости
+    setToastShow(true);
+    dispatch(addBadgesJournalScreen(1));
+  }
+} 
 
   return (
     <View className="flex-1 justify-center items-center relative">
@@ -144,7 +154,7 @@ const handlePressButton = () => {
               <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-grey">{!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:'}</Text>
               <Text style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px] my-[15px]">{!initialIntervalTime && userSettings.interval ? <ActivityIndicator size={"large"}/> : timeString}</Text> 
             </View>
-            <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={handlePressButton} activeOpacity={0.6}>
+            <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={userSettings.urineMeasure === 'Да' ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
               <LinearGradient
                   colors={['#83B759', '#609B25']}
                   start={{ x: 0, y: 0.5 }}

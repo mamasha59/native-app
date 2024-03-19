@@ -26,7 +26,7 @@ const CalendarDay = ({e}:iCalendarDay) => {
     <TouchableOpacity
       onPress={() => selectDate(e.id)}
       activeOpacity={0.5}
-      className={`${e.id === selectedDateId || isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[30px] mr-[5px] items-center justify-center rounded-md border border-[#112244b3]`}>
+      className={`${e.id === selectedDateId || isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[20px] mr-[5px] items-center justify-center rounded-md border border-[#112244b3]`}>
         <Text
           style={{ fontFamily: `${e.id === selectedDateId || isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
           className={`${e.id === selectedDateId || isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'}  text-[10px]`}>

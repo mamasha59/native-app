@@ -6,6 +6,8 @@ import CalendarDay from "../CalendarDay/CalendarDay";
 import { iDay, iMonth } from "../../../types/index";
 
 import { day, getCurrentMonth, months } from '../../../utils/date';
+import { useAppDispatch } from "../../../store/hooks";
+import { setCalendareDay } from "../../../store/slices/appStateSlicer";
 
 interface iJournalCalendar {
     setSelectedMonth: ({month}:iMonth) => void;
@@ -15,6 +17,7 @@ interface iJournalCalendar {
 const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
     const scrollViewRef = useRef<ScrollView>(null);
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
+    const dispatch = useAppDispatch();
 
     const daysArray:iDay[] | undefined = createArrayOfDays(day.getDate()); // массив дней от начала месяца до сегодня
 
@@ -45,6 +48,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
           setRefreshing(false);
         }, 2000);
         scrollViewRef.current?.scrollTo();
+        dispatch(setCalendareDay(new Date().toISOString().slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
         setSelectedMonth({month: months[getCurrentMonth].value, index: getCurrentMonth});
       }, []);
 

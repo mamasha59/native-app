@@ -3,11 +3,12 @@ import React from "react";
 import WheelPicker from "react-native-wheely";
 
 interface iSetTimeInterval {
-    interval: { selectedIndexHour: number; selectedIndexMinutes: number };
-    setInterval: React.Dispatch<React.SetStateAction<{ selectedIndexHour: number; selectedIndexMinutes: number }>>;
+    interval: { selectedIndexHour: number; selectedIndexMinutes: number },
+    setInterval: React.Dispatch<React.SetStateAction<{ selectedIndexHour: number; selectedIndexMinutes: number }>>,
+    visibleRest?:number,
   }
 
-const SetTimeInterval = ({interval, setInterval}:iSetTimeInterval) => { // компонент с вращающим колесом с числами, выбор интервала
+const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) => { // компонент с вращающим колесом с числами, выбор интервала
 
     const generateSecondsArray = ():string[] => {
         let numbersArray:string[] = [];
@@ -25,6 +26,7 @@ const SetTimeInterval = ({interval, setInterval}:iSetTimeInterval) => { // ко�
     {/* ЧАСЫ */}
     <View className="flex-row items-center">
         <WheelPicker
+            visibleRest={visibleRest ? 1 : 2}
             itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
             selectedIndex={interval.selectedIndexHour!}
             options={hours} itemHeight={40}
@@ -43,6 +45,7 @@ const SetTimeInterval = ({interval, setInterval}:iSetTimeInterval) => { // ко�
     {/* МИНУТЫ */}
     <View className="flex-row items-center">
         <WheelPicker
+            visibleRest={visibleRest ? 1 : 2}
             itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
             selectedIndex={interval.selectedIndexMinutes!}
             options={numbers}

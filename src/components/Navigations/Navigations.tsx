@@ -24,7 +24,7 @@ import { useAppSelector } from '../../store/hooks';
 
   const Stack = createNativeStackNavigator<RootStacNativeParamList>();
 
-const Navigation = () => {
+const Navigations = () => {
   const userData = useAppSelector(isExist => isExist.appStateSlice.isExist);
 
   return (// все роуты стоят по порядку их повяления при загрузке приложения
@@ -41,4 +41,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navigations;

@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import UserInfo from "./UserInfo/UserInfo";
 import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 import { persistor } from "../../../store/store";
-import Selects from "./Selects/Selects";
+import ProfileSettings from "./ProfileSettings/ProfileSettings";
 import NameSurnameBirthday from "./NameSurnameBirthday/NameSurnameBirthday";
 import { NavigationPropsProfileStack } from "..";
 
@@ -28,10 +28,9 @@ const ProfileScreen = ({navigation}:iProfileScreen) => {
             <Text style={{fontFamily:'geometria-regular'}} className="text-main-blue text-xs leading-[14px] opacity-50">Изменить</Text>
           </TouchableOpacity>
       </View>
-      
-      <ScrollView>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <UserInfo/>
-        <Selects/>
+        <ProfileSettings/>
         <NameSurnameBirthday/>
 
         <TouchableOpacity onPressOut={removeProfile} className="py-4 mt-3">

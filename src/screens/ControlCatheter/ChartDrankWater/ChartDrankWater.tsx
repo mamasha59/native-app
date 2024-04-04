@@ -57,6 +57,7 @@ const Chart = () => {
         style={{
           paddingRight:60,
           paddingBottom:20,
+          flex:1
         }}
     />
   );

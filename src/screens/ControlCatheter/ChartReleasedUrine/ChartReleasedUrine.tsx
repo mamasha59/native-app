@@ -1,9 +1,8 @@
 import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { useEffect, useState } from "react";
 
 import { day } from "../../../utils/date";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useAppSelector } from "../../../store/hooks";
 import { useSevenPreviousDays } from "../../../hooks/useSevenPreviousDays";
 import { addChartValueToCurrentDay } from "../../../store/slices/journalDataSlice";
 import { useUpdateChart } from "../../../hooks/useCalculateAmount";
@@ -54,7 +53,8 @@ const ChartReleasedUrine = () => {
         bezier
         style={{
           paddingRight:60,
-          paddingBottom:20
+          paddingBottom:20,
+          flex:1
         }}
     />
   );

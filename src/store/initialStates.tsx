@@ -7,7 +7,7 @@ import { iUser } from "../types";
     age: '0',
     //
     volume: '0',
-    catheterType: '',
+    catheterType: 'Нелатон',
     catheterSize: '',
     //
     interval: '0',

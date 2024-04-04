@@ -11,7 +11,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
-import Navigation from './src/components/Navigations/Navigation';
+import Navigations from './src/components/Navigations/Navigations';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,7 +36,7 @@ export default function App() {
             <GradientBackground>
               <SafeAreaView className="flex-1 h-full">
               <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                <Navigation/>
+                <Navigations/>
               </SafeAreaView>
             </GradientBackground>
           </SafeAreaProvider>

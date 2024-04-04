@@ -24,39 +24,53 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
   const [filtredJournalRecords, setFiltredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const [statisticPerDay, setStatisticPerDay] = useState({
+  const [statisticPerDay, setStatisticPerDay] = useState<{cannulation?:number,leakage?:number,amountOfDrankFluids?:number,amountOfReleasedUrine?:number}>({
     cannulation: 0,
     leakage: 0,
     amountOfDrankFluids:0,
     amountOfReleasedUrine: 0,
   });
-
   const [html] = useCreatePdf();
-  console.log(filtredJournalRecords);
   
   const [month, setSelectedMonth] = useState<iMonth>({
     month: months[getCurrentMonth].value,
     index: getCurrentMonth,
   });
   
-  const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из сторе редакса
-  
+  const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из хранилища редакса
   const selectedCalendareDate = useAppSelector(user => user.appStateSlice.calendareDay); // достаем из стора редакса выбранню дату на календаре
+    
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (selectedCalendareDate){ // если выбралу дату на календаре фильтруем по выбранной дате
+    if (selectedCalendareDate){ // если выбрали дату на календаре фильтруем записи по выбранной дате
       setFiltredJournalRecords(journalRecords.filter((e) => e.timeStamp === selectedCalendareDate));
-    } else {                    // фильтруем по сегоднешнему дню
+    } else {                    // фильтруем записи по сегоднешнему дню
       setFiltredJournalRecords(journalRecords.filter((e) => e.timeStamp === day.toISOString().slice(0,10)));
-    }
-  },[selectedCalendareDate, journalRecords]);
+    }   
+  },[selectedCalendareDate, journalRecords, refreshing]);
 
-  // useEffect(() => {
-  //   if(journalRecords){
-  //     journalRecords.
-  //   }
-  // },[journalRecords])
+  useEffect(() => { // добавление данных в блок Статистика за сегодня
+    const cannulationStaticPerDay = journalRecords.filter(e => e.catheterType && e.timeStamp === selectedCalendareDate);
+    const leakageStaticPerDay = journalRecords.filter(e => e.leakageReason && e.timeStamp === selectedCalendareDate);
+    const amountOfDrankFluidsPerDay = journalRecords
+      .filter(e => e.timeStamp === selectedCalendareDate)
+      .map((e) => e.amountOfDrankFluids)
+      .filter(e => e !== undefined)
+      .reduce((acc,e) => acc! + e!, 0);
+    const amountOfReleasedUrinePerDay =journalRecords
+      .filter(e => e.timeStamp === selectedCalendareDate)
+      .map((e) => e.amountOfReleasedUrine)
+      .filter(e => e !== undefined)
+      .reduce((acc,e) => acc! + e!, 0);
+    
+    setStatisticPerDay({
+      cannulation:cannulationStaticPerDay.length,
+      leakage:leakageStaticPerDay.length,
+      amountOfDrankFluids: amountOfDrankFluidsPerDay!,
+      amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
+    });
+  },[selectedCalendareDate,journalRecords])
 
   const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
     const { uri } = await Print.printToFileAsync({ html, width: 2480 });
@@ -103,7 +117,9 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
         ref={scrollViewRef}
         >
       <View className="items-start mb-1">
-        <Text style={{fontFamily:'geometria-bold'}}>Статистика за сегодня:</Text>
+        <Text style={{fontFamily:'geometria-bold'}}>
+          Статистика за {selectedCalendareDate === new Date().toISOString().slice(0,10) ? 'сегодня' : selectedCalendareDate}:
+        </Text>
       </View>
       <View className="flex-0 mb-1">
           <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Катетеризаций:
@@ -113,10 +129,10 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
             <Text className="text-purple-button"> {statisticPerDay.leakage}</Text>
           </Text>
           <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Выпито жидкости:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfReleasedUrine} мл.</Text>
+            <Text className="text-purple-button"> {statisticPerDay.amountOfDrankFluids} мл.</Text>
           </Text>
           <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Выделенно жидкости:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfDrankFluids} мл.</Text>
+            <Text className="text-purple-button"> {statisticPerDay.amountOfReleasedUrine} мл.</Text>
           </Text>
       </View>
       {/* list */}

@@ -19,7 +19,7 @@ const DoubleButton = ({handlePressRightButton, handlePressLeftButton, textOfLeft
 
         <TouchableOpacity onPress={handlePressRightButton} activeOpacity={0.6} className="min-h-[44px] p-1 flex-1 bg-main-blue rounded-[89px] flex-row items-center justify-center">
             {showIcon && <View className="mr-4"><Graphic width={16} height={16} color={'#fff'}/></View> }
-            <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center">{textOfRightButton}</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center leading-4">{textOfRightButton}</Text>
         </TouchableOpacity>
     </View>
   );

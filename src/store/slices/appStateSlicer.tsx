@@ -3,12 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
     isExist: false, // есть ли юзер в локал сторедж
-    open: false, // состояние попапа жидкости
+    open: false,    // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
-    calendareDay: '',
+    calendareDay: new Date().toISOString().slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
+    intervalWhenCloseApp: 0,
 }
-
 const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
@@ -32,17 +32,20 @@ const appStateSlice = createSlice({
       },
       resetBadges: (state) => {
         state.tabBarBadgeJournalScreen = 0;
+      },
+      recordIntervalWhenCloseApp: (state, action:PayloadAction<number>) => {
+        state.intervalWhenCloseApp = action.payload;
       }
     }
 })
-
 export const { 
     changeIsExist,
     popupLiquidState,
     ifCountUrineChangeState,
     setCalendareDay,
     addBadgesJournalScreen,
-    resetBadges
+    resetBadges,
+    recordIntervalWhenCloseApp
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

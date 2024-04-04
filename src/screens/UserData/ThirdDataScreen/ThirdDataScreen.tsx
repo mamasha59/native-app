@@ -7,10 +7,10 @@ import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
 import { setUserData } from "../../../store/slices/createUserSlice";
 
-import { catheters } from "../../../utils/const";
 import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
 import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 import SetTimeInterval from "../../../components/SetTimeInterval/SetTimeInterval";
+import { changeIsExist } from "../../../store/slices/appStateSlicer";
 
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
@@ -27,7 +27,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const { handleSubmit, setValue, watch} = useForm({
         defaultValues: {
             interval: '',
-            useAtNight: '',
+            useAtNight: 'Нелатон',
             urineMeasure: ''
         }
     })
@@ -36,7 +36,11 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     useEffect(() => {
         let convert;
         convert = (interval.selectedIndexHour + 1) + '.' + interval.selectedIndexMinutes;
-        setValue('interval', convert);        
+        const minutesHours = convert.split('.');  // из 4.30 - в 4 часа 30 минут, разделяем по точке
+        const hours = +minutesHours[0];   // часы
+        const minutes = +minutesHours[1] || 0; // минуты
+        const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
+        setValue('interval', initialTime.toString());        
     }, [interval.selectedIndexHour, interval.selectedIndexMinutes]);
 
     const onSelectUrineMeasure = (isCount:string) => { // при выбора из попапа Измерение мочи на ночь
@@ -51,7 +55,8 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     
     const onSubmit = (data:any) => {
         dispatch(setUserData(data));
-        navigation.navigate('FirstOptionalScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
+        dispatch(changeIsExist(true));
+        navigation.navigate('MainScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
     }
 
   return (
@@ -80,7 +85,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
         <ModalSelect
             onItemPress={onSelectCathetor}
             openModal={openModalSelectCatheter}
-            options={catheters}
+            options={['Нелатон']}
             setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
             title={'Использование на ночь'}/>
         </>

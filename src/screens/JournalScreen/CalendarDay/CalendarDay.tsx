@@ -20,8 +20,7 @@ const CalendarDay = ({e}:iCalendarDay) => {
       setSelectedDateId((prev) => prev = id);
       const calendareDay = new Date(e.year, e.month.index, e.dayNumber).toISOString().slice(0,10);
       dispatch(setCalendareDay(calendareDay));
-    }
-    
+    }    
   return (
     <TouchableOpacity
       onPress={() => selectDate(e.id)}

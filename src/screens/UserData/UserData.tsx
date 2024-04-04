@@ -11,7 +11,7 @@ import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOpti
 
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
 import Slider from "../Slider/Slider";
-import { RootStacNativeParamList } from "../../components/Navigations/Navigation";
+import { RootStacNativeParamList } from "../../components/Navigations/Navigations";
 
 export type RootStackParamList = {
   FirstDataScreen: { cameFrom?: string };
@@ -47,9 +47,9 @@ const UserData = () => {
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
 
-        <Stack.Screen name="FirstOptionalScreen" component={FirstOptionalScreen}/>
+        {/* <Stack.Screen name="FirstOptionalScreen" component={FirstOptionalScreen}/>
         <Stack.Screen name="SecondOptionalScreen" component={SecondOptionalScreen}/>
-        <Stack.Screen name="ThirdOptionalScreen" component={ThirdOptionalScreen}/>
+        <Stack.Screen name="ThirdOptionalScreen" component={ThirdOptionalScreen}/> */}
 
     </Stack.Navigator>
   );

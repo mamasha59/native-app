@@ -1,5 +1,4 @@
 const sex = ['Женский', 'Мужской', 'Мальчик', 'Девочка'];
-const catheters = ['Нелатон', 'Фоллея'];
 
 const whyLeakageHappenedReasons = [
     'В Состоянии покоя', 'Кашель', 'Физическая активность'
@@ -14,5 +13,5 @@ const generateEvenNumbersOfSize = () => { // генерируем только �
 }
 
 export {
-    sex, catheters, generateEvenNumbersOfSize, whyLeakageHappenedReasons
+    sex, generateEvenNumbersOfSize, whyLeakageHappenedReasons
 };

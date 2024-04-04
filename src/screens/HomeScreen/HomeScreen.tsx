@@ -53,7 +53,7 @@ const HomeScreen = () => {
         <DoubleButton
             handlePressRightButton={openModal}
             handlePressLeftButton={handlePressLeftButton}
-            textOfLeftButton={catheter === 'Нелатон' ? 'Подтекание' : 'Учет выделенной мочи'}
+            textOfLeftButton='Подтекание'
             textOfRightButton='Учет выпитой жидкости'
             showIcon
         />

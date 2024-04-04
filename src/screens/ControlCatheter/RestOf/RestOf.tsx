@@ -63,7 +63,7 @@ const RestOf = () => {
         onChangeText={handleChangeCatetor}
         setModalVisible={setModalVisible}
         value={inputValue}
-        closePopup={handleClosePopup}
+        handleSafe={handleClosePopup}
       />
     </View>
   );

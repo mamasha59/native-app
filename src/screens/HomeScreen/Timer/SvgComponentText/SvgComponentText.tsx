@@ -1,56 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
-import { Animated } from 'react-native';
+import { useEffect, useState } from 'react';
 import {Svg, Circle, Text, TextPath, TSpan, G, Path} from 'react-native-svg';
 import { useAppSelector } from '../../../../store/hooks';
 
 interface iSvgComponentText {
   start: boolean,
   initialNumberOfStrip: number,
-  initialInterval:number,
   partTime: {
-    firstPartTime: boolean,
-    secondPartTime: boolean,
-    thirdPartTime: boolean
+    firstPartTime?: boolean | undefined,
+    secondPartTime?: boolean | undefined,
+    thirdPartTime?: boolean | undefined
   },
-  normalInterval: number,
+  activeOptimalInterval: boolean,
+  activeNormalInterval: boolean,
 }
-const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-export const SvgComponentText = ({start, initialNumberOfStrip, initialInterval, partTime, normalInterval}:iSvgComponentText) => {
+export const SvgComponentText = ({start, initialNumberOfStrip, partTime, activeOptimalInterval}:iSvgComponentText) => {
   const interval = useAppSelector(state => state.user.interval); // интервал выбранный пользователем
-  const pathLength = 224.5 // Замените на длину вашего пути
-
-  const strokeDashoffsetOptimalInterval = useRef(new Animated.Value(pathLength)).current;
-  const strokeDashoffsetNormalInterval = useRef(new Animated.Value(pathLength)).current;
 
   const [currentColor, setCurrentColor] = useState('#4BAAC5'); // начальное значение цвета
 
-  useEffect(() => {
-    if (partTime.firstPartTime) {
-      Animated.sequence([
-        Animated.timing(strokeDashoffsetOptimalInterval, {
-          toValue: 0,
-          duration: 3600 * 1000,
-          useNativeDriver: true, 
-        }),
-        Animated.timing(strokeDashoffsetNormalInterval, {
-          toValue: 0,
-          duration: normalInterval * 1000,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [start, partTime, interval]);
-
-  useEffect(() => {
-    if(partTime.firstPartTime){
+  useEffect(() => { // изменяем цвет внешнего круга, пунтирные линии
+    if(partTime.firstPartTime && !partTime.secondPartTime){
       setCurrentColor('#4BAAC5');
-    } else if(partTime.secondPartTime) {
+      
+    } else if(partTime.secondPartTime && !partTime.thirdPartTime) {
       setCurrentColor('#FFB254');
-    } else if(partTime.thirdPartTime) {
+
+    } else if(partTime.thirdPartTime && !activeOptimalInterval) {
       setCurrentColor('#EA3737');
     }
-  },[start,partTime])
+  },[start,partTime]);
 
   return (
   <Svg height="340" width="340" viewBox="0 0 300 300" rotation={-90}>
@@ -72,7 +51,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, initialInterval, 
       ))
     } 
     {
-      Array(Math.floor(initialNumberOfStrip)) // 105 КРАСНЫХ полосок
+      Array(Math.floor(initialNumberOfStrip)) // 105 полосок, которые красятся по времени и цвет зависит от интервала 
       .fill(null)
       .map((_, index) => (
         <Text
@@ -109,16 +88,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, initialInterval, 
               |
           </TextPath>
         </Text>
-        {/* <Path d={"M 260 151 A 109 110 0 0 1 100 245"} strokeLinecap='round' fill="none" stroke="#048eff" strokeWidth="4" /> */}
-        <AnimatedPath
-          d="M 260 151 A 109 110 0 0 1 100 245"
-          fill="none"
-          stroke="#048eff"
-          strokeWidth="4"
-          strokeDasharray={pathLength}
-          strokeDashoffset={strokeDashoffsetOptimalInterval}
-          strokeLinecap={'round'}
-        />
+        {partTime.firstPartTime && <Path d={"M 260 151 A 109 110 0 0 1 100 245"} fill="none" stroke="#048eff" strokeWidth="4" />}
       </G>
       <G fill={partTime.secondPartTime ? "#FFB254" : "#7b7777"}>
         <Text>
@@ -133,16 +103,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, initialInterval, 
               |
           </TextPath>
         </Text>
-          {/* <Path d={"M 90 55 A 115 115 0 0 0 99 245"} fill="none" stroke="#FFB254" strokeWidth="4"/> */}
-        <AnimatedPath
-          d="M 90 55 A 115 115 0 0 0 99 245"
-          fill="none"
-          stroke="#FFB254"
-          strokeWidth="4"
-          strokeDasharray={pathLength}
-          strokeDashoffset={strokeDashoffsetNormalInterval}
-          strokeLinecap={'round'}
-        />
+        {partTime.secondPartTime && <Path d={"M 96 54 A 115 110 0 0 0 100 245"} fill="none" stroke="#FFB254" strokeWidth="4"/>}
       </G>
       <G fill={partTime.thirdPartTime ? "#ff0404" : "#7b7777"}>
         <Text fontSize="11">
@@ -157,8 +118,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, initialInterval, 
               |
           </TextPath>
         </Text>
-
-        {partTime.thirdPartTime && <Path d={"M 99 53 A 109 110 0 0 1 260 150"} fill="none" stroke="red" strokeWidth="4" />}
+        {partTime.thirdPartTime && <Path d={"M 96 54 A 109 110 0 0 1 260 151"} fill="none" stroke="red" strokeWidth="4" />}
       </G>
     </G>
   </Svg>

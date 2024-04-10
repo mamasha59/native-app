@@ -10,7 +10,7 @@ interface iChangeInterval {
 
 const ChangeInterval = ({handleChangeInterval}:iChangeInterval) => {
   const newInterval = useAppSelector((state) => state.user.interval!);
-  const newIntervalText = useFormatInterval({newInterval: newInterval});
+  const newIntervalText = useFormatInterval({intervalInSeconds: +newInterval});
 
   return (
     <View className="flex-row mb-5">

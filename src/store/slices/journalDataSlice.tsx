@@ -4,8 +4,7 @@ import { iChart, iDairyRecord } from "../../types";
 
 export interface iJournal {
     initialCathetherAmount: {
-        nelaton?: number ;
-        foley?: number;
+        nelaton: number ;
     },
     urineDiary: iDairyRecord[],
     urineChart: iChart[],
@@ -15,7 +14,6 @@ export interface iJournal {
 const initialState:iJournal = {
     initialCathetherAmount: {
         nelaton: 0,
-        foley: 0
     },
     urineDiary: [],
     urineChart: [
@@ -84,12 +82,14 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
     name: 'journalDataSlice',
     initialState,
     reducers: {
-        addCatheter: (state, action: PayloadAction<{ catheterType: 'nelaton' | 'foley'; amount: number }>) => {
-            const { catheterType, amount } = action.payload;
-            if (catheterType === 'nelaton') {
-              state.initialCathetherAmount.nelaton = amount;
-            } else if (catheterType === 'foley') {
-              state.initialCathetherAmount.foley = amount;
+        addCatheter: (state, action: PayloadAction<{ amount: number }>) => {
+            const { amount } = action.payload;
+            state.initialCathetherAmount.nelaton = amount;
+        },
+        decreaseCatheterAmount: (state, action: PayloadAction<{ amount: number }>) => {
+            const { amount } = action.payload;
+            if(state.initialCathetherAmount.nelaton && state.initialCathetherAmount.nelaton > 0){
+                state.initialCathetherAmount.nelaton = state.initialCathetherAmount.nelaton - amount;
             }
         },
         addUrineDiaryRecord: (state, action: PayloadAction<iDairyRecord>) => {
@@ -133,5 +133,11 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
 
 });
 
-export const { addCatheter, addUrineDiaryRecord, addChartValueToCurrentDay, addChartValueDrankWaterToCurrentDay} = journalDataSlice.actions;
+export const { 
+    addCatheter,
+    addUrineDiaryRecord,
+    addChartValueToCurrentDay,
+    addChartValueDrankWaterToCurrentDay,
+    decreaseCatheterAmount
+    } = journalDataSlice.actions;
 export default journalDataSlice.reducer;

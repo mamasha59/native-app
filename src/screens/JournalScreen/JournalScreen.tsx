@@ -51,18 +51,18 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
   },[selectedCalendareDate, journalRecords, refreshing]);
 
   useEffect(() => { // добавление данных в блок Статистика за сегодня
-    const cannulationStaticPerDay = journalRecords.filter(e => e.catheterType && e.timeStamp === selectedCalendareDate);
-    const leakageStaticPerDay = journalRecords.filter(e => e.leakageReason && e.timeStamp === selectedCalendareDate);
+    const filteredRecords = journalRecords.filter(e => e.timeStamp === selectedCalendareDate); // фильтруем по даты, либо выбранной дате
+
+    const cannulationStaticPerDay = filteredRecords.filter(e => e.catheterType); // фильтруем по типу катетора, для статистики Катетеризаций:
+    const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
+
     const amountOfDrankFluidsPerDay = journalRecords
-      .filter(e => e.timeStamp === selectedCalendareDate)
       .map((e) => e.amountOfDrankFluids)
-      .filter(e => e !== undefined)
-      .reduce((acc,e) => acc! + e!, 0);
+      .reduce((acc,e) => acc! + (e || 0), 0);
+
     const amountOfReleasedUrinePerDay =journalRecords
-      .filter(e => e.timeStamp === selectedCalendareDate)
       .map((e) => e.amountOfReleasedUrine)
-      .filter(e => e !== undefined)
-      .reduce((acc,e) => acc! + e!, 0);
+      .reduce((acc,e) => acc! + (e || 0), 0);
     
     setStatisticPerDay({
       cannulation:cannulationStaticPerDay.length,
@@ -70,7 +70,7 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
       amountOfDrankFluids: amountOfDrankFluidsPerDay!,
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
     });
-  },[selectedCalendareDate,journalRecords])
+  },[selectedCalendareDate,journalRecords]);
 
   const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
     const { uri } = await Print.printToFileAsync({ html, width: 2480 });

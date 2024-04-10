@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 
-export const useFormatInterval = ({newInterval}:{newInterval:string}) => {
-    const [newIntervalText, setNewIntervalText] = useState<string>('');
+export const useFormatInterval = ({intervalInSeconds}:{intervalInSeconds:number}) => {
+  const [timeString, setTimeString] = useState('');
 
-    // useEffect(() => { 
-    //     if (newInterval) {
-    //       const interval = newInterval.split('.');
-    //       const hours = +interval[0] === 0 ? '' : `${interval[0]} ч. `;
-    //       const minutes = +interval[1] === 0 ? '' : `${interval[1]} мин.`;
-    //       const connectedString = hours + minutes;
-    //       setNewIntervalText(connectedString);
-    //     }
-    // },[newInterval]);
+  useEffect(() => {
+    const hours = Math.floor(intervalInSeconds / 3600);
+    const minutes = Math.floor((intervalInSeconds % 3600) / 60);
+    setTimeString(`${hours} ч. ${minutes} мин.`);
+  }, [intervalInSeconds]);
 
-    return newIntervalText;
-};
+  return timeString;
+}

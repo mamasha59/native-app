@@ -15,8 +15,7 @@ const IntervalInfo = () => {
   const userData = useAppSelector(user => user.user);
   const userJournal = useAppSelector(user => user.journal);
   const useDispatch = useAppDispatch();
-  const newIntervalText = useFormatInterval({newInterval: userData.interval!.toString()});
-console.log(newIntervalText);
+  const newIntervalText = useFormatInterval({intervalInSeconds: +userData.interval!});
 
   useEffect(() => {
     if (userJournal.initialCathetherAmount?.nelaton! <= 3) {
@@ -32,7 +31,7 @@ console.log(newIntervalText);
   }
 
   const handleSafe = () => { // при клике на кнопку Сохранить или Enter
-    useDispatch(addCatheter({amount: +inputValue, catheterType: 'nelaton'}));
+    useDispatch(addCatheter({amount: +inputValue}));
     setModalVisible(false);
     setInputValue('');
   };

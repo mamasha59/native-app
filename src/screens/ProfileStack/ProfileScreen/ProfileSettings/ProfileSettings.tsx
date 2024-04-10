@@ -44,7 +44,7 @@ const ProfileSettings = () => {
         const minutes = +minutesHours[1] || 0; // минуты
         const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
 
-        dispatch(setUserData({interval:initialTime}));
+        dispatch(setUserData({interval:initialTime.toString()}));
         setShowModalSetInterval(!showModalSetInterval);
     }
   return (

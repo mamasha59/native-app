@@ -1,6 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Linking } from 'react-native';
+import * as Notifications from 'expo-notifications';
 
 import Home from '../../screens/Home';
 import UserData from '../../screens/UserData/UserData';

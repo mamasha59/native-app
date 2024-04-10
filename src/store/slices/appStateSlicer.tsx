@@ -8,6 +8,7 @@ const initialState = {
     calendareDay: new Date().toISOString().slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
     intervalWhenCloseApp: 0,
+    stateOfTimerTitleForFirstTimeInApp: false,
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -35,6 +36,9 @@ const appStateSlice = createSlice({
       },
       recordIntervalWhenCloseApp: (state, action:PayloadAction<number>) => {
         state.intervalWhenCloseApp = action.payload;
+      },
+      changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {
+        state.stateOfTimerTitleForFirstTimeInApp = action.payload;
       }
     }
 })
@@ -45,7 +49,8 @@ export const {
     setCalendareDay,
     addBadgesJournalScreen,
     resetBadges,
-    recordIntervalWhenCloseApp
+    recordIntervalWhenCloseApp,
+    changeStateOfTimerTitleForFirstTimeInApp
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

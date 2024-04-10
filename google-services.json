@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243568834244",
+    "project_id": "nelaton-17517",
+    "storage_bucket": "nelaton-17517.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243568834244:android:6343d7059b5658ab90bb91",
+        "android_client_info": {
+          "package_name": "sterilno.nelaton"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI8_s-pb5Fi47SRDUrVutpJgyXmIiRsG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,7 +11,7 @@ import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOpti
 
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
 import Slider from "../Slider/Slider";
-import { RootStacNativeParamList } from "../../components/Navigations/Navigations";
+import { RootStacNativeParamList } from "../../components/RootNavigations/RootNavigations";
 
 export type RootStackParamList = {
   FirstDataScreen: { cameFrom?: string };

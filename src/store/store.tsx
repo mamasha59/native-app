@@ -1,10 +1,12 @@
 import createUserReducer from "./slices/createUserSlice";
 import appStateSlicer from "./slices/appStateSlicer";
 import journalDataSlice from "./slices/journalDataSlice";
+import timerStatesSlice from "./slices/timerStatesSlice";
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,  } from 'redux-persist';
+
 
 const persistConfig = { // конфиг персиста
     key: 'root',
@@ -15,6 +17,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
     user: createUserReducer,
     appStateSlice: appStateSlicer, // слайс состояние приложения - есть ли данные в локал сторедж
     journal: journalDataSlice,
+    timerStates: timerStatesSlice,
 }));
 
 export const store = configureStore({

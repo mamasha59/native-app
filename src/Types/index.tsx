@@ -12,8 +12,7 @@ interface iUser {
     catheterSize: string | null,
     catheterType: string | null,
     volume: string | null,
-    interval: string,
-    urineMeasure: string | null,
+    urineMeasure: string,
     useAtNight: string | null,
     nameSurname?: string | null,
     birthday?: string | null,
@@ -39,7 +38,7 @@ interface iDairyRecord {
     amountOfDrankFluids?: number,
     amountOfReleasedUrine?: number | null,
     leakageReason?: string,
-    timeStamp?: string,
+    timeStamp: string,
 }
 
 type SelectedDairyRecord = Pick<iDairyRecord, 'catheterType' | 'amountOfDrankFluids' | 'amountOfReleasedUrine' | 'leakageReason'>;

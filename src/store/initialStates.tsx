@@ -10,9 +10,8 @@ import { iUser } from "../types";
     catheterType: 'Нелатон',
     catheterSize: '',
     //
-    interval: '0',
-    useAtNight: '',
-    urineMeasure: '0',
+    useAtNight: 'Выбрать',
+    urineMeasure: 'Выбрать',
     //
     nameSurname: '',
     birthday: '',

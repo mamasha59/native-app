@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput, Pressable } from "react-native";
+import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput, Pressable, Alert } from "react-native";
 import { Slider } from '@miblanchard/react-native-slider';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,6 +8,7 @@ import GlassIcon from "../../../assets/images/iconsComponent/GlassIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
+import { format } from "date-fns";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -26,9 +27,9 @@ const ModalLiquidAmount = () => {
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
             catheterType:'Нелатон',
-            whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
-            amountOfReleasedUrine:liquidValue,
-            timeStamp: new Date().toISOString().slice(0,10),
+            whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
+            amountOfReleasedUrine: liquidValue,
+            timeStamp: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
           }));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
         }else{
@@ -36,8 +37,8 @@ const ModalLiquidAmount = () => {
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
-            amountOfDrankFluids:liquidValue,
-            timeStamp: new Date().toISOString().slice(0,10),
+            amountOfDrankFluids: liquidValue,
+            timeStamp: new Date().toISOString(),
           }))
         }
         setLiquidValue(0);  // сбрасываем рейдж при сабмите
@@ -52,6 +53,16 @@ const ModalLiquidAmount = () => {
       setFocusInput(!focusInput);
     }
 
+    const handleIfCountUrine = () => {
+      if(statePopup.ifCountUrinePopupLiquidState){
+        Alert.alert('Пожалуйста, укажите сколько вы выписали.', 'Если вы не хотите постоянно указывать значение, то это можно изменить на экране Профиля.', 
+        [{
+          text: 'Хорошо, я понял.',
+        }]
+        );
+      }
+    }
+
     const handlePressCustomMl1 = (item:string) => { // при нажатии на иконки с кол-вом мл
       if(item) setLiquidValue(+item) 
     }
@@ -62,7 +73,7 @@ const ModalLiquidAmount = () => {
     visible={statePopup.open}
     onRequestClose={closeByPressButton}
     animationType="fade">
-      <Pressable onPress={(event) => event.target === event.currentTarget && closeByPressButton()} className="justify-end flex-1 bg-[#10101035]">
+      <Pressable disabled={statePopup.ifCountUrinePopupLiquidState && true} onPress={(event) => event.target === event.currentTarget && closeByPressButton()} className="justify-end flex-1 bg-[#10101035]">
         <View style={{minHeight: windowHeight * 0.45}} className="bg-[#ffff] rounded-t-[30px] pt-10 pb-[30px] px-6">
           <View>
             <Text style={{fontFamily:'geometria-regular'}} className="text-base leading-4 mb-3">{statePopup.ifCountUrinePopupLiquidState ? 'Сколько ты выссал?' : 'Сколько вы выпили жидкости?'}</Text>
@@ -108,7 +119,10 @@ const ModalLiquidAmount = () => {
           <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="justify-end py-[19px] px-[61px] items-center bg-main-blue rounded-[89px]">
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Сохранить изменения</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={closeByPressButton} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
+          <TouchableOpacity
+              onPress={statePopup.ifCountUrinePopupLiquidState ? handleIfCountUrine : closeByPressButton}
+              activeOpacity={0.6}
+              className={`p-2 absolute top-[5%] right-[5%] ${statePopup.ifCountUrinePopupLiquidState ? 'rounded-full opacity-20 bg-grey' : ''} `}>
             <ClosePopup width={15} height={15}/>
           </TouchableOpacity>
         </View>

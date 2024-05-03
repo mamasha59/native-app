@@ -19,6 +19,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.5",
+    "date-fns": "^3.6.0",
     "expo": "~50.0.14",
     "expo-device": "5.9.3",
     "expo-document-picker": "11.10.1",
@@ -36,6 +37,7 @@
     "react-error-boundary": "^4.0.12",
     "react-hook-form": "^7.44.3",
     "react-native": "0.73.6",
+    "react-native-background-fetch": "^4.2.4",
     "react-native-chart-kit": "^6.12.0",
     "react-native-countdown-circle-timer": "^3.2.1",
     "react-native-element-dropdown": "^2.10.0",
@@ -55,7 +57,9 @@
     "redux-persist": "^6.0.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.3.3",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "expo-task-manager": "~11.7.2",
+    "expo-background-fetch": "~11.8.1"
   },
   "devDependencies": {
     "@babel/core": "7.23.9",

@@ -17,7 +17,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "urocontrol.sergeikuleshov"
+      "bundleIdentifier": "urocontrol.sergeikuleshov",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -46,10 +53,11 @@
       [
         "expo-notifications",
         {
-          "icon": "./src/assets/images/splash-screen/appIcon.png",
+          "icon": "./src/assets/images/splash-screen/notificationIcon.png",
           "color": "#ffffff"
         }
-      ]
+      ],
+      "react-native-background-fetch"
     ]
   }
 }

@@ -9,7 +9,7 @@ interface iProfileSelect {
     selectRef?: RefObject<IDropdownRef>,
     handleClickOption: (value:string) => void,
     title: string,
-    value: string | null,
+    value: string,
     confirmation: boolean,
 }
 
@@ -29,7 +29,7 @@ const ProfileSelect = ({selectRef, handleClickOption, title, value, confirmation
                 labelField="label"
                 valueField="value"
                 placeholder={value! || 'Выбрать'}
-                value={value}
+                value={value || 'Выбрать'}
                 accessibilityLabel={value!}
                 confirmSelectItem={confirmation}
                 onConfirmSelectItem={() => {

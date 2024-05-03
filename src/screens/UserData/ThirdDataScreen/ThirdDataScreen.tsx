@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 
-import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
-import { setUserData } from "../../../store/slices/createUserSlice";
+import { changeIsExist } from "../../../store/slices/appStateSlicer";
+import { setInterval } from "../../../store/slices/timerStatesSlice";
 
+import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
 import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 import SetTimeInterval from "../../../components/SetTimeInterval/SetTimeInterval";
-import { changeIsExist } from "../../../store/slices/appStateSlicer";
+
 
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
@@ -19,29 +20,30 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const [openModalSelectCatheter, setOpenModalSelectCatheter] = useState<boolean>(false); // состояние попапа Тип катетора
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
 
-    const [interval, setInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [newInterval, setNewInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 3,
         selectedIndexMinutes: 0,
     })
     const dispatch = useAppDispatch();
-    const { handleSubmit, setValue, watch} = useForm({
+    const { handleSubmit, setValue, watch, getValues} = useForm({
         defaultValues: {
-            interval: '',
+            interval: 0,
             useAtNight: 'Нелатон',
             urineMeasure: ''
         }
     })
     const inputsValue = watch(); // состояние инпута при его изменении
-
+    const values = getValues();
+    
     useEffect(() => {
         let convert;
-        convert = (interval.selectedIndexHour + 1) + '.' + interval.selectedIndexMinutes;
+        convert = (newInterval.selectedIndexHour + 1) + '.' + newInterval.selectedIndexMinutes;
         const minutesHours = convert.split('.');  // из 4.30 - в 4 часа 30 минут, разделяем по точке
         const hours = +minutesHours[0];   // часы
         const minutes = +minutesHours[1] || 0; // минуты
         const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
-        setValue('interval', initialTime.toString());        
-    }, [interval.selectedIndexHour, interval.selectedIndexMinutes]);
+        setValue('interval', initialTime);        
+    }, [newInterval.selectedIndexHour, newInterval.selectedIndexMinutes]);
 
     const onSelectUrineMeasure = (isCount:string) => { // при выбора из попапа Измерение мочи на ночь
         setValue('urineMeasure', isCount); // записываем значение пола из попапа
@@ -54,23 +56,23 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     }
     
     const onSubmit = (data:any) => {
-        dispatch(setUserData(data));
+        dispatch(setInterval(values.interval));
         dispatch(changeIsExist(true));
         navigation.navigate('MainScreen'); // перенаправляем юзера на 1й необязательно к заполнению скрин (уведомления)
     }
 
   return (
-    <WelcomeLayout index={3} title="Введите свои данные" buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)} scrollable={false}>
+    <WelcomeLayout title="Введите свои данные" buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)} scrollable={false}>
         <>
         <ButtonSelect
-            inputValue={`${interval.selectedIndexHour + 1} ч. ${interval.selectedIndexMinutes} мин.`}
+            inputValue={`${newInterval.selectedIndexHour + 1} ч. ${newInterval.selectedIndexMinutes} мин.`}
             openModal={isDatePickerVisible}
             placeholder={'Интервалы'}
             setOpenModal={() => setDatePickerVisibility(!isDatePickerVisible)}
             key={'Интервалы'}
         />
         <View className={`-mt-10 flex-row justify-center ${!isDatePickerVisible && 'hidden'}`} key={'ThirDataScreen'}>
-            <SetTimeInterval interval={interval} setInterval={setInterval}/>
+            <SetTimeInterval interval={newInterval} setInterval={setNewInterval}/>
         </View>
         </>
         <>{/* попап выбор ИСПОЛЬЗОВАНИЕ НА НОЧЬ */}

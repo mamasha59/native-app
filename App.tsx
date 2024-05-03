@@ -15,7 +15,7 @@ import Constants from 'expo-constants';
 
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
-import Navigations from './src/components/Navigations/Navigations';
+import RootNavigations from './src/components/RootNavigations/RootNavigations';
 import { Platform } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
@@ -43,7 +43,7 @@ export default function App() {
     });
     // ниже метод, при клике на уведомление, когда пользователь взаимодействует с уведомлением
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      // console.log(response);
     });
 
     return () => {
@@ -67,7 +67,7 @@ export default function App() {
 
     if (!fontsLoader && !fontError) return null;
 
-console.log(notification);
+// console.log(notification);
 
   return (
     <Provider store={store}>
@@ -77,7 +77,7 @@ console.log(notification);
             <GradientBackground>
               <SafeAreaView className="flex-1 h-full">
               <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                <Navigations/>
+                <RootNavigations/>
               </SafeAreaView>
             </GradientBackground>
           </SafeAreaProvider>
@@ -110,7 +110,7 @@ async function registerForPushNotificationsAsync() {
       alert('Failed to get push token for push notification!');
       return;
     }
-    token = await Notifications.getExpoPushTokenAsync({
+    token = await Notifications.getExpoPushTokenAsync({ 
       projectId: Constants.expoConfig?.extra?.eas.projectId,
     });
     console.log(token);

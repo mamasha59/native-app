@@ -17,7 +17,7 @@ export type NavigationPropsProfileStack<RouteName extends keyof RootProfileStack
 
 const Stack = createStackNavigator<RootProfileStack>();
 
-const RecomendationsStack = () => {
+const ProfileScreenStack = () => {
   
   return (
     <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='ProfileScreen'>
@@ -27,4 +27,4 @@ const RecomendationsStack = () => {
   );
 };
 
-export default RecomendationsStack;
+export default ProfileScreenStack;

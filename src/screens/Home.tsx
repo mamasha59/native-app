@@ -2,24 +2,26 @@ import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-naviga
 import { RouteProp } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 
+import { useAppSelector } from '../store/hooks';
+
+import NoticeNavigationScreen from './NoticeAccessScreens/NoticeNavigationScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
-import ProfileStack from './ProfileStack/index';
 import ControlСatheter from './ControlCatheter/ControlСatheter';
 import JournalScreen from './JournalScreen/JournalScreen';
-import RecomendationIcon from '../assets/images/iconsComponent/TabMenuIcons/RecomendationIcon';
+import ProfileScreenStack from './ProfileStack/index';
+
 import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIcon';
 import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
-import RecomendationsStack from './RecomendationsStack/index';
-import { useAppSelector } from '../store/hooks';
+import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
 
 export type RootStackParamList = {
-  ProfileStack: undefined;
+  ProfileScreenStack: undefined;
   ControlСatheter: undefined;
   Home: undefined;
   JournalScreen: undefined;
-  RecomendationsStack: {isLoading:boolean};
+  NoticeNavigationScreen: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -61,8 +63,8 @@ export default function Home() {
       }}>
       <Tab.Group >
       <Tab.Screen
-        name='ProfileStack'
-        component={ProfileStack}
+        name='ProfileScreenStack'
+        component={ProfileScreenStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon width={size} color={color}/>
@@ -97,12 +99,12 @@ export default function Home() {
         tabBarBadge: badges > 0 ? badges : undefined,
         }}
       />
-      <Tab.Screen 
-        name='RecomendationsStack'
-        component={RecomendationsStack}
+      <Tab.Screen
+        name='NoticeNavigationScreen'
+        component={NoticeNavigationScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <RecomendationIcon width={size} color={color}/>
+            <NotificationIcon color={color} width={size}/>
           ),
         }}
       />

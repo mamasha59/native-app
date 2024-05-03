@@ -18,7 +18,7 @@ const CalendarDay = ({e}:iCalendarDay) => {
     
     const selectDate = (id:string) => {
       setSelectedDateId((prev) => prev = id);
-      const calendareDay = new Date(e.year, e.month.index, e.dayNumber).toISOString().slice(0,10);
+      const calendareDay = new Date(e.year, e.month.index, e.dayNumber + 1).toISOString().slice(0,10);
       dispatch(setCalendareDay(calendareDay));
     }    
   return (

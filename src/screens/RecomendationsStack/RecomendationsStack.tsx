@@ -3,6 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 
 import RecomendationsScreen from './RecomendationsScreen/RecomendationsScreen';
 import FeedbackScreen from './FeedbackScreen/FeedbackScreen';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootRecomendationsStack = { // экраны
   RecomendationsScreen: undefined;
@@ -13,6 +14,8 @@ export type NavigationPropsRecomendations<RouteName extends keyof RootRecomendat
  navigation : NativeStackNavigationProp<RootRecomendationsStack, RouteName>
  route: RouteProp<RootRecomendationsStack, RouteName>
 }
+
+export type NavigationPropsRecomendationsStack = StackNavigationProp<RootRecomendationsStack>; // типизация для хука useNavigation
 
 const Stack = createNativeStackNavigator<RootRecomendationsStack>();
 

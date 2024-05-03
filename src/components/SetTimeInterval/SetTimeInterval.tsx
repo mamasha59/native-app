@@ -19,7 +19,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) 
     }
     const numbers = generateSecondsArray(); // массив строковых чисел секунд ['1','2'...]
 
-    const hours = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] // массив часов
+    const hours = ['0','1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] // массив часов
 
   return (
     <>
@@ -33,7 +33,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) 
             onChange={(index) =>
                 setInterval({
                     selectedIndexHour: index,
-                    selectedIndexMinutes:interval.selectedIndexMinutes})
+                    selectedIndexMinutes: interval.selectedIndexMinutes})
                 }
             containerStyle={{width:55}}
             selectedIndicatorStyle={{backgroundColor:'#4babc573'}}

@@ -5,7 +5,7 @@ import data from '../questions.json';
 
 import MainLayout from "../../../Layouts/MainLayout/MainLayout";
 import { DropDown } from "../../../assets/images/icons";
-import { NavigationPropsRecomendations } from "..";
+import { NavigationPropsRecomendations } from "../RecomendationsStack";
 
 interface iRecomendations extends NavigationPropsRecomendations<'RecomendationsScreen'>{}
 

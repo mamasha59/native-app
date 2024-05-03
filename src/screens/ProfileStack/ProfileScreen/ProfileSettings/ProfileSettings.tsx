@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
 import { IDropdownRef } from "react-native-element-dropdown";
 import { useRef, RefObject, useState } from "react";
 import Modal from "react-native-modal";
@@ -10,18 +10,23 @@ import SetTimeInterval from "../../../../components/SetTimeInterval/SetTimeInter
 import ChangeInterval from "./ChangeInterval/ChangeInterval";
 import { LinearGradient } from "expo-linear-gradient";
 import ProfileSelect from "./ProfileSelect/ProfileSelect";
+import { setInterval } from "../../../../store/slices/timerStatesSlice";
+import { useFormatInterval } from "../../../../hooks/useFormatInterval";
 
 const windowWidth = Dimensions.get('window').width;
 
-const ProfileSettings = () => {
+const ProfileSettings = () => { // TODO clean the code
     const [showModalSetInterval, setShowModalSetInterval] = useState(false);
-    const [interval, setInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [newInterval, setNewInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 3,
         selectedIndexMinutes: 0,
     })
     const dropDownCountUrine:RefObject<IDropdownRef> = useRef(null);
 
     const urineMesure = useAppSelector((state) => state.user.urineMeasure); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
+    const interval = useAppSelector((state) => state.timerStates.interval); // берем интервал из стейта (начального экрана)
+    const newIntervalText = useFormatInterval({intervalInSeconds: interval}); // хук форматриования интервала, из миллисекунд в строку типа - 4 часа 30 минут
+    console.log(urineMesure);
     
     const dispatch = useAppDispatch();
 
@@ -33,26 +38,39 @@ const ProfileSettings = () => {
         console.log(value);
     }
 
-    const handleChangeInterval = () => { // при клике на Выбрать новый интервал - открываем попап для выбора нового интервала
+    const handleOpenModalChangeInterval = () => { // при клике на Выбрать новый интервал - открываем попап для выбора нового интервала
         setShowModalSetInterval(!showModalSetInterval);
     }
-    const handleConfirmNewInterval = () => { // при подтверждении нового интервала
+//TODO очистить функцию ниже
+    const handleChangeOptimalInterval = () => { // при подтверждении нового интервала
         let convert;
-        convert = (interval.selectedIndexHour + 1) + '.' + interval.selectedIndexMinutes; // так как числа выбираются по индексу, надо прибавить +1 к часам
-        const minutesHours = convert.split('.');  // из 4.30 - в 4 часа 30 минут, разделяем по точке
-        const hours = +minutesHours[0];   // часы
-        const minutes = +minutesHours[1] || 0; // минуты
-        const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
+            convert = (newInterval.selectedIndexHour) + '.' + newInterval.selectedIndexMinutes; // так как числа выбираются по индексу, надо прибавить +1 к часам
+            const minutesHours = convert.split('.');  // из 4.30 - в 4 часа 30 минут, разделяем по точке
+            const hours = +minutesHours[0];   // часы
+            const minutes = +minutesHours[1] || 0; // минуты
+            const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
+            dispatch(setInterval(initialTime));
 
-        dispatch(setUserData({interval:initialTime.toString()}));
         setShowModalSetInterval(!showModalSetInterval);
     }
+
+    const createThreeButtonAlert = () => {
+        Alert.alert('Давайте уточним.', `Был интервал: ${newIntervalText}, меняем на: ${21}. При следующей катетеризации интервал станет ${21}. Вы уверены?`, [
+            {
+                text: 'Я передумал :(',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {text: 'Да, меняем!', onPress: handleChangeOptimalInterval()!},
+        ]);
+    }
+
   return (
     <>
     <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
-    {/*  изменить время катетеризации   */}
-    <ChangeInterval handleChangeInterval={handleChangeInterval}/>
-    {/*  катетеризация в ночное время  */}
+    {/*  изменить интервал катетеризации - Оптимальный */}
+    <ChangeInterval handleChangeOptimalInterval={handleOpenModalChangeInterval}/>
+    {/*  изменить интервал катетеризации - Нормальный */}
     <ProfileSelect
         confirmation={false}
         handleClickOption={handleUseAtNight}
@@ -73,12 +91,12 @@ const ProfileSettings = () => {
         <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center">Выберите новый интервал</Text>
                 <View className="flex-row justify-center items-center mb-3">
-                    <SetTimeInterval visibleRest={1} interval={interval} setInterval={setInterval}/>
+                    <SetTimeInterval visibleRest={1} interval={newInterval} setInterval={setNewInterval}/>
                 </View>
-                <TouchableOpacity onPress={handleChangeInterval} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
+                <TouchableOpacity onPress={handleOpenModalChangeInterval} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleConfirmNewInterval} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
+                <TouchableOpacity onPress={createThreeButtonAlert} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
                     <LinearGradient
                         colors={['#83B759', '#609B25']}
                         start={{ x: 0, y: 0.5 }}

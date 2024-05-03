@@ -3,8 +3,9 @@ import { iDairyRecord } from "../../../types";
 
 const JournalRecord = (props:iDairyRecord) => {
     const {whenWasCanulisation,amountOfDrankFluids,catheterType,amountOfReleasedUrine,leakageReason} = props;
+    
   return (
-    <View  className={`flex-row justify-between items-center border px-[15px] py-[10px] mb-3 rounded-md border-border-color ${amountOfReleasedUrine && 'border-purple-button'}`}>
+    <View  className={`flex-row justify-between items-center border px-[15px] py-[10px] mb-3 rounded-md border-border-color ${amountOfReleasedUrine && 'border-purple-button' || catheterType && 'border-[#FDD835]'}`}>
         <View className={leakageReason ? "flex-0 mr-4" : "items-start flex-1"}>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">Время</Text>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">{whenWasCanulisation}</Text>
@@ -15,7 +16,8 @@ const JournalRecord = (props:iDairyRecord) => {
             <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">{leakageReason}</Text>
         </View>
     }
-    {    catheterType &&    <View className="items-start flex-1">
+    {    catheterType &&    
+        <View className="items-start flex-1">
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">{catheterType && 'Катетеризация:'}</Text>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">{catheterType}</Text>
         </View>

@@ -1,20 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+interface iAppStateSlicer {
+  isExist: boolean,
+  open: boolean,
+  ifCountUrinePopupLiquidState: boolean,
+  calendareDay: string,
+  tabBarBadgeJournalScreen: number,
+  intervalWhenCloseApp: string,
+  stateOfTimerTitleForFirstTimeInApp: boolean,
+}
+
+const initialState:iAppStateSlicer = {
     isExist: false, // есть ли юзер в локал сторедж
     open: false,    // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
     calendareDay: new Date().toISOString().slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
-    intervalWhenCloseApp: 0,
+    intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
     reducers: {
-      changeIsExist: (state, action:PayloadAction<boolean>) => {
+      changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояине приложение, 
         state.isExist = action.payload;
       },
       popupLiquidState: (state, action:PayloadAction<boolean>) => {
@@ -34,7 +44,7 @@ const appStateSlice = createSlice({
       resetBadges: (state) => {
         state.tabBarBadgeJournalScreen = 0;
       },
-      recordIntervalWhenCloseApp: (state, action:PayloadAction<number>) => {
+      recordIntervalWhenCloseApp: (state, action:PayloadAction<string>) => {
         state.intervalWhenCloseApp = action.payload;
       },
       changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {

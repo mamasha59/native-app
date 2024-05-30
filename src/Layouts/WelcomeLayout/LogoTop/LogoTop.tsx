@@ -3,10 +3,10 @@ import React from "react";
 
 const LogoTop = () => {
   return (
-    <View className="items-center">
-        <Text style={{fontFamily:'geometria-bold'}} className="w-full text-center text-[40px] leading-[48px] text-[#FFFFFF] my-[50px]">
-            Uro<Text className="italic">Control</Text>
-        </Text>
+    <View className="justify-center flex-grow-0 relative py-5 mx-auto">
+      <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-[20%] text-[#fff]">Use</Text>
+      <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-4xl leading-7 text-[#FFFFFF]">Nelaton</Text>
+      <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-[45%] right-0 text-[#fff]">easily</Text>
     </View>
   );
 };

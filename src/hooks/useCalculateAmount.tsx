@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { iChart, iDairyRecord } from '../types';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+
+import { format } from 'date-fns';
 
 interface iuseUpdateChart {
     dispatchAction: ActionCreatorWithPayload<iChart>,
@@ -9,13 +12,13 @@ interface iuseUpdateChart {
 }
 
 export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0,10));
+  const [currentDate, setCurrentDate] = useState(format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10));
   const journalData = useAppSelector((state) => state.journal);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
       const amountOfDrankWaterPerDay = journalData.urineDiary // сложенное кол-во слитой мочи за текущий день
-          .filter(item => item.timeStamp === currentDate && item[category])
+          .filter(item => item.timeStamp.slice(0,10) === currentDate && item[category])
           .map(e => e[category])
           .reduce((acc,value) => {
               if (typeof acc === 'number' && typeof value === 'number'){
@@ -24,7 +27,7 @@ export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
                   return 0;
               }
           },0);
-
+  
       if (amountOfDrankWaterPerDay)
           dispatch(dispatchAction({
               timestamp: currentDate,

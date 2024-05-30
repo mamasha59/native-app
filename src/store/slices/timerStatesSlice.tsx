@@ -21,7 +21,7 @@ const timerStatesSlice = createSlice({
         setInitialStripWhenCloseApp: (state, action) => {
             state.initialStripWhenCloseApp = action.payload;
         },
-        setInterval: (state, action) => {
+        setInterval: (state, action:PayloadAction<number>) => {
             state.interval = action.payload;
         }
     }

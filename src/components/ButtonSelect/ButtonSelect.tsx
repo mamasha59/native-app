@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity } from "react-native";
 import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
+import { useAppSelector } from "../../store/hooks";
 
 interface iButtonSelect{
     placeholder: string;
@@ -16,10 +17,10 @@ const ButtonSelect = ({setOpenModal, openModal, placeholder, inputValue, onPress
         {inputValue  
         ? <Text style={{fontFamily:'geometria-regular'}} className="text-lg leading-[22px] ">
             {inputValue}
-            </Text> 
+          </Text> 
         : <Text style={{fontFamily:'geometria-regular'}} className="text-lg leading-[22px] opacity-60">
             {placeholder}
-            </Text>
+          </Text>
         }
     </TouchableOpacity>
   );

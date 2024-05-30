@@ -6,19 +6,19 @@ import { useAppSelector } from '../store/hooks';
 
 import NoticeNavigationScreen from './NoticeAccessScreens/NoticeNavigationScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
-import ControlСatheter from './ControlCatheter/ControlСatheter';
 import JournalScreen from './JournalScreen/JournalScreen';
-import ProfileScreenStack from './ProfileStack/index';
 
 import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIcon';
 import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
 import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
+import WaterBalance from './WaterBalance/WaterBalance';
+import ProfileScreen from './ProfileStack/ProfileScreen/ProfileScreen';
 
 export type RootStackParamList = {
-  ProfileScreenStack: undefined;
-  ControlСatheter: undefined;
+  ProfileScreen: undefined;
+  WaterBalance: undefined;
   Home: undefined;
   JournalScreen: undefined;
   NoticeNavigationScreen: undefined;
@@ -46,8 +46,8 @@ export default function Home() {
       }}
       screenOptions = {{
         headerShown:false,
-        tabBarActiveBackgroundColor:'#4BAAC5',  // цвет кнопки когда мы на странице
-        tabBarActiveTintColor: '#ffffff', // цвет иконки когда активна color
+        // tabBarActiveBackgroundColor:'#4BAAC5',  // цвет кнопки когда мы на странице
+        // tabBarActiveTintColor: '#ffffff', // цвет иконки когда активна color
         tabBarItemStyle: { // стили самой кнопки перехода по страницам(дом, профиль и тд.)
           borderRadius: 100,
           marginVertical: 10,
@@ -57,24 +57,26 @@ export default function Home() {
           height: 70,
           paddingHorizontal: 15,
         },
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarButton: (props) => <TouchableOpacity activeOpacity={.6} {...props} />,
         tabBarHideOnKeyboard: true,
       }}>
       <Tab.Group >
       <Tab.Screen
-        name='ProfileScreenStack'
-        component={ProfileScreenStack}
+        name='ProfileScreen'
+        component={ProfileScreen}
         options={{
+          tabBarLabel:'Profile',
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon width={size} color={color}/>
           ),
         }}
       />
       <Tab.Screen
-        name='ControlСatheter'
-        component={ControlСatheter}
+        name='WaterBalance'
+        component={WaterBalance}
         options={{
+          tabBarLabel:'Water',
           tabBarIcon: ({ color, size }) => (
             <ControllCatetor width={size} color={color}/>
           ),
@@ -84,6 +86,7 @@ export default function Home() {
         name='Home'
         component={HomeScreen}
         options={{
+          tabBarLabel:'Home',
           tabBarIcon: ({ color, size }) => (
             <HomeIcon width={size} color={color}/>
           ),
@@ -93,6 +96,7 @@ export default function Home() {
         name='JournalScreen'
         component={JournalScreen}
         options={{
+          tabBarLabel:'Journal',
           tabBarIcon: ({ color, size }) => (
             <JournalIcon width={size} color={color}/>
           ),
@@ -103,6 +107,7 @@ export default function Home() {
         name='NoticeNavigationScreen'
         component={NoticeNavigationScreen}
         options={{
+          tabBarLabel:'Notice',
           tabBarIcon: ({ color, size }) => (
             <NotificationIcon color={color} width={size}/>
           ),

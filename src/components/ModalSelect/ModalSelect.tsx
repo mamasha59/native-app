@@ -1,11 +1,13 @@
 import { View, Text, Modal, Pressable, Dimensions, TouchableOpacity } from "react-native";
+
 import { ClosePopup } from "../../assets/images/icons";
+import { Option } from "../../types";
 
 interface iModalSelect {
     setOpenModal: (state: boolean) => void;
     openModal: boolean;
-    options?: string[] | number[];
-    onItemPress: (item: any) => void;
+    options?: Option[];
+    onItemPress: (item: Option) => void;
     title: string;
     children?: any,
 }
@@ -25,13 +27,13 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
             <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center mb-6">{title}</Text>
                 <View className="flex-row flex-wrap justify-center gap-3 items-center">
-                    {options!.map(item =>
-                            <TouchableOpacity key={item} className={`min-w-[35px] bg-main-blue rounded-lg mb-3`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
-                                <Text style={{fontFamily:'geometria-bold'}} className="text-[#ffff] p-2 text-base text-center">{item}</Text>
+                    {options!.map((item, index) =>
+                            <TouchableOpacity key={index} className={`min-w-[35px] bg-main-blue rounded-lg mb-3`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
+                                <Text style={{fontFamily:'geometria-bold'}} className="text-[#ffff] p-2 text-base text-center">{item.title}</Text>
                             </TouchableOpacity>)
                     }
-                    {children}
                 </View>
+                {children}
                 <TouchableOpacity onPress={() => setOpenModal(!openModal)} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>

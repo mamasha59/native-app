@@ -5,7 +5,7 @@ interface iDoubleButton {
     textOfLeftButton: string;
     textOfRightButton: string;
     handlePressRightButton?: () => void;
-    handlePressLeftButton?: () => void;
+    handlePressLeftButton?: (data?:any) => void;
     showIcon: boolean;
 }
 

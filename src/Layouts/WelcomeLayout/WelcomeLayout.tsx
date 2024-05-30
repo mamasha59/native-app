@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import GradientBackground from "../GradientBackground/GradientBackground";
 import LogoTop from "./LogoTop/LogoTop";
 
@@ -38,17 +38,17 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, index, skip, s
             </View>)
         }
         <View className="w-full items-center mb-5">
-            <Pressable onPress={handleProceed} className={`max-w-[300px] w-full py-[19px] bg-main-blue rounded-[89px] items-center ${showButton && 'hidden'}`}>
+            <TouchableOpacity onPress={handleProceed} className={`max-w-[300px] w-full py-[19px] bg-main-blue rounded-[89px] items-center ${showButton && 'hidden'}`}>
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">{buttonTitle}</Text>
-            </Pressable>
+            </TouchableOpacity>
             {(index || skip) && 
             <View className="w-full items-center justify-center mt-10 ">
                 {index 
                 ? <Text style={{fontFamily:'geometria-regular'}} className="text-xs leading-[14px] text-[#101010] opacity-50">Шаг {index} из 3</Text>
                 : skip && 
-                    <Pressable onPress={skipNextScreen}>
+                    <TouchableOpacity onPress={skipNextScreen}>
                         <Text style={{fontFamily:'geometria-regular'}} className="text-xs leading-[14px] text-main-blue opacity-50">Изменить позже</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 }
             </View>}
         </View>

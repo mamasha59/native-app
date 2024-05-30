@@ -14,11 +14,8 @@ const createUserSlice = createSlice({
         changeField: (state, action: PayloadAction<{ field: keyof iUser; value: string } | undefined>) => {
             if (action.payload) state[action.payload.field] = action.payload.value;
         },
-        setNameSurnameBirthday: (state, action: PayloadAction<Pick<iUser,'nameSurname' | 'birthday'>>) => {
-            Object.assign(state, action.payload);
-        }
     }
 });
 
-export const { setUserData, changeField, setNameSurnameBirthday } = createUserSlice.actions;
+export const { setUserData, changeField } = createUserSlice.actions;
 export default createUserSlice.reducer;

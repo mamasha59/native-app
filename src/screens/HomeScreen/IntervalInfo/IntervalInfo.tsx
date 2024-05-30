@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator} from "react-native";
+import { View, Text, ActivityIndicator} from "react-native";
 import * as Notifications from 'expo-notifications';
 
-import NelatonIcon from "../../../assets/images/iconsComponent/CathetersIcons/NelatonIcon";
 import ModalWindow from "../../../components/ModalAddCatheter/ModalAddCatheter";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
@@ -47,36 +46,14 @@ const IntervalInfo = () => {
   };
 
   return (
-  <View className="border-b flex-row border-[#DADADA] pb-2 gap-3 items-center">
-    <View className="max-w-[44px] max-h-[44px] border p-3 border-[#4babc550] rounded-full items-center justify-center mr-2">
-      <NelatonIcon/>
-    </View>
-
-    <View className="flex-row flex-1 items-center justify-center">
-
-      <View className="mr-[14px]">
-        <View className="mb-2">
-          <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации:</Text>
-        </View>
-          <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">
-          {!userData 
-                ? <ActivityIndicator size="small" color="#4BAAC5"/>
-                : `каждые ${newIntervalText}` || "Интервал не задан"}
-        </Text>
-      </View>
-
-      <TouchableOpacity activeOpacity={.6} className="flex-1 max-w-[120px] ml-5" onPress={() => setModalVisible(true)}>
-        <Text style={{fontFamily:'geometria-bold'}}
-              className={`px-[10px] py-[6px] rounded-[89px] text-center 
-              ${warning ? 'text-warning bg-[#ea373724]' : 'text-main-blue bg-[#4babc528]'}`}>
-          {userJournal  
-          ? (userJournal.initialCathetherAmount.nelaton
-              ? `остаток ${userJournal.initialCathetherAmount.nelaton} шт.`
-              : "Введите кол-во катеторов")
-          : <ActivityIndicator/>
-          }
-        </Text>
-      </TouchableOpacity>
+  <View className="flex-row pb-2 items-center">
+    <View className="flex-row flex-1 items-center">
+      <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации: </Text>
+      <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">
+      {!userData 
+            ? <ActivityIndicator size="small" color="#4BAAC5"/>
+            : `каждые ${newIntervalText}` || "Интервал не задан"}
+      </Text>
     </View>
     {/* ПОПАП ПОПОЛНИТЬ КАТЕТОРЫ */}
     <ModalWindow

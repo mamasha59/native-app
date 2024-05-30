@@ -1,14 +1,14 @@
 import { View, Text } from "react-native";
-import React from "react";
 import WheelPicker from "react-native-wheely";
 
 interface iSetTimeInterval {
     interval: { selectedIndexHour: number; selectedIndexMinutes: number },
     setInterval: React.Dispatch<React.SetStateAction<{ selectedIndexHour: number; selectedIndexMinutes: number }>>,
     visibleRest?:number,
+    is24Hours?: boolean,
   }
 
-const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) => { // компонент с вращающим колесом с числами, выбор интервала
+const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTimeInterval) => { // компонент с вращающим колесом с числами, выбор интервала
 
     const generateSecondsArray = ():string[] => {
         let numbersArray:string[] = [];
@@ -21,6 +21,16 @@ const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) 
 
     const hours = ['0','1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] // массив часов
 
+    const generate24Hours = () => {
+        let numbersArray:string[] = [];
+        for (let i = 0; i <= 23; i++) {
+            numbersArray.push(i.toString());
+          }
+          return numbersArray;
+    }
+
+    const hours24 = generate24Hours();
+
   return (
     <>
     {/* ЧАСЫ */}
@@ -29,13 +39,14 @@ const SetTimeInterval = ({interval, setInterval, visibleRest}:iSetTimeInterval) 
             visibleRest={visibleRest ? 1 : 2}
             itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
             selectedIndex={interval.selectedIndexHour!}
-            options={hours} itemHeight={40}
+            options={is24Hours ? hours24 : hours}
+            itemHeight={40}
             onChange={(index) =>
                 setInterval({
                     selectedIndexHour: index,
                     selectedIndexMinutes: interval.selectedIndexMinutes})
                 }
-            containerStyle={{width:55}}
+            containerStyle={{width:58}}
             selectedIndicatorStyle={{backgroundColor:'#4babc573'}}
         />
         <View>

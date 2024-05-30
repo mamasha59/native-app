@@ -18,10 +18,22 @@ interface iInputData{
     canEdite?:boolean;
     maxLength: number;
     inputMode: Keyboard;
+    multiline?: boolean,
 }
 
 const InputData = (props:iInputData) => {
-    const {control, inputsValue, errors, placeholder, name, showPrompt, textPrompt, canEdite, maxLength, inputMode, isRequired} = props;
+    const {control,
+            inputsValue,
+            errors,
+            placeholder,
+            name,
+            showPrompt,
+            textPrompt,
+            canEdite,
+            maxLength,
+            inputMode,
+            isRequired,
+            multiline} = props;
     const [prompt, setPrompt] = useState<boolean>(false); // состояние показывать подсказку к инпуту или нет
    
     useEffect(() => { // убирать подсказку через 3 сек после ее показа
@@ -38,16 +50,17 @@ const InputData = (props:iInputData) => {
     <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
         <Controller
             control={control}
-            rules={{required:isRequired || true}}
-            render={({ field: { onChange, value } }) => (                
+            rules={{required:isRequired || false}}
+            render={({ field }) => (                
                 <TextInput
+                    multiline={multiline}
                     style={{fontFamily:'geometria-regular'}}
                     inputMode={inputMode}
                     editable={canEdite}
                     placeholder={placeholder}
                     className="text-lg w-full text-center leading-[22px]"
-                    onChangeText={onChange}
-                    value={value || inputsValue}
+                    onChangeText={(text) => field.onChange(text)} 
+                    value={field.value}
                     maxLength={maxLength}
                 />
             )}

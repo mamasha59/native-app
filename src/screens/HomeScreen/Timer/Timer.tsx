@@ -1,5 +1,5 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import { useEffect, useState } from "react";
+import { AppState, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { v4 as uuidv4 } from 'uuid';
 import * as Notifications from 'expo-notifications';
@@ -15,16 +15,18 @@ import { addBadgesJournalScreen,
          ifCountUrineChangeState,
          popupLiquidState} from "../../../store/slices/appStateSlicer";
 import IntervalUI from "./IntervalUI/IntervalUI";
-import { setInitialStripWhenCloseApp, setIntervalDifference, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
+import { setIntervalDifference, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
+import ProgressBarOfСannulation from "./ProgressBarOfСannulation/ProgressBarOfСannulation";
+import IntervalInfo from "../IntervalInfo/IntervalInfo";
+import NightModeButton from "./NightModeButton/NightModeButton";
 
-const Timer = () => {
+const Timer = () => { //TODO refactoring
   const dispatch = useAppDispatch();
 
-  const { urineMeasure } = useAppSelector((state) => state.user); // интервал и измерение мочи(Да/Нет)
-  const showTitleOneTimeInApp = useAppSelector((state) => state.appStateSlice.stateOfTimerTitleForFirstTimeInApp); // показываем заголовок Только один раз в приложении для новых юзеров
+  const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
-
-  const {startFromCountdown, intervalDifference, initialStripWhenCloseApp, interval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
+  
+  const {intervalDifference, interval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
 
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
@@ -38,6 +40,11 @@ const Timer = () => {
     secondPartTime: false,
     thirdPartTime: false,
   });
+  const [laoder, setLoader] = useState<boolean>(false);
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
   // ===================== \\ - хук времени на возрастание
   const stopwatchOffset = new Date(); // на возрастание, Норм. и Крит. интервал
   stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + timerIntervalStopwatch);
@@ -47,7 +54,6 @@ const Timer = () => {
     hours: stopwatchHours,
     start: startStopwatch,
     reset: resetStopwatch,
-    totalSeconds,
     isRunning: stopwatchRunning} = useStopwatch({ autoStart: false, offsetTimestamp: stopwatchOffset});
 
   // ===================== \\ - хук времени на убывание
@@ -59,17 +65,16 @@ const Timer = () => {
     hours: timerHours,
     start: startTimer,
     isRunning: timerRunning,
+    totalSeconds: timerTotalSeconds,
     restart: timerRestart,
   } = useTimer({
     expiryTimestamp,
     autoStart: false,
     onExpire: () => {
+      setInitialStrip(105);
       schedulePushNotification('О нет! Начался нормальный интервал!', 'Не забудь прокатетеризироваться!');
-      setInitialStrip(0); // обнуляем секундные полоски
       dispatch(whetherStartFromCountdown(false));
-      if(partTime.firstPartTime){
-        setPartTime({firstPartTime: true ,secondPartTime: true, thirdPartTime: false}); // делаем Нормальный интервал активным, там время идет на возрастание
-      }
+      setPartTime({firstPartTime: true , secondPartTime: true, thirdPartTime: true}); // делаем Нормальный интервал активным, там время идет на возрастание
       setStartFromСountdown(false);
       startStopwatch();
     }
@@ -85,63 +90,60 @@ const Timer = () => {
   // ===================== \\
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Оптимального интревала
     const updateTimer = () => {
-      if (intervalDifference && startFromCountdown) {
-        setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
-        const expiryTimestampDifferenceTimer = new Date();
-        expiryTimestampDifferenceTimer.setSeconds(expiryTimestampDifferenceTimer.getSeconds() + timerInterval - intervalDifference);
-        timerRestart(expiryTimestampDifferenceTimer);
-      } else {
-        setTimerInterval(interval);
-      }
-    };
+      if(!settings.nighMode.value){
+        setLoader(true);
+        if (intervalDifference < timerInterval && intervalDifference > 0) {
+          setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
+          const expiryTimestampDifferenceTimer = new Date();
+          expiryTimestampDifferenceTimer.setSeconds(expiryTimestampDifferenceTimer.getSeconds() + (timerInterval - intervalDifference));
+          timerRestart(expiryTimestampDifferenceTimer);
+        } else {
+          setTimerInterval(interval);
+        }
+        setLoader(false);
+      };
+    }
     updateTimer();
   }, [intervalDifference]);
-console.log(intervalDifference);
 
-  useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Нормального интервала либо Крит. интервала, если разница в секундах с записью в журанале больше Оптимального интервала
+  useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Крит. интервала, если разница в секундах с записью в журанале больше Оптимального интервала
     const updateStopWatch = async () => {
-
-      if (intervalDifference && intervalDifference > timerInterval) {
-
-        setStartFromСountdown(false);
-        if(totalSeconds <= (interval * 0.05) + timerIntervalStopwatch){
-          setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false}); // делаем Нормальный интервал активным
-        }else{
+      if(!settings.nighMode.value){
+        setLoader(true);
+        if (intervalDifference && intervalDifference > timerInterval) {
+          setStartFromСountdown(false);
           setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true}); // делаем Критический интервал активным
           setInitialStrip(105);
+          const expiryTimestampDifferenceStopWatch = new Date();
+          expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
+          resetStopwatch(expiryTimestampDifferenceStopWatch);
         }
-
-        const expiryTimestampDifferenceStopWatch = new Date();
-        expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
-        resetStopwatch(expiryTimestampDifferenceStopWatch);
-      }
-    };
+          setLoader(false);
+        };
+    }
     updateStopWatch();
-  }, [intervalDifference]);
+
+  }, [intervalDifference, appStateVisible]);
   
   useEffect(() => { // расчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
     if(journal.urineDiary.length > 0) {
-      const targetDate = parse(journal.urineDiary[0].timeStamp, "yyyy-MM-dd HH:mm:ss", new Date());
+      const targetDate = parse(journal.urineDiary[0].timeStamp, "MM/dd/yyyy HH:mm:ss", new Date());
       const currentDate = new Date();
       const difference = differenceInSeconds(currentDate, targetDate);   
       dispatch(setIntervalDifference(difference));
     }
   },[]);
 
-  useEffect(() => { // делаем крит. интервал активным, этот хук если приложени не было закрыто
-    if(partTime.secondPartTime){
-      if(totalSeconds >= (interval * 0.05) + timerIntervalStopwatch){
-        setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true});
+  useEffect(() => { // делаем желтый интервал активным, этот хук если приложени не было закрыто
+    if(partTime.firstPartTime){
+      if(timerTotalSeconds === timerInterval * 0.05){
+        setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false});
       }
     }
-  },[totalSeconds]);
+  },[timerTotalSeconds]);
 
   useEffect(() => { // рисуем пунктирные линии на внешнем кругу
     let calculatedTimeToDrawSeconds = Math.ceil(interval / 105 * 1000);
-
-    if (partTime.secondPartTime && stopwatchRunning) {
-      calculatedTimeToDrawSeconds = Math.ceil(((interval * 0.05) / 105) * 1000);
-    }
     let intervalId: NodeJS.Timeout;
 
     if (timerRunning || stopwatchRunning) {
@@ -155,11 +157,47 @@ console.log(intervalDifference);
     
   }, [timerRunning, partTime, stopwatchRunning, startFromСountdown]);
 
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState:any) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        // Приложение вернулось на передний план
+        const strip = Math.ceil((timerInterval - timerTotalSeconds) * 105 / timerInterval);
+        console.log('мы тут');
+        setInitialStrip(strip);
+      }
+      appState.current = nextAppState;
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    // Очистка подписки при размонтировании компонента
+    return () => {
+      subscription.remove();
+    };
+  }, [timerInterval, timerTotalSeconds]);
+
+  useEffect(() => {
+    const stopTimer = () => {
+      if(settings.nighMode.value){      
+        if(timerRunning){
+          const expiryTimestampReset = new Date();
+          expiryTimestampReset.setSeconds(expiryTimestamp.getSeconds() + timerInterval);
+          timerRestart(expiryTimestampReset, false);
+          setInitialStrip(0);
+        } else if (stopwatchRunning){
+          resetStopwatch(stopwatchOffset, false);
+          setInitialStrip(0);
+        }
+      } 
+    }
+    stopTimer()
+  },[settings.nighMode]);
+
   const handlePressCommon = async () => {
     dispatch(whetherStartFromCountdown(true));
     setIntervalDifference(0); // обнуляем разницу между последней катетеризацией
     schedulePushNotification('Уведомдление через время', 'Уведомление через время');
-    if (!showTitleOneTimeInApp) {
+    if (!settings.stateOfTimerTitleForFirstTimeInApp) {
       dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
     }
     if (journal.initialCathetherAmount.nelaton > 0) {
@@ -189,13 +227,13 @@ console.log(intervalDifference);
       id: uuidv4(),
       whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
       catheterType: 'Нелатон',
-      timeStamp: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
     }));
   };
   
   const handlePressIfUrineMeasure = () => { // при нажатии кнопки, если Выбранно измерение мочи
     handlePressCommon();
-    if (urineMeasure === 'Да') {
+    if (settings.urineMeasure.value) {
       dispatch(popupLiquidState(true));
       dispatch(ifCountUrineChangeState(true));
     }
@@ -203,22 +241,22 @@ console.log(intervalDifference);
   
   return (
     <View className="flex-1 justify-center items-center relative">
-      <View>
-        <Text>тут будет шкала</Text>
-      </View>
+      <NightModeButton/>
       <>
+      <ProgressBarOfСannulation/>
+      <IntervalInfo/>
       <View className="flex-1 items-center justify-center w-full h-full">
          <SvgComponentText
           partTime={partTime}
           start={timerRunning}
           initialNumberOfStrip={initialStrip}/>
       </View>
-      <View className="absolute items-center">
+      <View className="absolute items-center top-[43%]">
         <View className="items-center">
           <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-center text-grey max-w-[160px]">
-              {!showTitleOneTimeInApp 
+              {!settings.stateOfTimerTitleForFirstTimeInApp 
                 ? 'Время катетеризироваться:' 
-                : (!partTime.secondPartTime ? 'До катетеризации' : 'С последней катетеризации:')
+                : (!partTime.thirdPartTime ? 'До катетеризации' : 'С последней катетеризации:')
               }
           </Text>
           <IntervalUI
@@ -229,9 +267,10 @@ console.log(intervalDifference);
             timerHours={timerHours}
             timerMinutes={timerMinutes}
             timerSeconds={timerSeconds}
+            loader={laoder}
             />
         </View>
-        <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={urineMeasure === 'Да' ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
+        <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
           <LinearGradient
               colors={['#83B759', '#609B25']}
               start={{ x: 0, y: 0.5 }}

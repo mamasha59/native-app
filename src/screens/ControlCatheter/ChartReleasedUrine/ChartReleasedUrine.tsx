@@ -30,7 +30,7 @@ const ChartReleasedUrine = () => {
         }}
         width={width / 1.060}
         height={138}
-        withDots={true}
+        withDots={false}
         segments={0}
         transparent={true}
         yAxisInterval={1} // optional, defaults to 1
@@ -43,6 +43,11 @@ const ChartReleasedUrine = () => {
             backgroundGradientFromOpacity: 0.4,
             backgroundGradientTo: "#7076B0",
             backgroundGradientToOpacity: 0.5,
+            propsForBackgroundLines: {
+              strokeDasharray: "",
+              stroke:'#DADADA',
+              strokeWidth:"1",
+            },
             color: () => `#4BAAC5`,
             labelColor: () => `#ff5500`,
             strokeWidth: 1,

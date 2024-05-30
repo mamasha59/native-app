@@ -1,20 +1,22 @@
 import { iUser } from "../types";
 
  const initialState:iUser = { // пробелы для удобства, экраны по порядку
-    weight: '0',
-    height: '0',
+    weight: '',
+    height: '',
     sex: '',
-    age: '0',
+    age: '',
     //
-    volume: '0',
+    volume: '',
     catheterType: 'Нелатон',
     catheterSize: '',
     //
-    useAtNight: 'Выбрать',
-    urineMeasure: 'Выбрать',
+    // useAtNight: 'Да',
     //
-    nameSurname: '',
+    name: '',
+    surname: '',
     birthday: '',
+    additionalInfo: '',
+    catheterInfo: '',
 }
 
 export default initialState;

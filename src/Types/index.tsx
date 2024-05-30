@@ -12,10 +12,12 @@ interface iUser {
     catheterSize: string | null,
     catheterType: string | null,
     volume: string | null,
-    urineMeasure: string,
-    useAtNight: string | null,
-    nameSurname?: string | null,
+    // urineMeasure: string,
+    name?: string | null,
+    surname?: string | null,
     birthday?: string | null,
+    additionalInfo?: string,
+    catheterInfo?: string,
 }
 
 type iMonth = {
@@ -29,6 +31,7 @@ interface iDay {
     weekNumber: number;
     month: iMonth;
     year: number;
+    index?: number,
 }
 
 interface iDairyRecord {
@@ -47,5 +50,19 @@ interface iChart { // день в графике
     timestamp: string,
     value: number,
 }
+
+interface iJournal {
+    initialCathetherAmount: {
+        nelaton: number ;
+    },
+    urineDiary: iDairyRecord[],
+    urineChart: iChart[],
+    drankWaterChart: iChart[],
+}
+
+interface Option {
+    title: string,
+    value: boolean | string
+}
     
-export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart};
+export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option};

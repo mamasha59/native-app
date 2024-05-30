@@ -2,13 +2,13 @@ import { memo, useState } from "react";
 import { View, Text, Modal, TouchableOpacity, Dimensions, TextInput, Pressable, Alert } from "react-native";
 import { Slider } from '@miblanchard/react-native-slider';
 import { v4 as uuidv4 } from 'uuid';
+import { format } from "date-fns";
 
 import { ClosePopup } from "../../../assets/images/icons";
 import GlassIcon from "../../../assets/images/iconsComponent/GlassIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
-import { format } from "date-fns";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -29,7 +29,7 @@ const ModalLiquidAmount = () => {
             catheterType:'Нелатон',
             whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
             amountOfReleasedUrine: liquidValue,
-            timeStamp: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+            timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
           }));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
         }else{
@@ -38,7 +38,7 @@ const ModalLiquidAmount = () => {
             id: uuidv4(),
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
             amountOfDrankFluids: liquidValue,
-            timeStamp: new Date().toISOString(),
+            timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
           }))
         }
         setLiquidValue(0);  // сбрасываем рейдж при сабмите

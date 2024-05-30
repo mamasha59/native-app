@@ -1,61 +1,63 @@
 import { View } from "react-native";
-import  {useState } from "react";
-import { Picker } from "@react-native-picker/picker";
+import { IDropdownRef } from "react-native-element-dropdown";
+import { RefObject, useRef } from "react";
 
 import WelcomeLayout from "../../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../../UserData";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { changeIsExist, setWhetherCountUrine } from "../../../../store/slices/appStateSlicer";
+import ClueAtTheBottom from "../../../../components/ClueAtTheBottom/ClueAtTheBottom";
+import { Option } from "../../../../types";
+import ProfileSelect from "../../../ProfileStack/ProfileScreen/ProfileSettings/ProfileSelect/ProfileSelect";
 
 interface FirstOptionalScreen extends NavigationPropsWelcome<'FirstOptionalScreen'>{}
 
 const FirstOptionalScreen = ({navigation}:FirstOptionalScreen) => {
+    const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
+    const dispatch = useAppDispatch();
+    const dropDownCountUrine:RefObject<IDropdownRef> = useRef(null);
+    const dropDownCountWater:RefObject<IDropdownRef> = useRef(null);
 
-    const [signal, setSignal] = useState();
-
-    const onSubmit = () => { // функция при клике на кнопку 'Сохранить'
-        navigation.navigate('SecondOptionalScreen');
+    const onSubmit = () => { // функция при клике на кнопку 'Изменить позже'
+        navigation.navigate('MainScreen');
+        dispatch(changeIsExist(true));
+    }
+    
+    const handleIsCountDrankWater = (value: Option) => { // функция при выборе селекта Измерение воды
+        // dispatch(setWhetherCountUrine({value: value!.value, title: value!.title}));
+        dropDownCountWater.current && dropDownCountWater.current.close();
     }
 
-    const useSeclector = useAppSelector(state => state.user);
-
-    const skipScreen = () => { // функция при клике на кнопку 'Изменить позже'
-        navigation.navigate('SecondOptionalScreen');
+    const handleIsCountUrine = (value: Option) => { // функция при выборе селекта Измерение кол-ва мочи
+        dispatch(setWhetherCountUrine({value: value.value, title: value.title}));
+        dropDownCountUrine.current && dropDownCountUrine.current.close();
     }
 
   return (
-    <WelcomeLayout title="Настройки уведомлений" buttonTitle="Сохранить изменения" handleProceed={onSubmit} skip={true} skipNextScreen={skipScreen}>
-     
-            <View className="border-b border-[#4babc526] mb-10">
-                <Picker
-                    mode="dropdown"
-                    itemStyle={{fontSize:18}}
-                    selectedValue={signal}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSignal(itemValue)
-                }>
-                    <Picker.Item label="Тип сигнала" value="Тип сигнала" />
-                    <Picker.Item label="Будильник 1 (по умолчанию)" value="Будильник 1 (по умолчанию)" />
-                    <Picker.Item label="Радар" value="Радар" />
-                    <Picker.Item label="Звук смс" value="Звук смс" />
-                    <Picker.Item label="Вступление" value="Вступление" />
-                </Picker>
-            </View>
-            <View className="border-b border-[#4babc526]">
-                <Picker 
-                    mode="dropdown"
-                    itemStyle={{fontSize:18}}
-                    selectedValue={signal}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSignal(itemValue)
-                }>
-                    <Picker.Item label="Тип сигнала" value="Тип сигнала" />
-                    <Picker.Item label="Будильник 1 (по умолчанию)" value="Будильник 1 (по умолчанию)" />
-                    <Picker.Item label="Радар" value="Радар" />
-                    <Picker.Item label="Звук смс" value="Звук смс" />
-                    <Picker.Item label="Вступление" value="Вступление" />
-                </Picker>
-            </View>
+    <WelcomeLayout title="Water balance" buttonTitle="Сохранить изменения" handleProceed={onSubmit} skip={true} skipNextScreen={onSubmit}>
+        <View className="my-4">
+            <ProfileSelect
+                selectRef={dropDownCountUrine}
+                confirmation={true}
+                handleClickOption={handleIsCountUrine}
+                title="Измерение кол-ва выделяемой мочи"
+                value={settings.urineMeasure.title}
+                key={"Измерение кол-ва выделяемой мочи"}
+            />
+        </View>
 
+        <View className="mt-4">
+            <ProfileSelect
+                selectRef={dropDownCountWater}
+                confirmation={false}
+                handleClickOption={handleIsCountDrankWater}
+                title="Измерение кол-ва выпитой жидкости"
+                value={''}
+                key={"Измерение кол-ва выпитой жидкости"}
+            />
+        </View>
+
+        <ClueAtTheBottom/>
     </WelcomeLayout>
   );
 };

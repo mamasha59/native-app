@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, TouchableOpacity } from "react-native";
 
 import { useAppSelector } from "../../../../../store/hooks";
 import { useFormatInterval } from "../../../../../hooks/useFormatInterval";
@@ -22,7 +21,10 @@ const ChangeInterval = ({handleChangeOptimalInterval}:iChangeInterval) => {
       <View className="bg-[#048eff] rounded-2xl min-w-[185px] items-center flex-1 justify-center mr-[10px]">
         <Text style={{fontFamily:'geometria-regular'}} className="py-2 text-[#fff] w-full text-lg text-center">Оптимальный</Text>
       </View>
-      <TouchableOpacity onPress={() => handleChangeOptimalInterval()} activeOpacity={.6} className="border border-main-blue rounded-xl min-w-[150px] max-h-11 flex-1 justify-center items-center">
+      <TouchableOpacity
+        onPress={() => handleChangeOptimalInterval()}
+        activeOpacity={.6}
+        className="border border-main-blue rounded-2xl min-w-[150px] max-h-11 h-full flex-1 justify-center items-center">
           <Text style={{fontFamily:'geometria-bold'}} className="text-sm text-center">{newIntervalText}</Text>
       </TouchableOpacity>
     </View>

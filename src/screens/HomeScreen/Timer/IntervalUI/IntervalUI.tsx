@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 
 interface iIntervalUI {
     startFromСountdown: boolean;
@@ -8,11 +8,12 @@ interface iIntervalUI {
     stopwatchHours: number;
     stopwatchMinutes: number;
     stopwatchSeconds: number;
+    loader?: boolean,
 }
 
 const IntervalUI = (props:iIntervalUI) => {
 
-    const {startFromСountdown,timerHours,timerMinutes,timerSeconds,stopwatchHours,stopwatchMinutes,stopwatchSeconds} = props;
+    const {startFromСountdown,timerHours,timerMinutes,timerSeconds,stopwatchHours,stopwatchMinutes,stopwatchSeconds, loader} = props;
 
     const hours = startFromСountdown ? timerHours : stopwatchHours;
     const minutes = startFromСountdown ? timerMinutes : stopwatchMinutes;
@@ -22,7 +23,7 @@ const IntervalUI = (props:iIntervalUI) => {
         
   return (
     <Text style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px] my-[15px]">
-        {formattedTime}
+        {loader ? <ActivityIndicator/> : formattedTime}
     </Text> 
   );
 };

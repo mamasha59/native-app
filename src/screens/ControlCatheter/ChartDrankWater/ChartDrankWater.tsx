@@ -9,12 +9,12 @@ import { useUpdateChart } from "../../../hooks/useCalculateAmount";
 
 const {width} = Dimensions.get("window");
 
-const Chart = () => {
-  const drankWater = useAppSelector((state) => state.journal);
+const ChartDrankWater = () => {
+  const drankWater = useAppSelector((state) => state.journal.drankWaterChart); // массив всех записей где указанно Выпитая вода
   const weekDays = useSevenPreviousDays(day); // хук создание массива предыдущих дней недели
   useUpdateChart({category:'amountOfDrankFluids', dispatchAction: addChartValueDrankWaterToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
-  const valueArray = drankWater.drankWaterChart.map(item => typeof item === 'object' ? item.value : item); // делаем масив из чисел
+  const valueArray = drankWater.map(item => typeof item === 'object' ? item.value : item); // делаем масив из чисел
 
   return (
     <LineChart
@@ -26,7 +26,7 @@ const Chart = () => {
               data: valueArray,
               withScrollableDot: false
           }
-      ]
+        ]
         }}
         width={width / 1.060}
         height={138}
@@ -63,4 +63,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default ChartDrankWater;

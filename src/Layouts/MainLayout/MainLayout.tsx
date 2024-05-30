@@ -17,7 +17,7 @@ const MainLayout = ({ children, title, buttonBottomTitle, buttonAction }:iMainLa
     <GradientBackground>
       <TopBar/>
       <View className="flex-1 bg-[#ffff] rounded-t-2xl pt-[25px] px-6">
-        {title && <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px] pb-5">{title}</Text>}
+        {title && <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px] pb-2">{title}</Text>}
         {children}
         {/* button нужен не на всех экранах */}
         <Button buttonBottomTitle={buttonBottomTitle} buttonAction={buttonAction}/>

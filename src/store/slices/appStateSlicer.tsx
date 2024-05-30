@@ -1,24 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { format } from "date-fns";
+import { Option } from "../../types";
 
 interface iAppStateSlicer {
   isExist: boolean,
   open: boolean,
   ifCountUrinePopupLiquidState: boolean,
+  urineMeasure: Option,
   calendareDay: string,
   tabBarBadgeJournalScreen: number,
   intervalWhenCloseApp: string,
   stateOfTimerTitleForFirstTimeInApp: boolean,
+  nighMode: {
+    title: string,
+    value: boolean,
+    timeStamp: string,
+  },
 }
 
 const initialState:iAppStateSlicer = {
     isExist: false, // есть ли юзер в локал сторедж
     open: false,    // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
-    calendareDay: new Date().toISOString().slice(0,10), // дефолтное состояние календаря, текущий день
+    calendareDay: format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
     intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
+    nighMode: {
+      title: '',
+      value: false,
+      timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss')
+    },
+    urineMeasure: {
+      title: '',
+      value: false,
+    },
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -26,6 +43,9 @@ const appStateSlice = createSlice({
     reducers: {
       changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояине приложение, 
         state.isExist = action.payload;
+      },
+      setWhetherCountUrine: (state, action:PayloadAction<Option>) => {
+        state.urineMeasure = action.payload;
       },
       popupLiquidState: (state, action:PayloadAction<boolean>) => {
         state.open = action.payload;
@@ -49,10 +69,13 @@ const appStateSlice = createSlice({
       },
       changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {
         state.stateOfTimerTitleForFirstTimeInApp = action.payload;
-      }
+      },
+      switchNightMode: (state, action:PayloadAction<{ value: boolean, timeStamp: string, title: string}>) => {
+          state.nighMode = {timeStamp: action.payload.timeStamp, value: action.payload.value, title: action.payload.title}
+      },
     }
 })
-export const { 
+export const {
     changeIsExist,
     popupLiquidState,
     ifCountUrineChangeState,
@@ -60,7 +83,9 @@ export const {
     addBadgesJournalScreen,
     resetBadges,
     recordIntervalWhenCloseApp,
-    changeStateOfTimerTitleForFirstTimeInApp
+    changeStateOfTimerTitleForFirstTimeInApp,
+    switchNightMode,
+    setWhetherCountUrine,
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

@@ -16,13 +16,13 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
   const [currentColor, setCurrentColor] = useState('#4BAAC5'); // начальное значение цвета
 
   useEffect(() => { // изменяем цвет внешнего круга, пунктирные линии
-    if(partTime.firstPartTime && !partTime.secondPartTime){
+    if(partTime.firstPartTime && !partTime.thirdPartTime && !partTime.secondPartTime){
       setCurrentColor('#4BAAC5');
       
-    } else if(partTime.secondPartTime && !partTime.thirdPartTime) {
+    } else if(partTime.secondPartTime && start) {
       setCurrentColor('#FFB254');
 
-    } else if(partTime.thirdPartTime) {
+    } else if(partTime.thirdPartTime && !start) {
       setCurrentColor('#EA3737');
     }
   },[start,partTime]);
@@ -72,10 +72,10 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         stroke="#ffffff"
     />
       <G fill={partTime.thirdPartTime ? "#7b7777" : '#4BAAC5'}>
-        <Text fontSize="11">
-          <TextPath href="#circle" >
-            <TSpan dy={-22} >
-              о п т и м а л ь н ы й
+        <Text fontSize="12">
+          <TextPath href="#circle" startOffset={4}>
+            <TSpan dy={-22} > 
+              н о р м а л ь н ы й     и н т е р в а л 
             </TSpan>
           </TextPath>
         </Text>
@@ -87,13 +87,13 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         {partTime.firstPartTime && <Path d={"M 260 151 A 109 110 0 0 1 100 245"} fill="none" stroke={`${partTime.thirdPartTime ? '#7b7777' : '#4BAAC5'}`} strokeWidth="4" />}
       </G>
       <G fill={partTime.secondPartTime && !partTime.thirdPartTime ? "#FFB254" : "#7b7777"}>
-        <Text>
+        {/* <Text>
           <TextPath href="#circle" startOffset={210}>
             <TSpan fontSize="11" dy={-24}>
               н о р м а л ь н ы й
             </TSpan>
           </TextPath>
-        </Text>
+        </Text> */}
         <Text fontSize="22" dy={111} dx={209} translateY={128} translateX={-73}>
           <TextPath href="#circle" >
               |
@@ -102,10 +102,10 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         {partTime.secondPartTime && <Path d={"M 96 54 A 115 110 0 0 0 100 245"} fill="none" stroke={`${partTime.thirdPartTime ? '#7b7777' : '#FFB254'}`} strokeWidth="4"/>}
       </G>
       <G fill={partTime.thirdPartTime ? "#EA3737" : '#7b7777'}>
-        <Text fontSize="11">
-          <TextPath href="#circle" startOffset={420}>
+        <Text fontSize="12">
+          <TextPath href="#circle" startOffset={424}>
             <TSpan dy={-22}>
-              к р и т и ч е с к и й  и н т е р в а л
+              к р и т и ч е с к и й   и н т е р в а л
             </TSpan>
           </TextPath>
         </Text>

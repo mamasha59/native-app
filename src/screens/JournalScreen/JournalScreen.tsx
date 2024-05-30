@@ -1,25 +1,40 @@
-import { ScrollView, Text, View, RefreshControl} from "react-native";
+import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
 import * as Print from 'expo-print';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { Dropdown } from "react-native-element-dropdown";
 import { StorageAccessFramework } from 'expo-file-system';
+import { format } from "date-fns";
 
 import { DropDown } from "../../assets/images/icons";
 
 import JournalRecord from "./JournalRecord/JournalRecord";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
 import JournalCalendar from "./JournalCalendar/JournalCalendar";
-import { day, getCurrentMonth, months } from "../../utils/date";
+import { day, getCurrentMonth, monthsEng } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iDairyRecord, iMonth } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { resetBadges } from "../../store/slices/appStateSlicer";
+import { resetBadges, setCalendareDay } from "../../store/slices/appStateSlicer";
+import Statistics from "./Statistics/Statistics";
+import FilterList from "./FilterList/FilterList";
+import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
 
-const JournalScreen = () => { // TODO что бы скачивать файл с помощью expo file sistem мне нужен url с бека, пока что так
+interface iJournalScreen{
+  navigation: StackNavigationRoot
+}
+
+const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы скачивать файл с помощью expo file sistem мне нужен url с бека, пока что так
+  const dispatch = useAppDispatch();
+  const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из хранилища редакса
+  const selectedCalendareDate = useAppSelector(user => user.appStateSlice.calendareDay); // достаем из стора редакса выбранню дату на календаре
+
   const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
   const [filtredJournalRecords, setFiltredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [filterSetting, setFilterSetting] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [statisticPerDay, setStatisticPerDay] = useState<{cannulation?:number,leakage?:number,amountOfDrankFluids?:number,amountOfReleasedUrine?:number}>({
@@ -30,44 +45,67 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
   });
   
   const [month, setSelectedMonth] = useState<iMonth>({
-    month: months[getCurrentMonth].value,
+    month: monthsEng[getCurrentMonth].value,
     index: getCurrentMonth,
   });
-  
-  const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из хранилища редакса
-  const selectedCalendareDate = useAppSelector(user => user.appStateSlice.calendareDay); // достаем из стора редакса выбранню дату на календаре
-    
-  const dispatch = useAppDispatch();
+
+ useEffect(() => { // журнал данные всегда по текущий день
+  const today = format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10);
+  if(today !== selectedCalendareDate) {
+    dispatch(setCalendareDay(today));
+  }
+ },[])
 
   useEffect(() => {
-    if (selectedCalendareDate && journalRecords.length > 0){ // если выбрали дату на календаре фильтруем записи по выбранной дате
-      setFiltredJournalRecords(journalRecords.filter((e) => e.timeStamp?.slice(0, 10) === selectedCalendareDate));
-    } else {                    // фильтруем записи по сегоднешнему дню
-      setFiltredJournalRecords(journalRecords.filter((e) => e.timeStamp?.slice(0, 10) === day.toISOString().slice(0,10)));
-    }   
-  },[selectedCalendareDate, journalRecords, refreshing]);
+    const applyFilter = (records: iDairyRecord[], filter: string) => {
+      switch (filter) {
+        case 'Нелатон':
+          return records.filter((e) => e.catheterType === filter);
+        case 'amountOfReleasedUrine':
+          return records.filter((e) => e.amountOfReleasedUrine && e.amountOfReleasedUrine > 0);
+        case 'amountOfDrankFluids':
+          return records.filter((e) => e.amountOfDrankFluids && e.amountOfDrankFluids > 0);
+        case 'leakageReason':
+          return records.filter((e) => e.leakageReason && e.leakageReason?.length > 0);
+        case 'timeStamp':
+          return records;
+        default:
+          return records;
+      }
+    };
+    setLoading(true);
+    setTimeout(() => { // искуственный лоудер
+      const todayJournal = journalRecords.filter((e) => e.timeStamp?.slice(0, 10) === selectedCalendareDate);
+        
+      const filteredRecords = applyFilter(todayJournal, filterSetting);
+      setFiltredJournalRecords(filteredRecords);
+      
+      setLoading(false); // Скрыть индикатор загрузки
+    }, 500);
 
+  }, [filterSetting, selectedCalendareDate, journalRecords, day]);  
+  
   useEffect(() => { // добавление данных в блок Статистика за сегодня
     const filteredRecords = journalRecords.filter(e => e.timeStamp?.slice(0, 10) === selectedCalendareDate); // фильтруем по даты, либо выбранной дате
-
+    
     const cannulationStaticPerDay = filteredRecords.filter(e => e.catheterType); // фильтруем по типу катетора, для статистики Катетеризаций:
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
 
-    const amountOfDrankFluidsPerDay = journalRecords
+    const amountOfDrankFluidsPerDay = filteredRecords
       .map((e) => e.amountOfDrankFluids)
       .reduce((acc,e) => acc! + (e || 0), 0);
 
-    const amountOfReleasedUrinePerDay =journalRecords
+    const amountOfReleasedUrinePerDay = filteredRecords
       .map((e) => e.amountOfReleasedUrine)
       .reduce((acc,e) => acc! + (e || 0), 0);
-    
+
     setStatisticPerDay({
       cannulation:cannulationStaticPerDay.length,
       leakage:leakageStaticPerDay.length,
       amountOfDrankFluids: amountOfDrankFluidsPerDay!,
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
     });
-  },[selectedCalendareDate,journalRecords]);
+  },[selectedCalendareDate,journalRecords, day]);
 
   const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
     const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
@@ -228,6 +266,7 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
       console.error('Ошибка при сохранении файла PDF:', error);
     }
   };
+  
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
     setTimeout(() => {
@@ -241,17 +280,16 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
     <MainLayout title="Дневник мочеиспускания">
       {/* Выбор месяца | Отображение нынешнего месяца */}
       <Dropdown
-        data={months}
-        style={{width:100}}
+        data={monthsEng}
+        style={{width: 100,}}
         fontFamily="geometria-regular"
-        maxHeight={300}
         labelField="value"
         valueField="value"
         placeholder={month.month}
-        searchPlaceholder="Поиск месяца"
         containerStyle={{width:210}}
         autoScroll
-        search
+        activeColor="#4BAAC5"
+        mode="modal"
         value={month.month}
         accessibilityLabel={month.month}
         renderRightIcon={() => <DropDown/>}
@@ -260,57 +298,48 @@ const JournalScreen = () => { // TODO что бы скачивать файл с
       }}
       />
       <JournalCalendar month={month} setSelectedMonth={setSelectedMonth} />
+      <FilterList setFilterSetting={setFilterSetting}/>
+      <Statistics selectedCalendareDate={selectedCalendareDate} statisticPerDay={statisticPerDay}/>
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={updateRecords}/>}
         className="flex-1 overflow-hidden"
         showsVerticalScrollIndicator={false}
         snapToStart={true}
         ref={scrollViewRef}
-        >
-      <View className="items-start mb-1">
-        <Text style={{fontFamily:'geometria-bold'}}>
-          Статистика за {selectedCalendareDate === new Date().toISOString().slice(0,10) ? 'сегодня' : selectedCalendareDate}:
-        </Text>
-      </View>
-      <View className="flex-0 mb-1">
-          <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Катетеризаций:
-            <Text className="text-purple-button"> {statisticPerDay.cannulation}</Text>
-          </Text>
-          <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Подтекание:
-            <Text className="text-purple-button"> {statisticPerDay.leakage}</Text>
-          </Text>
-          <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Выпито жидкости:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfDrankFluids} мл.</Text>
-          </Text>
-          <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Выделенно жидкости:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfReleasedUrine} мл.</Text>
-          </Text>
-      </View>
-      {/* list */}
-      {journalRecords.length === 0 || filtredJournalRecords.length === 0
-        ? <View focusable={false}>
-            <Text style={{fontFamily:'geometria-regular'}} className="text-lg">Здесь пока нет записей...</Text>
-          </View>
-        : filtredJournalRecords.map((e,index) => 
-            <JournalRecord
-              timeStamp={e.timeStamp}
-              id={e.id}
-              key={index} 
-              whenWasCanulisation={e.whenWasCanulisation}
-              amountOfDrankFluids={e.amountOfDrankFluids}
-              catheterType={e.catheterType}
-              amountOfReleasedUrine={e.amountOfReleasedUrine}
-              leakageReason={e.leakageReason}
-            />)
-      }
+      >
+        {/* list */}
+        {loading 
+        ? <ActivityIndicator size={"large"}/>
+        :
+        (journalRecords.length === 0 || filtredJournalRecords.length === 0
+          ? <View focusable={false}>
+              <Text style={{fontFamily:'geometria-regular'}} className="text-lg">There are no entries here yet...</Text>
+            </View>
+          : filtredJournalRecords.map((e,index) => 
+              <JournalRecord
+                timeStamp={e.timeStamp}
+                id={e.id}
+                key={index} 
+                whenWasCanulisation={e.whenWasCanulisation}
+                amountOfDrankFluids={e.amountOfDrankFluids}
+                catheterType={e.catheterType}
+                amountOfReleasedUrine={e.amountOfReleasedUrine}
+                leakageReason={e.leakageReason}
+              />)
+        )
+        }
       </ScrollView>
       <DoubleButton
         showIcon={false}
         textOfLeftButton="Отправить"
         textOfRightButton="Сохранить PDF"
         handlePressLeftButton={printToFile}
-        handlePressRightButton={downloadPdfOnPhone}
+        handlePressRightButton={() => navigation.navigate('PdfOnBoarding')}
       />
+      <TouchableOpacity onPress={() => navigation.navigate('Survey')} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
+        <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center">опросник</Text>
+      </TouchableOpacity>
+
     </MainLayout>
   );
 };

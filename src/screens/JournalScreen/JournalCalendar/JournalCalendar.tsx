@@ -8,6 +8,7 @@ import { iDay, iMonth } from "../../../types/index";
 import { day, getCurrentMonth, months } from '../../../utils/date';
 import { useAppDispatch } from "../../../store/hooks";
 import { setCalendareDay } from "../../../store/slices/appStateSlicer";
+import { format, getDate, lastDayOfMonth } from "date-fns";
 
 interface iJournalCalendar {
     setSelectedMonth: ({month}:iMonth) => void;
@@ -19,25 +20,26 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
     const dispatch = useAppDispatch();
 
-    const daysArray:iDay[] | undefined = createArrayOfDays(day.getDate()); // массив дней от начала месяца до сегодня
-
+    const daysArray:iDay[] = createArrayOfDays(day.getDate()); // массив дней от начала месяца до сегодня
+    
     function createArrayOfDays(numberOfDay: number) {
         const arrayOfDays = [];
         const currentYear = day.getFullYear();
         // Определяем последний день текущего месяца
-        const lastDayOfMonth = new Date(currentYear, month.index + 1, 0).getDate();
+        const findLastDayOfMonth = lastDayOfMonth(new Date(currentYear, month.index + 1, 0));
+        const lastDay = getDate(findLastDayOfMonth);
 
-        for (let i = 1; i <= lastDayOfMonth; i++) {
-        const currentDate = new Date(currentYear, getCurrentMonth, i);
-        const weekDay = currentDate.getDay();
-        
-        arrayOfDays.push({
-            id: uuidv4(), // генерируем айди
-            dayNumber: i,
-            weekNumber: weekDay,
-            month: month,
-            year: currentYear,
-        });
+        for (let i = 1; i <= lastDay; i++) {
+          const currentDate = new Date(currentYear, getCurrentMonth, i);
+          const weekDay = currentDate.getDay();
+          
+          arrayOfDays.push({
+              id: uuidv4(), // генерируем айди
+              dayNumber: i,
+              weekNumber: weekDay,
+              month: month,
+              year: currentYear,
+          });
         }
         return getCurrentMonth === month.index ? arrayOfDays.slice(0, numberOfDay) : arrayOfDays;
     }
@@ -48,7 +50,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
           setRefreshing(false);
         }, 2000);
         scrollViewRef.current?.scrollTo();
-        dispatch(setCalendareDay(new Date().toISOString().slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
+        dispatch(setCalendareDay(format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
         setSelectedMonth({month: months[getCurrentMonth].value, index: getCurrentMonth});
       }, []);
 
@@ -62,7 +64,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
         showsHorizontalScrollIndicator={false}
         className={`flex-grow-0 overflow-hidden ${refreshing && 'opacity-70'}`}>
 
-        {daysArray.reverse().map(e => <CalendarDay key={e.dayNumber} e={e}/>)}
+        {daysArray.reverse().map((e, index) => <CalendarDay key={e.dayNumber} e={e}/>)}
 
     </ScrollView>
   );

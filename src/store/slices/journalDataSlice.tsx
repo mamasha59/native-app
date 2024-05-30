@@ -1,15 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { iChart, iDairyRecord } from "../../types";
+import { iChart, iDairyRecord, iJournal } from "../../types";
 
-export interface iJournal {
-    initialCathetherAmount: {
-        nelaton: number ;
-    },
-    urineDiary: iDairyRecord[],
-    urineChart: iChart[],
-    drankWaterChart: iChart[],
-}
 
 const initialState:iJournal = {
     initialCathetherAmount: {
@@ -95,9 +87,9 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
         addUrineDiaryRecord: (state, action: PayloadAction<iDairyRecord>) => {
             state.urineDiary = [action.payload, ...state.urineDiary];
         },
-        addChartValueToCurrentDay: (state, action: PayloadAction<iChart>) => {            
+        addChartValueToCurrentDay: (state, action: PayloadAction<iChart>) => {         
             if(action) {
-                const foundIndex = state.urineChart.findIndex((e) => new Date(e.timestamp).toDateString() === new Date(action.payload.timestamp).toDateString());
+                const foundIndex = state.urineChart.findIndex((e) => e.timestamp === action.payload.timestamp);
                 if (foundIndex !== -1) {
                     state.urineChart[foundIndex] = {
                         timestamp: action.payload.timestamp,
@@ -112,9 +104,10 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
                 }
             }  
         },
-        addChartValueDrankWaterToCurrentDay: (state, action: PayloadAction<iChart>) => {            
+        addChartValueDrankWaterToCurrentDay: (state, action: PayloadAction<iChart>) => {              
             if(action) {
-                const foundIndex = state.drankWaterChart.findIndex((e) => new Date(e.timestamp).toDateString() === new Date(action.payload.timestamp).toDateString());
+                const foundIndex = state.drankWaterChart.findIndex((e) => e.timestamp === action.payload.timestamp);
+                
                 if (foundIndex !== -1) {
                     state.drankWaterChart[foundIndex] = {
                         timestamp: action.payload.timestamp,

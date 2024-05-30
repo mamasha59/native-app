@@ -15,19 +15,19 @@ const TopBar = () => {
 
   return (
     <View className="flex-row justify-between items-center h-16 px-6">
-        {showLogo 
-          ? (
-            <View className="justify-center flex-grow-0">
-              <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-[#fff]">Use</Text>
-              <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-[#FFFFFF]">Nelaton</Text>
-              <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-[#fff]">easily</Text>
-            </View>
-          )
-          // КНОПКА НАЗАД
-          : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
-          <TouchableOpacity onPress={() => navigation.navigate('Recomendation')}>
-              <RecomendationIcon color={'#fff'} width={20}/>
-          </TouchableOpacity>
+      {showLogo 
+        ? (
+          <View className="justify-center flex-grow-0">
+            <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-[#fff]">Use</Text>
+            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-[#FFFFFF]">Nelaton</Text>
+            <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-[#fff]">easily</Text>
+          </View>
+        )
+        // КНОПКА НАЗАД
+        : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
+        <TouchableOpacity onPress={() => navigation.navigate('Recomendation')}>
+            <RecomendationIcon color={'#fff'} width={20}/>
+        </TouchableOpacity>
     </View>
   );
 };

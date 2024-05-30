@@ -1,39 +1,41 @@
 import { Text, TouchableOpacity } from "react-native";
-import { useState } from "react";
 
 import { iDay } from "../../../types/index";
-import { daysOfWeek } from "../../../utils/date";
+import { day, daysOfWeekEng } from "../../../utils/date";
 import { useAppDispatch } from "../../../store/hooks";
 import { setCalendareDay } from "../../../store/slices/appStateSlicer";
+import { useState } from "react";
 
 type iCalendarDay = {e: iDay}
 
 const CalendarDay = ({e}:iCalendarDay) => {
-  //TODO выделять выбранный день
-    const [selectedDateId, setSelectedDateId] = useState<string>('');
-    const dispatch = useAppDispatch();
+  //TODO при смене языка надо менять locales
+  const currentDay = new Date(e.year, e.month.index, e.dayNumber).toLocaleDateString('en-US', {year:'numeric', month: '2-digit', day: '2-digit'});
 
-    const day = new Date();
-    let isCurrentDay = day.getDate() === e.dayNumber && day.getMonth() === e.month.index;
+  const [selectedItem, setSelectedItem] = useState<string | null>(currentDay);
+  const dispatch = useAppDispatch();
+
+  let isCurrentDay = day.getDate() === e.dayNumber && day.getMonth() === e.month.index;
+
+  const selectDate = () => {
+    dispatch(setCalendareDay(currentDay));
+    setSelectedItem(currentDay === selectedItem ? null : currentDay);
     
-    const selectDate = (id:string) => {
-      setSelectedDateId((prev) => prev = id);
-      const calendareDay = new Date(e.year, e.month.index, e.dayNumber + 1).toISOString().slice(0,10);
-      dispatch(setCalendareDay(calendareDay));
-    }    
+  }
+
   return (
     <TouchableOpacity
-      onPress={() => selectDate(e.id)}
+      onPress={() => selectDate()}
       activeOpacity={0.5}
-      className={`${e.id === selectedDateId || isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[20px] mr-[5px] items-center justify-center rounded-md border border-[#112244b3]`}>
+      className={`${isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[20px] mr-[5px] items-center justify-center rounded-md`}>
         <Text
-          style={{ fontFamily: `${e.id === selectedDateId || isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${e.id === selectedDateId || isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'}  text-[10px]`}>
-            {daysOfWeek[e.weekNumber].short}
+          style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
+          className={`${isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'}  text-[10px]`}>
+            {daysOfWeekEng[e.weekNumber].short}
         </Text>
         <Text
-          style={{ fontFamily: `${e.id === selectedDateId || isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${e.id === selectedDateId || isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'} font-normal text-xl`}>
+          style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
+          className={`${isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'} font-normal text-xl`}>
             {e.dayNumber}
         </Text>
     </TouchableOpacity>

@@ -6,11 +6,19 @@ import Home from '../../screens/Home';
 import UserData from '../../screens/UserData/UserData';
 import { useAppSelector } from '../../store/hooks';
 import RecomendationsStack from '../../screens/RecomendationsStack/RecomendationsStack';
+import PdfOnBoarding from '../../screens/PdfOnBoarding/PdfOnBoarding';
+import Survey from '../../screens/Survey/Survey';
+import NightMode from '../../screens/NightMode/NightMode';
+import ControlСatheter from '../../screens/ControlCatheter/ControlСatheter';
 
   export type RootStacNativeParamList = {
     WelcomeScreens: undefined;
     MainScreen: undefined;
     Recomendation: undefined;
+    PdfOnBoarding: undefined;
+    Survey: undefined;
+    NightMode: undefined;
+    ControlCatheter: undefined;
   };
   
   //типизация useNavigation если не идет через пропс
@@ -31,10 +39,15 @@ const RootNavigations = () => {
     <NavigationContainer>
         <Stack.Navigator initialRouteName={userData ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
 
-            <Stack.Screen name='MainScreen'component={Home}/>
-            <Stack.Screen name='Recomendation'component={RecomendationsStack}/>
+            <Stack.Screen name='MainScreen' component={Home}/>
+            <Stack.Screen name='WelcomeScreens' component={UserData}/>
 
-            <Stack.Screen name='WelcomeScreens'component={UserData}/>
+            <Stack.Screen name='Recomendation' component={RecomendationsStack}/>
+
+            <Stack.Screen name='PdfOnBoarding' component={PdfOnBoarding}/>
+            <Stack.Screen name='Survey' component={Survey}/>
+            <Stack.Screen name='NightMode' component={NightMode}/>
+            <Stack.Screen name='ControlCatheter' component={ControlСatheter}/>
         
         </Stack.Navigator>
 

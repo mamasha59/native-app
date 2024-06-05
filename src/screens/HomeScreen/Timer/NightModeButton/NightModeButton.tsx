@@ -1,11 +1,11 @@
 import { View, TouchableOpacity, Text } from "react-native";
-import { FontAwesome6 } from '@expo/vector-icons';
 import { useState } from "react";
 
 import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
 import { Option } from "../../../../types";
 import { useAppDispatch } from "../../../../store/hooks";
 import { switchNightMode } from "../../../../store/slices/appStateSlicer";
+import NightModeButtonSvg from "../../../../assets/images/iconsComponent/NightMode";
 
 const NightModeButton = () => {
     const dispatch = useAppDispatch();
@@ -24,9 +24,9 @@ const NightModeButton = () => {
 
   return (
     <>
-    <View className="absolute top-[15%] right-0">
+    <View className="absolute top-[15%] right-0 w-10 h-10">
         <TouchableOpacity onPress={() => setOpenModalNightMode(!openModalNightMode)}>
-            <FontAwesome6 name="cloud-moon" size={24} color="#2d3436" />
+            <NightModeButtonSvg/>
         </TouchableOpacity>
     </View>
     <ModalSelect

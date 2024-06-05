@@ -19,6 +19,7 @@ import { setIntervalDifference, whetherStartFromCountdown } from "../../../store
 import ProgressBarOfСannulation from "./ProgressBarOfСannulation/ProgressBarOfСannulation";
 import IntervalInfo from "../IntervalInfo/IntervalInfo";
 import NightModeButton from "./NightModeButton/NightModeButton";
+import Waves from "../../../assets/images/iconsComponent/Waves";
 
 const Timer = () => { //TODO refactoring
   const dispatch = useAppDispatch();
@@ -162,7 +163,6 @@ const Timer = () => { //TODO refactoring
       if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
         // Приложение вернулось на передний план
         const strip = Math.ceil((timerInterval - timerTotalSeconds) * 105 / timerInterval);
-        console.log('мы тут');
         setInitialStrip(strip);
       }
       appState.current = nextAppState;
@@ -223,12 +223,14 @@ const Timer = () => { //TODO refactoring
 
   const handlePressButton = () => { // при нажатии кнопки, если не выбранно измерение мочи
     handlePressCommon();
-    dispatch(addUrineDiaryRecord({
-      id: uuidv4(),
-      whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-      catheterType: 'Нелатон',
-      timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
-    }));
+    if(!settings.urineMeasure.value){
+      dispatch(addUrineDiaryRecord({
+        id: uuidv4(),
+        whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
+        catheterType: 'Нелатон',
+        timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+      })); 
+    }
   };
   
   const handlePressIfUrineMeasure = () => { // при нажатии кнопки, если Выбранно измерение мочи
@@ -238,12 +240,13 @@ const Timer = () => { //TODO refactoring
       dispatch(ifCountUrineChangeState(true));
     }
   };
+  console.log(settings.urineMeasure);
   
   return (
     <View className="flex-1 justify-center items-center relative">
       <NightModeButton/>
       <>
-      <ProgressBarOfСannulation/>
+      {/* <ProgressBarOfСannulation/> */}
       <IntervalInfo/>
       <View className="flex-1 items-center justify-center w-full h-full">
          <SvgComponentText
@@ -251,12 +254,12 @@ const Timer = () => { //TODO refactoring
           start={timerRunning}
           initialNumberOfStrip={initialStrip}/>
       </View>
-      <View className="absolute items-center top-[43%]">
+      <View className="absolute items-center justify-center pt-9 flex-1">
         <View className="items-center">
-          <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-center text-grey max-w-[160px]">
+          <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-center text-[#000] max-w-[200px]">
               {!settings.stateOfTimerTitleForFirstTimeInApp 
                 ? 'Время катетеризироваться:' 
-                : (!partTime.thirdPartTime ? 'До катетеризации' : 'С последней катетеризации:')
+                : (!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:')
               }
           </Text>
           <IntervalUI
@@ -270,7 +273,7 @@ const Timer = () => { //TODO refactoring
             loader={laoder}
             />
         </View>
-        <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
+        <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure.value ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
           <LinearGradient
               colors={['#83B759', '#609B25']}
               start={{ x: 0, y: 0.5 }}

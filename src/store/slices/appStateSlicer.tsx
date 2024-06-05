@@ -17,6 +17,7 @@ interface iAppStateSlicer {
     value: boolean,
     timeStamp: string,
   },
+  liquidValue: number,
 }
 
 const initialState:iAppStateSlicer = {
@@ -28,14 +29,15 @@ const initialState:iAppStateSlicer = {
     intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
     nighMode: {
-      title: '',
-      value: false,
+      title: 'Да',
+      value: true,
       timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss')
     },
     urineMeasure: {
       title: '',
       value: false,
     },
+    liquidValue: 0,
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -73,6 +75,9 @@ const appStateSlice = createSlice({
       switchNightMode: (state, action:PayloadAction<{ value: boolean, timeStamp: string, title: string}>) => {
           state.nighMode = {timeStamp: action.payload.timeStamp, value: action.payload.value, title: action.payload.title}
       },
+      setLiquidValueL: (state, action:PayloadAction<number>) => {
+        state.liquidValue = action.payload
+      }
     }
 })
 export const {
@@ -86,6 +91,7 @@ export const {
     changeStateOfTimerTitleForFirstTimeInApp,
     switchNightMode,
     setWhetherCountUrine,
+    setLiquidValueL
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

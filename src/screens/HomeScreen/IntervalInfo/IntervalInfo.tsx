@@ -46,10 +46,10 @@ const IntervalInfo = () => {
   };
 
   return (
-  <View className="flex-row pb-2 items-center">
-    <View className="flex-row flex-1 items-center">
-      <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации: </Text>
-      <Text style={{fontFamily:'geometria-regular'}} className="text-xs text-black">
+  <View className="flex-row pb-2">
+    <View className="flex-1 items-start mt-2">
+      <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации:</Text>
+      <Text style={{fontFamily:'geometria-bold'}} className="text-xs text-black">
       {!userData 
             ? <ActivityIndicator size="small" color="#4BAAC5"/>
             : `каждые ${newIntervalText}` || "Интервал не задан"}

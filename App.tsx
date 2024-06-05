@@ -74,12 +74,12 @@ export default function App() {
       <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
         <RootSiblingParent>
           <SafeAreaProvider onLayout={onLayoutRootView}>
-            <GradientBackground>
-              <SafeAreaView className="flex-1 h-full">
-              <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                <RootNavigations/>
-              </SafeAreaView>
-            </GradientBackground>
+              <GradientBackground>
+                <SafeAreaView className="flex-1 h-full">
+                <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+                  <RootNavigations/>
+                </SafeAreaView>
+              </GradientBackground>
           </SafeAreaProvider>
         </RootSiblingParent>
       </PersistGate>

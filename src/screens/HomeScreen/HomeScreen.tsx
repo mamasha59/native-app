@@ -53,7 +53,9 @@ const HomeScreen = () => {
     <MainLayout>
       <DoubleTapToClose/>
       <View className="flex-1 justify-between">
-        <RestOf/>
+        <View className=''>
+          <RestOf/>
+        </View>
         <Timer />
         <DoubleButton
             handlePressRightButton={openModal}

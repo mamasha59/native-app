@@ -15,7 +15,7 @@ const ChartDrankWater = () => {
   useUpdateChart({category:'amountOfDrankFluids', dispatchAction: addChartValueDrankWaterToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
   const valueArray = drankWater.map(item => typeof item === 'object' ? item.value : item); // делаем масив из чисел
-
+  
   return (
     <LineChart
         withOuterLines={false}

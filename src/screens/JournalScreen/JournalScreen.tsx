@@ -1,10 +1,8 @@
 import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
 import * as Print from 'expo-print';
-import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { Dropdown } from "react-native-element-dropdown";
-import { StorageAccessFramework } from 'expo-file-system';
 import { format } from "date-fns";
 
 import { DropDown } from "../../assets/images/icons";
@@ -108,8 +106,8 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   },[selectedCalendareDate,journalRecords, day]);
 
   const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
-    const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
-    await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf', dialogTitle: 'Поделиться документом' });
+    // const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
+    // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf', dialogTitle: 'Поделиться документом' });
   };
   const html = `
   <html lang="rus">
@@ -247,32 +245,13 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   </style>
   </html>
   `;
-
-  const downloadPdfOnPhone = async () => {
-    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
-    if (!permissions.granted) {
-      return;
-    }
-    try {
-      await StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Журнал-катетеризации', 'application/pdf')
-        .then(async uri => {
-          // Записываем содержимое PDF в файл
-          await FileSystem.writeAsStringAsync(uri, 'html', { encoding: FileSystem.EncodingType.UTF8 });
-        })
-        .catch(error => {
-          console.error('Ошибка при создании файла:', error);
-        });
-    } catch (error) {
-      console.error('Ошибка при сохранении файла PDF:', error);
-    }
-  };
   
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      dispatch(resetBadges());
     }, 2000);
-    dispatch(resetBadges());
     scrollViewRef.current?.scrollTo({x:0,y:0,animated:true});
   }, []);
 

@@ -84,8 +84,8 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
                 state.initialCathetherAmount.nelaton = state.initialCathetherAmount.nelaton - amount;
             }
         },
-        addUrineDiaryRecord: (state, action: PayloadAction<iDairyRecord>) => {
-            state.urineDiary = [action.payload, ...state.urineDiary];
+        addUrineDiaryRecord: (state, action: PayloadAction<iDairyRecord>) => { // добавляем запись в журнал
+            state.urineDiary = [action.payload, ...state.urineDiary];            
         },
         addChartValueToCurrentDay: (state, action: PayloadAction<iChart>) => {         
             if(action) {
@@ -104,7 +104,7 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
                 }
             }  
         },
-        addChartValueDrankWaterToCurrentDay: (state, action: PayloadAction<iChart>) => {              
+        addChartValueDrankWaterToCurrentDay: (state, action: PayloadAction<iChart>) => {
             if(action) {
                 const foundIndex = state.drankWaterChart.findIndex((e) => e.timestamp === action.payload.timestamp);
                 

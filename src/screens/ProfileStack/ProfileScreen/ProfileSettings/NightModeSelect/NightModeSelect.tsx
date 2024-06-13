@@ -13,7 +13,6 @@ const NightModeSelect = () => {
     const handleUseAtNight = (value:Option) => { // функция при выборе селекта Катетеризация в ночное время
         if(!value.value) navigation.navigate('NightMode');     
     }
-console.log('',settings.nighMode.title);
 
   return (
     <View className="items-center mb-4 bg-[#ecf0f1] px-1 py-1 rounded-xl">

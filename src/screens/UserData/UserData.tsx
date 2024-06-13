@@ -1,26 +1,21 @@
 import { StackNavigationProp, createStackNavigator } from "@react-navigation/stack";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 
-import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
-import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
 import ThirdDataScreen from "./ThirdDataScreen/ThirdDataScreen";
-
-import FirstOptionalScreen from "./OptionalScreens/FirstOptionalScreen/FirstOptionalScreen";
-import SecondOptionalScreen from "./OptionalScreens/SecondOptionalScreen/SecondOptionalScreen";
-import ThirdOptionalScreen from "./OptionalScreens/ThirdOptionalScreen/ThirdOptionalScreen";
 
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
 import Slider from "../Slider/Slider";
 import { RootStacNativeParamList } from "../../components/RootNavigations/RootNavigations";
+import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
+import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
+import FourthDataScreen from "./FourthDataScreen/FourthDataScreen";
 
 export type RootStackParamList = {
-  FirstDataScreen: { cameFrom?: string };
-  SecondDataScreen: any;
-  ThirdDataScreen: undefined;
-  FirstOptionalScreen: undefined;
-  SecondOptionalScreen: undefined;
-  ThirdOptionalScreen: undefined;
   LanguageScreen: undefined;
+  FirstDataScreen: undefined;
+  SecondDataScreen: undefined;
+  ThirdDataScreen: undefined;
+  FourthDataScreen: undefined;
   SliderScreen: undefined;
 };
 
@@ -41,15 +36,12 @@ const UserData = () => {
     <Stack.Navigator initialRouteName="LanguageScreen" screenOptions={{headerShown:false}}>
         <Stack.Screen name="LanguageScreen" component={LanguageScreen}/>
 
-        <Stack.Screen name='SliderScreen'component={Slider}/>
-
-        {/* <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/> */}
+        <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
+        <Stack.Screen name="FourthDataScreen" component={FourthDataScreen}/>
 
-        <Stack.Screen name="FirstOptionalScreen" component={FirstOptionalScreen}/>
-        {/*<Stack.Screen name="SecondOptionalScreen" component={SecondOptionalScreen}/>
-        <Stack.Screen name="ThirdOptionalScreen" component={ThirdOptionalScreen}/> */}
+        <Stack.Screen name='SliderScreen'component={Slider}/>
 
     </Stack.Navigator>
   );

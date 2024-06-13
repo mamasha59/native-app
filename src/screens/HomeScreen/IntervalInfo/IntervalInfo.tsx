@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator} from "react-native";
 import * as Notifications from 'expo-notifications';
 
-import ModalWindow from "../../../components/ModalAddCatheter/ModalAddCatheter";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 import { useFormatInterval } from "../../../hooks/useFormatInterval";
+import ModalAddCatheter from "../../../components/ModalAddCatheter/ModalAddCatheter";
 
 const IntervalInfo = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false); // состояние попапа
@@ -25,7 +25,7 @@ const IntervalInfo = () => {
         content: {
           title: `Осталось ${userJournal.initialCathetherAmount.nelaton} катеторов!`,
           body: 'Пополни запас',
-          data: { data: 'goes here' },  
+          data: { data: 'goes here' },
         },
         trigger: null,
       });
@@ -56,7 +56,7 @@ const IntervalInfo = () => {
       </Text>
     </View>
     {/* ПОПАП ПОПОЛНИТЬ КАТЕТОРЫ */}
-    <ModalWindow
+    <ModalAddCatheter
       visible={modalVisible}
       onChangeText={handleChangeCatetor}
       setModalVisible={setModalVisible}

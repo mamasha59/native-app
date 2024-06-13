@@ -11,7 +11,6 @@ const windowWidth = Dimensions.get('window').width;
 
 const FluidIntakeChart = () => {
     const data = useAppSelector(state => state.journal);
-    const settings = useAppSelector(state => state.appStateSlice);
     const [result, setResult] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -29,7 +28,7 @@ const FluidIntakeChart = () => {
 
     const colorNegative = '#EA3737';
     const colorNormal = '#4BAAC5';
-    const colorPositive = '#f1c40f'; 
+    const colorPositive = '#f1c40f';
 
    //ВБ=Выделеннаямоча/Введеннаяжидкость×100%.
    useEffect(() => {
@@ -62,27 +61,25 @@ const FluidIntakeChart = () => {
             });
             setShowResult({showNegative: false, showNormal: false, showPositive: true});
             setTextColor(colorPositive);
+        }else {
+            setShowResult({showNegative: false, showNormal: true, showPositive: false});
         }
     }, [data]);
 
   return (
     <TouchableOpacity activeOpacity={.7} className="mb-4" onPress={() => setShowModal(true)}>
-        {settings.urineMeasure.value  &&
-        <>
         <View className="flex-row flex-wrap justify-between items-center">
-                <View className="flex-row">
-                    <MaterialCommunityIcons name="chat-question-outline" size={11} color="black" />
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">Водный баланс</Text>
-                </View>
-                <Text style={{fontFamily:'geometria-regular', color: textColor}} className="text-sm">{textAlert.interval}</Text>
+            <View className="flex-row">
+                <MaterialCommunityIcons name="chat-question-outline" size={11} color="black" />
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">Водный баланс</Text>
             </View>
-            <View className="mb-3 flex-1 flex-row pt-14">
-                <WaterBalanceInterval result={result} showResult={showResult.showNegative} key={'negative'} bgColor={colorNegative}/>
-                <WaterBalanceInterval result={result} showResult={showResult.showNormal} key={'normal'} bgColor={colorNormal}/>
-                <WaterBalanceInterval result={result} showResult={showResult.showPositive} key={'positive'} bgColor={colorPositive}/>
-            </View>
-            </>
-        }
+            <Text style={{fontFamily:'geometria-regular', color: textColor}} className="text-sm">{textAlert.interval}</Text>
+        </View>
+        <View className="mb-3 flex-1 flex-row pt-14">
+            <WaterBalanceInterval result={result} showResult={showResult.showNegative} key={'negative'} bgColor={colorNegative}/>
+            <WaterBalanceInterval result={result} showResult={showResult.showNormal} key={'normal'} bgColor={colorNormal}/>
+            <WaterBalanceInterval result={result} showResult={showResult.showPositive} key={'positive'} bgColor={colorPositive}/>
+        </View>
         <Modal
             isVisible={showModal}
             animationIn={'slideInUp'}

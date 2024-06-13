@@ -4,7 +4,7 @@ import { ClosePopup } from "../../assets/images/icons";
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-interface iModalWindow {
+interface iModalAddCatheter {
     visible: boolean; // основное что делает попап видимым
     setModalVisible: (event: boolean) => void; // открыть - закрыть попап
     value: string; // значение инпута
@@ -12,7 +12,7 @@ interface iModalWindow {
     handleSafe: () => void; // колбек, который вызывается при нажатии кнопки отправки текстового ввода
 }
 
-const ModalWindow = ({visible, setModalVisible, value, onChangeText, handleSafe}: iModalWindow) => {
+const ModalAddCatheter = ({visible, setModalVisible, value, onChangeText, handleSafe}: iModalAddCatheter) => {
   return (
     <Modal
         transparent={true}
@@ -49,4 +49,4 @@ const ModalWindow = ({visible, setModalVisible, value, onChangeText, handleSafe}
   );
 };
 
-export default ModalWindow;
+export default ModalAddCatheter;

@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, Animated, View, Vibration } from "react-native";
 import { useState, useRef } from "react";
+import { Feather } from '@expo/vector-icons';
 
 import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
 import { iLanguage } from "../../types/index";
@@ -9,28 +10,33 @@ interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}
 
 const LanguageScreen = ({navigation}:iLanguageScreen) => {
 
-  const [chosenLanguage, setChosenLanguage] = useState<string>(''); // берем выбранный язык
+  const [chosenLanguage, setChosenLanguage] = useState<iLanguage>(); // берем выбранный язык
   const shakeAnimation = useRef(new Animated.Value(0)).current;
 
     const languages: iLanguage[] = [
         {
-          id: 'Русский',
+          id: 'Russian',
           title: 'Русский',
           chosed: false,
         },
         {
-          id: 'Английский',
-          title: 'Английский',
+          id: 'English',
+          title: 'English',
           chosed: false,
         },
         {
-          id: 'Немецкий',
-          title: 'Немецкий',
+          id: 'Deutsch',
+          title: 'Deutsch',
           chosed: false,
         },
         {
-          id: 'Французкий',
-          title: 'Французкий',
+          id: 'Français',
+          title: 'Français',
+          chosed: false,
+        },
+        {
+          id: 'Italiano',
+          title: 'Italiano',
           chosed: false,
         },
       ];
@@ -45,34 +51,35 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
       };
     
     const handleBegin = () => { // начать пользоваться
-        if(chosenLanguage.length > 0){
+        if(chosenLanguage && chosenLanguage.title.length > 0){
             // перенаправляем пользователя на следующую страницу заполнений данных
-            navigation.navigate('SliderScreen');
+            navigation.navigate('FirstDataScreen');
             Vibration.cancel();
-            //TODO - менять язык, сетить язык в сторе
         }else{
            Vibration.vibrate(50, true)
            startShakeAnimation()
         }
     }
 
-    const handleClickLang = (title:string) => {
-      setChosenLanguage(title);
+    const handleClickLang = (language:iLanguage) => {
+      setChosenLanguage(language);
     }
 
   return (
-    <WelcomeLayout title={'Выберите язык'} buttonTitle="Начать пользоваться" handleProceed={handleBegin}>
-      <Animated.View style={{ transform: [{ translateX: shakeAnimation }] }}>
+    <WelcomeLayout currentScreen={0} buttonTitle="продолжить" handleProceed={handleBegin}>
+      <Animated.ScrollView style={{ transform: [{ translateX: shakeAnimation }] }}>
         {languages.map((el:iLanguage,index:number)=>
-        <TouchableOpacity key={index} onPress={() => handleClickLang(el.title)}>
-              <Text style={{fontFamily:'geometria-regular'}} className={`mb-[30px] text-center text-[#101010] text-lg leading-[22px]`}>{el.title}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity className="flex-row justify-between items-center mb-5 py-5 px-2 border-b border-[#bdc3c755]" key={index} onPress={() => handleClickLang(el)}>
+                <View className="flex-row">
+                    <Feather name="flag" size={24} color="red" />
+                    <Text style={{fontFamily: chosenLanguage?.id === el.id ? 'geometria-bold' : 'geometria-regular'}} className={`text-center text-[#101010] text-lg leading-[22px] ml-1`}>{el.title}</Text>
+                </View>
+                <View className="border border-[#bdc3c7] w-5 h-5 rounded-full items-center justify-center">
+                  <View className={`w-[11px] h-[11px] rounded-full bg-main-blue hidden ${chosenLanguage?.id === el.id && 'flex'}`}></View>
+                </View>
+          </TouchableOpacity>
         )}
-        {chosenLanguage && 
-        <View className="items-center mt-24">
-            <Text style={{fontFamily:'geometria-regular'}}>Вы выбрали: <Text className="text-purple-button">{chosenLanguage}</Text></Text>
-        </View>}
-      </Animated.View>
+      </Animated.ScrollView>
     </WelcomeLayout>
   );
 };

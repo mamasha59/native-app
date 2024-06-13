@@ -5,7 +5,9 @@ const initialState = {
     startFromCountdown: true,
     intervalDifference: 0,
     initialStripWhenCloseApp: 0,
-    interval: 0,
+    interval: 14400,
+    yellowInterval: 720,
+    showModalSuccess: false,
 }
 
 const timerStatesSlice = createSlice({
@@ -23,9 +25,22 @@ const timerStatesSlice = createSlice({
         },
         setInterval: (state, action:PayloadAction<number>) => {
             state.interval = action.payload;
+        },
+        setShowModalSuccess: (state, action:PayloadAction<boolean>) => {
+            state.showModalSuccess = action.payload;
+        },
+        changeYellowInterval: (state, action:PayloadAction<number>) => {
+            state.yellowInterval = action.payload;
         }
     }
 });
 
-export const { whetherStartFromCountdown, setIntervalDifference, setInitialStripWhenCloseApp, setInterval } = timerStatesSlice.actions;
+export const { 
+    whetherStartFromCountdown,
+    setIntervalDifference,
+    setInitialStripWhenCloseApp,
+    setInterval,
+    setShowModalSuccess,
+    changeYellowInterval
+} = timerStatesSlice.actions;
 export default timerStatesSlice.reducer;

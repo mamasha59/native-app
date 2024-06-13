@@ -27,6 +27,7 @@ const ModalLiquidAmount = () => {
             amountOfReleasedUrine: +liquidValue,
             timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
           }));
+          dispatch(addBadgesJournalScreen(1));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
         }else{
           dispatch(addBadgesJournalScreen(1));
@@ -35,8 +36,23 @@ const ModalLiquidAmount = () => {
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
             amountOfDrankFluids: +liquidValue,
             timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
-          }))
+          }));
         }
+      }
+    }
+
+    const handleAddRecordWithoutUrineMeasure = () => {
+      dispatch(popupLiquidState(false));
+      if(statePopup.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
+        dispatch(addUrineDiaryRecord({
+          id: uuidv4(),
+          catheterType:'Нелатон',
+          whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
+          amountOfReleasedUrine: null,
+          timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+        }));
+        dispatch(addBadgesJournalScreen(1));
+        dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
       }
     }
     
@@ -58,7 +74,7 @@ const ModalLiquidAmount = () => {
     const handlePressCustomMl1 = (item:string) => { // при нажатии на иконки с кол-вом мл
       if(item) setLiquidValue(+item) 
     }
-    const customMl = ['200','500','600'];
+    const customMl = ['100','200','300'];
 
   return (
   <Modal
@@ -74,8 +90,15 @@ const ModalLiquidAmount = () => {
             <ClosePopup width={15} height={15}/>
           </TouchableOpacity>
 
-          <View className="flex-1 w-full items-center">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{statePopup.ifCountUrinePopupLiquidState ? 'Сколько ты выссал?' : 'Сколько вы выпили жидкости?'}</Text>
+          <View className="flex-1 w-full items-center justify-center">
+            {statePopup.ifCountUrinePopupLiquidState &&         
+              <View className="mb-4">
+                  <Text style={{fontFamily:'geometria-regular'}}>Не измеряли?</Text>
+                  <TouchableOpacity onPress={handleAddRecordWithoutUrineMeasure} className="py-2">
+                    <Text style={{fontFamily:'geometria-regular'}} className="underline">продолжить без записи обьема выделеной мочи</Text>
+                  </TouchableOpacity>
+              </View>}
+            <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{statePopup.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
             <Glass customValue={liquidValue} onValueChange={setLiquidValue}/>
             <View className="flex-row items-center py-2 flex-wrap gap-2">
               {customMl.map((item, index) => 

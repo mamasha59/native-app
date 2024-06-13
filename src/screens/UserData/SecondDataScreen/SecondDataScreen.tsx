@@ -1,99 +1,67 @@
-import { View, Alert } from "react-native";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Text, View } from "react-native";
+import React, { RefObject, useRef } from "react";
 
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
+import FluidIntakeChart from "../../WaterBalance/FluidIntakeChart/FluidIntakeChart";
+import ProfileSelect from "../../ProfileStack/ProfileScreen/ProfileSettings/ProfileSelect/ProfileSelect";
+import ClueAtTheBottom from "../../../components/ClueAtTheBottom/ClueAtTheBottom";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { IDropdownRef } from "react-native-element-dropdown";
+import { Option } from "../../../types";
+import { setWhetherCountUrine } from "../../../store/slices/appStateSlicer";
 
-import { useAppDispatch } from "../../../store/hooks";
-import { changeField, setUserData } from "../../../store/slices/createUserSlice";
+interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'>{}
 
-import InputData from "../../../components/InputData/InputData";
-import { generateEvenNumbersOfSize } from "../../../utils/const";
-import { Keyboard } from "../../../utils/enums";
-import ButtonSelect from "../../../components/ButtonSelect/ButtonSelect";
-import ModalSelect from "../../../components/ModalSelect/ModalSelect";
-
-interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'> {} // типизация navigation
-
-const SecondDataScreen = ({navigation,route}:iSecondDataScreen) => {
-    const [openModalSelectCatheter, setOpenModalSelectCatheter] = useState<boolean>(false); // состояние попапа Тип катетора
-    const [openModalSelectSize, setOpenModalSelectSize] = useState<boolean>(false); // состояние попапа Размер катетора
-
-    const fromLastScreenCatheterType = route.params && route.params.cameFrom === 'ThirdOptionalScreen-catheterType';
-    const fromLastScreenCatheterSize = route.params && route.params.cameFrom === 'ThirdOptionalScreen-catheterSize';
-
-    const { control, handleSubmit, formState: { errors}, setValue, watch} = useForm({
-        defaultValues: {
-            volume: '',
-            catheterType: 'Нелатон',
-            catheterSize: '',
-        },
-    })
+const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
+    const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
     const dispatch = useAppDispatch();
-    const inputsValue = watch(); // состояние инпута при его изменении
+    const dropDownCountUrine:RefObject<IDropdownRef> = useRef(null);
+    const dropDownCountWater:RefObject<IDropdownRef> = useRef(null);
     
-    const onSelectCathetorSize = (catheterSize:string) => { // функция при выборе Размера катетора
-        setValue('catheterSize', catheterSize); // записываем значение пола из попапа
-        if(fromLastScreenCatheterSize){
-            dispatch(changeField({field: 'catheterSize', value: catheterSize})) // меняем размер катетора
-            navigation.navigate('ThirdOptionalScreen');
-        }
-        setOpenModalSelectSize(!openModalSelectSize);
+    const handleIsCountDrankWater = (value: Option) => { // функция при выборе селекта Измерение воды
+        // dispatch(setWhetherCountUrine({value: value!.value, title: value!.title}));
+        dropDownCountWater.current && dropDownCountWater.current.close();
     }
-    
-    const onSubmit = (data:any) => { // при нажатии кнопки продолжить
-        if(!inputsValue.catheterType){
-            Alert.alert('Выберите тип катетора!');
-            return;
-        }
-       dispatch(setUserData(data));
-       navigation.navigate('ThirdDataScreen'); // перенаправляем юзера на 3й скрин (интервалы, колво мочи, колво катетеризвций)
+
+    const handleIsCountUrine = (value: Option) => { // функция при выборе селекта Измерение кол-ва мочи
+        dispatch(setWhetherCountUrine({value: value.value, title: value.title}));
+        dropDownCountUrine.current && dropDownCountUrine.current.close();
+    }
+
+    const proceedNextScreen = () => {
+        navigation.navigate('ThirdDataScreen');
     }
 
   return (
-    <WelcomeLayout index={2} title="Введите свои данные" showButton={fromLastScreenCatheterType || fromLastScreenCatheterSize} buttonTitle="Продолжить" handleProceed={handleSubmit(onSubmit)}>
-        <View className="items-center relative">
-            <View className={`flex-1 w-full ${(fromLastScreenCatheterType || fromLastScreenCatheterSize) && 'opacity-50'}`}>
-                <InputData
-                    canEdite={!fromLastScreenCatheterType && !fromLastScreenCatheterSize}
-                    control={control}
-                    errors={errors.volume}
-                    inputsValue={inputsValue.volume}
-                    name="volume"
-                    placeholder="Обьем мочевого музыря"
-                    key={'volume'}
-                    inputMode={Keyboard.Numeric}
-                    maxLength={3}
-                    showPrompt
-                    textPrompt="«общие» нормы : У женщин – 250-500 мл, У мужчин – 350-700 мл, У детей – 35-400 мл (в зависимости от возраста)"
-                />
-            </View>
-            {/* попап выбор тип катететора */}
-            <View pointerEvents={fromLastScreenCatheterSize ? 'none' : 'auto'} className={`flex-1 w-full ${fromLastScreenCatheterSize && 'opacity-50'}`}>
-                <ButtonSelect
-                    inputValue={inputsValue.catheterType}
-                    openModal={openModalSelectCatheter}
-                    placeholder={'Тип катететора*'}
-                    setOpenModal={() => setOpenModalSelectCatheter(!openModalSelectCatheter)}
-                    key={'Тип катететора*'}/>
-            </View>
-             {/* попап размер катетора */}
-            <View pointerEvents={fromLastScreenCatheterType ? 'none' : 'auto'} className={`flex-1 w-full ${fromLastScreenCatheterType && 'opacity-50'}`}>
-                <ButtonSelect
-                    inputValue={inputsValue.catheterSize}
-                    openModal={openModalSelectSize}
-                    placeholder={'Размер катетера Ch/Fr'}
-                    setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                    key={'Размер катетера Ch/Fr'}/>
-                <ModalSelect
-                    onItemPress={onSelectCathetorSize}
-                    openModal={openModalSelectSize}
-                    options={generateEvenNumbersOfSize()}
-                    setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                    title={'Размер катетера Ch/Fr'}/>
-            </View>
+    <WelcomeLayout currentScreen={2} buttonTitle="продолжить" handleProceed={proceedNextScreen}>
+        <FluidIntakeChart/>
+        <Text className="text-base" style={{fontFamily:'geometria-regular'}}>
+            Измерение потребляемой жидкости и выделенной мочи поможет поддерживать оптимальный уровень воды в организме.
+        </Text>
+        <View className="my-4">
+            <ProfileSelect
+                selectRef={dropDownCountUrine}
+                confirmation={true}
+                handleClickOption={handleIsCountUrine}
+                title="Измерение кол-ва выделяемой мочи"
+                value={settings.urineMeasure.title}
+                key={"Измерение кол-ва выделяемой мочи"}
+            />
         </View>
+
+        <View className="mt-4">
+            <ProfileSelect
+                selectRef={dropDownCountWater}
+                confirmation={false}
+                handleClickOption={handleIsCountDrankWater}
+                title="Измерение кол-ва выпитой жидкости"
+                value={''}
+                key={"Измерение кол-ва выпитой жидкости"}
+            />
+        </View>
+
+        <ClueAtTheBottom/>
     </WelcomeLayout>
   );
 };

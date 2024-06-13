@@ -30,7 +30,7 @@ const initialState:iAppStateSlicer = {
     stateOfTimerTitleForFirstTimeInApp: false,
     nighMode: {
       title: 'Да',
-      value: true,
+      value: false,
       timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss')
     },
     urineMeasure: {

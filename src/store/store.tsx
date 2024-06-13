@@ -3,6 +3,7 @@ import appStateSlicer from "./slices/appStateSlicer";
 import journalDataSlice from "./slices/journalDataSlice";
 import timerStatesSlice from "./slices/timerStatesSlice";
 import nightStateSlice from "./slices/nightStateSlice";
+import noticeSettingsSlice from "./slices/noticeSettingsSlice";
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +20,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
     journal: journalDataSlice,
     timerStates: timerStatesSlice,
     nightOnDoarding: nightStateSlice,
+    noticeSettingsSlice: noticeSettingsSlice,
 }));
 
 export const store = configureStore({

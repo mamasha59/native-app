@@ -2,11 +2,11 @@ import { View, Text, TouchableOpacity, Platform } from "react-native";
 import {useState} from "react";
 
 import ControllCatetor from "../../../assets/images/iconsComponent/TabMenuIcons/ControllCatetor";
-import ModalWindow from "../../../components/ModalAddCatheter/ModalAddCatheter";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
+import ModalAddCatheter from "../../../components/ModalAddCatheter/ModalAddCatheter";
 
 const RestOf = () => {
   const navigation = useNavigation<StackNavigationRoot>();
@@ -57,7 +57,7 @@ const RestOf = () => {
             </View>
         </TouchableOpacity>
       </View>
-      <ModalWindow 
+      <ModalAddCatheter 
         visible={modalVisible}
         onChangeText={handleChangeCatetor}
         setModalVisible={setModalVisible}

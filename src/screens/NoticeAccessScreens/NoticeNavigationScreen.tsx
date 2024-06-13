@@ -1,40 +1,21 @@
-import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp, createStackNavigator } from "@react-navigation/stack";
+import { ScrollView } from "react-native";
+import NoticesOfCannulation from "../../components/NoticesOfCannulation/NoticesOfCannulation";
+import NoticesOfWaterConsumption from "../../components/NoticesOfWaterConsumption/NoticesOfWaterConsumption";
+import NoticesOfRemainCaths from "../../components/NoticesOfRemainCaths/NoticesOfRemainCaths";
+import MainLayout from "../../Layouts/MainLayout/MainLayout";
+import CatheterizationReminder from "../../components/CatheterizationReminder/CatheterizationReminder";
 
-import NoticeAccessHomeScreen from "./NoticeAccessHomeScreen/NoticeAccessHomeScreen";
-import TypeOfSignalScreen from "./TypeOfSignalSreen/TypeOfSignalScreen";
-import TextOfNotice from "./TextOfNotice/TextOfNotice";
-import Confirmation from "./Confirmation/Confirmation";
+const NoticeNavigationScreen = () => {
+  return (
+    <MainLayout title="Настройка уведомлений">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 my-5">
+          <CatheterizationReminder/>
+          <NoticesOfCannulation/>
+          <NoticesOfWaterConsumption/>
+          <NoticesOfRemainCaths/>
+        </ScrollView>
+    </MainLayout>
+  );
+};
 
-export type NoticeAndAccessScreens = {
-  NoticeAccessHomeScreen: undefined;
-  TypeOfSignalScreen: undefined;
-  TextOfNotice: undefined;
-  Confirmation: undefined;
-  }
-  
-  // Определение типов для navigation и route в каждом экране если они идут через пропс
-  export type NavigationPropsNoticeAndAccess<RouteName extends keyof NoticeAndAccessScreens> = {
-    navigation: StackNavigationProp<NoticeAndAccessScreens, RouteName>;
-    route: RouteProp<NoticeAndAccessScreens, RouteName>;
-  };
-  //типизация useNavigation если не идет через пропс
-  export type StackNavigation = StackNavigationProp<NoticeAndAccessScreens>;
-
-  const Stack = createStackNavigator<NoticeAndAccessScreens>();
-  
-  export default function NoticeNavigationScreen() {
-
-    return (
-      <Stack.Navigator initialRouteName='NoticeAccessHomeScreen' screenOptions={{headerShown:false, presentation:'modal'}}>
-        <Stack.Screen name='NoticeAccessHomeScreen'component={NoticeAccessHomeScreen}/>
-
-        <Stack.Screen name='TypeOfSignalScreen'component={TypeOfSignalScreen}/>
-
-        <Stack.Screen name='TextOfNotice'component={TextOfNotice}/>
-
-        <Stack.Screen name='Confirmation'component={Confirmation}/>
-        {/* TODO сделать экраны - Доступ и Пропуск */}
-      </Stack.Navigator>
-    )
-}
+export default NoticeNavigationScreen;

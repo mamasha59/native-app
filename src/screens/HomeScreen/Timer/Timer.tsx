@@ -15,20 +15,18 @@ import { addBadgesJournalScreen,
          ifCountUrineChangeState,
          popupLiquidState} from "../../../store/slices/appStateSlicer";
 import IntervalUI from "./IntervalUI/IntervalUI";
-import { setIntervalDifference, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
-import ProgressBarOfСannulation from "./ProgressBarOfСannulation/ProgressBarOfСannulation";
+import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
 import IntervalInfo from "../IntervalInfo/IntervalInfo";
 import NightModeButton from "./NightModeButton/NightModeButton";
-import Waves from "../../../assets/images/iconsComponent/Waves";
+import ModalSuccess from "./ModalSuccess/ModalSuccess";
 
 const Timer = () => { //TODO refactoring
   const dispatch = useAppDispatch();
 
   const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
-  
+ 
   const {intervalDifference, interval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
-
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
   const [startFromСountdown , setStartFromСountdown] = useState(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
@@ -91,7 +89,7 @@ const Timer = () => { //TODO refactoring
   // ===================== \\
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Оптимального интревала
     const updateTimer = () => {
-      if(!settings.nighMode.value){
+      // if(!settings.nighMode.value){
         setLoader(true);
         if (intervalDifference < timerInterval && intervalDifference > 0) {
           setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
@@ -102,7 +100,7 @@ const Timer = () => { //TODO refactoring
           setTimerInterval(interval);
         }
         setLoader(false);
-      };
+      // };
     }
     updateTimer();
   }, [intervalDifference]);
@@ -171,9 +169,7 @@ const Timer = () => { //TODO refactoring
     const subscription = AppState.addEventListener('change', handleAppStateChange);
 
     // Очистка подписки при размонтировании компонента
-    return () => {
-      subscription.remove();
-    };
+    return () => { subscription.remove() };
   }, [timerInterval, timerTotalSeconds]);
 
   useEffect(() => {
@@ -194,6 +190,7 @@ const Timer = () => { //TODO refactoring
   },[settings.nighMode]);
 
   const handlePressCommon = async () => {
+    dispatch(setShowModalSuccess(true)); // показывает модальное окно об успешной катетеризации
     dispatch(whetherStartFromCountdown(true));
     setIntervalDifference(0); // обнуляем разницу между последней катетеризацией
     schedulePushNotification('Уведомдление через время', 'Уведомление через время');
@@ -216,7 +213,6 @@ const Timer = () => { //TODO refactoring
       setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
       timerRestart(expiryTimestamp);
       setToastShow(true);
-      dispatch(addBadgesJournalScreen(1));
       setInitialStrip(0); // бнуляем секундные полоски
     }
   };
@@ -229,7 +225,8 @@ const Timer = () => { //TODO refactoring
         whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
         catheterType: 'Нелатон',
         timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
-      })); 
+      }));
+      dispatch(addBadgesJournalScreen(1));
     }
   };
   
@@ -240,13 +237,10 @@ const Timer = () => { //TODO refactoring
       dispatch(ifCountUrineChangeState(true));
     }
   };
-  console.log(settings.urineMeasure);
   
   return (
     <View className="flex-1 justify-center items-center relative">
       <NightModeButton/>
-      <>
-      {/* <ProgressBarOfСannulation/> */}
       <IntervalInfo/>
       <View className="flex-1 items-center justify-center w-full h-full">
          <SvgComponentText
@@ -286,8 +280,8 @@ const Timer = () => { //TODO refactoring
             </LinearGradient>
           </TouchableOpacity>
       </View>
-      </>
       <ShowToast setShowToast={setToastShow} show={toast} text="Вы прокатетеризировались!"/>
+      <ModalSuccess/>
     </View>
   );
 };

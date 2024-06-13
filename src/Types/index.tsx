@@ -1,7 +1,8 @@
 interface iLanguage{
-    id: string;
-    title: string;
-    chosed:boolean;
+    id: string,
+    title: string,
+    chosed:boolean,
+    icon?: string,
 }
 
 interface iUser {

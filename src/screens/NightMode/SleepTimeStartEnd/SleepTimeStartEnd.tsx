@@ -6,8 +6,9 @@ import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
+import Pencil from "../../../assets/images/iconsComponent/Pencil";
 
-const SleepTimeStartEnd = () => {
+const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const dispatch = useAppDispatch();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
 
@@ -64,19 +65,23 @@ const SleepTimeStartEnd = () => {
 
   return (
     <View>
-        <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>Укажите ваше обычное время сна с</Text>
-        <View className="flex-row items-center">
+        <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>Укажите ваше обычное время сна:</Text>
+        <View className="flex-row items-center flex-1">
+            <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>c</Text>
             <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart}/>
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>до</Text>
             <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd}/>
+            <View className="w-[40px] h-[40px] items-center justify-center">
+                <Pencil/>
+            </View>
         </View>
 
-        <View className="mb-3">
+        {showInfo && <View className="mb-3">
             <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>Ночной режим: </Text>
             <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
                 Если вы не планируете катетеризацию в ночное время, активируйте ночной режим во время вечерней катетеризации или используя кнопку «Ночной режим» на главном экране.
             </Text>
-        </View>
+        </View>}
         <ModalSetInterval
                 handleOpenModalChangeInterval={handleOpenModalStart}
                 newInterval={intervalOfStartSleep}

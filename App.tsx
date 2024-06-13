@@ -17,7 +17,9 @@ import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
 import RootNavigations from './src/components/RootNavigations/RootNavigations';
 import { Platform } from 'react-native';
+import Animated from 'react-native-reanimated';
 
+Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
 
 Notifications.setNotificationHandler({
@@ -65,9 +67,7 @@ export default function App() {
     if (fontsLoader || fontError) await SplashScreen.hideAsync();
     }, [fontsLoader, fontError]);
 
-    if (!fontsLoader && !fontError) return null;
-
-// console.log(notification);
+    if (!fontsLoader && !fontError) return null
 
   return (
     <Provider store={store}>

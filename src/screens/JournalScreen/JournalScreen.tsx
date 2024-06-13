@@ -51,6 +51,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   const today = format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10);
   if(today !== selectedCalendareDate) {
     dispatch(setCalendareDay(today));
+    dispatch(resetBadges());
   }
  },[])
 

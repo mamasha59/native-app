@@ -1,4 +1,4 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -53,9 +53,7 @@ const HomeScreen = () => {
     <MainLayout>
       <DoubleTapToClose/>
       <View className="flex-1 justify-between">
-        <View className=''>
-          <RestOf/>
-        </View>
+        <RestOf/>
         <Timer />
         <DoubleButton
             handlePressRightButton={openModal}

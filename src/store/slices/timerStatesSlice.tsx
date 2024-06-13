@@ -6,7 +6,7 @@ const initialState = {
     intervalDifference: 0,
     initialStripWhenCloseApp: 0,
     interval: 14400,
-    yellowInterval: 720,
+    yellowInterval: 15,
     showModalSuccess: false,
 }
 

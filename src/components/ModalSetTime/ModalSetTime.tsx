@@ -6,8 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 interface iModalSelect {
     showModalSetInterval: boolean,
-    setShowModalSetInterval: (value:boolean) => void,
-    handlePressSafe: () => void,
+    handlePressSave: () => void,
     close: () => void,
     newInterval: {
         selectedIndexHour: number;
@@ -21,11 +20,10 @@ interface iModalSelect {
 
 const windowWidth = Dimensions.get('window').width;
 
-const ModalSetTime = ({showModalSetInterval, setShowModalSetInterval, handlePressSafe, close, newInterval, setNewInterval}:iModalSelect) => {
-
+const ModalSetTime = ({showModalSetInterval, handlePressSave, close, newInterval, setNewInterval}:iModalSelect) => {
 
   return (
-    <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={() => setShowModalSetInterval(false)}>
+    <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={close}>
         <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center">Выберите новый интервал</Text>
                 <View className="flex-row justify-center items-center mb-3">
@@ -34,7 +32,7 @@ const ModalSetTime = ({showModalSetInterval, setShowModalSetInterval, handlePres
                 <TouchableOpacity onPress={close} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handlePressSafe} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
+                <TouchableOpacity onPress={handlePressSave} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
                     <LinearGradient
                         colors={['#83B759', '#609B25']}
                         start={{ x: 0, y: 0.5 }}

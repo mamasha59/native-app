@@ -25,8 +25,8 @@ const Timer = () => { //TODO refactoring
 
   const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
- 
-  const {intervalDifference, interval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
+  const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
+
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
   const [startFromСountdown , setStartFromСountdown] = useState(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
@@ -40,12 +40,11 @@ const Timer = () => { //TODO refactoring
     thirdPartTime: false,
   });
   const [laoder, setLoader] = useState<boolean>(false);
-
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
   // ===================== \\ - хук времени на возрастание
-  const stopwatchOffset = new Date(); // на возрастание, Норм. и Крит. интервал
+  const stopwatchOffset = new Date(); // на возрастание, Крит. интервал
   stopwatchOffset.setSeconds(stopwatchOffset.getSeconds() + timerIntervalStopwatch);
   const {
     seconds: stopwatchSeconds,
@@ -135,11 +134,11 @@ const Timer = () => { //TODO refactoring
 
   useEffect(() => { // делаем желтый интервал активным, этот хук если приложени не было закрыто
     if(partTime.firstPartTime){
-      if(timerTotalSeconds === timerInterval * 0.05){
+      if(timerTotalSeconds === timerInterval - (yellowInterval * 60)){
         setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false});
       }
     }
-  },[timerTotalSeconds]);
+  },[timerTotalSeconds, yellowInterval]);
 
   useEffect(() => { // рисуем пунктирные линии на внешнем кругу
     let calculatedTimeToDrawSeconds = Math.ceil(interval / 105 * 1000);

@@ -2,7 +2,6 @@ import { View, TextInput, Text, TouchableOpacity, Modal } from "react-native";
 import { Controller } from "react-hook-form";
 import { useEffect, useState} from 'react';
 
-import InputError from "../InputError/InputError";
 import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
 import { Keyboard } from "../../utils/enums";
 
@@ -86,7 +85,9 @@ const InputData = (props:iInputData) => {
             </Modal>
         </>
         }
-        {errors && <InputError errorText="Заполните поле"/>}
+        {errors &&
+            <Text style={{fontFamily:'geometria-regular'}} className="text-error absolute -bottom-5">Заполните поле</Text>
+        }
     </View>
   );
 };

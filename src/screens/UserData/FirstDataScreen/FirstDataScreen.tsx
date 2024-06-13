@@ -67,8 +67,8 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
             <Text className="text-lg mr-3" style={{fontFamily:'geometria-bold'}}>Вы катетеризируетесь ночью?</Text>
             <View className="flex-row pl-2 mt-3 mx-auto justify-between">
                 {choose.map((item, index) =>
-                    <TouchableOpacity key={index} className={`border border-main-blue max-w-[100px] w-full rounded-md mr-4 ${item.value === settings ? 'bg-[#bdc3c7]' : 'bg-[#fff]'}`}activeOpacity={0.6} onPress={() => handlePressItem(item)}>
-                        <Text className="text-lg mr-3 text-center" style={{fontFamily:'geometria-bold'}}>{item.title}</Text>
+                    <TouchableOpacity key={index} className={`border border-main-blue max-w-[100px] w-full rounded-md mr-4 ${item.value === settings ? 'bg-main-blue' : 'bg-[#fff]'}`}activeOpacity={0.6} onPress={() => handlePressItem(item)}>
+                        <Text className={`text-lg mr-3 text-center ${item.value === settings && 'text-[#fff]'}`} style={{fontFamily:'geometria-bold'}}>{item.title}</Text>
                     </TouchableOpacity>)
                 }
             </View>
@@ -88,8 +88,7 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
                 newInterval={newInterval}
                 setNewInterval={setNewInterval}
                 close={handleModalSetInterval}
-                handlePressSafe={safeNewInterval}
-                setShowModalSetInterval={handleModalSetInterval}
+                handlePressSave={safeNewInterval}
                 showModalSetInterval={isDatePickerVisible}
                 key={'firstdatascreen'}
             />     

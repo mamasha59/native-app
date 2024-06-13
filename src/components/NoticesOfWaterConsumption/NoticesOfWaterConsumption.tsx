@@ -1,11 +1,17 @@
 import { View, Text, TouchableOpacity, TextInput, Dimensions } from "react-native";
 import { useRef, useState } from "react";
+
 import Pencil from "../../assets/images/iconsComponent/Pencil";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setDayGoalOfDrinkWater } from "../../store/slices/appStateSlicer";
 
 const windowSize = Dimensions.get('window');
 
 const NoticesOfWaterConsumption = () => {
-    const [dayGoalOfWater, setDayGoalOfWater] = useState<string>('');
+    const dispatch = useAppDispatch();
+    const settings = useAppSelector(state => state.appStateSlice.dayGoalOfDrinkWater);
+
+    const [dayGoalOfWater, setDayGoalOfWater] = useState<string>(''+settings);
     const inputRef = useRef<TextInput>(null);
 
     const focusInput = () => {
@@ -26,18 +32,20 @@ const NoticesOfWaterConsumption = () => {
     }
 
     const adDayGoalOfWater = () => {
-        console.log(dayGoalOfWater)        
+        dispatch(setDayGoalOfDrinkWater(+dayGoalOfWater))
     }
 
   return (
     <View className="mt-4">
         <Text style={{fontFamily:'geometria-bold'}}>Уведомления о приеме жидкости:</Text>
+        
         <TouchableOpacity className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>Вечерний прием жидкости:</Text>
-            <TouchableOpacity className="flex-row">
+            <View className="flex-row">
                 <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>20:00</Text>
-            </TouchableOpacity>
+            </View>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={focusInput} className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>Задайте цель на день:</Text>
             <View className="flex-row items-center">
@@ -58,18 +66,19 @@ const NoticesOfWaterConsumption = () => {
                 </View>
             </View>
         </TouchableOpacity>
-        <View className="mt-2 flex-row justify-between items-center">
+
+        <TouchableOpacity className="mt-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px] w-full" style={{fontFamily:'geometria-regular', maxWidth: windowSize.width / 2}}>Напоминать в течении дня до достижении цели:</Text>
             <View className="flex-row items-center">
-                <TouchableOpacity className="flex-row">
+                <View className="flex-row">
                     <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>каждые </Text>
                     <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>2 ч.</Text>
-                </TouchableOpacity>
+                </View>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                     <Pencil/>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     </View>
   );
 };

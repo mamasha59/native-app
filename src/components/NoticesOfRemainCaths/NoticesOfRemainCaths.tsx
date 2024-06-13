@@ -1,18 +1,25 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { addCatheter } from "../../store/slices/journalDataSlice";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setDaysInAdvanceWhenShowNoticeOfRemainCaths } from "../../store/slices/noticeSettingsSlice";
 
 const NoticesOfRemainCaths = () => {
     const dispatch = useAppDispatch();
+    const settingsOfNotice = useAppSelector(state => state.noticeSettingsSlice);
+    const settings = useAppSelector(state => state.journal.initialCathetherAmount);
 
     const [caths, setCaths] = useState<string>('');
-    const [whenShowNoticeOfCathsRemain, setWhenShowNoticeOfCathsRemain] = useState<string>('');
+    const [whenShowNoticeOfCathsRemain, setWhenShowNoticeOfCathsRemain] = useState<string>(''+settingsOfNotice.daysInAdvanceWhenShowNoticeOfRemainCaths);
 
     const inputRefNoticeOfCathsRemain = useRef<TextInput>(null);
     const inputRefaddCatheters = useRef<TextInput>(null);
+
+    useEffect(() => {
+        setCaths(String(settings.nelaton));
+    },[settings])
    
     const focusInput = (inputRef: RefObject<TextInput>) => {
         if (inputRef.current) {
@@ -47,7 +54,7 @@ const NoticesOfRemainCaths = () => {
     }
 
     const submitDaysWhenShowNoticeOfCathsRemain = () => {
-        console.log(whenShowNoticeOfCathsRemain);   
+        dispatch(setDaysInAdvanceWhenShowNoticeOfRemainCaths(+whenShowNoticeOfCathsRemain))
     }
 
   return (
@@ -65,7 +72,7 @@ const NoticesOfRemainCaths = () => {
                     onChangeText={(e) => handleInputNoticeOfCathsRemain(e)}
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
-                    maxLength={3}
+                    maxLength={1}
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
                 <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>дней</Text>
             </View>
@@ -82,7 +89,7 @@ const NoticesOfRemainCaths = () => {
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
                     maxLength={3}
-                    className="text-[17px] border-b max-w-[40px] flex-1"/>
+                    className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
                 <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>шт</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center">
                     <Pencil/>

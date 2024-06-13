@@ -1,4 +1,4 @@
-import { View, Text, Modal, Pressable, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, Modal, Pressable, Dimensions, TouchableOpacity, Image } from "react-native";
 
 import { ClosePopup } from "../../assets/images/icons";
 import { Option } from "../../types";
@@ -12,7 +12,7 @@ interface iModalSelect {
     children?: any,
 }
 
-const windowWidth = Dimensions.get('window').width;
+const window = Dimensions.get('window');
 
 const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, children}:iModalSelect) => {
   return (
@@ -23,13 +23,16 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
         animationType="fade"
         key={title}
         >
-        <Pressable onPress={(event) => event.target === event.currentTarget && setOpenModal(!openModal)} className="justify-center px-4 flex-1 bg-[#10101035]">
-            <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
-                <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center mb-6">{title}</Text>
-                <View className="flex-row flex-wrap justify-center gap-3 items-center">
+        <Pressable onPress={(event) => event.target === event.currentTarget && setOpenModal(!openModal)} className="justify-end flex-1 bg-[#10101035]">
+            <View style={{width: window.width, maxHeight: window.height / 2}} className="bg-[#ffff] p-10 w-full flex-1 justify-center">
+                <View className="mx-auto -mt-[150px] mb-10">
+                    <Image className="w-[150px] h-[150px]" source={require('../../assets/images/homePageIcons/leakageButtonIcon.jpeg')}/>
+                </View>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-6">{title}</Text>
+                <View className="justify-center items-center mb-4">
                     {options!.map((item, index) =>
-                            <TouchableOpacity key={index} className={`min-w-[35px] bg-main-blue rounded-lg mb-3`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
-                                <Text style={{fontFamily:'geometria-bold'}} className="text-[#ffff] p-2 text-base text-center">{item.title}</Text>
+                            <TouchableOpacity key={index} className="rounded-lg p-2 bg-main-blue mb-5 w-full" activeOpacity={0.6} onPress={() => onItemPress(item)}>
+                                <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-[#fff] text-center">{item.title}</Text>
                             </TouchableOpacity>)
                     }
                 </View>

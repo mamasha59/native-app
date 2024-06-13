@@ -17,12 +17,12 @@ interface iAppStateSlicer {
     value: boolean,
     timeStamp: string,
   },
-  liquidValue: number,
+  dayGoalOfDrinkWater: number,
 }
 
 const initialState:iAppStateSlicer = {
-    isExist: false, // есть ли юзер в локал сторедж
-    open: false,    // состояние попапа жидкости
+    isExist: false,                        // есть ли юзер в локал сторедж
+    open: false,                          // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
     calendareDay: format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
@@ -37,7 +37,7 @@ const initialState:iAppStateSlicer = {
       title: '',
       value: false,
     },
-    liquidValue: 0,
+    dayGoalOfDrinkWater: 1000,
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -75,8 +75,8 @@ const appStateSlice = createSlice({
       switchNightMode: (state, action:PayloadAction<{ value: boolean, timeStamp: string, title: string}>) => {
           state.nighMode = {timeStamp: action.payload.timeStamp, value: action.payload.value, title: action.payload.title}
       },
-      setLiquidValueL: (state, action:PayloadAction<number>) => {
-        state.liquidValue = action.payload
+      setDayGoalOfDrinkWater: (state, action:PayloadAction<number>) => {
+        state.dayGoalOfDrinkWater = action.payload;
       }
     }
 })
@@ -91,7 +91,7 @@ export const {
     changeStateOfTimerTitleForFirstTimeInApp,
     switchNightMode,
     setWhetherCountUrine,
-    setLiquidValueL
+    setDayGoalOfDrinkWater
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

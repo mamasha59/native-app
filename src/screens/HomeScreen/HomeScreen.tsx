@@ -83,8 +83,8 @@ const HomeScreen = () => {
                 onSubmitEditing={() => handleAction()}
             />
             {inputLeakageValue && 
-            <TouchableOpacity onPress={() => handleAction()} className='mx-auto p-1'>
-                <Text style={{fontFamily:'geometria-regular'}} className='text-sm px-4'>Oк</Text>
+            <TouchableOpacity onPress={() => handleAction()} className='mx-auto mt-4 bg-main-blue rounded-lg px-4 py-1'>
+                <Text style={{fontFamily:'geometria-bold'}} className='text-2xl text-[#fff] '>cохранить</Text>
             </TouchableOpacity>}
           </>
       </ModalSelect>

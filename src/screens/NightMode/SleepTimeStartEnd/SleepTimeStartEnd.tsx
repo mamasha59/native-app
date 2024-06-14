@@ -11,7 +11,8 @@ import Pencil from "../../../assets/images/iconsComponent/Pencil";
 const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const dispatch = useAppDispatch();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
-
+    console.log(nightModeTimeSettings.timeSleepStart);
+    
     const [intervalOfStartSleep, setIntervalOfStartSleep] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 22,
         selectedIndexMinutes: 0,
@@ -86,9 +87,8 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
                 handleOpenModalChangeInterval={handleOpenModalStart}
                 newInterval={intervalOfStartSleep}
                 setNewInterval={setIntervalOfStartSleep}
-                setShowModalSetInterval={setShowModalSetIntervalStart}
                 showModalSetInterval={showModalSetIntervalStart}
-                showAlert={handleSetStartTime}
+                pressSaveButoon={handleSetStartTime}
                 title="Выберите время когда вы ложитесь спать"
                 is24Hours
             />
@@ -96,9 +96,8 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
                 handleOpenModalChangeInterval={handleOpenModalEnd}
                 newInterval={intervalOfEndSleep}
                 setNewInterval={setIntervalOfEndSleep}
-                setShowModalSetInterval={setShowModalSetIntervalEnd}
                 showModalSetInterval={showModalSetIntervalEnd}
-                showAlert={handleSetEndTime}
+                pressSaveButoon={handleSetEndTime}
                 title="Выберите время когда вы просыпаетесь"
                 is24Hours
             />

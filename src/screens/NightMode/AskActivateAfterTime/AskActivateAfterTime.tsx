@@ -59,7 +59,7 @@ const AskActivateAfterTime = () => {
             setNewInterval={setWhenAskToActivateNightMode}
             setShowModalSetInterval={setShowModalAskActivateAfter}
             showModalSetInterval={showModalAskActivateAfter}
-            showAlert={handleSetTimeWhenAsk}
+            pressSaveButoon={handleSetTimeWhenAsk}
             title="Выберите время когда вы хотите что бы вас спросили включать ночной режим"
             is24Hours
         />

@@ -10,8 +10,7 @@ import { useFormatInterval } from "../../../../hooks/useFormatInterval";
 import { Option } from "../../../../types";
 import { setWhetherCountUrine } from "../../../../store/slices/appStateSlicer";
 import NightModeSelect from "./NightModeSelect/NightModeSelect";
-import ModalSetTime from "../../../../components/ModalSetTime/ModalSetTime";
-
+import ModalSetInterval from "../../../../components/ModalSetInterval/ModalSetInterval";
 
 const ProfileSettings = () => { // TODO clean the code
     const [showModalSetInterval, setShowModalSetInterval] = useState(false);
@@ -32,7 +31,7 @@ const ProfileSettings = () => { // TODO clean the code
         dropDownCountUrine.current && dropDownCountUrine.current.close();
     }
 
-    const handleOpenModalChangeInterval = () => { // при клике на Выбрать новый интервал - открываем попап для выбора нового интервала
+    const handleModalChangeInterval = () => { // при клике на Выбрать новый интервал - открываем попап для выбора нового интервала
         setShowModalSetInterval(!showModalSetInterval);
     }
 
@@ -42,10 +41,10 @@ const ProfileSettings = () => { // TODO clean the code
             const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
             dispatch(setInterval(initialTime));
 
-            handleOpenModalChangeInterval();
+            handleModalChangeInterval();
     }
 
-    const createThreeButtonAlert = () => {
+    const handlePressSave = () => {
         Alert.alert('Давайте уточним.', `Был интервал: ${newIntervalText}, меняем на: ${newInterval.selectedIndexHour} ч. ${newInterval.selectedIndexMinutes} мин. При следующей катетеризации интервал станет ${newInterval.selectedIndexHour} ч. ${newInterval.selectedIndexMinutes} мин. Вы уверены?`, [
             {
                 text: 'Я передумал :(',
@@ -60,7 +59,7 @@ const ProfileSettings = () => { // TODO clean the code
     <>
     <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
     {/*  изменить интервал катетеризации - Оптимальный */}
-    <ChangeInterval handleChangeOptimalInterval={handleOpenModalChangeInterval}/>
+    <ChangeInterval handleChangeOptimalInterval={handleModalChangeInterval}/>
     <NightModeSelect/>
     {/* измерять мочю селект */} 
     <ProfileSelect 
@@ -71,14 +70,16 @@ const ProfileSettings = () => { // TODO clean the code
         value={settings.urineMeasure.title}
         key={"Измерение кол-ва выделяемой мочи"}
         />
-    <ModalSetTime
+    <ModalSetInterval
+        handleOpenModalChangeInterval={handleModalChangeInterval}
         newInterval={newInterval}
         setNewInterval={setNewInterval}
-        close={handleOpenModalChangeInterval}
-        handlePressSave={createThreeButtonAlert}
         showModalSetInterval={showModalSetInterval}
+        pressSaveButoon={handlePressSave}
+        title="Выберите новый интервал"
+        is24Hours={false}
         key={'profilescreen'}
-    /> 
+    />
   </>
   );
 };

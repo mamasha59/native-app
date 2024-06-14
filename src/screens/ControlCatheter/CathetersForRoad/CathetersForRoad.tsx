@@ -3,6 +3,7 @@ import {useState} from "react";
 
 import { DropDown } from "../../../assets/images/icons";
 import ModalSelect from "../../../components/ModalSelect/ModalSelect";
+import { Option } from "../../../types";
 
 const CathetersForRoad = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
@@ -10,7 +11,7 @@ const CathetersForRoad = () => {
 
     const numbers = Array.from({ length: 31 }, (_, index) => index + 1);
 
-    const onDayPress = (item:number) => {
+    const onDayPress = (item:Option) => {
         setNumberOfDays(item);
         setOpenModal(!openModal)
     }
@@ -36,7 +37,13 @@ const CathetersForRoad = () => {
                 {`На ${numberOfDays || 1} ${stringEnd}`} вам понадобится 49 катетеров
             </Text>
         </View>
-        <ModalSelect title="Выберите кол-во дней:" options={numbers} onItemPress={onDayPress} openModal={openModal} setOpenModal={setOpenModal}/>
+        <ModalSelect
+            row
+            title="Выберите кол-во дней:"
+            options={numbers}
+            onItemPress={onDayPress}
+            openModal={openModal}
+            setOpenModal={setOpenModal}/>
     </View>
   );
 };

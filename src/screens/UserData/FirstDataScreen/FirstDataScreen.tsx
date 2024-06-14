@@ -1,15 +1,15 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setInterval } from "../../../store/slices/timerStatesSlice";
-import ModalSetTime from "../../../components/ModalSetTime/ModalSetTime";
 import { switchNightMode } from "../../../store/slices/appStateSlicer";
 import { Option } from "../../../types";
 import SleepTimeStartEnd from "../../NightMode/SleepTimeStartEnd/SleepTimeStartEnd";
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
+import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 
 interface iFirstDataScreen extends NavigationPropsWelcome<'FirstDataScreen'>{}
 
@@ -73,7 +73,7 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
                 }
             </View>
         </View>
-        <View className="">
+        <>
             <Text className="text-lg mr-3" style={{fontFamily:'geometria-bold'}}>Укажите интервал катетеризации:</Text>
             <View className="flex-row items-center justify-center my-3">
                 <Text style={{fontFamily:'geometria-regular'}}>каждые</Text>
@@ -84,15 +84,17 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
                     <Pencil/>
                 </View>
             </View>
-            <ModalSetTime
+            <ModalSetInterval
+                handleOpenModalChangeInterval={handleModalSetInterval}
                 newInterval={newInterval}
                 setNewInterval={setNewInterval}
-                close={handleModalSetInterval}
-                handlePressSave={safeNewInterval}
                 showModalSetInterval={isDatePickerVisible}
+                pressSaveButoon={safeNewInterval}
+                title="Выберите новый интервал"
+                is24Hours={false}
                 key={'firstdatascreen'}
-            />     
-        </View>
+            />
+        </>
     </WelcomeLayout>
   );
 };

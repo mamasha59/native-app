@@ -9,8 +9,7 @@ const windowWidth = Dimensions.get('window').width;
 
 interface iModalSetInterval {
     showModalSetInterval: boolean,
-    setShowModalSetInterval: (value: React.SetStateAction<boolean>) => void,
-    showAlert?: () => void,
+    pressSaveButoon?: () => void,
     newInterval: {
         selectedIndexHour: number;
         selectedIndexMinutes: number
@@ -26,9 +25,8 @@ interface iModalSetInterval {
 
 const ModalSetInterval = (props:iModalSetInterval) => {
     const {
-        setShowModalSetInterval,
         showModalSetInterval,
-        showAlert,
+        pressSaveButoon,
         newInterval,
         setNewInterval,
         handleOpenModalChangeInterval,
@@ -37,7 +35,7 @@ const ModalSetInterval = (props:iModalSetInterval) => {
     } = props;
     
   return (
-    <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={() => setShowModalSetInterval(false)}>
+    <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={handleOpenModalChangeInterval}>
         <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center">{title}</Text>
             <View className="flex-row justify-center items-center mb-3">
@@ -46,7 +44,7 @@ const ModalSetInterval = (props:iModalSetInterval) => {
             <TouchableOpacity onPress={handleOpenModalChangeInterval} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                 <ClosePopup width={15} height={15}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={showAlert} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
+            <TouchableOpacity onPress={pressSaveButoon} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
                 <LinearGradient
                     colors={['#83B759', '#609B25']}
                     start={{ x: 0, y: 0.5 }}

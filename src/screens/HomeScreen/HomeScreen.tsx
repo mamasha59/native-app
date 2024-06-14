@@ -64,6 +64,7 @@ const HomeScreen = () => {
         />
       </View>
       <ModalSelect
+        logo={<Image className="w-[150px] h-[150px]" source={require('../../assets/images/homePageIcons/leakageButtonIcon.jpeg')}/>}
         onItemPress={handleAction}
         openModal={modalLeakageVisible}
         options={whyLeakageHappenedReasons}

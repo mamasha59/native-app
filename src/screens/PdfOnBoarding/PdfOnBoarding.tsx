@@ -213,6 +213,8 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 setOpenModal={setOpenModalSelectSex}
                 key={'Ваш пол*'}/>
             <ModalSelect
+                logo={false}
+                showIcon={false}
                 onItemPress={(item) => onSelectSexPress(item)}
                 openModal={openModalSelectSex}
                 options={[{title: 'Женский', value: 'female'}, {title:'Мужской', value: 'male'}, {title: 'Мальчик', value: 'boy'}, {title: 'Девочка', value: 'girl'}]}

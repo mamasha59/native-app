@@ -1,16 +1,13 @@
 import { Text, Alert } from "react-native";
-import { IDropdownRef } from "react-native-element-dropdown";
-import { useRef, RefObject, useState } from "react";
+import { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import ChangeInterval from "./ChangeInterval/ChangeInterval";
-import ProfileSelect from "./ProfileSelect/ProfileSelect";
 import { setInterval } from "../../../../store/slices/timerStatesSlice";
 import { useFormatInterval } from "../../../../hooks/useFormatInterval";
-import { Option } from "../../../../types";
-import { setWhetherCountUrine } from "../../../../store/slices/appStateSlicer";
-import NightModeSelect from "./NightModeSelect/NightModeSelect";
 import ModalSetInterval from "../../../../components/ModalSetInterval/ModalSetInterval";
+import ToggleCannulationAtNight from "../../../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
+import ToggleIsCountUrine from "../../../../components/ToggleIsCountUrine/ToggleIsCountUrine";
 
 const ProfileSettings = () => { // TODO clean the code
     const [showModalSetInterval, setShowModalSetInterval] = useState(false);
@@ -18,30 +15,23 @@ const ProfileSettings = () => { // TODO clean the code
         selectedIndexHour: 3,
         selectedIndexMinutes: 0,
     })
-    const dropDownCountUrine:RefObject<IDropdownRef> = useRef(null);
 
-    const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
     const interval = useAppSelector((state) => state.timerStates.interval); // берем интервал из стейта (начального экрана)
     const newIntervalText = useFormatInterval({intervalInSeconds: interval}); // хук форматриования интервала, из миллисекунд в строку типа - 4 часа 30 минут
     
     const dispatch = useAppDispatch();
-
-    const handleIsCountUrine = (value:Option) => { // функция при выборе селекта Измерение кол-ва мочи
-        dispatch(setWhetherCountUrine({value: value.value, title: value.title}));
-        dropDownCountUrine.current && dropDownCountUrine.current.close();
-    }
 
     const handleModalChangeInterval = () => { // при клике на Выбрать новый интервал - открываем попап для выбора нового интервала
         setShowModalSetInterval(!showModalSetInterval);
     }
 
     const handleChangeOptimalInterval = () => { // при подтверждении нового интервала
-            const hours = newInterval.selectedIndexHour;   // часы
-            const minutes = newInterval.selectedIndexMinutes; // минуты
-            const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
-            dispatch(setInterval(initialTime));
+        const hours = newInterval.selectedIndexHour;   // часы
+        const minutes = newInterval.selectedIndexMinutes; // минуты
+        const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
+        dispatch(setInterval(initialTime));
 
-            handleModalChangeInterval();
+        handleModalChangeInterval();
     }
 
     const handlePressSave = () => {
@@ -60,16 +50,8 @@ const ProfileSettings = () => { // TODO clean the code
     <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
     {/*  изменить интервал катетеризации - Оптимальный */}
     <ChangeInterval handleChangeOptimalInterval={handleModalChangeInterval}/>
-    <NightModeSelect/>
-    {/* измерять мочю селект */} 
-    <ProfileSelect 
-        selectRef={dropDownCountUrine}
-        confirmation={true}
-        handleClickOption={handleIsCountUrine}
-        title="Измерение кол-ва выделяемой мочи"
-        value={settings.urineMeasure.title}
-        key={"Измерение кол-ва выделяемой мочи"}
-        />
+    <ToggleCannulationAtNight/>
+    <ToggleIsCountUrine/>
     <ModalSetInterval
         handleOpenModalChangeInterval={handleModalChangeInterval}
         newInterval={newInterval}

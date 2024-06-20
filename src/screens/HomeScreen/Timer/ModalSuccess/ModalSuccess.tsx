@@ -1,38 +1,63 @@
 import { View, Text, Dimensions, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
+import { addSeconds, format, subSeconds } from "date-fns";
+import { useEffect, useState } from "react";
+
 import NotificationIcon from "../../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setShowModalSuccess } from "../../../../store/slices/timerStatesSlice";
+import LottieView from "lottie-react-native";
 
 const windowSize = Dimensions.get('window');
 
 const ModalSuccess = () => {
-    const settings = useAppSelector(state => state.timerStates.showModalSuccess);
+    const settings = useAppSelector(state => state.timerStates);
     const dispatch = useAppDispatch();
 
+    const [nextCathTime, setNextCathTime] = useState<string>('');
+  
+    useEffect(() => {
+      const now = new Date(); // Текущее время
+      const futureDate = addSeconds(now, settings.interval); // Добавляем интервал в секундах
+      const futureDateMinusSubtract = subSeconds(futureDate, settings.yellowInterval * 60); // Вычитаем секунды
+    
+      // Форматируем даты в строку
+      const formattedStartTime = format(futureDateMinusSubtract, 'HH:mm');
+      const formattedEndTime = format(futureDate, 'HH:mm');
+    
+      setNextCathTime(`${formattedStartTime} - ${formattedEndTime}`);
+      
+    },[settings.showModalSuccess])
+  
   return (
     <View>
       <Modal
         onSwipeComplete={() => dispatch(setShowModalSuccess(false))}
         className="justify-end m-0"
-        isVisible={settings}
+        isVisible={settings.showModalSuccess}
         swipeDirection={'down'}
         useNativeDriver
         propagateSwipe
         hideModalContentWhileAnimating
         >
         <View style={{height: windowSize.height / 2 }} className="bg-[#fff] rounded-t-[40px] p-5 items-center justify-between">
-            <View className="-mt-20">
-                <Image source={require('../../../../assets/images/homePageIcons/successCath.png')} style={{ width: 150, height: 150 }} />
+            <View style={{backgroundColor: 'transparent'}} className="-mt-20 w-[200px] h-[200px]">
+                {/* <Image source={require('../../../../assets/images/homePageIcons/successCath.png')} style={{ width: 150, height: 150 }} /> */}
+                <LottieView
+                  source={require("../../../../assets/dance.json")}
+                  style={{width: 200, height: 200, backgroundColor: 'transparent'}}
+                  autoPlay
+                  loop
+                />
             </View>
             <View className="">
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-4xl text-center">Отлично!</Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-2xl text-center">Катетеризация выполнена!</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center">Отлично!</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-xl text-center">Катетеризация выполнена!</Text>
                 <View className="mt-2">
                     <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start mb-4">Следующая катетеризация:</Text>
                     <View className="items-center flex-row justify-center"> 
                         <NotificationIcon color={'#000'} width={20}/>
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">15:00 - 14:00</Text> 
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCathTime}</Text> 
                     </View>
                 </View>
             </View>

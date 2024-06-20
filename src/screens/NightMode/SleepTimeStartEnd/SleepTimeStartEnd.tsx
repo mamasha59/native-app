@@ -11,7 +11,6 @@ import Pencil from "../../../assets/images/iconsComponent/Pencil";
 const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const dispatch = useAppDispatch();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
-    console.log(nightModeTimeSettings.timeSleepStart);
     
     const [intervalOfStartSleep, setIntervalOfStartSleep] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 22,
@@ -34,39 +33,38 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         setShowModalSetIntervalEnd(!showModalSetIntervalEnd);
     }
 
-    const createDateFromTime = (selectedIndexHour:number, selectedIndexMinutes:number) => {
+    const createDateFromTime = (selectedIndexHour:number, selectedIndexMinutes:number) => { // создает дату со временем типа 2024-06-14T19:00:00.497Z
         const now = new Date();
-        // Используем функцию set для установки нужных значений часа и минуты
         const dateWithTime = set(now, { hours: selectedIndexHour, minutes: selectedIndexMinutes, seconds: 0 });
         return dateWithTime;
     };
       
     const formatDateToTimeString = (date:Date) => {
         const hours = format(date, 'H');
-        const minutes = format(date, 'm');
-        return `${hours} ч. ${minutes} мин.`;
+        const minutes = format(date, 'mm');
+        return `${hours}:${minutes}`;
     };
     
     const handleSetStartTime = () => { // при подтверждении интверала Начала сна
-        const dateWithTime = createDateFromTime(intervalOfStartSleep.selectedIndexHour, intervalOfStartSleep.selectedIndexMinutes);
+        const dateWithTime = createDateFromTime(intervalOfStartSleep.selectedIndexHour, intervalOfStartSleep.selectedIndexMinutes);        
         const timeStartSleep = formatDateToTimeString(dateWithTime);
-        const timeWhenAskActivate = formatDateToTimeString(subHours(dateWithTime, 2)); // вычитаем два часа
+        const timeWhenAskActivate = formatDateToTimeString(subHours(dateWithTime, 2)); // вычитаем два часа до сна что бы определить время уведомления
         
         dispatch(setTimeWhenAskToActivateNightMode(timeWhenAskActivate));
         dispatch(setTimeSleepStart(timeStartSleep));
-        setShowModalSetIntervalStart(!showModalSetIntervalStart);
+        handleOpenModalStart();
     }
 
     const handleSetEndTime = () => { // при подтверждении интверала Конца сна
         const dateWithTime = createDateFromTime(intervalOfEndSleep.selectedIndexHour, intervalOfEndSleep.selectedIndexMinutes);
         const time = formatDateToTimeString(dateWithTime)
         dispatch(setTimeSleepEnd(time));
-        setShowModalSetIntervalEnd(!showModalSetIntervalEnd);
+        handleOpenModalEnd()
     }
 
   return (
-    <View>
-        <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>Укажите ваше обычное время сна:</Text>
+    <View className="flex-1">
+        <Text className="text-base" style={{fontFamily:'geometria-bold'}}>Укажите ваше обычное время сна:</Text>
         <View className="flex-row items-center flex-1">
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>c</Text>
             <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart}/>
@@ -92,15 +90,15 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
                 title="Выберите время когда вы ложитесь спать"
                 is24Hours
             />
-            <ModalSetInterval
-                handleOpenModalChangeInterval={handleOpenModalEnd}
-                newInterval={intervalOfEndSleep}
-                setNewInterval={setIntervalOfEndSleep}
-                showModalSetInterval={showModalSetIntervalEnd}
-                pressSaveButoon={handleSetEndTime}
-                title="Выберите время когда вы просыпаетесь"
-                is24Hours
-            />
+        <ModalSetInterval
+            handleOpenModalChangeInterval={handleOpenModalEnd}
+            newInterval={intervalOfEndSleep}
+            setNewInterval={setIntervalOfEndSleep}
+            showModalSetInterval={showModalSetIntervalEnd}
+            pressSaveButoon={handleSetEndTime}
+            title="Выберите время когда вы просыпаетесь"
+            is24Hours
+        />
     </View>
   );
 };

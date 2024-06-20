@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { v4 as uuidv4 } from 'uuid';
 import * as Notifications from 'expo-notifications';
 import { useStopwatch, useTimer} from 'react-timer-hook';
-import { differenceInSeconds, format, parse } from 'date-fns';
+import { differenceInSeconds, format, isAfter, parse } from 'date-fns';
 
 import { SvgComponentText } from "./SvgComponentText/SvgComponentText";
 import ShowToast from "../../../components/ShowToast/ShowToast";
@@ -13,7 +13,9 @@ import { addUrineDiaryRecord, decreaseCatheterAmount } from "../../../store/slic
 import { addBadgesJournalScreen, 
          changeStateOfTimerTitleForFirstTimeInApp,
          ifCountUrineChangeState,
-         popupLiquidState} from "../../../store/slices/appStateSlicer";
+         popupLiquidState,
+         switchCannulationAtNightNight,
+         switchNightModeModal} from "../../../store/slices/appStateSlicer";
 import IntervalUI from "./IntervalUI/IntervalUI";
 import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
 import IntervalInfo from "../IntervalInfo/IntervalInfo";
@@ -21,11 +23,14 @@ import NightModeButton from "./NightModeButton/NightModeButton";
 import ModalSuccess from "./ModalSuccess/ModalSuccess";
 
 const Timer = () => { //TODO refactoring
+  const now = new Date();
   const dispatch = useAppDispatch();
 
   const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
+  const settingsNighMode = useAppSelector((state) => state.nightOnDoarding); // кол-во катетеров
   const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
+// console.log(settings.cannulationAtNight);
 
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
@@ -42,6 +47,10 @@ const Timer = () => { //TODO refactoring
   const [laoder, setLoader] = useState<boolean>(false);
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  
+  const timeWhenAskToActivateNightmode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now);
+  const formattedCurrentTime = parse(format(now, 'HH:mm'), 'HH:mm', new Date());
 
   // ===================== \\ - хук времени на возрастание
   const stopwatchOffset = new Date(); // на возрастание, Крит. интервал
@@ -88,7 +97,6 @@ const Timer = () => { //TODO refactoring
   // ===================== \\
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Оптимального интревала
     const updateTimer = () => {
-      // if(!settings.nighMode.value){
         setLoader(true);
         if (intervalDifference < timerInterval && intervalDifference > 0) {
           setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
@@ -99,14 +107,13 @@ const Timer = () => { //TODO refactoring
           setTimerInterval(interval);
         }
         setLoader(false);
-      // };
     }
     updateTimer();
   }, [intervalDifference]);
 
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Крит. интервала, если разница в секундах с записью в журанале больше Оптимального интервала
     const updateStopWatch = async () => {
-      if(!settings.nighMode.value){
+      if(!settings.cannulationAtNight.value){
         setLoader(true);
         if (intervalDifference && intervalDifference > timerInterval) {
           setStartFromСountdown(false);
@@ -120,7 +127,6 @@ const Timer = () => { //TODO refactoring
         };
     }
     updateStopWatch();
-
   }, [intervalDifference, appStateVisible]);
   
   useEffect(() => { // расчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
@@ -164,16 +170,14 @@ const Timer = () => { //TODO refactoring
       }
       appState.current = nextAppState;
     };
-
     const subscription = AppState.addEventListener('change', handleAppStateChange);
-
     // Очистка подписки при размонтировании компонента
     return () => { subscription.remove() };
   }, [timerInterval, timerTotalSeconds]);
 
   useEffect(() => {
     const stopTimer = () => {
-      if(settings.nighMode.value){      
+      if(settings.cannulationAtNight.value){      
         if(timerRunning){
           const expiryTimestampReset = new Date();
           expiryTimestampReset.setSeconds(expiryTimestamp.getSeconds() + timerInterval);
@@ -186,39 +190,43 @@ const Timer = () => { //TODO refactoring
       } 
     }
     stopTimer()
-  },[settings.nighMode]);
+  },[settings.cannulationAtNight]);
 
-  const handlePressCommon = async () => {
-    dispatch(setShowModalSuccess(true)); // показывает модальное окно об успешной катетеризации
-    dispatch(whetherStartFromCountdown(true));
-    setIntervalDifference(0); // обнуляем разницу между последней катетеризацией
-    schedulePushNotification('Уведомдление через время', 'Уведомление через время');
-    if (!settings.stateOfTimerTitleForFirstTimeInApp) {
-      dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
-    }
-    if (journal.initialCathetherAmount.nelaton > 0) {
-      dispatch(decreaseCatheterAmount({amount:1}));
-    }
-    if (!partTime.firstPartTime && !partTime.secondPartTime) {
-      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
-      startTimer();
-    } else if (partTime.firstPartTime) {
-      timerRestart(expiryTimestamp);
-    }
-    if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
-      schedulePushNotification('Ты прокатетеризировался!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
-      resetStopwatch(stopwatchOffset, false);
-      setStartFromСountdown(true);
-      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
-      timerRestart(expiryTimestamp);
-      setToastShow(true);
-      setInitialStrip(0); // бнуляем секундные полоски
-    }
+  const handlePressCommon = () => {
+    if(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode) && !settingsNighMode.cannulationAtNight){
+      dispatch(switchNightModeModal(!settings.openModalNightMode)); // ask to activate night mode in Particular time
+    } else {
+      dispatch(setShowModalSuccess(true));        // показывает модальное окно об успешной катетеризации
+      dispatch(whetherStartFromCountdown(true)); // начинает на обратный отсчет
+      setIntervalDifference(0);                 // обнуляем разницу между последней катетеризацией
+      schedulePushNotification('Уведомдление через время', 'Уведомление через время');
+      if (!settings.stateOfTimerTitleForFirstTimeInApp) {
+        dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
+      }
+      if (journal.initialCathetherAmount.nelaton > 0) {
+        dispatch(decreaseCatheterAmount({amount:1}));
+      }
+      if (!partTime.firstPartTime && !partTime.secondPartTime) {
+        setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
+        startTimer();
+      } else if (partTime.firstPartTime) {
+        timerRestart(expiryTimestamp);
+      }
+      if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
+        schedulePushNotification('Ты прокатетеризировался!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
+        resetStopwatch(stopwatchOffset, false);
+        setStartFromСountdown(true);
+        setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
+        timerRestart(expiryTimestamp);
+        setToastShow(true);
+        setInitialStrip(0); // бнуляем секундные полоски
+      }
+   }
   };
 
   const handlePressButton = () => { // при нажатии кнопки, если не выбранно измерение мочи
     handlePressCommon();
-    if(!settings.urineMeasure.value){
+    if(!settings.urineMeasure){
       dispatch(addUrineDiaryRecord({
         id: uuidv4(),
         whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
@@ -231,14 +239,14 @@ const Timer = () => { //TODO refactoring
   
   const handlePressIfUrineMeasure = () => { // при нажатии кнопки, если Выбранно измерение мочи
     handlePressCommon();
-    if (settings.urineMeasure.value) {
+    if (settings.urineMeasure && settings.openModalNightMode === false) {
       dispatch(popupLiquidState(true));
       dispatch(ifCountUrineChangeState(true));
     }
   };
   
   return (
-    <View className="flex-1 justify-center items-center relative">
+    <View className="flex-1 justify-center items-center">
       <NightModeButton/>
       <IntervalInfo/>
       <View className="flex-1 items-center justify-center w-full h-full">
@@ -246,38 +254,39 @@ const Timer = () => { //TODO refactoring
           partTime={partTime}
           start={timerRunning}
           initialNumberOfStrip={initialStrip}/>
-      </View>
-      <View className="absolute items-center justify-center pt-9 flex-1">
-        <View className="items-center">
-          <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-center text-[#000] max-w-[200px]">
-              {!settings.stateOfTimerTitleForFirstTimeInApp 
-                ? 'Время катетеризироваться:' 
-                : (!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:')
-              }
-          </Text>
-          <IntervalUI
-            startFromСountdown={startFromСountdown}
-            stopwatchHours={stopwatchHours}
-            stopwatchMinutes={stopwatchMinutes}
-            stopwatchSeconds={stopwatchSeconds}
-            timerHours={timerHours}
-            timerMinutes={timerMinutes}
-            timerSeconds={timerSeconds}
-            loader={laoder}
-            />
+      
+        <View className="absolute items-center justify-center flex-1">
+          <View className="items-center">
+            <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-center text-[#000] max-w-[200px]">
+                {!settings.stateOfTimerTitleForFirstTimeInApp 
+                  ? 'Время катетеризироваться:' 
+                  : (!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:')
+                }
+            </Text>
+            <IntervalUI
+              startFromСountdown={startFromСountdown}
+              stopwatchHours={stopwatchHours}
+              stopwatchMinutes={stopwatchMinutes}
+              stopwatchSeconds={stopwatchSeconds}
+              timerHours={timerHours}
+              timerMinutes={timerMinutes}
+              timerSeconds={timerSeconds}
+              loader={laoder}
+              />
+          </View>
+          <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
+            <LinearGradient
+                colors={['#83B759', '#609B25']}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                locations={[0.0553, 0.9925]}
+                className="rounded-[43px]">
+                <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
+                  {timerRunning || stopwatchRunning ? 'Выполнено' : 'Начать'}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
         </View>
-        <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure.value ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
-          <LinearGradient
-              colors={['#83B759', '#609B25']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              locations={[0.0553, 0.9925]}
-              className="rounded-[43px]">
-              <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
-                {timerRunning || stopwatchRunning ? 'Выполнено' : 'Начать'}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
       </View>
       <ShowToast setShowToast={setToastShow} show={toast} text="Вы прокатетеризировались!"/>
       <ModalSuccess/>

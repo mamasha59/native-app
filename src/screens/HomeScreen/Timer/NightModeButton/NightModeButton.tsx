@@ -1,42 +1,64 @@
-import { View, TouchableOpacity, Text, Image } from "react-native";
-import { useState } from "react";
+import { View, TouchableOpacity, Text } from "react-native";
+import { useRef } from "react";
+import LottieView from "lottie-react-native";
 
 import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
 import { Option } from "../../../../types";
-import { useAppDispatch } from "../../../../store/hooks";
-import { switchNightMode } from "../../../../store/slices/appStateSlicer";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { switchCannulationAtNightNight, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
 import NightModeButtonSvg from "../../../../assets/images/iconsComponent/NightMode";
 
 const NightModeButton = () => {
+    const settings = useAppSelector(state => state.appStateSlice);
     const dispatch = useAppDispatch();
-    const [openModalNightMode, setOpenModalNightMode] = useState<boolean>(false);
 
-    const handlePressItem = (value: Option) => {                
-        dispatch(switchNightMode(
-            {   
-                title: value.title,
-                timeStamp: new Date().toString(),
-                value: !!value.value
-            }
-        ));
-        setOpenModalNightMode(!openModalNightMode); 
+    const animationRef = useRef<LottieView>(null);
+
+    const closeModal = () => {
+        dispatch(switchNightModeModal(!settings.openModalNightMode));
+    }
+
+    const handlePressItem = (value: Option) => {
+        if(value.value){
+            dispatch(switchCannulationAtNightNight(
+                {   
+                    timeStamp: new Date().toString(),
+                    value: !!value.value
+                }
+            ));
+            animationRef.current && animationRef.current.play(0,78);
+        }else {
+            dispatch(switchCannulationAtNightNight(
+                {   
+                    timeStamp: new Date().toString(),
+                    value: !!value.value
+                }
+            ));
+            closeModal();
+             animationRef.current && animationRef.current.play(78,0);
+        }
+        closeModal();        
     }
 
   return (
     <>
-    <View className="absolute top-[15%] right-0 w-10 h-10">
-        <TouchableOpacity onPress={() => setOpenModalNightMode(!openModalNightMode)}>
-            <NightModeButtonSvg/>
-        </TouchableOpacity>
-    </View>
+    <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={closeModal}>
+        {/* <NightModeButtonSvg/> */}
+        <LottieView
+            ref={animationRef}
+            source={require("../../../../assets/animation-night-mode.json")}
+            style={{width: 100, height: 90}}
+            autoPlay={false}
+            loop={false}
+            />
+    </TouchableOpacity>
     <ModalSelect
-        logo={<Image className="w-[150px] h-[150px]" source={require('../../../../assets/images/homePageIcons/leakageButtonIcon.jpeg')}/>}
         key={'nightbuttonhomescreen'}
         row
         showIcon={false}
         onItemPress={(item) => handlePressItem(item)}
-        openModal={openModalNightMode}
-        setOpenModal={setOpenModalNightMode}
+        openModal={settings.openModalNightMode}
+        setOpenModal={closeModal}
         title="Желаете включить ночной режим?"
         options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
         children={

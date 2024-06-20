@@ -37,7 +37,7 @@ const ProfileSelect = ({selectRef, handleClickOption, title, value, confirmation
                 accessibilityLabel={value!}
                 confirmSelectItem={confirmation}
                 onConfirmSelectItem={() => {
-                Alert.alert('Вы уверенны?', 'Перед каждый нажатием кнопки Выполненно мы будем вас спрашивать сколько мочи ты выссал.', [
+                Alert.alert('Вы уверенны?', 'Перед каждый нажатием кнопки Выполненно мы будем вас спрашивать сколько мочи было выделенно.', [
                     {
                     text: 'Нет, не хочу измерять!',
                     onPress: () => { handleClickOption(selectRu[1]) },

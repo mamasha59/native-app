@@ -33,7 +33,7 @@ const ModalSetInterval = (props:iModalSetInterval) => {
         title,
         is24Hours
     } = props;
-    
+
   return (
     <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={handleOpenModalChangeInterval}>
         <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">

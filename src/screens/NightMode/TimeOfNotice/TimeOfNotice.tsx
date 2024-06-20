@@ -32,8 +32,8 @@ const TimeOfNotice = () => {
   
   const formatDateToTimeString = (date:Date) => {
     const hours = format(date, 'H');
-    const minutes = format(date, 'm');
-    return `${hours} ч. ${minutes} мин.`;
+    const minutes = format(date, 'mm');
+    return `${hours}:${minutes}`;
   };
 
   const handleSetTimeOfNotice = () => { // при подтверждении интверала Начала сна
@@ -63,15 +63,14 @@ const TimeOfNotice = () => {
           handlePressButton={handleOpenModSetTimeOfNotice}
           title={setText()}/>
         <ModalSetInterval
-                handleOpenModalChangeInterval={handleOpenModSetTimeOfNotice}
-                newInterval={intervalTimeOfNotice}
-                setNewInterval={setIntervalTimeOfNotice}
-                setShowModalSetInterval={setShowModalSetTimeOfNotice}
-                showModalSetInterval={showModalSetTimeOfNotice}
-                pressSaveButoon={handleSetTimeOfNotice}
-                title="Выберите время когда показать уведомление"
-                is24Hours
-            />
+          handleOpenModalChangeInterval={handleOpenModSetTimeOfNotice}
+          newInterval={intervalTimeOfNotice}
+          setNewInterval={setIntervalTimeOfNotice}
+          showModalSetInterval={showModalSetTimeOfNotice}
+          pressSaveButoon={handleSetTimeOfNotice}
+          title="Выберите время когда показать уведомление"
+          is24Hours
+        />
     </View>
   );
 };

@@ -1,5 +1,6 @@
 import { RefObject, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
+
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changeYellowInterval } from "../../store/slices/timerStatesSlice";
@@ -13,7 +14,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     const [whenShowNoticeBeforeSleep, setWhenShowNoticeBeforeSleep] = useState<string>('');
  
     const inputRefWhenShowNoticeBeforeCannulation = useRef<TextInput>(null);
-    const inputRefWhenShowNoticeBeforeSleep = useRef<TextInput>(null);
+    // const inputRefWhenShowNoticeBeforeSleep = useRef<TextInput>(null);
 
     // Общая функция для обработки ввода
     const handleInput = (value: string, setState: (value: string) => void) => {
@@ -25,7 +26,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     };
 
     const handleInputWhenShowNoticeBeforeCannulation = (value: string) => handleInput(value, setWhenShowNoticeBeforeCannulation);
-    const handleInputWhenShowNoticeBeforeSleep = (value: string) => handleInput(value, setWhenShowNoticeBeforeSleep);
+    // const handleInputWhenShowNoticeBeforeSleep = (value: string) => handleInput(value, setWhenShowNoticeBeforeSleep);
 
     const focusInput = (inputRef:RefObject<TextInput>) => {
         if (inputRef.current) {
@@ -37,7 +38,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     };
 
     const focusInputWhenShowNoticeBeforeCannulation = () => focusInput(inputRefWhenShowNoticeBeforeCannulation);
-    const focusInputWhenShowNoticeBeforeSleep = () => focusInput(inputRefWhenShowNoticeBeforeSleep);
+    // const focusInputWhenShowNoticeBeforeSleep = () => focusInput(inputRefWhenShowNoticeBeforeSleep);
 
     const submitTimeWhenShowNoticeBeforeCannulation = () => { // set new Yellow Interval for timer
         dispatch(changeYellowInterval(+whenShowNoticeBeforeCannulation));
@@ -75,7 +76,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
             </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={focusInputWhenShowNoticeBeforeSleep} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
+        {/* <TouchableOpacity onPress={focusInputWhenShowNoticeBeforeSleep} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>Ночная катетеризация:</Text>
             <View className="flex-row items-center">
                 <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>за</Text>
@@ -94,7 +95,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
             <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                 <Pencil/>
             </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity onPress={handleSwitchAlarm} className="mt-2 py-2 flex-row justify-between border-b border-[#bdc3c75e]">
             <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>Функция умного будильника</Text>

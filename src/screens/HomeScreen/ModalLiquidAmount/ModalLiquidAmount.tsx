@@ -1,5 +1,5 @@
-import { memo, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, Alert } from "react-native";
+import { useState } from "react";
+import { View, Text, Modal, TouchableOpacity, Alert, KeyboardAvoidingView } from "react-native";
 import { v4 as uuidv4 } from 'uuid';
 import { format } from "date-fns";
 
@@ -12,14 +12,14 @@ import Glass from "./Glass/Glass";
 
 const ModalLiquidAmount = () => {
 
-    const [liquidValue, setLiquidValue] = useState<number>(0);      // значение полосы прокрутки
+    const [liquidValue, setLiquidValue] = useState<string>('');      // значение полосы прокрутки
     const dispatch = useAppDispatch();                             // изменение состояние попапа
-    const statePopup = useAppSelector((state) => state.appStateSlice); // состояние попапа
+    const settings = useAppSelector((state) => state.appStateSlice); // состояние попапа
   
     const handleOnSubmitSave = () => { // при нажатии на кнопку Сохранить изменения
       dispatch(popupLiquidState(false));
-      if(liquidValue > 0) {
-        if(statePopup.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
+      if(+liquidValue > 0) {
+        if(settings.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
             catheterType:'Нелатон',
@@ -43,7 +43,7 @@ const ModalLiquidAmount = () => {
 
     const handleAddRecordWithoutUrineMeasure = () => {
       dispatch(popupLiquidState(false));
-      if(statePopup.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
+      if(settings.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочю, состояние меняется на экране Timer при нажатии кнопки Выполнено
         dispatch(addUrineDiaryRecord({
           id: uuidv4(),
           catheterType:'Нелатон',
@@ -62,7 +62,7 @@ const ModalLiquidAmount = () => {
     }
 
     const handleIfCountUrine = () => {
-      if(statePopup.ifCountUrinePopupLiquidState){
+      if(settings.ifCountUrinePopupLiquidState){
         Alert.alert('Пожалуйста, укажите сколько вы выписали.', 'Если вы не хотите постоянно указывать значение, то это можно изменить на экране Профиля.', 
         [{
           text: 'Хорошо, я понял.',
@@ -71,50 +71,53 @@ const ModalLiquidAmount = () => {
       }
     }
 
-    const handlePressCustomMl1 = (item:string) => { // при нажатии на иконки с кол-вом мл
-      if(item) setLiquidValue(+item) 
-    }
     const customMl = ['100','200','300'];
 
   return (
   <Modal
     transparent={true}
-    visible={statePopup.open}
+    visible={settings.open}
     onRequestClose={closeByPressButton}
     animationType="fade">
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <View className="bg-[#ffff] pt-10 pb-[30px] px-6 flex-1 h-full items-end">
           <TouchableOpacity
-              onPress={statePopup.ifCountUrinePopupLiquidState ? handleIfCountUrine : closeByPressButton}
+              onPress={settings.ifCountUrinePopupLiquidState ? handleIfCountUrine : closeByPressButton}
               activeOpacity={0.6}
-              className={`p-2 flex-grow-0 w-8 h-8 items-center justify-center ${statePopup.ifCountUrinePopupLiquidState ? 'rounded-full opacity-20 bg-grey' : ''} `}>
+              className={`p-2 flex-grow-0 w-8 h-8 items-center justify-center ${settings.ifCountUrinePopupLiquidState ? 'rounded-full opacity-20 bg-grey' : ''} `}>
             <ClosePopup width={15} height={15}/>
           </TouchableOpacity>
 
           <View className="flex-1 w-full items-center justify-center">
-            {statePopup.ifCountUrinePopupLiquidState &&         
+            {settings.ifCountUrinePopupLiquidState && !settings.scaleLiquidPopup &&         
               <View className="mb-4">
                   <Text style={{fontFamily:'geometria-regular'}}>Не измеряли?</Text>
                   <TouchableOpacity onPress={handleAddRecordWithoutUrineMeasure} className="py-2">
                     <Text style={{fontFamily:'geometria-regular'}} className="underline">продолжить без записи обьема выделеной мочи</Text>
                   </TouchableOpacity>
               </View>}
-            <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{statePopup.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
-            <Glass customValue={liquidValue} onValueChange={setLiquidValue}/>
-            <View className="flex-row items-center py-2 flex-wrap gap-2">
-              {customMl.map((item, index) => 
-                <TouchableOpacity onPress={() => handlePressCustomMl1(item)} key={index} activeOpacity={.6} className="p-1 items-center border border-main-blue rounded-xl">
-                  <GlassIcon/> 
-                  <Text style={{fontFamily:'geometria-regular'}} className="text-[#000]">{item} мл.</Text>
-                </TouchableOpacity>
-              )}
-            </View>
+
+            <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{settings.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
+              <Glass customValue={+liquidValue} onValueChange={setLiquidValue}/>
+             {!settings.scaleLiquidPopup &&
+               <View className="flex-row items-center py-2 flex-wrap gap-2">
+                {customMl.map((item, index) => 
+                  <TouchableOpacity onPress={() => setLiquidValue(item)} key={index} activeOpacity={.6} className="p-1 items-center border bg-[#fff] border-main-blue rounded-xl">
+                    <GlassIcon/> 
+                    <Text style={{fontFamily:'geometria-regular'}} className="text-[#000]">{item} мл.</Text>
+                  </TouchableOpacity>
+                )}
+              </View>}
           </View>
+
+     {!settings.scaleLiquidPopup &&     
           <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="py-[19px] px-[61px] mx-auto items-center bg-main-blue rounded-[89px]">
             <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">Сохранить изменения</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
+        </KeyboardAvoidingView>
   </Modal>
   );
 };
 
-export default memo(ModalLiquidAmount);
+export default ModalLiquidAmount;

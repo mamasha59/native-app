@@ -57,7 +57,8 @@
           "color": "#ffffff"
         }
       ],
-      "react-native-background-fetch"
+      "react-native-background-fetch",
+      "expo-localization"
     ]
   }
 }

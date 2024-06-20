@@ -13,7 +13,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
     const generateSecondsArray = ():string[] => {
         let numbersArray:string[] = [];
         for (let i = 0; i <= 59; i++) {
-          numbersArray.push(i.toString());
+          numbersArray.push(i.toString().padStart(2, '0'));
         }
         return numbersArray;
     }
@@ -46,7 +46,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
                     selectedIndexHour: index,
                     selectedIndexMinutes: interval.selectedIndexMinutes})
                 }
-            containerStyle={{width:58}}
+            containerStyle={{width:60}}
             selectedIndicatorStyle={{backgroundColor:'#4babc573'}}
         />
         <View>

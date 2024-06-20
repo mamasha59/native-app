@@ -10,11 +10,24 @@ import NotificationsAtNight from "./NotificationsAtNight/NotificationsAtNight";
 import SleepTimeStartEnd from "./SleepTimeStartEnd/SleepTimeStartEnd";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 import ClueAtTheBottom from "../../components/ClueAtTheBottom/ClueAtTheBottom";
+import { useAppDispatch } from "../../store/hooks";
+import { setWhetherDoCannulationAtNight } from "../../store/slices/nightStateSlice";
 
 const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
+    const dispatch = useAppDispatch();
+
+    const hadleExitNightModeScreen = () => {
+        dispatch(setWhetherDoCannulationAtNight(true));
+        navigation.goBack()
+    }
+
+    const hadleSafeSettings = () => {
+        dispatch(setWhetherDoCannulationAtNight(false));
+        navigation.goBack()
+    }
 
   return (
-    <MainLayout title="Без катетеризации ночью:">
+    <MainLayout title="Настройка ночного режима:">
         <ScrollView className="flex-1 h-full">
             <SleepTimeStartEnd/>
             <AskActivateAfterTime/>
@@ -31,8 +44,8 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
                 showIcon={false}
                 textOfLeftButton="Выйти"
                 textOfRightButton="Сохранить"
-                handlePressLeftButton={() => navigation.goBack()}
-                handlePressRightButton={() => navigation.goBack()}
+                handlePressLeftButton={hadleExitNightModeScreen}
+                handlePressRightButton={hadleSafeSettings}
             />
             <ClueAtTheBottom/>
         </ScrollView>

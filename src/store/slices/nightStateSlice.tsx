@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
+    cannulationAtNight: true,
     timeSleepStart: 'Выбрать',
     timeSleepEnd: 'Выбрать',
     timeWhenAskToActivate: 'Выбрать',
@@ -15,6 +16,9 @@ const nightStateSlice = createSlice({
     name: 'nightStateSlice',
     initialState,
     reducers: {
+        setWhetherDoCannulationAtNight: (state, action:PayloadAction<boolean>) => {
+            state.cannulationAtNight = action.payload
+        },
         setTimeSleepStart: (state, action:PayloadAction<string>) => {
             state.timeSleepStart = action.payload;
         },
@@ -39,7 +43,8 @@ const nightStateSlice = createSlice({
     }
 });
 
-export const { 
+export const {
+    setWhetherDoCannulationAtNight,
     setTimeSleepStart,
     setTimeSleepEnd,
     setTimeWhenAskToActivateNightMode,

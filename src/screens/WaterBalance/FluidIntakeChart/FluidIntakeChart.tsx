@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppSelector } from "../../../store/hooks";
 import WaterBalanceInterval from "../WaterBalanceInterval/WaterBalanceInterval";
 import { ClosePopup } from "../../../assets/images/icons";
+import LottieView from "lottie-react-native";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -67,10 +68,18 @@ const FluidIntakeChart = () => {
     }, [data]);
 
   return (
-    <TouchableOpacity activeOpacity={.7} className="mb-4" onPress={() => setShowModal(true)}>
+    <TouchableOpacity activeOpacity={.7} className="mb-4 flex-1" onPress={() => setShowModal(true)}>
         <View className="flex-row flex-wrap justify-between items-center">
-            <View className="flex-row">
-                <MaterialCommunityIcons name="chat-question-outline" size={11} color="black" />
+            <View className="flex-row items-center">
+                {/* <MaterialCommunityIcons name="chat-question-outline" size={11} color="black" /> */}
+                <View className="w-[20x] h-[20px]">
+                    <LottieView
+                        // ref={animationRef}
+                        source={require("../../../assets/question-mark.json")}
+                        style={{width: 20, height: 20}}
+                        autoPlay
+                        />
+                </View>
                 <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">Водный баланс</Text>
             </View>
             <Text style={{fontFamily:'geometria-regular', color: textColor}} className="text-sm">{textAlert.interval}</Text>

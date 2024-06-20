@@ -1,0 +1,48 @@
+import { View, Text, TouchableOpacity } from "react-native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setWhetherDoCannulationAtNight } from "../../store/slices/nightStateSlice";
+import { StackNavigationRoot } from "../RootNavigations/RootNavigations";
+import SwitchToggle from "../SwitchToggle/SwitchToggle";
+
+const ToggleCannulationAtNight = () => {
+    const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
+    const settingsNighMode = useAppSelector((state) => state.nightOnDoarding); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
+
+    const dispatch = useAppDispatch();
+
+    const currentRoute = useNavigationState(state => state.routes[state.index].name);
+    const navigation = useNavigation<StackNavigationRoot>();
+    
+    const [isEnabled, setIsEnabled] = useState<boolean>(settingsNighMode.cannulationAtNight);
+
+    useEffect(() => {
+        setIsEnabled(settingsNighMode.cannulationAtNight);
+    },[settingsNighMode.cannulationAtNight]);
+
+    const handleUseAtNight = () => {
+        const newIsEnabled = !isEnabled;
+        setIsEnabled(newIsEnabled);
+
+        dispatch(setWhetherDoCannulationAtNight(newIsEnabled));
+        if (!newIsEnabled && currentRoute !== 'FirstDataScreen') {
+            navigation.navigate('NightMode');
+        }
+    };
+
+  return (
+    <View className="items-center my-4 bg-[#ecf0f1] px-1 py-1 rounded-xl flex-1">
+        <SwitchToggle key={'togglenighmode'} title="Катетеризация в ночное время" onValueChange={handleUseAtNight} isEnabled={isEnabled}/>
+        {!settings.cannulationAtNight.value || !settingsNighMode.cannulationAtNight && 
+        <TouchableOpacity className="mt-5" onPress={() => navigation.navigate('NightMode')}>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-main-blue">
+                Настройка ночного режима
+            </Text>
+        </TouchableOpacity>}
+    </View>
+  );
+};
+
+export default ToggleCannulationAtNight;

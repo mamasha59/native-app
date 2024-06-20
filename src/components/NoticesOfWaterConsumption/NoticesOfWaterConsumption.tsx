@@ -4,12 +4,19 @@ import { useRef, useState } from "react";
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setDayGoalOfDrinkWater } from "../../store/slices/appStateSlicer";
+import { format, parse, subHours } from "date-fns";
 
 const windowSize = Dimensions.get('window');
 
 const NoticesOfWaterConsumption = () => {
+    const now = new Date();
     const dispatch = useAppDispatch();
     const settings = useAppSelector(state => state.appStateSlice.dayGoalOfDrinkWater);
+    const settingsNightMode = useAppSelector(state => state.nightOnDoarding.timeSleepStart);
+
+    const startTimeNight = parse(settingsNightMode, 'HH:mm', now); // начало ночного интервала
+    const newTime = subHours(startTimeNight, 2);
+    const formattedNewTime = format(newTime, 'HH:mm');
 
     const [dayGoalOfWater, setDayGoalOfWater] = useState<string>(''+settings);
     const inputRef = useRef<TextInput>(null);
@@ -42,7 +49,7 @@ const NoticesOfWaterConsumption = () => {
         <TouchableOpacity className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>Вечерний прием жидкости:</Text>
             <View className="flex-row">
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>20:00</Text>
+                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>{formattedNewTime}</Text>
             </View>
         </TouchableOpacity>
 

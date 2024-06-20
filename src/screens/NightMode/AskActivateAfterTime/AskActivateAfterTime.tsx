@@ -31,8 +31,8 @@ const AskActivateAfterTime = () => {
       
     const formatDateToTimeString = (date:Date) => {
         const hours = format(date, 'H');
-        const minutes = format(date, 'm');
-        return `${hours} ч. ${minutes} мин.`;
+        const minutes = format(date, 'mm');
+        return `${hours}:${minutes}`;
       };
 
     const handleSetTimeWhenAsk = () => { // при подтверждении интверала Конца сна
@@ -52,12 +52,10 @@ const AskActivateAfterTime = () => {
             key={'notice'}
             handlePressButton={handleOpenModalAskToActivateAfterTime}
         />
-
         <ModalSetInterval
             handleOpenModalChangeInterval={handleOpenModalAskToActivateAfterTime}
             newInterval={whenAskToActivateNightMode}
             setNewInterval={setWhenAskToActivateNightMode}
-            setShowModalSetInterval={setShowModalAskActivateAfter}
             showModalSetInterval={showModalAskActivateAfter}
             pressSaveButoon={handleSetTimeWhenAsk}
             title="Выберите время когда вы хотите что бы вас спросили включать ночной режим"

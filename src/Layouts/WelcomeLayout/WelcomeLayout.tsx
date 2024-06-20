@@ -1,6 +1,9 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import GradientBackground from "../GradientBackground/GradientBackground";
 import LogoTop from "./LogoTop/LogoTop";
+import LottieView from "lottie-react-native";
 
 interface iWelcomeLayout {
     children: React.ReactNode;
@@ -13,30 +16,47 @@ interface iWelcomeLayout {
     showButton?: boolean;
     titleCenter?: boolean;
     showRobotIconOnTop?: boolean;
+    showGradiend?: boolean,
 }
 
-const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen, skip, skipNextScreen, showButton, titleCenter, showRobotIconOnTop = true}:iWelcomeLayout) => {
+const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen, skip, skipNextScreen, showButton, titleCenter, showRobotIconOnTop = true, showGradiend}:iWelcomeLayout) => {
 
     const dots = Array(4).fill(null); // создаем массив из 4 элементов
 
   return (
     <GradientBackground> 
         <LogoTop/>
-        <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl px-[20px] h-full justify-between items-center">
+        <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl h-full justify-between items-center">
            {showRobotIconOnTop &&
-            <View className="-mt-6">
-                <Image style={{width:122, height:180}} source={require('../../assets/images/homePageIcons/aiNelatonRobor_resized.jpeg')}/>
+            <View className="-mt-6 w-full h-[150px] justify-center">
+                {/* <Image style={{width:122, height:180}} source={require('../../assets/images/homePageIcons/aiNelatonRobor_resized.jpeg')}/> */}
+                <LottieView
+                    source={require("../../assets/robot-face.json")}
+                    style={{width: '100%', height: 250}}
+                    autoPlay
+                    />
             </View>}
             <ScrollView className="flex-1 w-full" showsVerticalScrollIndicator={false} style={{zIndex:2}}>
-                <View className="w-full relative">
-                    {title && 
-                        <Text style={{fontFamily:'geometria-bold'}} className={`text-[#000] ${titleCenter ? 'text-center': 'text-start'}  text-lg leading-5`}>
-                            {title}
-                        </Text>}
-                    {children}
-                </View>
+                <LinearGradient
+                    colors={showGradiend ? ['#FFFFFF', '#FFFFFF', '#D3D3D3', '#D3D3D3'] : ['#FFFFFF', '#FFFFFF','#FFFFFF','#FFFFFF']}
+                    start={[0, 0]}
+                    end={[0, 1]}
+                    locations={[0, 0.4, 0.5, 1]}
+                    style={{ flex: 1 }}
+                    >
+                    
+                    <View className="w-full relative">
+                        {title && 
+                            <Text style={{fontFamily:'geometria-bold'}} className={`text-[#000] ${titleCenter ? 'text-center': 'text-start'}  text-lg leading-5 px-[20px]`}>
+                                {title}
+                            </Text>}
+                        <View className="px-[20px]">
+                            {children}
+                        </View>
+                    </View>
+                </LinearGradient>
             </ScrollView>
-            <View className="w-full items-center mb-5" style={{backfaceVisibility:'hidden'}}>
+            <View className={`w-full items-center pb-5 ${showGradiend && 'bg-[#D3D3D3]'}`} style={{backfaceVisibility:'hidden'}}>
                 <View className="w-full h-4 p-4 items-center justify-center flex-row">
                     {currentScreen !== 0  && 
                     dots.map((_, index) => (

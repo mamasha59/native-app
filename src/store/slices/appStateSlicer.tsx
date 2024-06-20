@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { format } from "date-fns";
-import { Option } from "../../types";
 
 interface iAppStateSlicer {
   isExist: boolean,
   open: boolean,
   ifCountUrinePopupLiquidState: boolean,
-  urineMeasure: Option,
+  urineMeasure: boolean,
   calendareDay: string,
   tabBarBadgeJournalScreen: number,
   intervalWhenCloseApp: string,
   stateOfTimerTitleForFirstTimeInApp: boolean,
-  nighMode: {
-    title: string,
+  cannulationAtNight: {
     value: boolean,
     timeStamp: string,
   },
   dayGoalOfDrinkWater: number,
+  scaleLiquidPopup: boolean,
+  openModalNightMode: boolean,
 }
 
 const initialState:iAppStateSlicer = {
@@ -28,16 +28,14 @@ const initialState:iAppStateSlicer = {
     tabBarBadgeJournalScreen: 0,
     intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
-    nighMode: {
-      title: 'Да',
-      value: false,
+    cannulationAtNight: {
+      value: true,
       timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss')
     },
-    urineMeasure: {
-      title: '',
-      value: false,
-    },
+    urineMeasure: false,
     dayGoalOfDrinkWater: 1000,
+    scaleLiquidPopup: false,
+    openModalNightMode: false,
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -46,7 +44,7 @@ const appStateSlice = createSlice({
       changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояине приложение, 
         state.isExist = action.payload;
       },
-      setWhetherCountUrine: (state, action:PayloadAction<Option>) => {
+      setWhetherCountUrine: (state, action:PayloadAction<boolean>) => {
         state.urineMeasure = action.payload;
       },
       popupLiquidState: (state, action:PayloadAction<boolean>) => {
@@ -72,11 +70,17 @@ const appStateSlice = createSlice({
       changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {
         state.stateOfTimerTitleForFirstTimeInApp = action.payload;
       },
-      switchNightMode: (state, action:PayloadAction<{ value: boolean, timeStamp: string, title: string}>) => {
-          state.nighMode = {timeStamp: action.payload.timeStamp, value: action.payload.value, title: action.payload.title}
+      switchCannulationAtNightNight: (state, action:PayloadAction<{ value: boolean, timeStamp: string}>) => {
+          state.cannulationAtNight = {timeStamp: action.payload.timeStamp, value: action.payload.value}
       },
       setDayGoalOfDrinkWater: (state, action:PayloadAction<number>) => {
         state.dayGoalOfDrinkWater = action.payload;
+      },
+      changeScalePopup: (state, action:PayloadAction<boolean>) => {
+        state.scaleLiquidPopup = action.payload;
+      },
+      switchNightModeModal: (state, action:PayloadAction<boolean>) => {
+        state.openModalNightMode = action.payload;
       }
     }
 })
@@ -89,9 +93,11 @@ export const {
     resetBadges,
     recordIntervalWhenCloseApp,
     changeStateOfTimerTitleForFirstTimeInApp,
-    switchNightMode,
+    switchCannulationAtNightNight,
     setWhetherCountUrine,
-    setDayGoalOfDrinkWater
+    setDayGoalOfDrinkWater,
+    changeScalePopup,
+    switchNightModeModal
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

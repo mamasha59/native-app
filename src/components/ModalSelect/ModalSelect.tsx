@@ -1,11 +1,11 @@
-import { View, Text, Pressable, Dimensions, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Pressable, Dimensions, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 
 import { ClosePopup } from "../../assets/images/icons";
 import { Option } from "../../types";
 
 interface iModalSelect {
-    setOpenModal: (state: boolean) => void;
+    setOpenModal: (state?: boolean) => void;
     openModal: boolean;
     options?: Option[];
     onItemPress: (item: Option) => void;

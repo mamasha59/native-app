@@ -1,4 +1,4 @@
-import { Text, Alert } from "react-native";
+import { Text, Alert, View } from "react-native";
 import { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -46,23 +46,23 @@ const ProfileSettings = () => { // TODO clean the code
     }
 
   return (
-    <>
-    <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
-    {/*  изменить интервал катетеризации - Оптимальный */}
-    <ChangeInterval handleChangeOptimalInterval={handleModalChangeInterval}/>
-    <ToggleCannulationAtNight/>
-    <ToggleIsCountUrine/>
-    <ModalSetInterval
-        handleOpenModalChangeInterval={handleModalChangeInterval}
-        newInterval={newInterval}
-        setNewInterval={setNewInterval}
-        showModalSetInterval={showModalSetInterval}
-        pressSaveButoon={handlePressSave}
-        title="Выберите новый интервал"
-        is24Hours={false}
-        key={'profilescreen'}
-    />
-  </>
+    <View className="flex-1 w-full">
+        <Text style={{fontFamily:'geometria-regular'}} className="text-black text-xs leading-[14px] mb-[10px]">Режим катетеризации</Text>
+        {/*  изменить интервал катетеризации - Оптимальный */}
+        <ChangeInterval handleChangeOptimalInterval={handleModalChangeInterval}/>
+        <ToggleCannulationAtNight/>
+        <ToggleIsCountUrine/>
+        <ModalSetInterval
+            handleOpenModalChangeInterval={handleModalChangeInterval}
+            newInterval={newInterval}
+            setNewInterval={setNewInterval}
+            showModalSetInterval={showModalSetInterval}
+            pressSaveButoon={handlePressSave}
+            title="Выберите новый интервал"
+            is24Hours={false}
+            key={'profilescreen'}
+        />
+  </View>
   );
 };
 export default ProfileSettings;

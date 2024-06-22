@@ -37,10 +37,12 @@ const PdfOnBoarding = () => {//TODO скачивать pdf
     });
 
     const inputsValue = watch();        // состояние инпута при его изменении
+
+    const closeModal = () => setOpenModalSelectSex(!openModalSelectSex);
     
     const onSelectSexPress = (sex:Option) => {
         setValue('sex', sex.title);
-        setOpenModalSelectSex(!openModalSelectSex);
+        closeModal()
     }
 
     const onSelectCathetorSize = (catheterSize:Option) => { // функция при выборе Размера катетора
@@ -213,12 +215,13 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 setOpenModal={setOpenModalSelectSex}
                 key={'Ваш пол*'}/>
             <ModalSelect
+                row
                 logo={false}
                 showIcon={false}
                 onItemPress={(item) => onSelectSexPress(item)}
                 openModal={openModalSelectSex}
                 options={[{title: 'Женский', value: 'female'}, {title:'Мужской', value: 'male'}, {title: 'Мальчик', value: 'boy'}, {title: 'Девочка', value: 'girl'}]}
-                setOpenModal={setOpenModalSelectSex}
+                setOpenModal={closeModal}
                 title={'Ваш пол*'}/>
         </>
         <View className={`w-full`}>
@@ -283,6 +286,8 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
                 key={'Размер катетера Ch/Fr'}/>
             <ModalSelect
+                row
+                showIcon={false}
                 onItemPress={(item) => onSelectCathetorSize(item)}
                 openModal={openModalSelectSize}
                 options={generateEvenNumbersOfSize()}

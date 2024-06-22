@@ -64,7 +64,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
         showsHorizontalScrollIndicator={false}
         className={`flex-grow-0 overflow-hidden ${refreshing && 'opacity-70'}`}>
 
-        {daysArray.reverse().map((e, index) => <CalendarDay key={e.dayNumber} e={e}/>)}
+        {daysArray.reverse().map((e) => <CalendarDay key={e.dayNumber} e={e}/>)}
 
     </ScrollView>
   );

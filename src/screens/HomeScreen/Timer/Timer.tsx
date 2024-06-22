@@ -14,6 +14,7 @@ import { addBadgesJournalScreen,
          changeStateOfTimerTitleForFirstTimeInApp,
          ifCountUrineChangeState,
          popupLiquidState,
+         setHelperForModalTurnOnNightMode,
          switchCannulationAtNightNight,
          switchNightModeModal} from "../../../store/slices/appStateSlicer";
 import IntervalUI from "./IntervalUI/IntervalUI";
@@ -21,6 +22,7 @@ import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown }
 import IntervalInfo from "../IntervalInfo/IntervalInfo";
 import NightModeButton from "./NightModeButton/NightModeButton";
 import ModalSuccess from "./ModalSuccess/ModalSuccess";
+import { setWhetherDoCannulationAtNight } from "../../../store/slices/nightStateSlice";
 
 const Timer = () => { //TODO refactoring
   const now = new Date();
@@ -30,7 +32,6 @@ const Timer = () => { //TODO refactoring
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
   const settingsNighMode = useAppSelector((state) => state.nightOnDoarding); // кол-во катетеров
   const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
-// console.log(settings.cannulationAtNight);
 
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
@@ -47,8 +48,7 @@ const Timer = () => { //TODO refactoring
   const [laoder, setLoader] = useState<boolean>(false);
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-
-  
+ 
   const timeWhenAskToActivateNightmode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now);
   const formattedCurrentTime = parse(format(now, 'HH:mm'), 'HH:mm', new Date());
 
@@ -96,45 +96,51 @@ const Timer = () => { //TODO refactoring
 
   // ===================== \\
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Оптимального интревала
-    const updateTimer = () => {
-        setLoader(true);
-        if (intervalDifference < timerInterval && intervalDifference > 0) {
-          setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
-          const expiryTimestampDifferenceTimer = new Date();
-          expiryTimestampDifferenceTimer.setSeconds(expiryTimestampDifferenceTimer.getSeconds() + (timerInterval - intervalDifference));
-          timerRestart(expiryTimestampDifferenceTimer);
-        } else {
-          setTimerInterval(interval);
-        }
-        setLoader(false);
+    if(!settings.cannulationAtNight.value){
+      const updateTimer = () => {
+          setLoader(true);
+          if (intervalDifference < timerInterval && intervalDifference > 0) {
+            setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false}); // делаем Оптимальный интервал активным
+            const expiryTimestampDifferenceTimer = new Date();
+            expiryTimestampDifferenceTimer.setSeconds(expiryTimestampDifferenceTimer.getSeconds() + (timerInterval - intervalDifference));
+            timerRestart(expiryTimestampDifferenceTimer);
+          } else {
+            setTimerInterval(interval);
+          }
+          setLoader(false);
+      }
+      updateTimer();
     }
-    updateTimer();
   }, [intervalDifference]);
 
   useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Крит. интервала, если разница в секундах с записью в журанале больше Оптимального интервала
-    const updateStopWatch = async () => {
-      if(!settings.cannulationAtNight.value){
-        setLoader(true);
-        if (intervalDifference && intervalDifference > timerInterval) {
-          setStartFromСountdown(false);
-          setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true}); // делаем Критический интервал активным
-          setInitialStrip(105);
-          const expiryTimestampDifferenceStopWatch = new Date();
-          expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
-          resetStopwatch(expiryTimestampDifferenceStopWatch);
-        }
-          setLoader(false);
-        };
+    if(!settings.cannulationAtNight.value){
+      const updateStopWatch = async () => {
+        if(!settings.cannulationAtNight.value){
+          setLoader(true);
+          if (intervalDifference && intervalDifference > timerInterval) {
+            setStartFromСountdown(false);
+            setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true}); // делаем Критический интервал активным
+            setInitialStrip(105);
+            const expiryTimestampDifferenceStopWatch = new Date();
+            expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
+            resetStopwatch(expiryTimestampDifferenceStopWatch);
+          }
+            setLoader(false);
+          };
+      }
+      updateStopWatch();
     }
-    updateStopWatch();
   }, [intervalDifference, appStateVisible]);
   
   useEffect(() => { // расчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
-    if(journal.urineDiary.length > 0) {
-      const targetDate = parse(journal.urineDiary[0].timeStamp, "MM/dd/yyyy HH:mm:ss", new Date());
-      const currentDate = new Date();
-      const difference = differenceInSeconds(currentDate, targetDate);   
-      dispatch(setIntervalDifference(difference));
+    if(!settings.cannulationAtNight.value){
+      if(journal.urineDiary.length > 0) {
+        const targetDate = parse(journal.urineDiary[0].timeStamp, "MM/dd/yyyy HH:mm:ss", new Date());
+        const currentDate = new Date();
+        const difference = differenceInSeconds(currentDate, targetDate);   
+        dispatch(setIntervalDifference(difference));
+      }
     }
   },[]);
 
@@ -175,7 +181,7 @@ const Timer = () => { //TODO refactoring
     return () => { subscription.remove() };
   }, [timerInterval, timerTotalSeconds]);
 
-  useEffect(() => {
+  useEffect(() => { // stop timer if turn on Night Mode
     const stopTimer = () => {
       if(settings.cannulationAtNight.value){      
         if(timerRunning){
@@ -193,47 +199,66 @@ const Timer = () => { //TODO refactoring
   },[settings.cannulationAtNight]);
 
   const handlePressCommon = () => {
-    if(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode) && !settingsNighMode.cannulationAtNight){
-      dispatch(switchNightModeModal(!settings.openModalNightMode)); // ask to activate night mode in Particular time
-    } else {
-      dispatch(setShowModalSuccess(true));        // показывает модальное окно об успешной катетеризации
-      dispatch(whetherStartFromCountdown(true)); // начинает на обратный отсчет
-      setIntervalDifference(0);                 // обнуляем разницу между последней катетеризацией
-      schedulePushNotification('Уведомдление через время', 'Уведомление через время');
-      if (!settings.stateOfTimerTitleForFirstTimeInApp) {
-        dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
-      }
-      if (journal.initialCathetherAmount.nelaton > 0) {
-        dispatch(decreaseCatheterAmount({amount:1}));
-      }
-      if (!partTime.firstPartTime && !partTime.secondPartTime) {
-        setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
-        startTimer();
-      } else if (partTime.firstPartTime) {
-        timerRestart(expiryTimestamp);
-      }
-      if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
-        schedulePushNotification('Ты прокатетеризировался!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
-        resetStopwatch(stopwatchOffset, false);
-        setStartFromСountdown(true);
-        setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
-        timerRestart(expiryTimestamp);
-        setToastShow(true);
-        setInitialStrip(0); // бнуляем секундные полоски
-      }
-   }
+    if(settings.cannulationAtNight.value){
+      dispatch(switchCannulationAtNightNight({   
+        timeStamp: new Date().toString(),
+        value: false,
+      }));
+    }
+    dispatch(setShowModalSuccess(true));        // показывает модальное окно об успешной катетеризации
+    dispatch(whetherStartFromCountdown(true)); // начинает на обратный отсчет
+    setIntervalDifference(0);                 // обнуляем разницу между последней катетеризацией
+    schedulePushNotification('Уведомдление через время', 'Уведомление через время');
+    if (!settings.stateOfTimerTitleForFirstTimeInApp) {
+      dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
+    }
+    if (journal.initialCathetherAmount.nelaton > 0) {
+      dispatch(decreaseCatheterAmount({amount:1}));
+    }
+    if (!partTime.firstPartTime && !partTime.secondPartTime) {
+      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
+      startTimer();
+    } else if (partTime.firstPartTime) {
+      timerRestart(expiryTimestamp);
+    }
+    if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
+      schedulePushNotification('Ты прокатетеризировался!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
+      resetStopwatch(stopwatchOffset, false);
+      setStartFromСountdown(true);
+      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
+      timerRestart(expiryTimestamp);
+      setToastShow(true);
+      setInitialStrip(0); // бнуляем секундные полоски
+    }
   };
+  const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode));
+
+  useEffect(() => {
+    if (!settings.helperForModalTurnOnNightMode){
+      setIsItTimeToShowModalTurnOnNightMode(false);
+      setTimeout(() => {
+        setIsItTimeToShowModalTurnOnNightMode(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode));
+      },1000)
+    }
+  },[])
 
   const handlePressButton = () => { // при нажатии кнопки, если не выбранно измерение мочи
-    handlePressCommon();
-    if(!settings.urineMeasure){
-      dispatch(addUrineDiaryRecord({
-        id: uuidv4(),
-        whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-        catheterType: 'Нелатон',
-        timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
-      }));
-      dispatch(addBadgesJournalScreen(1));
+
+    if(isItTimeToShowModalTurnOnNightMode && !settingsNighMode.cannulationAtNight) {
+      dispatch(switchNightModeModal(!settings.openModalNightMode)); // close modal Turn on Night Mode
+      setIsItTimeToShowModalTurnOnNightMode(() => !isItTimeToShowModalTurnOnNightMode); // for visual 
+      dispatch(setHelperForModalTurnOnNightMode(false));
+    } else {
+      handlePressCommon();
+      if(!settings.urineMeasure){
+        dispatch(addUrineDiaryRecord({
+          id: uuidv4(),
+          whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
+          catheterType: 'Нелатон',
+          timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+        }));
+        dispatch(addBadgesJournalScreen(1));
+      }
     }
   };
   

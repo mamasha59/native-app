@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, Alert } from "react-native";
+import { Text, TouchableOpacity, Alert, View } from "react-native";
 
 import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 import { persistor } from "../../../store/store";
@@ -17,15 +17,15 @@ const ProfileScreen = () => {
   return (
     <MainLayout title="Профиль">
         <ProfileSettings/>
+        <View className="justify-end">
+          <TouchableOpacity onPress={() => navigation.navigate('PdfOnBoarding')} className="py-4 mt-2 border-b border-main-blue">
+            <Text style={{fontFamily:'geometria-bold'}} className="opacity-70 text-main-blue">Редактировать Pdf</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('PdfOnBoarding')} className="py-4 mt-2">
-          <Text style={{fontFamily:'geometria-bold'}} className="opacity-70 text-main-blue">Редактировать Pdf</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={removeProfile} className="py-28 mt-1">
-          <Text style={{fontFamily:'geometria-bold'}} className="opacity-70 text-error">Сбросить профиль - temporarily </Text>
-        </TouchableOpacity>
-
+          <TouchableOpacity onLongPress={removeProfile} className="py-4 mt-1">
+            <Text style={{fontFamily:'geometria-bold'}} className="opacity-70 text-error">Сбросить профиль - temporarily (long press)</Text>
+          </TouchableOpacity>
+        </View>
     </MainLayout>
   );
 };

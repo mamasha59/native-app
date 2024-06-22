@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 const ToggleIsCountUrine = () => {
     const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
     const dispatch = useAppDispatch();
-
+    
     const [isEnabled, setIsEnabled] = useState<boolean>(settings.urineMeasure);
 
     useEffect(() => {

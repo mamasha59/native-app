@@ -18,6 +18,7 @@ interface iAppStateSlicer {
   dayGoalOfDrinkWater: number,
   scaleLiquidPopup: boolean,
   openModalNightMode: boolean,
+  helperForModalTurnOnNightMode: boolean,
 }
 
 const initialState:iAppStateSlicer = {
@@ -36,6 +37,8 @@ const initialState:iAppStateSlicer = {
     dayGoalOfDrinkWater: 1000,
     scaleLiquidPopup: false,
     openModalNightMode: false,
+    helperForModalTurnOnNightMode: false,
+
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
@@ -81,6 +84,9 @@ const appStateSlice = createSlice({
       },
       switchNightModeModal: (state, action:PayloadAction<boolean>) => {
         state.openModalNightMode = action.payload;
+      },
+      setHelperForModalTurnOnNightMode: (state, action:PayloadAction<boolean>) => {
+        state.helperForModalTurnOnNightMode = action.payload;
       }
     }
 })
@@ -97,7 +103,8 @@ export const {
     setWhetherCountUrine,
     setDayGoalOfDrinkWater,
     changeScalePopup,
-    switchNightModeModal
+    switchNightModeModal,
+    setHelperForModalTurnOnNightMode
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

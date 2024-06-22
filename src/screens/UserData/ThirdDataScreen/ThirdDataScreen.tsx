@@ -16,7 +16,6 @@ interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
 
     const timerSettings = useAppSelector(state => state.timerStates);
-    const appSettings = useAppSelector(state => state.appStateSlice);
     const nightModesettings = useAppSelector(state => state.nightOnDoarding);
     
     const timeString = useFormatInterval({intervalInSeconds: timerSettings.interval});
@@ -49,7 +48,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
           const dayIntervals = calculateIntervals(startTimeDay, endTimeDay); // Рассчитываем дневные интервалы
           setIntervals(dayIntervals);
     
-          if (appSettings.cannulationAtNight.value) {
+          if (nightModesettings.cannulationAtNight) {
             const nightIntervals = calculateIntervals(startTimeNight, endTimeNight);
             setIntervalsAtNight(nightIntervals);
           } else {
@@ -58,7 +57,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
         };
     
         updateIntervals();
-      }, [nightModesettings, timerSettings.interval, appSettings.cannulationAtNight.value]);
+      }, [nightModesettings, timerSettings.interval, nightModesettings.cannulationAtNight]);
       
       
     const proceedNextScreen = () => {
@@ -87,7 +86,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                             <Text style={{fontFamily:'geometria-bold'}} className="underline"> {timeString}</Text>
                         </Text>
                     </View>
-                    {appSettings.cannulationAtNight.value &&
+                    {nightModesettings.cannulationAtNight &&
                     <View className="items-center justify-center mr-4">
                         <Text className="text-[12px] text-center" style={{fontFamily:'geometria-regular'}}>ночная катетеризация</Text>
                         <View className="w-[47px] h-[47px]">
@@ -103,7 +102,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                         })}
                     <Image style={{width:40, height:40}} source={require('../../../assets/images/icons/sleepIcon.jpeg')}/>
                     
-                    {appSettings.cannulationAtNight.value && 
+                    {nightModesettings.cannulationAtNight && 
                     <View className="flex-row items-start flex-1">
                         <View className="justify-start items-start pt-2">
                             {intervalsAtNight.map((e, index) => {

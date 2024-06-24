@@ -1,9 +1,11 @@
-import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity} from "react-native";
+import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Alert, Platform} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { Dropdown } from "react-native-element-dropdown";
 import { format } from "date-fns";
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 import { DropDown } from "../../assets/images/icons";
 
@@ -47,13 +49,13 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
     index: getCurrentMonth,
   });
 
- useEffect(() => { // журнал данные всегда по текущий день
-  const today = format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10);
-  if(today !== selectedCalendareDate) {
-    dispatch(setCalendareDay(today));
-    dispatch(resetBadges());
-  }
- },[])
+  useEffect(() => { // журнал данные всегда по текущий день
+    const today = format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10);
+    if(today !== selectedCalendareDate) {
+      dispatch(setCalendareDay(today));
+      dispatch(resetBadges());
+    }
+  },[])
 
   useEffect(() => {
     const applyFilter = (records: iDairyRecord[], filter: string) => {
@@ -107,9 +109,16 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   },[selectedCalendareDate,journalRecords, day]);
 
   const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
-    // const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
+    const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
     // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf', dialogTitle: 'Поделиться документом' });
+    const isSharingExist = Sharing.isAvailableAsync();
+    if(!isSharingExist) {
+      Alert.alert('Doesnt work on this device!');
+      return;
+    } 
+    await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'})
   };
+
   const html = `
   <html lang="rus">
       <head>
@@ -246,7 +255,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   </style>
   </html>
   `;
-  
+
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
     setTimeout(() => {
@@ -289,24 +298,24 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
       >
         {/* list */}
         {loading 
-        ? <ActivityIndicator size={"large"}/>
-        :
-        (journalRecords.length === 0 || filtredJournalRecords.length === 0
-          ? <View focusable={false}>
-              <Text style={{fontFamily:'geometria-regular'}} className="text-lg">There are no entries here yet...</Text>
-            </View>
-          : filtredJournalRecords.map((e,index) => 
-              <JournalRecord
-                timeStamp={e.timeStamp}
-                id={e.id}
-                key={index} 
-                whenWasCanulisation={e.whenWasCanulisation}
-                amountOfDrankFluids={e.amountOfDrankFluids}
-                catheterType={e.catheterType}
-                amountOfReleasedUrine={e.amountOfReleasedUrine}
-                leakageReason={e.leakageReason}
-              />)
-        )
+          ? <ActivityIndicator size={"large"}/>
+          :
+          (journalRecords.length === 0 || filtredJournalRecords.length === 0
+            ? <View focusable={false}>
+                <Text style={{fontFamily:'geometria-regular'}} className="text-lg">There are no entries here yet...</Text>
+              </View>
+            : filtredJournalRecords.map((e,index) => 
+                <JournalRecord
+                  timeStamp={e.timeStamp}
+                  id={e.id}
+                  key={index} 
+                  whenWasCanulisation={e.whenWasCanulisation}
+                  amountOfDrankFluids={e.amountOfDrankFluids}
+                  catheterType={e.catheterType}
+                  amountOfReleasedUrine={e.amountOfReleasedUrine}
+                  leakageReason={e.leakageReason}
+                />)
+          )
         }
       </ScrollView>
       <DoubleButton

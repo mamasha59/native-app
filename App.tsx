@@ -30,6 +30,24 @@ Notifications.setNotificationHandler({
   }),
 });
 
+Notifications.setNotificationCategoryAsync("welcome", [
+  {
+    buttonTitle: "Выполнить катетеризацию",
+    identifier: "first",
+    options: {
+      opensAppToForeground: true,
+    },
+  },
+  {
+    buttonTitle: "Проигнорировать",
+    identifier: "second",
+    options: {
+      opensAppToForeground: false,
+      isDestructive: true,
+    },
+  },
+]);
+
 export default function App() {
 
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');

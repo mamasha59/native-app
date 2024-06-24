@@ -1,8 +1,9 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { StorageAccessFramework } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import InputData from "../../components/InputData/InputData";
@@ -175,27 +176,31 @@ const PdfOnBoarding = () => {//TODO скачивать pdf
     </html>
     `;
     
-  const downloadPdfOnPhone = async () => {
-    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
-    if (!permissions.granted) return;
-  
-    try {
-      await StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Journal-catheterization', 'application/pdf')
-        .then(async uri => {
-          // Writing PDF contents to a file
-          await FileSystem.writeAsStringAsync(uri, html, { encoding: FileSystem.EncodingType.UTF8 });
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
+    async function saveFile() {
+        const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
+    
+        if (Platform.OS === "android") {
+          const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      
+          if (permissions.granted) {
+            const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+      
+            await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'alesha', 'application/pdf')
+              .then(async (uri) => {
+                await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+              })
+              .catch(e => console.log(e));
+          } else {
+            shareAsync(uri);
+          }
+        } else {
+          shareAsync(uri);
+        }
+      }
 
 const onSubmit = (data:any) => { // при нажатии кнопки Сохранить
     dispatch(setUserData(data));
+    saveFile();
  }
   
   return (
@@ -318,7 +323,7 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 name={"additionalInfo"}
                 inputMode={Keyboard.String}
                 maxLength={140}
-                isRequired
+                isRequired={false}
                 multiline
                 />
         </View>
@@ -327,7 +332,7 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
          textOfLeftButton="Пропустить"
          textOfRightButton="Сохранить"
          handlePressRightButton={handleSubmit(onSubmit)}
-         handlePressLeftButton={onSubmit}
+         handlePressLeftButton={saveFile}
         />
         <ClueAtTheBottom/>
         </ScrollView>

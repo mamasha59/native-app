@@ -71,7 +71,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
   useEffect(() => { // to set max point on gest
     if(ifCountUrine) {
-        setMl(1000);
+        setMl(500);
     }
   },[setting]);
 
@@ -92,7 +92,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   }, []);
 
   const triggerVibration = () => {
-    Vibration.vibrate(400, false);
+    Vibration.vibrate(100, false);
   }
   const cancelVibration = () => {
     Vibration.cancel();
@@ -153,7 +153,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
     };
 
     return (
-    <>
+    <View className="justify-center items-center flex-1">
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <Animated.View
           className="bg-[#dde2e3] rounded-b-[100px] rounded-t-3xl justify-end overflow-hidden pt-3"
@@ -172,7 +172,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
             </GestureHandlerRootView>
         </Animated.View>
       </KeyboardAvoidingView>
-      <View className="mt-3 mx-auto flex-row items-center rounded-md bg-[#fff]">
+      <View className="mx-auto flex-row items-center rounded-md bg-[#fff]">
           <AnimatedTextInput
               style={{fontFamily:'geometria-bold', color:'#000'}}
               className="text-3xl underline w-[95px] text-center"
@@ -189,7 +189,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
           <Text className="text-xl mx-1" style={{fontFamily:'geometria-bold', color:'#000'}}>мл</Text>
           <FontAwesome5 name="pencil-alt" size={15} color="#0000007f" />
       </View>
-    </>
+    </View>
     )
   }
 

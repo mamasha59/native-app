@@ -22,7 +22,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
     } else if(partTime.secondPartTime && start) {
       setCurrentColor('#FFB254');
 
-    } else if(partTime.thirdPartTime && !start) {
+    } else if(partTime.thirdPartTime && !start && partTime.secondPartTime && partTime.firstPartTime) {
       setCurrentColor('#EA3737');
     }
   },[start,partTime]);

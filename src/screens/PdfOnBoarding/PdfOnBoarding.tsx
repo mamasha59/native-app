@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, Platform } from "react-native";
+import { View, Text, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import { BlurView } from 'expo-blur';
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import InputData from "../../components/InputData/InputData";
@@ -16,14 +17,20 @@ import { setUserData } from "../../store/slices/createUserSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Option } from "../../types";
 import ClueAtTheBottom from "../../components/ClueAtTheBottom/ClueAtTheBottom";
+import { genetatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
 
 const PdfOnBoarding = () => {//TODO скачивать pdf 
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
+    const {filtredRecordByDate, statisticsPerDay} = useAppSelector(state => state.journal);
+    const calendareDate = useAppSelector(state => state.appStateSlice.calendareDay);
     
     const [openModalSelectSex, setOpenModalSelectSex] = useState<boolean>(false);
-    const [openModalSelectSize, setOpenModalSelectSize] = useState<boolean>(false); // состояние попапа Размер катетора
-    
+    const [openModalSelectSize, setOpenModalSelectSize] = useState<boolean>(false); // состояние попапа Размер катетора\
+
+    const [loading, setIsLoading] = useState<boolean>(false);
+    const [triggerSave, setTriggerSave] = useState(false);
+
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         defaultValues: {
             sex: '' || userData.sex,
@@ -43,149 +50,29 @@ const PdfOnBoarding = () => {//TODO скачивать pdf
     
     const onSelectSexPress = (sex:Option) => {
         setValue('sex', sex.title);
-        closeModal()
+        closeModal();
     }
 
     const onSelectCathetorSize = (catheterSize:Option) => { // функция при выборе Размера катетора
         setValue('catheterSize', catheterSize.title);
         setOpenModalSelectSize(!openModalSelectSize);
     }
-
-    const html = `
-    <html lang="rus">
-        <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-        <meta http-equiv="Content-Disposition" content="attachment; filename="Мое.pdf">
-        <title>Дневник мочеиспускания</title>
-        </head>
-        <body style="padding: 0; margin: 0; font-family: 'geometria-regular';max-width: 2480px; margin: 0 auto 0 auto">
-        <div
-            style="
-            padding: 8.75rem;
-            color: white;
-            background: linear-gradient(90deg, #4baac5 0.16%, #7076b0 101.13%);
-            position: relative;
-            "
-        >
-            <div style="display: flex; align-items: center;">
-            <div style="display: flex; flex-direction: column; gap: 30px;">
-                <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-                Дата:
-                <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                    >dг.</b
-                >
-                </p>
-                <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-                Фамилия И.О.:
-                <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                    >$d</b
-                >
-                </p>
-                <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-                Дата рождения:
-                <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                    >$dг.</b
-                >
-                </p>
-            </div>
-            </div>
-            <div
-            style="
-                position: absolute;
-                right: 10%;
-                top: 10%;
-                display: flex;
-                align-items: center;
-                gap: 60px;
-            "
-            >
-            <img
-                src="https://github.com/mamasha59/native-app/assets/68348736/59860e0b-43b8-4d8b-b11e-970d62ec7911"
-                style="width: 110px" 
-            />
-            <h1 style="font-size: 120px; line-height: 144px;">
-                Uro <span style="font-style: italic;">Control</span>
-            </h1>
-            </div>
-        </div>
-        <div style="color: #101010; padding: 100px;">
-            <h2 style="font-size: 80px; line-height: 96px; margin: 0;">
-            Дневник мочеиспускания
-            </h2>
-            <table class="GeneratedTable">
-            <thead style="font-size: 20px; line-height: 24px;">
-                <tr>
-                <th>Дата</th>
-                <th>Время</th>
-                <th>Тип катетера</th>
-                <th>Скорость катетеризации, сек</th>
-                <th>Объем выделенной мочи, мл</th>
-                <th>Объем выпитой жидкости, мл</th>
-                <th>Подтекание мочи (да/нет)</th>
-                <th>Активность при подтекании (в покое, кашель, бег и.т.п.)</th>
-                </tr>
-            </thead>
-            <tbody>
-           
-            </tbody>
-            </table>
-        </div>
-        </body>
-    </html>
-    <style>
-        *{
-        margin: 0;
-        padding: 0;
-        }
-        body {
-        min-height: 100vh;
-        scroll-behavior: smooth;
-        text-rendering: optimizeSpeed;
-        line-height: 1.5;
-        }
-        img {
-        max-width: 100%;
-        display: block;
-        }
-        table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        }
-        table.GeneratedTable {
-        width: 100%;
-        margin: 80px 0 120px 0;
-        background-color: #ffffff;
-        border-width: 2px;
-        border-color: #4baac5;
-        border-style: solid;
-        color: #101010;  
-        }
-        table.GeneratedTable td,
-        table.GeneratedTable th {
-        border-width: 2px;
-        border-color: #4baac5;
-        border-style: solid;
-        padding: 3px;
-        }
-        table.GeneratedTable thead {
-        background-color: #ffffff;
-        }
-    </style>
-    </html>
-    `;
     
     async function saveFile() {
-        const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
-    
+        const pdf = await genetatePdfPattern({
+            filtredRecordByDate: filtredRecordByDate,
+            selectedCalendareDate: calendareDate,
+            statisticsPerDay: statisticsPerDay,
+            userData: userData});
+        const { uri } = await Print.printToFileAsync({ html:pdf, base64:true, useMarkupFormatter:true });
+            
         if (Platform.OS === "android") {
           const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
       
           if (permissions.granted) {
             const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
       
-            await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'alesha', 'application/pdf')
+            await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Yor-Journal', 'application/pdf')
               .then(async (uri) => {
                 await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
               })
@@ -196,12 +83,21 @@ const PdfOnBoarding = () => {//TODO скачивать pdf
         } else {
           shareAsync(uri);
         }
-      }
+        setIsLoading(false); // Снимаем флаг загрузки
+    }
 
-const onSubmit = (data:any) => { // при нажатии кнопки Сохранить
-    dispatch(setUserData(data));
-    saveFile();
- }
+    const onSubmit = (data:any) => { // при нажатии кнопки Сохранить
+        dispatch(setUserData(data));
+        setIsLoading(true);
+        setTriggerSave(true); // Устанавливаем триггер для saveFile
+    }
+
+    useEffect(() => {
+        if (triggerSave) {
+            saveFile();
+            setTriggerSave(false);
+        }
+    }, [userData, triggerSave]); // Следим за обновлением userData и triggerSave
   
   return (
     <MainLayout title="Персонализируйте ваш Дневник мочеиспускания">
@@ -213,21 +109,21 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
             корректировки лечения.
         </Text>
         <>
-            <ButtonSelect
-                inputValue={inputsValue.sex}
-                openModal={openModalSelectSex}
-                placeholder={'Ваш пол*'}
-                setOpenModal={setOpenModalSelectSex}
-                key={'Ваш пол*'}/>
-            <ModalSelect
-                row
-                logo={false}
-                showIcon={false}
-                onItemPress={(item) => onSelectSexPress(item)}
-                openModal={openModalSelectSex}
-                options={[{title: 'Женский', value: 'female'}, {title:'Мужской', value: 'male'}, {title: 'Мальчик', value: 'boy'}, {title: 'Девочка', value: 'girl'}]}
-                setOpenModal={closeModal}
-                title={'Ваш пол*'}/>
+        <ButtonSelect
+            inputValue={inputsValue.sex}
+            openModal={openModalSelectSex}
+            placeholder={'Ваш пол*'}
+            setOpenModal={setOpenModalSelectSex}
+            key={'Ваш пол*'}/>
+        <ModalSelect
+            row
+            logo={false}
+            showIcon={false}
+            onItemPress={(item) => onSelectSexPress(item)}
+            openModal={openModalSelectSex}
+            options={[{title: 'Женский', value: 'female'}, {title:'Мужской', value: 'male'}, {title: 'Мальчик', value: 'boy'}, {title: 'Девочка', value: 'girl'}]}
+            setOpenModal={closeModal}
+            title={'Ваш пол*'}/>
         </>
         <View className={`w-full`}>
             <InputData
@@ -280,7 +176,6 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 maxLength={4}
                 showPrompt
                 textPrompt="«общие» нормы : У женщин – 250-500 мл, У мужчин – 350-700 мл, У детей – 35-400 мл (в зависимости от возраста)"
-
                 />
         </View>
         <>
@@ -327,6 +222,10 @@ const onSubmit = (data:any) => { // при нажатии кнопки Сохр�
                 multiline
                 />
         </View>
+        { loading &&
+        <BlurView intensity={100} tint="prominent" className="absolute top-0 bottom-0 left-0 right-0 justify-center" style={{zIndex:10}}>
+            <ActivityIndicator size={'large'} color={'blue'}/>
+        </BlurView>}
         <DoubleButton
          showIcon= {false}
          textOfLeftButton="Пропустить"

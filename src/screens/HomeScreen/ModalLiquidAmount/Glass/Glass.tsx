@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { changeScalePopup } from "../../../../store/slices/appStateSlicer";
 import AnimatedWaves from "../AnimatedWaves/AnimatedWaves";
+import { Path, Polygon, Rect, Svg } from "react-native-svg";
 
 const windowSize = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -151,12 +152,15 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
          } 
       }
     };
-
+    
+    const width = windowSize.width / 1.3;
+    const height = windowSize.height / 2;
+ 
     return (
     <View className="justify-center items-center flex-1">
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <Animated.View
-          className="bg-[#dde2e3] rounded-b-[100px] rounded-t-3xl justify-end overflow-hidden pt-3"
+          className="bg-[#dde2e3] rounded-t-3xl justify-end overflow-hidden pt-3"
           style={[{height: windowSize.height / 2, width: windowSize.width / 1.5}, animatedStyleScale]}>
             <GestureHandlerRootView>
                 <GestureDetector gesture={gesture}>
@@ -171,7 +175,9 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
                 </GestureDetector>
             </GestureHandlerRootView>
         </Animated.View>
-      </KeyboardAvoidingView>
+  
+        {!setting.ifCountUrinePopupLiquidState && <View className="w-full flex-1 max-h-[20px] rounded-b-[100px] bg-[#ecf0f1]" style={{ width: windowSize.width / 1.5}}></View>} 
+     </KeyboardAvoidingView>
       <View className="mx-auto flex-row items-center rounded-md bg-[#fff]">
           <AnimatedTextInput
               style={{fontFamily:'geometria-bold', color:'#000'}}

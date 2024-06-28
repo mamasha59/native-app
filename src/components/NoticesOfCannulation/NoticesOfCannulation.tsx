@@ -11,10 +11,8 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     
     const [whenShowNoticeBeforeCannulation, setWhenShowNoticeBeforeCannulation] = useState<string>(''+settings);
     const [switchAlarm, setSwitchAlarm] = useState(false);
-    const [whenShowNoticeBeforeSleep, setWhenShowNoticeBeforeSleep] = useState<string>('');
  
     const inputRefWhenShowNoticeBeforeCannulation = useRef<TextInput>(null);
-    // const inputRefWhenShowNoticeBeforeSleep = useRef<TextInput>(null);
 
     // Общая функция для обработки ввода
     const handleInput = (value: string, setState: (value: string) => void) => {
@@ -26,7 +24,6 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     };
 
     const handleInputWhenShowNoticeBeforeCannulation = (value: string) => handleInput(value, setWhenShowNoticeBeforeCannulation);
-    // const handleInputWhenShowNoticeBeforeSleep = (value: string) => handleInput(value, setWhenShowNoticeBeforeSleep);
 
     const focusInput = (inputRef:RefObject<TextInput>) => {
         if (inputRef.current) {
@@ -38,16 +35,10 @@ const NoticesOfCannulation = () => { //TODO smart alarm
     };
 
     const focusInputWhenShowNoticeBeforeCannulation = () => focusInput(inputRefWhenShowNoticeBeforeCannulation);
-    // const focusInputWhenShowNoticeBeforeSleep = () => focusInput(inputRefWhenShowNoticeBeforeSleep);
 
     const submitTimeWhenShowNoticeBeforeCannulation = () => { // set new Yellow Interval for timer
         dispatch(changeYellowInterval(+whenShowNoticeBeforeCannulation));
     }
-
-    const submitTimeWhenShowNoticeBeforeSleep = () => {
-        console.log(whenShowNoticeBeforeSleep);   
-    }
-
     const handleSwitchAlarm = () => {
         setSwitchAlarm(!switchAlarm);
     }
@@ -69,38 +60,16 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                     keyboardType="numeric"
                     maxLength={2}
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}> минут</Text>
+                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}> мин.</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                     <Pencil/>
                 </View>
             </View>
         </TouchableOpacity>
-
-        {/* <TouchableOpacity onPress={focusInputWhenShowNoticeBeforeSleep} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
-            <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>Ночная катетеризация:</Text>
-            <View className="flex-row items-center">
-                <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>за</Text>
-                <TextInput
-                    ref={inputRefWhenShowNoticeBeforeSleep}
-                    value={whenShowNoticeBeforeSleep}
-                    onEndEditing={submitTimeWhenShowNoticeBeforeSleep}
-                    onChangeText={(e) => handleInputWhenShowNoticeBeforeSleep(e)}
-                    style={{fontFamily:'geometria-bold'}}
-                    keyboardType="numeric"
-                    placeholder="60"
-                    maxLength={2}
-                    className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>минут</Text>
-            </View>
-            <View className="w-[20px] h-[20px] items-center justify-center ml-1">
-                <Pencil/>
-            </View>
-        </TouchableOpacity> */}
-
         <TouchableOpacity onPress={handleSwitchAlarm} className="mt-2 py-2 flex-row justify-between border-b border-[#bdc3c75e]">
             <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>Функция умного будильника</Text>
             <View className="flex-row items-center">
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>
+                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>
                     {switchAlarm ? 'вкл.' : 'выкл.'}
                 </Text>
             </View>
@@ -112,7 +81,6 @@ const NoticesOfCannulation = () => { //TODO smart alarm
         <View className="mt-2 flex-row justify-between">
             <Text className="text-sm leading-4 text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>После вечерней катетеризации мы расчитаем время ночной катетеризации и настроим будильник.</Text>
         </View>
-        <View></View>
     </View>
   );
 };

@@ -8,7 +8,7 @@ import WavesBright from '../../../../assets/images/iconsComponent/WavesBright';
 const { width } = Dimensions.get('window');
 
 const AnimatedWaves = () => {
-  const translateX = useSharedValue(0);
+  const translateX = useSharedValue(4);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -19,7 +19,7 @@ const AnimatedWaves = () => {
     // Запуск бесконечной анимации
     useEffect(() => {
       translateX.value = withRepeat(
-        withTiming(-width, {
+        withTiming(width / 7, {
           duration: 5000,
           easing: Easing.linear,
         }),

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { iChart, iDairyRecord, iJournal } from "../../types";
 
-
 const initialState:iJournal = {
     initialCathetherAmount: {
         nelaton: 0,
@@ -68,6 +67,8 @@ const initialState:iJournal = {
             value: 0
         },
     ],
+    filtredRecordByDate: [],
+    statisticsPerDay: {},
 }
 
 const journalDataSlice = createSlice({ // TODO обьеденить в одну функцию addChartValueToCurrentDay и addChartValueDrankWaterToCurrentDay
@@ -121,7 +122,13 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
                     });
                 }
             }  
-        }
+        },
+        setFiltredRecordsByDate: (state, action: PayloadAction<iDairyRecord[]>) => {
+            state.filtredRecordByDate = action.payload
+        },
+        setStatisticsPerDay: (state, action: PayloadAction<{}>) => {
+            state.statisticsPerDay = action.payload
+        },
     },
 
 });
@@ -131,6 +138,8 @@ export const {
     addUrineDiaryRecord,
     addChartValueToCurrentDay,
     addChartValueDrankWaterToCurrentDay,
-    decreaseCatheterAmount
+    decreaseCatheterAmount,
+    setFiltredRecordsByDate,
+    setStatisticsPerDay
     } = journalDataSlice.actions;
 export default journalDataSlice.reducer;

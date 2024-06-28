@@ -1,32 +1,34 @@
-import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { FontAwesome6 } from '@expo/vector-icons';
 
 interface iQuestionItem{
-    number: number;
-    question: string;
-    options: any[]
+    question: {
+        id: number;
+        text: string;
+        answers: {
+            iconName: string;
+            text: string;
+            iconColor: string,
+        }[]
+    }
+    selectedAnswer: any,
+    onAnswerChange: (one:number, second:string) => void,
 }
 
-const QuestionItem = ({number,options,question}:iQuestionItem) => {
-    const [selected, setSelected] = useState<number | null>();
-     
-    const handlPressAnswer = (number,option) => {
-        console.log(number,option);
-        setSelected(!selected);
-    }
-    
+const QuestionItem = ({question, onAnswerChange, selectedAnswer}:iQuestionItem) => {
+         
   return (
     <View className="mb-4">
-        <Text style={{ fontFamily: 'geometria-regular' }}>{number}. {question}</Text>
+        <Text style={{ fontFamily: 'geometria-regular' }}>{question.text}</Text>
         <View className="mt-2">
-            {options.map((option, index) => (
+            {question.answers.map((answer, index) => (
                 <TouchableOpacity
-                    onPress={() => handlPressAnswer(number,option)}
+                    onPress={() => onAnswerChange(question.id, answer.text)}
                     key={index}
-                    className={`items-center flex-row mb-1 py-2 ${selected && 'bg-grey'}`}>
-                    <option.Icon name={option.name} size={24} color={option.color}/>
+                    className={`items-center flex-row mb-1 py-2 pl-2 rounded-lg ${selectedAnswer === answer.text && 'bg-[#bdc3c77d]'}`}>
+                    <FontAwesome6 name={answer.iconName} size={24} color={answer.iconColor} />
                     <Text className="ml-2" style={{fontFamily:'geometria-bold'}}>
-                        {option.label}
+                        {answer.text}
                     </Text>
                 </TouchableOpacity>
             ))}

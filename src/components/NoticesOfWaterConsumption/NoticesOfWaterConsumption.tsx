@@ -65,8 +65,8 @@ const NoticesOfWaterConsumption = () => {
                         style={{fontFamily:'geometria-bold'}}
                         keyboardType="numeric"
                         maxLength={4}
-                        className="text-[17px] max-w-[45px] border-b flex-1 text-center p-0 m-0"/>
-                    <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>мл</Text>
+                        className="text-[15px] max-w-[45px] border-b flex-1 text-center p-0 m-0"/>
+                    <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>мл</Text>
                 </View>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                     <Pencil/>
@@ -78,8 +78,8 @@ const NoticesOfWaterConsumption = () => {
             <Text className="text-[17px] w-full" style={{fontFamily:'geometria-regular', maxWidth: windowSize.width / 2}}>Напоминать в течении дня до достижении цели:</Text>
             <View className="flex-row items-center">
                 <View className="flex-row">
-                    <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>каждые </Text>
-                    <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>2 ч.</Text>
+                    <Text className="text-[15px]" style={{fontFamily:'geometria-regular'}}>каждые </Text>
+                    <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>2 ч.</Text>
                 </View>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                     <Pencil/>

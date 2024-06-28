@@ -99,7 +99,8 @@ const ModalLiquidAmount = () => {
 
             <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{settings.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
             <Glass customValue={+liquidValue} onValueChange={setLiquidValue}/>
-             {/* {!settings.scaleLiquidPopup &&
+             {!settings.ifCountUrinePopupLiquidState && 
+             !settings.scaleLiquidPopup &&
                <View className="flex-row items-center py-2 flex-wrap gap-2">
                 {customMl.map((item, index) => 
                   <TouchableOpacity onPress={() => setLiquidValue(item)} key={index} activeOpacity={.6} className="p-1 items-center border bg-[#fff] border-main-blue rounded-xl">
@@ -107,7 +108,7 @@ const ModalLiquidAmount = () => {
                     <Text style={{fontFamily:'geometria-regular'}} className="text-[#000]">{item} мл.</Text>
                   </TouchableOpacity>
                 )}
-              </View>} */}
+              </View>}
           </View>
 
      {!settings.scaleLiquidPopup &&     

@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, TouchableOpacity, Image } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { addSeconds, format, subSeconds } from "date-fns";
 import { useEffect, useState } from "react";
@@ -42,7 +42,6 @@ const ModalSuccess = () => {
         >
         <View style={{height: windowSize.height / 2 }} className="bg-[#fff] rounded-t-[40px] p-5 items-center justify-between">
             <View style={{backgroundColor: 'transparent'}} className="-mt-20 w-[200px] h-[200px]">
-                {/* <Image source={require('../../../../assets/images/homePageIcons/successCath.png')} style={{ width: 150, height: 150 }} /> */}
                 <LottieView
                   source={require("../../../../assets/dance.json")}
                   style={{width: 200, height: 200, backgroundColor: 'transparent'}}
@@ -50,17 +49,15 @@ const ModalSuccess = () => {
                   loop
                 />
             </View>
-            <View className="">
+            <>
                 <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center">Отлично!</Text>
                 <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-xl text-center">Катетеризация выполнена!</Text>
-                <View className="mt-2">
-                    <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start mb-4">Следующая катетеризация:</Text>
-                    <View className="items-center flex-row justify-center"> 
-                        <NotificationIcon color={'#000'} width={20}/>
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCathTime}</Text> 
-                    </View>
+                <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start">Следующая катетеризация:</Text>
+                <View className="items-center flex-row justify-center py-3"> 
+                    <NotificationIcon color={'#000'} width={20}/>
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCathTime}</Text> 
                 </View>
-            </View>
+            </>
           <TouchableOpacity onPress={() => dispatch(setShowModalSuccess(false))} className="bg-main-blue px-3 py-3 w-full rounded-lg">
             <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center text-[#fff]">Хорошо</Text>
           </TouchableOpacity>

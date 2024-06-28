@@ -1,11 +1,9 @@
-import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Alert, Platform} from "react-native";
+import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Alert} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
 import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
 import { Dropdown } from "react-native-element-dropdown";
 import { format } from "date-fns";
 import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
 
 import { DropDown } from "../../assets/images/icons";
 
@@ -20,6 +18,8 @@ import { resetBadges, setCalendareDay } from "../../store/slices/appStateSlicer"
 import Statistics from "./Statistics/Statistics";
 import FilterList from "./FilterList/FilterList";
 import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
+import { genetatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
+import { setFiltredRecordsByDate, setStatisticsPerDay } from "../../store/slices/journalDataSlice";
 
 interface iJournalScreen{
   navigation: StackNavigationRoot
@@ -29,6 +29,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
   const dispatch = useAppDispatch();
   const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из хранилища редакса
   const selectedCalendareDate = useAppSelector(user => user.appStateSlice.calendareDay); // достаем из стора редакса выбранню дату на календаре
+  const userData = useAppSelector(user => user.user); // достаем из стора редакса выбранню дату на календаре
 
   const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
   const [filtredJournalRecords, setFiltredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
@@ -80,7 +81,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
         
       const filteredRecords = applyFilter(todayJournal, filterSetting);
       setFiltredJournalRecords(filteredRecords);
-      
+      dispatch(setFiltredRecordsByDate(filteredRecords));
       setLoading(false); // Скрыть индикатор загрузки
     }, 500);
 
@@ -100,161 +101,32 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
       .map((e) => e.amountOfReleasedUrine)
       .reduce((acc,e) => acc! + (e || 0), 0);
 
-    setStatisticPerDay({
+    const setStatistics = {
       cannulation:cannulationStaticPerDay.length,
       leakage:leakageStaticPerDay.length,
       amountOfDrankFluids: amountOfDrankFluidsPerDay!,
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
-    });
+    }
+
+    setStatisticPerDay(setStatistics);
+    dispatch(setStatisticsPerDay(setStatistics));
   },[selectedCalendareDate,journalRecords, day]);
 
-  const printToFile = async () => { // функция при нажатии на кнопку Отправить что бы сгенерировать pdf файл и отправить его
-    const { uri } = await Print.printToFileAsync({ html, width: 2480, base64:true, useMarkupFormatter:true });
-    // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf', dialogTitle: 'Поделиться документом' });
+  const printToFile = async () => { // genarete Pdf from Html and share it
+    const pdf = await genetatePdfPattern({
+      filtredRecordByDate: filtredJournalRecords,
+      selectedCalendareDate: selectedCalendareDate,
+      statisticsPerDay: statisticPerDay,
+      userData: userData});
+    const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true, margins: {left:0, bottom:0, right: 0, top: 0}, });
+
     const isSharingExist = Sharing.isAvailableAsync();
     if(!isSharingExist) {
       Alert.alert('Doesnt work on this device!');
       return;
-    } 
+    }
     await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'})
   };
-
-  const html = `
-  <html lang="rus">
-      <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-      <meta http-equiv="Content-Disposition" content="attachment; filename="Мое.pdf">
-      <title>Дневник мочеиспускания</title>
-      </head>
-      <body style="padding: 0; margin: 0; font-family: 'geometria-regular';max-width: 2480px; margin: 0 auto 0 auto">
-      <div
-          style="
-          padding: 8.75rem;
-          color: white;
-          background: linear-gradient(90deg, #4baac5 0.16%, #7076b0 101.13%);
-          position: relative;
-          "
-      >
-          <div style="display: flex; align-items: center;">
-          <div style="display: flex; flex-direction: column; gap: 30px;">
-              <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-              Дата:
-              <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                  >dг.</b
-              >
-              </p>
-              <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-              Фамилия И.О.:
-              <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                  >$d</b
-              >
-              </p>
-              <p style="padding: 0; margin: 0; font-size: 40px; line-height: 48px;">
-              Дата рождения:
-              <b style="margin-left: 30px; font-size: 40px; line-height: 48px;"
-                  >$dг.</b
-              >
-              </p>
-          </div>
-          </div>
-          <div
-          style="
-              position: absolute;
-              right: 10%;
-              top: 10%;
-              display: flex;
-              align-items: center;
-              gap: 60px;
-          "
-          >
-          <img
-              src="https://github.com/mamasha59/native-app/assets/68348736/59860e0b-43b8-4d8b-b11e-970d62ec7911"
-              style="width: 110px" 
-          />
-          <h1 style="font-size: 120px; line-height: 144px;">
-              Uro <span style="font-style: italic;">Control</span>
-          </h1>
-          </div>
-      </div>
-      <div style="color: #101010; padding: 100px;">
-          <h2 style="font-size: 80px; line-height: 96px; margin: 0;">
-          Дневник мочеиспускания
-          </h2>
-          <table class="GeneratedTable">
-          <thead style="font-size: 20px; line-height: 24px;">
-              <tr>
-              <th>Дата</th>
-              <th>Время</th>
-              <th>Тип катетера</th>
-              <th>Скорость катетеризации, сек</th>
-              <th>Объем выделенной мочи, мл</th>
-              <th>Объем выпитой жидкости, мл</th>
-              <th>Подтекание мочи (да/нет)</th>
-              <th>Активность при подтекании (в покое, кашель, бег и.т.п.)</th>
-              </tr>
-          </thead>
-          <tbody>
-          ${journalRecords.map((e, index) => `
-              <tr key=${index}>
-              <td>${e.timeStamp?.slice(0, 10) || ''}</td>
-              <td>${e.whenWasCanulisation || ''}</td>
-              <td>${e.catheterType || ''}</td>
-              <td>Что это не знаю</td>
-              <td>${e.amountOfReleasedUrine || ''}</td>
-              <td>${e.amountOfDrankFluids || ''}</td>
-              <td>Тоже не знаю</td>
-              <td>${e.leakageReason || ''}</td>
-              </tr>
-              `).join('')
-          }
-          </tbody>
-          </table>
-      </div>
-      </body>
-  </html>
-  <style>
-      *{
-      margin: 0;
-      padding: 0;
-      }
-      body {
-      min-height: 100vh;
-      scroll-behavior: smooth;
-      text-rendering: optimizeSpeed;
-      line-height: 1.5;
-      }
-      img {
-      max-width: 100%;
-      display: block;
-      }
-      table {
-      border-collapse: collapse;
-      border-spacing: 0;
-      }
-      table.GeneratedTable {
-      width: 100%;
-      margin: 80px 0 120px 0;
-      background-color: #ffffff;
-      border-width: 2px;
-      border-color: #4baac5;
-      border-style: solid;
-      color: #101010;  
-      }
-      table.GeneratedTable td,
-      table.GeneratedTable th {
-      border-width: 2px;
-      border-color: #4baac5;
-      border-style: solid;
-      padding: 3px;
-      }
-      table.GeneratedTable thead {
-      background-color: #ffffff;
-      }
-  </style>
-  </html>
-  `;
 
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
@@ -267,7 +139,6 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
 
   return (
     <MainLayout title="Дневник мочеиспускания">
-      {/* Выбор месяца | Отображение нынешнего месяца */}
       <Dropdown
         data={monthsEng}
         style={{width: 100,}}
@@ -321,7 +192,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
       <DoubleButton
         showIcon={false}
         textOfLeftButton="Отправить"
-        textOfRightButton="Сохранить PDF"
+        textOfRightButton="Скачать PDF"
         handlePressLeftButton={printToFile}
         handlePressRightButton={() => navigation.navigate('PdfOnBoarding')}
       />

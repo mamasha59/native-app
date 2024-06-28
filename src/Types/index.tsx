@@ -13,7 +13,6 @@ interface iUser {
     catheterSize: string | null,
     catheterType: string | null,
     volume: string | null,
-    // urineMeasure: string,
     name?: string | null,
     surname?: string | null,
     birthday?: string | null,
@@ -52,6 +51,13 @@ interface iChart { // день в графике
     value: number,
 }
 
+interface iStatisticsPerDay{
+    cannulation?: number;
+        leakage?: number;
+        amountOfDrankFluids?: number;
+        amountOfReleasedUrine?: number;
+}
+
 interface iJournal {
     initialCathetherAmount: {
         nelaton: number ;
@@ -59,6 +65,8 @@ interface iJournal {
     urineDiary: iDairyRecord[],
     urineChart: iChart[],
     drankWaterChart: iChart[],
+    filtredRecordByDate: iDairyRecord[],
+    statisticsPerDay: iStatisticsPerDay
 }
 
 interface Option {
@@ -66,4 +74,4 @@ interface Option {
     value: boolean | string
 }
     
-export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option};
+export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay};

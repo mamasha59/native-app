@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { View, Text, TouchableOpacity, Animated, Easing } from "react-native";
 import { DropDown } from "../../../assets/images/icons";
 import { useRef, useState } from "react";
+import { dateFormat } from "../../../utils/const";
 
 interface iStatistics {
     selectedCalendareDate: string,
@@ -41,7 +42,7 @@ const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {//
     <TouchableOpacity onPress={openStatistics} className="flex-row items-center">
         <View className="items-start mb-1 mr-2">
             <Text style={{fontFamily:'geometria-bold'}}>
-                Statistics for {selectedCalendareDate === format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10) ? 'today' : selectedCalendareDate}:
+                Statistics for {selectedCalendareDate === format(new Date(), dateFormat).slice(0,10) ? 'today' : selectedCalendareDate}:
             </Text>
         </View>
         <Animated.View style={{ transform: [{ rotate: spin }] }} className={'mb-1'}>

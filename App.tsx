@@ -8,6 +8,8 @@ import { StatusBar } from 'expo-status-bar';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ActivityIndicator } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { Platform } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
@@ -16,8 +18,6 @@ import Constants from 'expo-constants';
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
 import RootNavigations from './src/components/RootNavigations/RootNavigations';
-import { Platform } from 'react-native';
-import Animated from 'react-native-reanimated';
 
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();

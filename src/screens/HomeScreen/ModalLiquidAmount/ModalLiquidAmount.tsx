@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } from "../../../store/slices/appStateSlicer";
 import Glass from "./Glass/Glass";
+import { dateFormat } from "../../../utils/const";
 
 const ModalLiquidAmount = () => {
 
@@ -25,7 +26,7 @@ const ModalLiquidAmount = () => {
             catheterType:'Нелатон',
             whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
             amountOfReleasedUrine: +liquidValue,
-            timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+            timeStamp: format(new Date(), dateFormat),
           }));
           dispatch(addBadgesJournalScreen(1));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
@@ -35,7 +36,7 @@ const ModalLiquidAmount = () => {
             id: uuidv4(),
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
             amountOfDrankFluids: +liquidValue,
-            timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+            timeStamp: format(new Date(), dateFormat),
           }));
         }
       }
@@ -49,7 +50,7 @@ const ModalLiquidAmount = () => {
           catheterType:'Нелатон',
           whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
           amountOfReleasedUrine: null,
-          timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+          timeStamp: format(new Date(), dateFormat),
         }));
         dispatch(addBadgesJournalScreen(1));
         dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи

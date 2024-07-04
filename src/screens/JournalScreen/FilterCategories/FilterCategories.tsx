@@ -2,11 +2,11 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React, { Dispatch, useState } from "react";
 import { filters } from "../../../utils/const";
 
-interface iFilterList {
+interface iFilterCategories {
     setFilterSetting: Dispatch<React.SetStateAction<string>>;
 }
 
-const FilterList = ({setFilterSetting}:iFilterList) => {
+const FilterCategories = ({setFilterSetting}:iFilterCategories) => {
     const [selectedItem, setSelectedItem] = useState<string | null>(filters[0].keyWord);
 
     const handlePressFilter = (keyWord:string) => {
@@ -36,4 +36,4 @@ const FilterList = ({setFilterSetting}:iFilterList) => {
   );
 };
 
-export default FilterList;
+export default FilterCategories;

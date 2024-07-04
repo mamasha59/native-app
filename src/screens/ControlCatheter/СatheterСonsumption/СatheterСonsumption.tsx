@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { View, Text, Alert } from "react-native";
+import { dateFormat } from "../../../utils/const";
 
 const СatheterСonsumption = ({filteredRecords, selectedCalendareDate}:{filteredRecords:number, selectedCalendareDate:string}) => {
   
@@ -8,7 +9,7 @@ const СatheterСonsumption = ({filteredRecords, selectedCalendareDate}:{filtere
         <View className="flex-row flex-1 justify-between">
           <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px] mb-[10px]">Средний расход катетеров Нелатон</Text>
           <Text onPress={() => Alert.alert('Вы можете изменить дату на станице Журнала')} style={{ fontFamily: "geometria-bold" }} className="text-black text-xs leading-[15px] mb-[10px]">
-            на - {selectedCalendareDate === format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10) ? 'today' : selectedCalendareDate}
+            на - {selectedCalendareDate === format(new Date(), dateFormat).slice(0,10) ? 'today' : selectedCalendareDate}
           </Text>
         </View>
         <View className="flex-row gap-2">

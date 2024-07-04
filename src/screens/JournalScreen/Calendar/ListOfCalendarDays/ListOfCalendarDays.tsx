@@ -2,20 +2,21 @@ import { ScrollView, RefreshControl } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-import CalendarDay from "../CalendarDay/CalendarDay";
-import { iDay, iMonth } from "../../../types/index";
+import { iDay, iMonth } from "../../../../types/index";
 
-import { day, getCurrentMonth, months } from '../../../utils/date';
-import { useAppDispatch } from "../../../store/hooks";
-import { setCalendareDay } from "../../../store/slices/appStateSlicer";
+import { day, getCurrentMonth, months } from '../../../../utils/date';
+import { useAppDispatch } from "../../../../store/hooks";
+import { setCalendareDay } from "../../../../store/slices/appStateSlicer";
 import { format, getDate, lastDayOfMonth } from "date-fns";
+import CalendarDay from "../CalendarDay/CalendarDay";
+import { dateFormat } from "../../../../utils/const";
 
 interface iJournalCalendar {
     setSelectedMonth: ({month}:iMonth) => void;
     month: iMonth;
 }
 
-const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
+const ListOfCalendarDays = ({setSelectedMonth, month}:iJournalCalendar) => {
     const scrollViewRef = useRef<ScrollView>(null);
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
     const dispatch = useAppDispatch();
@@ -50,7 +51,7 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
           setRefreshing(false);
         }, 2000);
         scrollViewRef.current?.scrollTo();
-        dispatch(setCalendareDay(format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
+        dispatch(setCalendareDay(format(new Date(), dateFormat).slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
         setSelectedMonth({month: months[getCurrentMonth].value, index: getCurrentMonth});
       }, []);
 
@@ -70,4 +71,4 @@ const JournalCalendar = ({setSelectedMonth, month}:iJournalCalendar) => {
   );
 };
 
-export default JournalCalendar;
+export default ListOfCalendarDays;

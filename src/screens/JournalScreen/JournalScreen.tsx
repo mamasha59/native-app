@@ -1,39 +1,38 @@
-import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Alert} from "react-native";
+import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
-import * as Print from 'expo-print';
 import { Dropdown } from "react-native-element-dropdown";
 import { format } from "date-fns";
-import * as Sharing from 'expo-sharing';
 
 import { DropDown } from "../../assets/images/icons";
 
 import JournalRecord from "./JournalRecord/JournalRecord";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
-import JournalCalendar from "./JournalCalendar/JournalCalendar";
 import { day, getCurrentMonth, monthsEng } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iDairyRecord, iMonth } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { resetBadges, setCalendareDay } from "../../store/slices/appStateSlicer";
 import Statistics from "./Statistics/Statistics";
-import FilterList from "./FilterList/FilterList";
 import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
-import { genetatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
-import { setFiltredRecordsByDate, setStatisticsPerDay } from "../../store/slices/journalDataSlice";
+import { handleModalCustomizePdfDocument, setFiltredRecordsByDate, setStatisticsPerDay } from "../../store/slices/journalDataSlice";
+import FilterCategories from "./FilterCategories/FilterCategories";
+import ListOfCalendarDays from "./Calendar/ListOfCalendarDays/ListOfCalendarDays";
+import ModalCustomizePdf from "./ModalCustomizePdf/ModalCustomizePdf";
+import { dateFormat } from "../../utils/const";
 
 interface iJournalScreen{
-  navigation: StackNavigationRoot
+  navigation: StackNavigationRoot,
 }
 
-const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы скачивать файл с помощью expo file sistem мне нужен url с бека, пока что так
+const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать статистику из стора
   const dispatch = useAppDispatch();
-  const journalRecords:iDairyRecord[] = useAppSelector((state) => state.journal.urineDiary); // массив записей из хранилища редакса
-  const selectedCalendareDate = useAppSelector(user => user.appStateSlice.calendareDay); // достаем из стора редакса выбранню дату на календаре
-  const userData = useAppSelector(user => user.user); // достаем из стора редакса выбранню дату на календаре
+  const {urineDiary, modalCustomizePdfDocument} = useAppSelector((state) => state.journal); // массив записей из хранилища редакса
+  const {calendareDay} = useAppSelector(user => user.appStateSlice); // достаем из стора редакса выбранню дату на календаре и ответы
 
   const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
   const [filtredJournalRecords, setFiltredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
   const [loading, setLoading] = useState<boolean>(true);
+  const [buttonName, setButtonName] = useState<string>('');
 
   const [filterSetting, setFilterSetting] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
@@ -50,15 +49,24 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
     index: getCurrentMonth,
   });
 
+  const handleModalState = () => {    
+    dispatch(handleModalCustomizePdfDocument(!modalCustomizePdfDocument));
+  }
+
+  const handlePressButton = (button:string) => {
+    setButtonName(button);
+    handleModalState();
+  }
+
   useEffect(() => { // журнал данные всегда по текущий день
-    const today = format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10);
-    if(today !== selectedCalendareDate) {
+    const today = format(new Date(), dateFormat).slice(0,10);
+    if(today !== calendareDay) {
       dispatch(setCalendareDay(today));
       dispatch(resetBadges());
     }
   },[])
 
-  useEffect(() => {
+  useEffect(() => { // filtering by catagories
     const applyFilter = (records: iDairyRecord[], filter: string) => {
       switch (filter) {
         case 'Нелатон':
@@ -77,7 +85,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
     };
     setLoading(true);
     setTimeout(() => { // искуственный лоудер
-      const todayJournal = journalRecords.filter((e) => e.timeStamp?.slice(0, 10) === selectedCalendareDate);
+      const todayJournal = urineDiary.filter((e) => e.timeStamp?.slice(0, 10) === calendareDay);
         
       const filteredRecords = applyFilter(todayJournal, filterSetting);
       setFiltredJournalRecords(filteredRecords);
@@ -85,10 +93,10 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
       setLoading(false); // Скрыть индикатор загрузки
     }, 500);
 
-  }, [filterSetting, selectedCalendareDate, journalRecords, day]);  
+  }, [filterSetting, calendareDay, urineDiary, day]);  
   
   useEffect(() => { // добавление данных в блок Статистика за сегодня
-    const filteredRecords = journalRecords.filter(e => e.timeStamp?.slice(0, 10) === selectedCalendareDate); // фильтруем по даты, либо выбранной дате
+    const filteredRecords = urineDiary.filter(e => e.timeStamp?.slice(0, 10) === calendareDay); // фильтруем по даты, либо выбранной дате
     
     const cannulationStaticPerDay = filteredRecords.filter(e => e.catheterType); // фильтруем по типу катетора, для статистики Катетеризаций:
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
@@ -110,23 +118,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
 
     setStatisticPerDay(setStatistics);
     dispatch(setStatisticsPerDay(setStatistics));
-  },[selectedCalendareDate,journalRecords, day]);
-
-  const printToFile = async () => { // genarete Pdf from Html and share it
-    const pdf = await genetatePdfPattern({
-      filtredRecordByDate: filtredJournalRecords,
-      selectedCalendareDate: selectedCalendareDate,
-      statisticsPerDay: statisticPerDay,
-      userData: userData});
-    const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true, margins: {left:0, bottom:0, right: 0, top: 0}, });
-
-    const isSharingExist = Sharing.isAvailableAsync();
-    if(!isSharingExist) {
-      Alert.alert('Doesnt work on this device!');
-      return;
-    }
-    await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'})
-  };
+  },[calendareDay,urineDiary, day]);
 
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
@@ -157,9 +149,9 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
           setSelectedMonth({month: item.value, index: item.index});
       }}
       />
-      <JournalCalendar month={month} setSelectedMonth={setSelectedMonth} />
-      <FilterList setFilterSetting={setFilterSetting}/>
-      <Statistics selectedCalendareDate={selectedCalendareDate} statisticPerDay={statisticPerDay}/>
+      <ListOfCalendarDays month={month} setSelectedMonth={setSelectedMonth} />
+      <FilterCategories setFilterSetting={setFilterSetting}/>
+      <Statistics selectedCalendareDate={calendareDay} statisticPerDay={statisticPerDay}/>
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={updateRecords}/>}
         className="flex-1 overflow-hidden"
@@ -171,7 +163,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
         {loading 
           ? <ActivityIndicator size={"large"}/>
           :
-          (journalRecords.length === 0 || filtredJournalRecords.length === 0
+          (urineDiary.length === 0 || filtredJournalRecords.length === 0
             ? <View focusable={false}>
                 <Text style={{fontFamily:'geometria-regular'}} className="text-lg">There are no entries here yet...</Text>
               </View>
@@ -193,13 +185,13 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO что бы с�
         showIcon={false}
         textOfLeftButton="Отправить"
         textOfRightButton="Скачать PDF"
-        handlePressLeftButton={printToFile}
-        handlePressRightButton={() => navigation.navigate('PdfOnBoarding')}
+        handlePressLeftButton={() => handlePressButton('share')}
+        handlePressRightButton={() => handlePressButton('download')}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('Survey')} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
+      <TouchableOpacity onPress={() => navigation.navigate('Survey', {})} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
         <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center">опросник</Text>
       </TouchableOpacity>
-
+      <ModalCustomizePdf buttonName={buttonName} handleModalState={handleModalState} key={'modalcustomizepdfjournalscreen'}/>
     </MainLayout>
   );
 };

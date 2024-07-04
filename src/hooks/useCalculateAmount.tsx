@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { iChart, iDairyRecord } from '../types';
 
 import { format } from 'date-fns';
+import { dateFormat } from '../utils/const';
 
 interface iuseUpdateChart {
     dispatchAction: ActionCreatorWithPayload<iChart>,
@@ -12,7 +13,7 @@ interface iuseUpdateChart {
 }
 
 export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
-  const [currentDate, setCurrentDate] = useState(format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10));
+  const [currentDate, setCurrentDate] = useState(format(new Date(), dateFormat).slice(0,10));
   const journalData = useAppSelector((state) => state.journal);
   const dispatch = useAppDispatch();
 

@@ -1,17 +1,18 @@
 import { Text, TouchableOpacity } from "react-native";
-import { useState } from "react";
 
-import { iDay } from "../../../types/index";
-import { day, daysOfWeekEng } from "../../../utils/date";
-import { useAppDispatch } from "../../../store/hooks";
-import { setCalendareDay } from "../../../store/slices/appStateSlicer";
+import { setCalendareDay } from "../../../../store/slices/appStateSlicer";
+import { useAppDispatch } from "../../../../store/hooks";
+import { iDay } from "../../../../types";
+import { day, daysOfWeekEng } from "../../../../utils/date";
+import { format } from "date-fns";
+import { dateFormat } from "../../../../utils/const";
 
 type iCalendarDay = {e: iDay}
 
 const CalendarDay = ({e}:iCalendarDay) => {
   //TODO при смене языка надо менять locales
-  const currentDay = new Date(e.year, e.month.index, e.dayNumber).toLocaleDateString('en-US', {year:'numeric', month: '2-digit', day: '2-digit'});
-
+  const currentDay = format( new Date(e.year, e.month.index, e.dayNumber), dateFormat).slice(0,10);
+  
   const dispatch = useAppDispatch();
 
   let isCurrentDay = day.getDate() === e.dayNumber && day.getMonth() === e.month.index;

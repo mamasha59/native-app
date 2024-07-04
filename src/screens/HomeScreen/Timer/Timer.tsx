@@ -7,7 +7,7 @@ import NightModeButton from "./NightModeButton/NightModeButton";
 import ModalSuccess from "./ModalSuccess/ModalSuccess";
 import TimerT from "./Timer-Itself/Timer-Itself";
 
-const Timer = () => { //TODO refactoring
+const Timer = () => {
   const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
 
   return (

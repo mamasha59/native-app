@@ -1,4 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as Print from 'expo-print';
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import InputData from "../../components/InputData/InputData";
@@ -6,11 +9,19 @@ import { useForm } from "react-hook-form";
 import { Keyboard } from "../../utils/enums";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
 import QuestionItem from "./QuestionItem/QuestionItem";
-import { useState } from "react";
 import { questions } from "../../utils/SurveyQuestions/SurveyQuestions";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { resetAnswers, saveAnswer } from "../../store/slices/appStateSlicer";
+import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
+import { handleCheckBoxAddSurveyInPdf, handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
+import { generatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
 
-const Survey = () => {
-    const [answersState, setAnswersState] = useState<{ [key: number]: string | undefined }>({});
+const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {
+    const { cameFrom } = route.params;
+    
+    const dispatch = useAppDispatch();
+    const answersState = useAppSelector(state => state.appStateSlice.surveyAnswers);
+    const userData = useAppSelector(state => state.user);
 
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         defaultValues: {
@@ -21,12 +32,47 @@ const Survey = () => {
 
     const inputsValue = watch();        // состояние инпута при его изменении
 
-    const handleAnswerChange = (questionId:number, answer:string) => {
-      setAnswersState(prevState => ({
-        ...prevState,
-        [questionId]: answer
-      }));
-    };
+    const handleAnswerChange = (questionId: number, answerId: number) => {
+        dispatch(saveAnswer({ questionId, answerId }));
+      };
+
+    const goBackAndOpenModalCustomizePdf = () => {
+        navigation.goBack();
+        dispatch(handleModalCustomizePdfDocument(true));
+    }
+
+    const goBack = () => {
+        goBackAndOpenModalCustomizePdf();
+        dispatch(handleCheckBoxAddSurveyInPdf(false));
+    }
+
+    const acceptAndProceed = () => {
+        goBackAndOpenModalCustomizePdf();
+        dispatch(handleCheckBoxAddSurveyInPdf(true));
+    }
+
+    const resetAnswersOfSurvey = () => {
+        dispatch(resetAnswers());
+    }
+
+    const downLoadSurveyPdf = async () => {
+        const pdf = await generatePdfPattern({filteredRecordByDate: null, answers: answersState, userData: userData});
+        const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true});
+
+        const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+        
+        if (permissions.granted) {
+          const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+    
+          await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Yor-Journal', 'application/pdf')
+            .then(async (uri) => {
+              await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+            })
+            .catch(e => console.log(e))
+        } else {
+          Sharing.shareAsync(uri);
+        }
+    }
 
   return (
     <MainLayout title="Catheterization Satisfaction Questionnaire">
@@ -68,10 +114,10 @@ const Survey = () => {
                 />
             </View>
             <DoubleButton 
-                textOfLeftButton="сохранить"
-                textOfRightButton="сохранить и скачать PDF"
-                handlePressLeftButton={() => console.log('left')}
-                handlePressRightButton={() => console.log('left')}
+                textOfLeftButton={cameFrom === 'customizePdf' ? 'не хочу заполнять' : 'сбросить'}
+                textOfRightButton={cameFrom === 'customizePdf' ? 'подтвердить' : "подтвердить и скачать PDF"}
+                handlePressLeftButton={cameFrom === 'customizePdf' ? goBack : resetAnswersOfSurvey}
+                handlePressRightButton={cameFrom === 'customizePdf' ? acceptAndProceed : downLoadSurveyPdf}
                 showIcon={false}
                 key={'survey'}
             />

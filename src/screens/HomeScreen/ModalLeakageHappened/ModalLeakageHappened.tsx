@@ -8,7 +8,7 @@ import { Option } from "../../../types";
 import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { addBadgesJournalScreen } from "../../../store/slices/appStateSlicer";
 import { useAppDispatch } from "../../../store/hooks";
-import { whyLeakageHappenedReasons } from "../../../utils/const";
+import { dateFormat, whyLeakageHappenedReasons } from "../../../utils/const";
 
 interface iModalLeakageHappened{
     setModalLeakageVisible: (value:boolean) => void,
@@ -28,7 +28,7 @@ const ModalLeakageHappened = ({setModalLeakageVisible, modalLeakageVisible, setT
           { id: uuidv4(),
             whenWasCanulisation,
             leakageReason,
-            timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),}));
+            timeStamp: format(new Date(), dateFormat),}));
         dispatch(addBadgesJournalScreen(1));
         closeModalOpenToast();
       }

@@ -18,7 +18,7 @@ import { useEffect } from 'react';
     MainScreen: undefined;
     Recomendation: undefined;
     PdfOnBoarding: undefined;
-    Survey: undefined;
+    Survey: {cameFrom?: string};
     NightMode: undefined;
     ControlCatheter: undefined;
   };
@@ -56,12 +56,12 @@ const RootNavigations = () => {
     });
   }
 
-  useEffect(() => {
-   const timeWhenShowNoticeOfYellowInterval = settings.interval - (settings.yellowInterval * 60);
-   console.log('dd',timeWhenShowNoticeOfYellowInterval);
+  // useEffect(() => {
+  //  const timeWhenShowNoticeOfYellowInterval = settings.interval - (settings.yellowInterval * 60);
+  //  console.log('dd',timeWhenShowNoticeOfYellowInterval);
    
-   schedulePushNotification(`До катетеризации осталось ${settings.yellowInterval} минут`, 'дада', timeWhenShowNoticeOfYellowInterval);
-  },[settings.interval,settings.yellowInterval])
+  //  schedulePushNotification(`До катетеризации осталось ${settings.yellowInterval} минут`, 'дада', timeWhenShowNoticeOfYellowInterval);
+  // },[settings.interval,settings.yellowInterval])
 
   return (// все роуты стоят по порядку их повяления при загрузке приложения
     <NavigationContainer>

@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../../store/slices/timerStatesSlice";
 import { addBadgesJournalScreen, changeStateOfTimerTitleForFirstTimeInApp, ifCountUrineChangeState, popupLiquidState, setHelperForModalTurnOnNightMode, switchCannulationAtNightNight, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
 import { addUrineDiaryRecord, decreaseCatheterAmount } from "../../../../store/slices/journalDataSlice";
+import { dateFormat } from "../../../../utils/const";
 
 const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     const now = new Date();
@@ -124,7 +125,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     useEffect(() => { // расчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
         if(!settings.cannulationAtNight.value){
             if(journal.urineDiary.length > 0) {
-                const targetDate = parse(journal.urineDiary[0].timeStamp, "MM/dd/yyyy HH:mm:ss", new Date());
+                const targetDate = parse(journal.urineDiary[0].timeStamp, dateFormat, new Date());
                 const currentDate = new Date();
                 const difference = differenceInSeconds(currentDate, targetDate);   
                 dispatch(setIntervalDifference(difference));
@@ -209,13 +210,13 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             timerRestart(expiryTimestamp);
         }
         if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
-            schedulePushNotification('Ты прокатетеризировался!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
+            schedulePushNotification('Вы прокатетеризировались!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
             resetStopwatch(stopwatchOffset, false);
             setStartFromСountdown(true);
             setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
             timerRestart(expiryTimestamp);
             setToastShow(true);
-            setInitialStrip(0); // бнуляем секундные полоски
+            setInitialStrip(0); // обнуляем секундные полоски
         }
     };
     const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode));
@@ -241,7 +242,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                     id: uuidv4(),
                     whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
                     catheterType: 'Нелатон',
-                    timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss'),
+                    timeStamp: format(new Date(), dateFormat),
                 }));
                 dispatch(addBadgesJournalScreen(1));
             }
@@ -289,15 +290,15 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                 />
             </View>
             <TouchableOpacity className="flex-grow-0 min-w-[141px]" onPress={settings.urineMeasure ? handlePressIfUrineMeasure : handlePressButton} activeOpacity={0.6}>
-            <LinearGradient
-                colors={['#83B759', '#609B25']}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                locations={[0.0553, 0.9925]}
-                className="rounded-[43px]">
-                <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
-                    {timerRunning || stopwatchRunning ? 'Выполнено' : 'Начать'}
-                </Text>
+                <LinearGradient
+                    colors={['#83B759', '#609B25']}
+                    start={{ x: 0, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    locations={[0.0553, 0.9925]}
+                    className="rounded-[43px]">
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
+                        {timerRunning || stopwatchRunning ? 'Выполнено' : 'Начать'}
+                    </Text>
                 </LinearGradient>
             </TouchableOpacity>
         </View>

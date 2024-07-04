@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { format } from "date-fns";
+import { dateFormat } from "../../utils/const";
 
 interface iAppStateSlicer {
   isExist: boolean,
@@ -19,32 +20,34 @@ interface iAppStateSlicer {
   scaleLiquidPopup: boolean,
   openModalNightMode: boolean,
   helperForModalTurnOnNightMode: boolean,
+  surveyAnswers: { [key: number]: number | undefined },
 }
 
 const initialState:iAppStateSlicer = {
     isExist: false,                        // есть ли юзер в локал сторедж
     open: false,                          // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
-    calendareDay: format(new Date(), 'MM/dd/yyyy HH:mm:ss').slice(0,10), // дефолтное состояние календаря, текущий день
+    calendareDay: format(new Date(), dateFormat).slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
     intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
     cannulationAtNight: {
       value: true,
-      timeStamp: format(new Date(), 'MM/dd/yyyy HH:mm:ss')
+      timeStamp: format(new Date(), dateFormat)
     },
     urineMeasure: false,
     dayGoalOfDrinkWater: 1000,
     scaleLiquidPopup: false,
     openModalNightMode: false,
     helperForModalTurnOnNightMode: false,
+    surveyAnswers: {},
 
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
     reducers: {
-      changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояине приложение, 
+      changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояние приложение, 
         state.isExist = action.payload;
       },
       setWhetherCountUrine: (state, action:PayloadAction<boolean>) => {
@@ -87,7 +90,14 @@ const appStateSlice = createSlice({
       },
       setHelperForModalTurnOnNightMode: (state, action:PayloadAction<boolean>) => {
         state.helperForModalTurnOnNightMode = action.payload;
-      }
+      },
+      saveAnswer: (state, action:PayloadAction<{ questionId: number; answerId: number }>) => {
+        const { questionId, answerId } = action.payload;
+        state.surveyAnswers[questionId] = answerId;
+      },
+      resetAnswers: (state) => {
+        state.surveyAnswers = {};
+      },
     }
 })
 export const {
@@ -104,7 +114,9 @@ export const {
     setDayGoalOfDrinkWater,
     changeScalePopup,
     switchNightModeModal,
-    setHelperForModalTurnOnNightMode
+    setHelperForModalTurnOnNightMode,
+    saveAnswer,
+    resetAnswers,
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

@@ -14,6 +14,8 @@ const generateEvenNumbersOfSize = (): Option[] => { // генерируем то
     return evenNumbers;
 };
 
+export const dateFormat = 'yyyy-MM-dd HH:mm:ss';
+
 const filters = [
     {
         id: 'Vse',

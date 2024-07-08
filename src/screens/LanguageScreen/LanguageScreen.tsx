@@ -48,7 +48,7 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
           Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver:true }),
           Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver:true }),
         ]).start();
-      };
+    };
     
     const handleBegin = () => { // начать пользоваться
         if(chosenLanguage && chosenLanguage.title.length > 0){
@@ -56,8 +56,8 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
             navigation.navigate('FirstDataScreen');
             Vibration.cancel();
         }else{
-           Vibration.vibrate(50, true)
-           startShakeAnimation()
+           Vibration.vibrate(50, true);
+           startShakeAnimation();
         }
     }
 

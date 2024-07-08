@@ -65,8 +65,6 @@ interface iJournal {
     urineDiary: iDairyRecord[],
     urineChart: iChart[],
     drankWaterChart: iChart[],
-    filtredRecordByDate: iDairyRecord[],
-    statisticsPerDay: iStatisticsPerDay,
     modalCustomizePdfDocument: boolean,
     checkBoxAddSurveyInPdf: boolean,
 }

@@ -56,7 +56,7 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {
     }
 
     const downLoadSurveyPdf = async () => {
-        const pdf = await generatePdfPattern({filteredRecordByDate: null, answers: answersState, userData: userData});
+        const pdf = await generatePdfPattern({showSurvey: true, filteredRecordByDate: null, answers: answersState, userData: userData});
         const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true});
 
         const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();

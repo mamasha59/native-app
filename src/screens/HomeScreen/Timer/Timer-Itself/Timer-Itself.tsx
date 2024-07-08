@@ -10,7 +10,14 @@ import IntervalUI from "../IntervalUI/IntervalUI";
 import { SvgComponentText } from "../SvgComponentText/SvgComponentText";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../../store/slices/timerStatesSlice";
-import { addBadgesJournalScreen, changeStateOfTimerTitleForFirstTimeInApp, ifCountUrineChangeState, popupLiquidState, setHelperForModalTurnOnNightMode, switchCannulationAtNightNight, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
+import { 
+    addBadgesJournalScreen,
+    changeStateOfTimerTitleForFirstTimeInApp,
+    ifCountUrineChangeState,
+    popupLiquidState,
+    setHelperForModalTurnOnNightMode,
+    switchCannulationAtNightNight,
+    switchNightModeModal } from "../../../../store/slices/appStateSlicer";
 import { addUrineDiaryRecord, decreaseCatheterAmount } from "../../../../store/slices/journalDataSlice";
 import { dateFormat } from "../../../../utils/const";
 
@@ -68,7 +75,6 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
         autoStart: false,
         onExpire: () => {
         setInitialStrip(105);
-        // schedulePushNotification('О нет! Начался нормальный интервал!', 'Не забудь прокатетеризироваться!');
         dispatch(whetherStartFromCountdown(false));
         setPartTime({firstPartTime: true , secondPartTime: true, thirdPartTime: true}); // делаем Нормальный интервал активным, там время идет на возрастание
         setStartFromСountdown(false);

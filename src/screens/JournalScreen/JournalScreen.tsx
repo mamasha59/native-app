@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { resetBadges, setCalendareDay } from "../../store/slices/appStateSlicer";
 import Statistics from "./Statistics/Statistics";
 import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
-import { handleModalCustomizePdfDocument, setFiltredRecordsByDate, setStatisticsPerDay } from "../../store/slices/journalDataSlice";
+import { handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 import FilterCategories from "./FilterCategories/FilterCategories";
 import ListOfCalendarDays from "./Calendar/ListOfCalendarDays/ListOfCalendarDays";
 import ModalCustomizePdf from "./ModalCustomizePdf/ModalCustomizePdf";
@@ -89,7 +89,6 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
         
       const filteredRecords = applyFilter(todayJournal, filterSetting);
       setFiltredJournalRecords(filteredRecords);
-      dispatch(setFiltredRecordsByDate(filteredRecords));
       setLoading(false); // Скрыть индикатор загрузки
     }, 500);
 
@@ -117,7 +116,6 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
     }
 
     setStatisticPerDay(setStatistics);
-    dispatch(setStatisticsPerDay(setStatistics));
   },[calendareDay,urineDiary, day]);
 
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку

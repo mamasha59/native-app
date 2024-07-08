@@ -67,9 +67,9 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         <Text className="text-base" style={{fontFamily:'geometria-bold'}}>Укажите ваше обычное время сна:</Text>
         <View className="flex-row items-center flex-1">
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>c</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart}/>
+            <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart || 'Выбрать'}/>
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>до</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd}/>
+            <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd || 'Выбрать'}/>
             <View className="w-[40px] h-[40px] items-center justify-center">
                 <Pencil/>
             </View>

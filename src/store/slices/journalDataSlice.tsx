@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { iChart, iDairyRecord, iJournal } from "../../types";
-import { active } from "d3";
 
 const initialState:iJournal = {
     initialCathetherAmount: {
@@ -68,8 +67,6 @@ const initialState:iJournal = {
             value: 0
         },
     ],
-    filtredRecordByDate: [],
-    statisticsPerDay: {},
     modalCustomizePdfDocument: false,
     checkBoxAddSurveyInPdf: false,
 }
@@ -126,12 +123,6 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
                 }
             }  
         },
-        setFiltredRecordsByDate: (state, action: PayloadAction<iDairyRecord[]>) => {
-            state.filtredRecordByDate = action.payload
-        },
-        setStatisticsPerDay: (state, action: PayloadAction<{}>) => {
-            state.statisticsPerDay = action.payload
-        },
         handleModalCustomizePdfDocument: (state, action: PayloadAction<boolean>) => {
             state.modalCustomizePdfDocument = action.payload;
         },
@@ -148,8 +139,6 @@ export const {
     addChartValueToCurrentDay,
     addChartValueDrankWaterToCurrentDay,
     decreaseCatheterAmount,
-    setFiltredRecordsByDate,
-    setStatisticsPerDay,
     handleModalCustomizePdfDocument,
     handleCheckBoxAddSurveyInPdf
     } = journalDataSlice.actions;

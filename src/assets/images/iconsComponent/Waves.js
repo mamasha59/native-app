@@ -8,7 +8,7 @@ const Waves = () => {
     <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
     <Path
       fill={setting.urineMeasure && setting.ifCountUrinePopupLiquidState ? '#fdcb6e' : '#3bacf7'}
-      d="M0 96h48c48 0 144 0 240 16s192 48 288 42.7c96-5.7 192-47.7 288-53.4 96-5.3 192 26.7 288 37.4 96 10.3 192 .3 240-5.4l48-5.3v192H0Z"
+      d="m 0 96 l 40 -6 c 123 -15 276 28 440 27.3 c 160 10.7 320 -21.3 480 -32 c 160 -10.3 320 -0.3 400 5.4 l 80 5.3 l 0 224 l -80 0 c -80 0 -240 0 -400 0 c -160 0 -320 0 -480 0 c -160 0 -320 0 -400 0 l -80 0 z"
     />
   </Svg>
   )

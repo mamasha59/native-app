@@ -65,6 +65,7 @@ const NoticesOfWaterConsumption = () => {
                         style={{fontFamily:'geometria-bold'}}
                         keyboardType="numeric"
                         maxLength={4}
+                        selectTextOnFocus
                         className="text-[15px] max-w-[45px] border-b flex-1 text-center p-0 m-0"/>
                     <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>мл</Text>
                 </View>

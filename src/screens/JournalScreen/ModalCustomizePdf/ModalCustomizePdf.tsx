@@ -43,9 +43,11 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const [endDate, setEndDate] = useState<string | null>(null);
       
     const maxDate = format(new Date(), dateFormat).slice(0,10);
-
     useEffect(() => {
       setStartDate(calendareDay);
+      setMarkedDates({
+        [calendareDay] : { color: '#50cebb', textColor: 'white' }
+      })
     },[])
 
     const onDayPress = (day: DateData) => {
@@ -98,54 +100,56 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const handleButtonSaveOrShare = async () => { // generate Pdf from Html and share it      
       dispatch(handleCheckBoxAddSurveyInPdf(false)); // switch checkbox of Survey
       const dateRecords:FilteredRecords = {};
-
-      Object.keys(markedDates).forEach(date => {
-          dateRecords[date] = [];
-      });
+      if (Object.keys(markedDates).length > 0){
+        Object.keys(markedDates).forEach(date => {
+            dateRecords[date] = [];
+        });
+      
+        urineDiary.forEach(record => {
+            const timeStamp = record.timeStamp;
+            const recordDate = timeStamp.split(' ')[0];
     
-      urineDiary.forEach(record => {
-          const timeStamp = record.timeStamp;
-          const recordDate = timeStamp.split(' ')[0];
-  
-          if (dateRecords[recordDate]) {
-              dateRecords[recordDate].push(record);
-          }
-      });
+            if (dateRecords[recordDate]) {
+                dateRecords[recordDate].push(record);
+            }
+        });
+        const pdf = await generatePdfPattern({showSurvey: checkBoxAddSurveyInPdf, filteredRecordByDate: dateRecords, answers: surveyAnswers, userData: userData});
 
-      const pdf = await generatePdfPattern({filteredRecordByDate: dateRecords, answers: surveyAnswers, userData: userData});
+        if(dateRecords) {
+          const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true});
 
-      if(dateRecords) {
-        const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true});
-
-        if(buttonName === 'download'){          
-          if (Platform.OS === "android") {
-            const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-        
-            if (permissions.granted) {
-              const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
-        
-              await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Yor-Journal', 'application/pdf')
-                .then(async (uri) => {
-                  await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
-                })
-                .catch(e => console.log(e))
-                .finally(() => handleModalState())
+          if(buttonName === 'download'){          
+            if (Platform.OS === "android") {
+              const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+          
+              if (permissions.granted) {
+                const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+          
+                await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'Yor-Journal', 'application/pdf')
+                  .then(async (uri) => {
+                    await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
+                  })
+                  .catch(e => console.log(e))
+                  .finally(() => handleModalState())
+              } else {
+                Sharing.shareAsync(uri);
+              }
             } else {
               Sharing.shareAsync(uri);
             }
           } else {
-            Sharing.shareAsync(uri);
+            const isSharingExist = Sharing.isAvailableAsync();
+            if(!isSharingExist) {
+              Alert.alert('Doesnt work on this device!');
+              return;
+            }
+            await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'});
           }
-        } else {
-          const isSharingExist = Sharing.isAvailableAsync();
-          if(!isSharingExist) {
-            Alert.alert('Doesnt work on this device!');
-            return;
-          }
-          await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'});
         }
+        handleModalState();
+      } else {
+        Alert.alert('Выберите интервал!')
       }
-      handleModalState();
     };
 
     const handlePressButtonSurvey = () => {
@@ -205,7 +209,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
                           markedDates={markedDates}
                           firstDay={1}
                           onDayPress={onDayPress}
-                          theme={{todayTextColor:'#fff', todayBackgroundColor:'#088ee8ac', textDayFontWeight:'900'}}
+                          theme={{textDayFontWeight:'900'}}
                         />
                         <View className="flex-row  gap-2">
                             <TouchableOpacity onPress={() => getLastThreeDays(3)} activeOpacity={.7} className="px-2 items-center">
@@ -244,7 +248,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
 
                       <TouchableOpacity onPress={handlePressButtonUserData} activeOpacity={.7} className="items-center justify-center flex-row mt-4">
                           <View className="w-5 h-5 border border-main-blue p-2 items-center justify-center rounded-full mr-2">
-                            {userData.name?.length && <View className="bg-main-blue rounded-full w-4 h-4"></View>}
+                            {userData.name?.length! > 0 && <View className="bg-main-blue rounded-full w-4 h-4"></View>}
                           </View>
                           <Text style={{fontFamily:'geometria-bold'}} className="text-black text-base text-center leading-[20px]">
                              {userData.name?.length ? 'Изменить данные о себе' : 'Заполнить данные о себе'}

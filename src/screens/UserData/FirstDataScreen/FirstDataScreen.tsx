@@ -1,9 +1,9 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
+import { Animated, Text, TouchableOpacity, Vibration, View } from "react-native";
+import { useRef, useState } from "react";
 
 import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setInterval } from "../../../store/slices/timerStatesSlice";
 import SleepTimeStartEnd from "../../NightMode/SleepTimeStartEnd/SleepTimeStartEnd";
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
@@ -13,13 +13,16 @@ import ToggleCannulationAtNight from "../../../components/ToggleCannulationAtNig
 interface iFirstDataScreen extends NavigationPropsWelcome<'FirstDataScreen'>{}
 
 const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
+    const dispatch = useAppDispatch();
+    const {timeSleepStart, timeSleepEnd} = useAppSelector(state => state.nightOnDoarding);
+
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
+    const shakeAnimation = useRef(new Animated.Value(0)).current;
 
     const [newInterval, setNewInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 4,
         selectedIndexMinutes: 0,
     })
-    const dispatch = useAppDispatch();
 
     const handleModalSetInterval = () => {
         setDatePickerVisibility(!isDatePickerVisible);
@@ -34,21 +37,36 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
         handleModalSetInterval();
     }
 
+    const startShakeAnimation = () => {
+        Animated.sequence([
+          Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver:true }),
+          Animated.timing(shakeAnimation, { toValue: 10, duration: 50, useNativeDriver:true }),
+          Animated.timing(shakeAnimation, { toValue: -10, duration: 50, useNativeDriver:true }),
+          Animated.timing(shakeAnimation, { toValue: 0, duration: 50, useNativeDriver:true }),
+        ]).start();
+    };
+
     const proceedNextScreen = () => {
-        navigation.navigate('SecondDataScreen');
+        if(timeSleepStart && timeSleepEnd){
+            navigation.navigate('SecondDataScreen');
+            Vibration.cancel();
+        }else {
+            Vibration.vibrate(50, true);
+            startShakeAnimation();
+        }
     }
 
   return (
     <WelcomeLayout currentScreen={1} handleProceed={proceedNextScreen} buttonTitle="продолжить">
-        <View className="mb-4">
-            <Text className="text-[#000] text-xl text-center leading-5" style={{fontFamily:'geometria-bold'}}>Вас приветствует умный помошник Nelaton.</Text>
-        </View>
-        <View className="mb-4">
+        <Text className="text-[#000] text-xl text-center leading-5" style={{fontFamily:'geometria-bold'}}>Вас приветствует умный помошник Nelaton.</Text>
+        <View className="my-4 flex-1">
             <Text className="text-[#000] text-base leading-5" style={{fontFamily:'geometria-regular'}}>
                 Я буду напоминать вам о катетеризации. Пожалуйста, ответьте на несколько простых вопросов, что бы я мог настроить план катетеризаций.
             </Text>
         </View>
-        <SleepTimeStartEnd showInfo={false}/>
+        <Animated.View className='flex-1' style={{ transform: [{ translateX: shakeAnimation }] }}>
+            <SleepTimeStartEnd showInfo={false}/>
+        </Animated.View>
         <ToggleCannulationAtNight/>
         <Text className="text-base mr-3" style={{fontFamily:'geometria-bold'}}>Укажите интервал катетеризации:</Text>
         <View className="flex-row items-center justify-center my-3">

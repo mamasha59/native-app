@@ -73,6 +73,7 @@ const NoticesOfRemainCaths = () => {
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
                     maxLength={1}
+                    selectTextOnFocus
                     className="text-[15px] border-b max-w-[40px] flex-1 text-center"/>
                 <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>дней</Text>
             </View>
@@ -89,6 +90,7 @@ const NoticesOfRemainCaths = () => {
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
                     maxLength={3}
+                    selectTextOnFocus
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
                 <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>шт</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center">

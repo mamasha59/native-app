@@ -3,11 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
     cannulationAtNight: true,
-    timeSleepStart: 'Выбрать',
-    timeSleepEnd: 'Выбрать',
-    timeWhenAskToActivate: 'Выбрать',
+    timeSleepStart: '',
+    timeSleepEnd: '',
+    timeWhenAskToActivate: '',
     morningNotice: true,
-    timeOfMorningNotice: 'Выбрать',
+    timeOfMorningNotice: '',
     reducingFluidIntakeTimeOfNotice: 2,
     reducingFluidIntake: true,
 }

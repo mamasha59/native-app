@@ -59,6 +59,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
                     maxLength={2}
+                    selectTextOnFocus
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
                 <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}> мин.</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">

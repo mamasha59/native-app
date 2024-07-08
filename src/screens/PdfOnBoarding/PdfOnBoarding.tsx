@@ -169,7 +169,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     name={"catheterInfo"}
                     inputMode={Keyboard.String}
                     maxLength={40}
-                    isRequired
+                    isRequired={false}
                     multiline
                     />
             </View>

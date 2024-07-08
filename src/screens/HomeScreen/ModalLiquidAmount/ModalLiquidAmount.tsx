@@ -13,7 +13,7 @@ import { dateFormat } from "../../../utils/const";
 
 const ModalLiquidAmount = () => {
 
-    const [liquidValue, setLiquidValue] = useState<string>('');      // значение полосы прокрутки
+    const [liquidValue, setLiquidValue] = useState<string>('150');      // значение полосы прокрутки
     const dispatch = useAppDispatch();                             // изменение состояние попапа
     const settings = useAppSelector((state) => state.appStateSlice); // состояние попапа
   
@@ -64,7 +64,7 @@ const ModalLiquidAmount = () => {
 
     const handleIfCountUrine = () => {
       if(settings.ifCountUrinePopupLiquidState){
-        Alert.alert('Пожалуйста, укажите сколько вы выписали.', 'Если вы не хотите постоянно указывать значение, то это можно изменить на экране Профиля.', 
+        Alert.alert('Пожалуйста, укажите сколько было выделено мочи.', 'Если вы не хотите постоянно указывать значение, то это можно изменить на экране Профиля.', 
         [{
           text: 'Хорошо, я понял.',
         }]
@@ -91,20 +91,20 @@ const ModalLiquidAmount = () => {
 
           <View className="flex-1 w-full items-center justify-center">
             {settings.ifCountUrinePopupLiquidState && !settings.scaleLiquidPopup &&         
-              <View className="mb-4">
+              <View className="mb-4" style={{zIndex:22}}>
                   <Text style={{fontFamily:'geometria-regular'}}>Не измеряли?</Text>
                   <TouchableOpacity onPress={handleAddRecordWithoutUrineMeasure} className="py-2">
                     <Text style={{fontFamily:'geometria-regular'}} className="underline">продолжить без записи обьема выделеной мочи</Text>
                   </TouchableOpacity>
               </View>}
 
-            <Text style={{fontFamily:'geometria-bold'}} className="text-2xl mb-3 text-center">{settings.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
+            <Text style={{fontFamily:'geometria-bold', zIndex:22}} className="text-xl mb-3 text-center">{settings.ifCountUrinePopupLiquidState ? 'Сколько выделено мочи?' : 'Сколько вы выпили жидкости?'}</Text>
             <Glass customValue={+liquidValue} onValueChange={setLiquidValue}/>
              {!settings.ifCountUrinePopupLiquidState && 
              !settings.scaleLiquidPopup &&
                <View className="flex-row items-center py-2 flex-wrap gap-2">
                 {customMl.map((item, index) => 
-                  <TouchableOpacity onPress={() => setLiquidValue(item)} key={index} activeOpacity={.6} className="p-1 items-center border bg-[#fff] border-main-blue rounded-xl">
+                  <TouchableOpacity onPress={() => setLiquidValue((prev) => prev = item)} key={index} activeOpacity={.6} className="p-1 items-center border bg-[#fff] border-main-blue rounded-xl">
                     <GlassIcon/> 
                     <Text style={{fontFamily:'geometria-regular'}} className="text-[#000]">{item} мл.</Text>
                   </TouchableOpacity>

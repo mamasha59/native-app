@@ -6,9 +6,10 @@ interface iGeneratePdfPattern{
     filteredRecordByDate: FilteredRecords | null,
     userData: iUser,
     answers?: { [key: number]: number | undefined };
+    showSurvey: boolean,
 }
 
-export const generatePdfPattern = async ({answers, filteredRecordByDate,userData}:iGeneratePdfPattern) => {
+export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey}:iGeneratePdfPattern) => {
     return `
     <html lang="rus">
     <head>
@@ -147,23 +148,22 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                 </section>`
             ) : null
         )).join('')}
-
-       ${answers && 
-         `<section style="padding: 0 20px;">
-            <h2>Catheterization Satisfaction Questionnaire</h2>
-            ${questions.map(question => `
-                <div key=${question.id}>
-                    <p>${question.text}</p>
-                    ${question.answers.map(answer => `
-                        <div style="padding-left: 10px; max-width: fit-content;">
-                            <p style="font-weight: 700; color: ${answer.iconColor}; ${answers![question.id] === answer.id ? 'background-color: #bdc3c77d;' : ''}">
-                                ${answer.text}
-                            </p>
-                        </div>
-                    `).join('')}
-                </div>
-            `).join('')}
-        </section>`}
+       ${showSurvey ?
+            `<section style="padding: 0 20px;">
+                <h2>Catheterization Satisfaction Questionnaire</h2>
+                ${questions.map(question => `
+                    <div key=${question.id}>
+                        <p>${question.text}</p>
+                        ${question.answers.map(answer => `
+                            <div style="padding-left: 10px; max-width: fit-content;">
+                                <p style="font-weight: 700; color: ${answer.iconColor}; ${answers![question.id] === answer.id ? 'background-color: #bdc3c77d;' : ''}">
+                                    ${answer.text}
+                                </p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('')}
+            </section>` : ''}
     </body>
     <footer>
         <p style="text-align: end; width: 100%;">Создано в приложении Use Nelaton Easily</p>

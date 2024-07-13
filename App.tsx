@@ -22,7 +22,7 @@ import RootNavigations from './src/components/RootNavigations/RootNavigations';
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
 
-Notifications.setNotificationHandler({
+Notifications.setNotificationHandler({ // norices foreground
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
@@ -30,7 +30,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-Notifications.setNotificationCategoryAsync("welcome", [
+Notifications.setNotificationCategoryAsync("its-about-cannulation", [
   {
     buttonTitle: "Выполнить катетеризацию",
     identifier: "first",

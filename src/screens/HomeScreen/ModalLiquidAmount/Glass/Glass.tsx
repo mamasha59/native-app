@@ -1,14 +1,13 @@
 import { Dimensions, TextInput, Vibration, KeyboardAvoidingView, Platform, Keyboard, Text, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, {useAnimatedProps, useAnimatedStyle, useSharedValue, runOnJS, withTiming, withSpring, useDerivedValue, Easing } from "react-native-reanimated";
+import Animated, {useAnimatedProps, useAnimatedStyle, useSharedValue, runOnJS, withTiming, withSpring, useDerivedValue } from "react-native-reanimated";
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
-import { Canvas, Path, Group, Circle} from '@shopify/react-native-skia';
+import { Canvas, Path, Group} from '@shopify/react-native-skia';
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { changeScalePopup } from "../../../../store/slices/appStateSlicer";
-import AnimatedWaves from "../AnimatedWaves/AnimatedWaves";
 
 const windowSize = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -19,8 +18,13 @@ interface iGlass {
 }
 
 const Glass = ({onValueChange, customValue}:iGlass) => {
+  const backgroundColorDrankWater = '#3bacf7';
+  const backgroundUrineMeasure = '#fdcb6e';
 
+  const modalUrineMaxPointOfScroll = 500;
+  const modalUrineMaxPointOfInput = 1000;
   const setting = useAppSelector(state => state.appStateSlice);
+  const journal = useAppSelector(state => state.journal);
   const dispatch = useAppDispatch();
 
   const [ml, setMl] = useState<number>(400); // the hight point of scroll -- it will change for 500 if count urine turned "true" after press button on timer
@@ -35,7 +39,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   const scaleRangePointer = useSharedValue(1);// scale of rangeButton
 
   const ifCountUrine = setting.urineMeasure && setting.ifCountUrinePopupLiquidState; // если выбрано измерение мочи
-  const maxScrollHeight = windowSize.height / 2; // bottom point of max scroll down
+  const maxScrollHeight = windowSize.height / 1.8; // bottom point of max scroll down
   
   const propsLabel = useAnimatedProps(() => ({ // animated input value
     text: `${Math.round(value.value)}` ,
@@ -77,27 +81,12 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
   useEffect(() => { // to set max point on gest if count urine state change
     if(ifCountUrine) {
-      setMl(500);
+      setMl(modalUrineMaxPointOfScroll);
     }
-  },[setting]);
+  },[]);
 
-  useEffect(() => { //TODO 
+  useEffect(() => {
     value.value = customValue;
-    console.log(scrollRangeButton.value);
-    
-    // if (customValue === 100) {
-    //   scrollRangeButton.value = {y: 333};
-    //   startOfInnerGlass.value = {y: 333};
-    //   start.value = {y: 333}
-    // } else if (customValue === 200) {
-    //   scrollRangeButton.value = {y: 233};
-    //   startOfInnerGlass.value = {y: 233};
-    //   start.value = {y: 233}
-    // } else {
-    //   scrollRangeButton.value = {y: 100};
-    //   startOfInnerGlass.value = {y: 100};
-    //   start.value = {y: 100}
-    // }
   }, [customValue]);
 
   useEffect(() => { // blur input if keyboard is closed
@@ -110,7 +99,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   }, []);
 
   const triggerVibration = () => {
-    Vibration.vibrate(100, false);
+    Vibration.vibrate(7, false);
   }
   const cancelVibration = () => {
     Vibration.cancel();
@@ -122,65 +111,101 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
       runOnJS(handleBlur)();
     })
     .onUpdate((e) => {
-        runOnJS(handleBlur)();
-        const combinedValue = Math.max(Math.min(e.translationY + start.value.y, maxScrollHeight), 0);
-        scrollRangeButton.value = { y: combinedValue };
-      console.log(combinedValue);
+      runOnJS(handleBlur)();
+      const combinedValue = Math.max(Math.min(e.translationY + start.value.y, maxScrollHeight), 0);
+      scrollRangeButton.value = { y: combinedValue };
+    
+      value.value = Math.round(Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * ml, ml) / 10, 1)) * 10;
       
-        value.value = Math.round(Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * ml, ml) / 10, 0)) * 10;
-        
-        startOfInnerGlass.value = {y: combinedValue}; // change height of inner colored background
+      startOfInnerGlass.value = {y: combinedValue}; // change height of inner colored background
 
-        const cancelThreshold = ifCountUrine ? [0, 500] : [0, 400]; // to stop vibration when reach points
-      
-        if (cancelThreshold.includes(value.value)) {
-          runOnJS(cancelVibration)();
-        } else {
-          runOnJS(triggerVibration)();
-        }
+      const cancelThreshold = ifCountUrine ? [10, modalUrineMaxPointOfScroll] : [10, ml]; // to stop vibration when reach points
+    
+      if (cancelThreshold.includes(value.value)) {
+        runOnJS(cancelVibration)();
+      } else {
+        runOnJS(triggerVibration)();
+      }
     })
     .onEnd((e) => {
       scaleRangePointer.value = 1;
-      start.value = { y: scrollRangeButton.value.y }; // что бы продолжить с последнего места
+      start.value = { y: scrollRangeButton.value.y }; // to start when was scroll
       runOnJS(onValueChange)(`${Math.round(value.value)}`);
       runOnJS(cancelVibration)();
     })
     .minDistance(3);
 
     const bgColor = () => {
-       return ifCountUrine ? '#fdcb6e' : '#3bacf7';
+      return ifCountUrine ? backgroundUrineMeasure : backgroundColorDrankWater;
     }
 
-    const onChangeInputText = (text: string) => {
-      const valueInput = text.replace(/\D/g, ''); // "123456"
+    const convertInputToScrollValueAndSetScroll = (inputValue:number) => {
+      const inputMin = 0;
+      const inputMax = ifCountUrine? 1000 : 400;
+      const scrollMin = ifCountUrine ? 500 : 400;
+      const scrollMax = 0;
+      // Линейное преобразование inputValue в диапазон scroll
+      const scrollValue = scrollMin + ((inputValue - inputMin) * (scrollMax - scrollMin)) / (inputMax - inputMin);
 
-      startOfInnerGlass.value = {y: +text};
-      if(setting.ifCountUrinePopupLiquidState){
-        if (+valueInput > 1000){
-          scrollRangeButton.value = { y: Math.max(Math.min(+valueInput + start.value.y, maxScrollHeight), 0)};
-          value.value = 1000;
-        } else{
-          onValueChange(valueInput);
-          value.value = +valueInput;
-        }
-      }
-      else {
-        if (+valueInput > 400){
-          value.value = 400;
-         } else {
-            onValueChange(valueInput);
-            value.value = +valueInput;
-         } 
-      }
+      scrollRangeButton.value = {y: scrollValue};
+      startOfInnerGlass.value = {y: scrollValue};
+      start.value = {y: scrollValue};
     };
 
-    const animatedClip = useDerivedValue(() => {
+    const onChangeInputText = (text: string) => {
+      let valueInput = text.replace(/\D/g, ''); // "123456"
+      if(valueInput[0] === '0'){
+        value.value = 1;
+      } else {
+        if(ifCountUrine){
+          if (+valueInput > modalUrineMaxPointOfInput){
+            scrollRangeButton.value = { y: Math.max(Math.min(+valueInput + start.value.y, maxScrollHeight), 0)}; // set max scroll if input value is bigger than 1000
+            value.value = modalUrineMaxPointOfInput;
+            const max = modalUrineMaxPointOfInput;
+            convertInputToScrollValueAndSetScroll(max);
+          } else {
+            onValueChange(valueInput); // set value to useState hook, next to save value in store
+            value.value = +valueInput; // ui
+            convertInputToScrollValueAndSetScroll(+valueInput); // set correct scroll
+          }
+        }
+        else {
+          if (+valueInput > 400){
+            value.value = 400;
+            const max = 400;
+            convertInputToScrollValueAndSetScroll(max);
+          } else {
+            onValueChange(valueInput); // set value to useState hook, next to save value in store
+            value.value = +valueInput; // ui
+            convertInputToScrollValueAndSetScroll(+valueInput); // set correct scroll
+          } 
+        }
+      }
+    };
+    
+    const animatedClip = useDerivedValue(() => { // animated inner block scroll
       return  `M 0 554 
       L 1 ${startOfInnerGlass.value.y} 
       C 100 ${startOfInnerGlass.value.y + 50}, 200 ${startOfInnerGlass.value.y - 50}, 300 ${startOfInnerGlass.value.y} 
       S 400 ${startOfInnerGlass.value.y + 50}, 441 ${startOfInnerGlass.value.y}
       L 440 554 Z`
     }, [startOfInnerGlass.value.y]);
+
+    // useEffect(() => {
+    //   if(journal.urineDiary.length > 0){
+    //     if(ifCountUrine){
+    //       const lastRecord = journal.urineDiary.find((e) => e.amountOfReleasedUrine);        
+    //       if (lastRecord?.amountOfReleasedUrine) {
+    //         convertInputToScrollValueAndSetScroll(lastRecord.amountOfReleasedUrine);
+    //       }
+    //     } else {
+    //       const lastRecord = journal.urineDiary.find((e) => e.amountOfDrankFluids);
+    //       if(lastRecord?.amountOfDrankFluids){
+    //         convertInputToScrollValueAndSetScroll(lastRecord.amountOfDrankFluids);
+    //       }
+    //     }
+    //   }
+    // }, [ifCountUrine]);
 
   return (
     <View className="flex-1 w-full">
@@ -191,7 +216,14 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
               <Path
                 path="M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z"
                 style="stroke"
-                color={'#0bc6ec'}
+                color={backgroundColorDrankWater}
+                strokeWidth={2}
+                transform={[{ scale: 5.7 }, { translateX: -18 }, { translateY: -8.8 }]}
+              />
+              <Path
+                path="M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z"
+                style="fill"
+                color={'#ecf0f1'}
                 strokeWidth={1.5}
                 transform={[{ scale: 5.7 }, { translateX: -18 }, { translateY: -8.8 }]}
               />
@@ -207,7 +239,6 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
         
             <GestureDetector gesture={gesture}>
               <Animated.View className='flex-1 absolute items-center top-0 left-0 right-0 h-[60px]' style={[animatedStyleScrollUpDown]}>
-                {/* <AnimatedWaves/> */}
                 <Animated.View className="items-center absolute bg-[#3498db] p-2 -top-4 rounded-full" style={[{ zIndex: 4 }, animatedStyleScaleRangePointer]}>
                   <Entypo name="select-arrows" size={28} color="#fff" />
                 </Animated.View>

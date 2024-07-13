@@ -19,12 +19,16 @@ const TopBar = () => {
         ? (
           <View className="justify-center flex-grow-0">
             <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-[#fff]">Use</Text>
-            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-[#FFFFFF]">Nelaton</Text>
+            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-[#fff]">Nelaton</Text>
             <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-[#fff]">easily</Text>
           </View>
         )
         // КНОПКА НАЗАД
         : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
+        <View className="items-center flex-1">
+          <Text className="text-[#fff]" style={{fontFamily: 'geometria-regular'}}>Цель на день</Text>
+          <Text className="text-[#fff]" style={{fontFamily: 'geometria-bold'}}>1000 мл.</Text>
+        </View>
         <TouchableOpacity onPress={() => navigation.navigate('Recomendation')}>
             <RecomendationIcon color={'#fff'} width={20}/>
         </TouchableOpacity>

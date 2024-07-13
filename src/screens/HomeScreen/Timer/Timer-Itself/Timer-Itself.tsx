@@ -45,7 +45,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     const appState = useRef(AppState.currentState);
     const [appStateVisible, setAppStateVisible] = useState(appState.current);
    
-    const timeWhenAskToActivateNightmode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now);
+    const timeWhenAskToActivateNightMode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now);
     const formattedCurrentTime = parse(format(now, 'HH:mm'), 'HH:mm', new Date());
   
     // ===================== \\ - хук времени на возрастание
@@ -194,6 +194,9 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     },[settings.cannulationAtNight]);
 
     const handlePressCommon = () => {
+        cancelAllScheduledNotificationsAsync();
+        const timeToTrigerNoticeItsAboutCannulation = interval - yellowInterval * 60;        
+        schedulePushNotification('Заголовок','описание', timeToTrigerNoticeItsAboutCannulation);
         if(settings.cannulationAtNight.value){
             dispatch(switchCannulationAtNightNight({   
                 timeStamp: new Date().toString(),
@@ -216,7 +219,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             timerRestart(expiryTimestamp);
         }
         if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
-            schedulePushNotification('Вы прокатетеризировались!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
+            // schedulePushNotification('Вы прокатетеризировались!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
             resetStopwatch(stopwatchOffset, false);
             setStartFromСountdown(true);
             setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
@@ -225,13 +228,13 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             setInitialStrip(0); // обнуляем секундные полоски
         }
     };
-    const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode));
+    const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>(isAfter(formattedCurrentTime, timeWhenAskToActivateNightMode));
 
     useEffect(() => {//TODO fix bag staet doesn change
         if (!settings.helperForModalTurnOnNightMode){
             setIsItTimeToShowModalTurnOnNightMode(false);
             setTimeout(() => {
-                setIsItTimeToShowModalTurnOnNightMode(isAfter(formattedCurrentTime, timeWhenAskToActivateNightmode));
+                setIsItTimeToShowModalTurnOnNightMode(isAfter(formattedCurrentTime, timeWhenAskToActivateNightMode));
             },1000)
         }
     },[])
@@ -315,14 +318,41 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
 export default TimerT;
 
 
-async function schedulePushNotification(title:string,body:string) { // уведомления
+// async function schedulePushNotification(title:string,body:string) { // уведомления
+//     await Notifications.scheduleNotificationAsync({
+//       content: {
+//         title: title,
+//         body: body,
+//         subtitle:'Мы контролируем твою катетеризацию',
+//         data: { data: new Date() },
+//       },
+//       trigger: {seconds:10} ,
+//     });
+//   }
+
+  async function schedulePushNotification(title:string, body:string, time:number) { // уведомления
+    console.log(time);
+    
     await Notifications.scheduleNotificationAsync({
+      identifier: 'its-about-cannulation',
       content: {
+        priority: 'HIGH',
         title: title,
         body: body,
         subtitle:'Мы контролируем твою катетеризацию',
-        data: { data: new Date() },
+        data: {data: new Date()},
+        categoryIdentifier: "its-about-cannulation",
+        color: "blue",
+        sound: "default",
+        vibrate: [0, 255, 255, 255],
       },
-      trigger: {seconds:10} ,
+      trigger: {seconds: time} ,
     });
   }
+
+async function cancelAllScheduledNotificationsAsync() {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+}
+async function getAllScheduledNotificationsAsync() {
+    await Notifications.getAllScheduledNotificationsAsync();
+}

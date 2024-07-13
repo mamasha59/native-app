@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, Alert, View } from "react-native";
+import * as Notifications from 'expo-notifications';
 
 import MainLayout from '../../../Layouts/MainLayout/MainLayout';
 import { persistor } from "../../../store/store";
@@ -12,6 +13,7 @@ const ProfileScreen = () => {
   const removeProfile = async () => { // удаление инфы из локал стореджа, временно для разработки
     Alert.alert('Закройте приложение, и откройте снова')
     persistor.purge();
+    Notifications.dismissAllNotificationsAsync();
   }
 
   return (

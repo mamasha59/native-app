@@ -32,8 +32,8 @@ const IntervalInfo = () => {
       <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-xs">Интервал катетеризации:</Text>
       <Text style={{fontFamily:'geometria-bold'}} className="text-xs text-black">
       {!userData 
-            ? <ActivityIndicator size="small" color="#4BAAC5"/>
-            : `каждые ${newIntervalText}` || "Интервал не задан"}
+        ? <ActivityIndicator size="small" color="#4BAAC5"/>
+        : `каждые ${newIntervalText}` || "Интервал не задан"}
       </Text>
     </View>
   </View>

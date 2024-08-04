@@ -19,7 +19,7 @@ const HomeScreen = () => {
 
   const dispatch = useAppDispatch();
 
-  const openModal = () => dispatch(popupLiquidState(true)); // открытие попапа Учет выпитой жидкости
+  const openModal = () => dispatch(popupLiquidState(true)); // открытие попапа Выпито
 
   const handlePressLeftButton = () => {  // при нажатии на левую кнопку
     setModalLeakageVisible(!modalLeakageVisible);
@@ -32,17 +32,17 @@ const HomeScreen = () => {
         <RestOf/>
         <Timer />
         <DoubleButton
-            handlePressRightButton={openModal}
-            handlePressLeftButton={handlePressLeftButton}
-            textOfLeftButton='Подтекание'
-            textOfRightButton='Учет выпитой жидкости'
-            showIcon
+          handlePressRightButton={openModal}
+          handlePressLeftButton={handlePressLeftButton}
+          textOfLeftButton='Подтекание'
+          textOfRightButton='Выпито'
+          showIcon
         />
       </View>
 
-      <ModalLiquidAmount key={'Учет выпитой жидкости'}/>
+      <ModalLiquidAmount key={'Выпито'}/>
       <ModalLeakageHappened modalLeakageVisible={modalLeakageVisible} setModalLeakageVisible={setModalLeakageVisible} setToastOpened={setToastOpened} key={'leakagemodal'}/>
-      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохраненно!' key={'Подтекание-тоаст'}/>
+      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'Подтекание-тоаст'}/>
     </MainLayout>
   );
 };

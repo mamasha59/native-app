@@ -1,16 +1,25 @@
 import { Dimensions, TextInput, Vibration, KeyboardAvoidingView, Platform, Keyboard, Text, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, {useAnimatedProps, useAnimatedStyle, useSharedValue, runOnJS, withTiming, withSpring, useDerivedValue } from "react-native-reanimated";
+import Animated, 
+{
+  useAnimatedProps,
+  useAnimatedStyle,
+  useSharedValue,
+  runOnJS,
+  withTiming,
+  withSpring,
+} from "react-native-reanimated";
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
-import { Canvas, Path, Group} from '@shopify/react-native-skia';
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { changeScalePopup } from "../../../../store/slices/appStateSlicer";
+import { Svg, G, Path, ClipPath, Defs, Rect } from "react-native-svg";
 
 const windowSize = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+const AnimatedInnerBackgroundPath = Animated.createAnimatedComponent(Path);
 
 interface iGlass {
     onValueChange:  React.Dispatch<React.SetStateAction<string>>,
@@ -24,7 +33,6 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   const modalUrineMaxPointOfScroll = 500;
   const modalUrineMaxPointOfInput = 1000;
   const setting = useAppSelector(state => state.appStateSlice);
-  const journal = useAppSelector(state => state.journal);
   const dispatch = useAppDispatch();
 
   const [ml, setMl] = useState<number>(400); // the hight point of scroll -- it will change for 500 if count urine turned "true" after press button on timer
@@ -39,12 +47,20 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   const scaleRangePointer = useSharedValue(1);// scale of rangeButton
 
   const ifCountUrine = setting.urineMeasure && setting.ifCountUrinePopupLiquidState; // если выбрано измерение мочи
-  const maxScrollHeight = windowSize.height / 1.8; // bottom point of max scroll down
+  const maxScrollHeight = windowSize.height / 1.9; // bottom point of max scroll down
   
   const propsLabel = useAnimatedProps(() => ({ // animated input value
     text: `${Math.round(value.value)}` ,
     defaultValue: `${Math.round(value.value)}`,
-  }))
+  }));
+
+  const animatedPath = useAnimatedProps(() => ({ // animated path of water inside the glass
+    d: `M 0 554 
+    L 1 ${startOfInnerGlass.value.y} 
+    C 146 ${startOfInnerGlass.value.y + 50}, 162 ${startOfInnerGlass.value.y - 50}, 270 ${startOfInnerGlass.value.y} 
+    S 334 ${startOfInnerGlass.value.y + 50}, 440 ${startOfInnerGlass.value.y}
+    L 440 554 Z`,
+  }));
 
   const animatedStyleScrollUpDown = useAnimatedStyle(() => { // scroll animation
     return {
@@ -107,7 +123,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
   const gesture = Gesture.Pan()
     .onStart(() => {
-      scaleRangePointer.value = withSpring(1.4);
+      scaleRangePointer.value = withSpring(1.2);
       runOnJS(handleBlur)();
     })
     .onUpdate((e) => {
@@ -121,7 +137,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
       const cancelThreshold = ifCountUrine ? [10, modalUrineMaxPointOfScroll] : [10, ml]; // to stop vibration when reach points
     
-      if (cancelThreshold.includes(value.value)) {
+      if (cancelThreshold.includes(value.value)  && value.value !== start.value.y) {
         runOnJS(cancelVibration)();
       } else {
         runOnJS(triggerVibration)();
@@ -183,70 +199,70 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
       }
     };
     
-    const animatedClip = useDerivedValue(() => { // animated inner block scroll
-      return  `M 0 554 
-      L 1 ${startOfInnerGlass.value.y} 
-      C 100 ${startOfInnerGlass.value.y + 50}, 200 ${startOfInnerGlass.value.y - 50}, 300 ${startOfInnerGlass.value.y} 
-      S 400 ${startOfInnerGlass.value.y + 50}, 441 ${startOfInnerGlass.value.y}
-      L 440 554 Z`
-    }, [startOfInnerGlass.value.y]);
+    // const animatedClip = useDerivedValue(() => { // animated inner block scroll
+    //   return `M 0 554 
+    //   L 1 ${startOfInnerGlass.value.y} 
+    //   C 100 ${startOfInnerGlass.value.y + 50}, 200 ${startOfInnerGlass.value.y - 50}, 300 ${startOfInnerGlass.value.y} 
+    //   S 400 ${startOfInnerGlass.value.y + 50}, 441 ${startOfInnerGlass.value.y}
+    //   L 440 554 Z`
+    // }, [startOfInnerGlass.value.y]);
 
-    // useEffect(() => {
-    //   if(journal.urineDiary.length > 0){
-    //     if(ifCountUrine){
-    //       const lastRecord = journal.urineDiary.find((e) => e.amountOfReleasedUrine);        
-    //       if (lastRecord?.amountOfReleasedUrine) {
-    //         convertInputToScrollValueAndSetScroll(lastRecord.amountOfReleasedUrine);
-    //       }
-    //     } else {
-    //       const lastRecord = journal.urineDiary.find((e) => e.amountOfDrankFluids);
-    //       if(lastRecord?.amountOfDrankFluids){
-    //         convertInputToScrollValueAndSetScroll(lastRecord.amountOfDrankFluids);
-    //       }
-    //     }
-    //   }
-    // }, [ifCountUrine]);
+    const glassPath = 'M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z';
+    const glassPathSharp = 'M 28 90 L 26 10 C 26 10 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 10 74 10 L 72 90 Z';
+    const changePath = () => !ifCountUrine ? glassPath : glassPathSharp;
 
   return (
     <View className="flex-1 w-full">
       <Animated.View className="flex-1" style={[animatedStyleScale]}>
         <GestureHandlerRootView>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-            <Canvas style={{ flex: 1}}>
-              <Path
-                path="M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z"
-                style="stroke"
-                color={backgroundColorDrankWater}
-                strokeWidth={2}
-                transform={[{ scale: 5.7 }, { translateX: -18 }, { translateY: -8.8 }]}
-              />
-              <Path
-                path="M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z"
-                style="fill"
-                color={'#ecf0f1'}
-                strokeWidth={1.5}
-                transform={[{ scale: 5.7 }, { translateX: -18 }, { translateY: -8.8 }]}
-              />
-              <Group clip={animatedClip}>
-                <Path strokeCap={'butt'}
-                  path="M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z"
-                  style="fill"
-                  color={bgColor()}
-                  transform={[{ scale: 5.6 }, { translateX: -17.42 }, { translateY: -8.1 }]}
+            <View className="w-full h-full overflow-hidden">
+             {ifCountUrine && 
+              <Svg height="30" width='100%'>
+                <Rect
+                  width="100%"
+                  height="30"
+                  fill="rgb(73, 60, 60)"
                 />
-              </Group>
-            </Canvas>
-        
+              </Svg>}
+              <Svg height='100%' width='100%' viewBox="19 17 63 63">
+                <G clipPath="url(#clip)">
+                  <Path // outer glass with border
+                    d={changePath()}
+                    fill={'none'}
+                    stroke={backgroundColorDrankWater}
+                    strokeWidth={2}
+                    // transform={`scale(5.7) translate(-18, -8.8)`}
+                    />
+                  <Path // inner gray background of glass
+                    d={changePath()}
+                    fill={'#ecf0f1'}
+                    strokeWidth={2}
+                  />
+                  <AnimatedInnerBackgroundPath // inner colorful background to fill the glass
+                    animatedProps={animatedPath} scale={'0.21'}
+                    fill={bgColor()}
+                  />
+                </G>
+                <Defs>
+                  <ClipPath id="clip">
+                    <Path
+                      d={changePath()}
+                    />
+                  </ClipPath>
+                </Defs>
+              </Svg>
+            </View>
             <GestureDetector gesture={gesture}>
-              <Animated.View className='flex-1 absolute items-center top-0 left-0 right-0 h-[60px]' style={[animatedStyleScrollUpDown]}>
-                <Animated.View className="items-center absolute bg-[#3498db] p-2 -top-4 rounded-full" style={[{ zIndex: 4 }, animatedStyleScaleRangePointer]}>
+              <Animated.View className='flex-1 absolute items-center top-1 left-0 right-0 h-[60px]' style={[animatedStyleScrollUpDown]}>
+                <Animated.View className="items-center absolute border border-opacity-25 bg-[#3498db] p-2 -top-4 rounded-full" style={[{ zIndex: 4 }, animatedStyleScaleRangePointer]}>
                   <Entypo name="select-arrows" size={28} color="#fff" />
                 </Animated.View>
               </Animated.View>
             </GestureDetector>
             
-        </KeyboardAvoidingView>
-      </GestureHandlerRootView>
+          </KeyboardAvoidingView>
+        </GestureHandlerRootView>
      </Animated.View>
       <View className="mx-auto flex-row mt-2 items-center rounded-md bg-[#fff]">
         <AnimatedTextInput

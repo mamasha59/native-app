@@ -145,6 +145,9 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                             }
                         </tbody>`}
                     </table>
+                    <footer>
+                        <p style="text-align: end; width: 100%;">Создано в приложении Use Nelaton Easily</p>
+                    </footer>
                 </section>`
             ) : null
         )).join('')}
@@ -165,9 +168,6 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                 `).join('')}
             </section>` : ''}
     </body>
-    <footer>
-        <p style="text-align: end; width: 100%;">Создано в приложении Use Nelaton Easily</p>
-    </footer>
 </html>
 <style>
     @page {

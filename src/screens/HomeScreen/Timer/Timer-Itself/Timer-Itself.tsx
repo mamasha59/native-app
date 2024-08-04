@@ -90,7 +90,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     },[interval, timerRunning]);
 
     // ===================== \\
-    useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Оптимального интревала
+    useEffect(() => { // при закрытии приложения таймер будет продолжать работу с правильным временем, этот эффект для Нормальный интервала
         if(!settings.cannulationAtNight.value){
         const updateTimer = () => {
             setLoader(true);
@@ -108,38 +108,42 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
         }
     }, [intervalDifference]);
 
-    useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Крит. интервала, если разница в секундах с записью в журанале больше Оптимального интервала
+    useEffect(() => { // при закрытии приложения таймер будет продолжать работу с Крит. интервала, если разница в секундах с записью в журнале больше Оптимального интервала
         if(!settings.cannulationAtNight.value){
-        const updateStopWatch = async () => {
-            if(!settings.cannulationAtNight.value){
-                setLoader(true);
-                if (intervalDifference && intervalDifference > timerInterval) {
-                    setStartFromСountdown(false);
-                    setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true}); // делаем Критический интервал активным
-                    setInitialStrip(105);
-                    const expiryTimestampDifferenceStopWatch = new Date();
-                    expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
-                    resetStopwatch(expiryTimestampDifferenceStopWatch);
-                }
+            const updateStopWatch = async () => {
+                if(!settings.cannulationAtNight.value){
+                    setLoader(true);
+                    if (intervalDifference && intervalDifference > timerInterval) {
+                        setStartFromСountdown(false);
+                        setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true}); // делаем Критический интервал активным
+                        setInitialStrip(105);
+                        const expiryTimestampDifferenceStopWatch = new Date();
+                        expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
+                        resetStopwatch(expiryTimestampDifferenceStopWatch);
+                    }
                     setLoader(false);
-            };
-        }
-        updateStopWatch();
+                };
+            }
+            updateStopWatch();
         }
     }, [intervalDifference, appStateVisible]);
-    
-    useEffect(() => { // расчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
+    const [daysFromLastCannulation, setDaysFromLastCannulation] = useState<number>(0);
+    useEffect(() => { // рассчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
         if(!settings.cannulationAtNight.value){
             if(journal.urineDiary.length > 0) {
-                const targetDate = parse(journal.urineDiary[0].timeStamp, dateFormat, new Date());
+                const lastRecord = journal.urineDiary.find((e) => e.catheterType)               
+                const targetDate = parse(lastRecord?.timeStamp!, dateFormat, new Date());
                 const currentDate = new Date();
                 const difference = differenceInSeconds(currentDate, targetDate);   
+                // Расчет дней, часов, минут и секунд
+                const days = Math.floor(difference / (24 * 3600));
+                setDaysFromLastCannulation(days);
                 dispatch(setIntervalDifference(difference));
             }
         }
     },[]);
 
-    useEffect(() => { // делаем желтый интервал активным, этот хук если приложени не было закрыто
+    useEffect(() => { // делаем желтый интервал активным, этот хук если приложение не было закрыто
         if(partTime.firstPartTime){
             if(timerTotalSeconds === timerInterval - (yellowInterval * 60)){
                 setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false});
@@ -194,6 +198,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     },[settings.cannulationAtNight]);
 
     const handlePressCommon = () => {
+        setDaysFromLastCannulation(0) // reset days from last cannulation
         cancelAllScheduledNotificationsAsync();
         const timeToTrigerNoticeItsAboutCannulation = interval - yellowInterval * 60;        
         schedulePushNotification('Заголовок','описание', timeToTrigerNoticeItsAboutCannulation);
@@ -219,7 +224,6 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             timerRestart(expiryTimestamp);
         }
         if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
-            // schedulePushNotification('Вы прокатетеризировались!', 'Молодцом! Продолжай катетеризацию правильно, Слава Сереже!');
             resetStopwatch(stopwatchOffset, false);
             setStartFromСountdown(true);
             setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
@@ -230,7 +234,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     };
     const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>(isAfter(formattedCurrentTime, timeWhenAskToActivateNightMode));
 
-    useEffect(() => {//TODO fix bag staet doesn change
+    useEffect(() => {//TODO fix bag state doesnt change
         if (!settings.helperForModalTurnOnNightMode){
             setIsItTimeToShowModalTurnOnNightMode(false);
             setTimeout(() => {
@@ -292,6 +296,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                 stopwatchHours={stopwatchHours}
                 stopwatchMinutes={stopwatchMinutes}
                 stopwatchSeconds={stopwatchSeconds}
+                days={daysFromLastCannulation}
                 timerHours={timerHours}
                 timerMinutes={timerMinutes}
                 timerSeconds={timerSeconds}

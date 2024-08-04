@@ -116,7 +116,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
     }
 
     setStatisticPerDay(setStatistics);
-  },[calendareDay,urineDiary, day]);
+  },[calendareDay,urineDiary,day]);
 
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);

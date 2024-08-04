@@ -16,7 +16,7 @@ import { NavigationPropsRoot } from "../../components/RootNavigations/RootNaviga
 import { handleCheckBoxAddSurveyInPdf, handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 import { generatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
 
-const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {
+const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO set input data
     const { cameFrom } = route.params;
     
     const dispatch = useAppDispatch();

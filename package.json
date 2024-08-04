@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
-    "@miblanchard/react-native-slider": "^2.6.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-picker/picker": "2.7.5",
     "@react-navigation/bottom-tabs": "6.5.20",
@@ -18,8 +17,6 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
     "@reduxjs/toolkit": "2.2.3",
-    "@shopify/react-native-skia": "1.2.3",
-    "d3": "^7.9.0",
     "date-fns": "^3.6.0",
     "expo": "~51.0.11",
     "expo-blur": "~13.0.2",
@@ -64,7 +61,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@types/d3": "^7.4.3",
     "@types/react": "~18.2.79",
     "@types/react-redux": "^7.1.33",
     "@types/uuid": "^9.0.8",

@@ -25,10 +25,6 @@ const TopBar = () => {
         )
         // КНОПКА НАЗАД
         : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
-        <View className="items-center flex-1">
-          <Text className="text-[#fff]" style={{fontFamily: 'geometria-regular'}}>Цель на день</Text>
-          <Text className="text-[#fff]" style={{fontFamily: 'geometria-bold'}}>1000 мл.</Text>
-        </View>
         <TouchableOpacity onPress={() => navigation.navigate('Recomendation')}>
             <RecomendationIcon color={'#fff'} width={20}/>
         </TouchableOpacity>

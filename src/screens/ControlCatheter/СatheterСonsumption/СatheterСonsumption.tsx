@@ -14,8 +14,14 @@ const СatheterСonsumption = ({filteredRecords, selectedCalendareDate}:{filtere
         </View>
         <View className="flex-row gap-2">
             <View className="border border-border-color p-4 flex-1 rounded-xl items-center">
-                <Text style={{ fontFamily: "geometria-bold" }} className="text-lg text-black">{filteredRecords}</Text>
-                <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">катететоров в день</Text>
+              {filteredRecords > 0 ?
+                <>
+                  <Text style={{ fontFamily: "geometria-bold" }} className="text-lg text-black">{filteredRecords}</Text>
+                  <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">катететоров в день</Text>
+                </>
+                : 
+                <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-center text-black">Выполните катетеризацию</Text>
+              }
             </View>
             <View className="border border-border-color p-4 flex-1 rounded-xl items-center">
                 <Text style={{ fontFamily: "geometria-bold" }} className="text-lg text-black">{filteredRecords * 31}</Text>

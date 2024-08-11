@@ -1,5 +1,6 @@
 import { Animated, Text, TouchableOpacity, Vibration, View } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
@@ -14,6 +15,22 @@ interface iFirstDataScreen extends NavigationPropsWelcome<'FirstDataScreen'>{}
 
 const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
     const dispatch = useAppDispatch();
+    const selectedLanguage = useAppSelector(state => state.appStateSlice.setLanguage);
+    const {t, i18n} = useTranslation();
+    
+    useEffect(() => {
+        const changeLanguage = () => {
+            i18n.changeLanguage(selectedLanguage)
+            .then(() => {
+                console.log('changed');
+            })
+            .catch((e) => {
+                console.log('Error', e)
+            })
+        }
+        changeLanguage()
+    },[])
+
     const {timeSleepStart, timeSleepEnd} = useAppSelector(state => state.nightOnDoarding);
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
@@ -50,29 +67,33 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
         if(timeSleepStart && timeSleepEnd){
             navigation.navigate('SecondDataScreen');
             Vibration.cancel();
-        }else {
+        } else {
             Vibration.vibrate(50, true);
             startShakeAnimation();
         }
     }
 
   return (
-    <WelcomeLayout currentScreen={1} handleProceed={proceedNextScreen} buttonTitle="продолжить">
-        <Text className="text-[#000] text-xl text-center leading-5" style={{fontFamily:'geometria-bold'}}>Вас приветствует умный помошник Nelaton.</Text>
+    <WelcomeLayout currentScreen={1} handleProceed={proceedNextScreen} buttonTitle={t("continue")}>
+        <Text className="text-[#000] text-xl text-center leading-5" style={{fontFamily:'geometria-bold'}}>
+            {t('firstDataScreen.title')}
+        </Text>
         <View className="my-4 flex-1">
             <Text className="text-[#000] text-base leading-5" style={{fontFamily:'geometria-regular'}}>
-                Я буду напоминать вам о катетеризации. Пожалуйста, ответьте на несколько простых вопросов, что бы я мог настроить план катетеризаций.
+                {t('firstDataScreen.description')}
             </Text>
         </View>
         <Animated.View className='flex-1' style={{ transform: [{ translateX: shakeAnimation }] }}>
             <SleepTimeStartEnd showInfo={false}/>
         </Animated.View>
         <ToggleCannulationAtNight/>
-        <Text className="text-base mr-3" style={{fontFamily:'geometria-bold'}}>Укажите интервал катетеризации:</Text>
+        <Text className="text-base mr-3" style={{fontFamily:'geometria-bold'}}>{t("setChangeIntervalComponent.title")}</Text>
         <View className="flex-row items-center justify-center my-3">
-            <Text style={{fontFamily:'geometria-regular'}}>каждые</Text>
+            <Text style={{fontFamily:'geometria-regular'}}>{t("setChangeIntervalComponent.every")}</Text>
             <TouchableOpacity onPress={handleModalSetInterval} className="border rounded-md ml-2 px-2">
-                <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>{newInterval.selectedIndexHour} ч. {newInterval.selectedIndexMinutes} мин.</Text>
+                <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>
+                    {newInterval.selectedIndexHour} {t("hour")} {newInterval.selectedIndexMinutes} {t("min")}
+                </Text>
             </TouchableOpacity>
             <View className="w-[40px] h-[40px] items-center justify-center">
                 <Pencil/>
@@ -83,8 +104,8 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
             newInterval={newInterval}
             setNewInterval={setNewInterval}
             showModalSetInterval={isDatePickerVisible}
-            pressSaveButoon={safeNewInterval}
-            title="Выберите новый интервал"
+            pressSaveButton={safeNewInterval}
+            title={t("firstDataScreen.setIntervalTitle")}
             is24Hours={false}
             key={'firstdatascreen'}
         />

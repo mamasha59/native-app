@@ -1,12 +1,12 @@
 import { Text, View, Image } from "react-native";
 import { useEffect, useState } from "react";
 import { addSeconds, format, parse } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 import NotificationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
-import NightModeButton from "../../HomeScreen/Timer/NightModeButton/NightModeButton";
 import { useAppSelector } from "../../../store/hooks";
 import { useFormatInterval } from "../../../hooks/useFormatInterval";
 import NightModeButtonSvg from "../../../assets/images/iconsComponent/NightMode";
@@ -14,7 +14,7 @@ import NightModeButtonSvg from "../../../assets/images/iconsComponent/NightMode"
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
 const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
-
+    const {t} = useTranslation();
     const timerSettings = useAppSelector(state => state.timerStates);
     const nightModesettings = useAppSelector(state => state.nightOnDoarding);
     
@@ -65,11 +65,10 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     };
 
   return (
-    <WelcomeLayout showGradiend currentScreen={3} title="Ваш план катетеризации:" buttonTitle="Продолжить" handleProceed={proceedNextScreen}>
+    <WelcomeLayout showGradiend currentScreen={3} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
         <View className="py-4">
             <Text className="flex-1" style={{fontFamily:'geometria-regular'}}>
-                Этот план будет адаптироваться под вас. 
-                После каждой катетеризации будет рассчитано время до следующей, и активируются уведомления. Всегда катетеризируйтесь до окончания интервала.
+                {t("thirdDataScreen.description")}
             </Text>
             <View className="mx-auto">
                 <Image style={{width:40, height:40}} source={require('../../../assets/images/icons/wakeUpIcon.jpeg')}/>
@@ -82,13 +81,15 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                             <NelatonIcon/>
                         </View>
                         <Text className="text-[#2980b9] text-[12px] leading-4" style={{fontFamily:'geometria-regular'}}>
-                            Катетеризация каждые
+                            {t("thirdDataScreen.cannulationEachTime")}
                             <Text style={{fontFamily:'geometria-bold'}} className="underline"> {timeString}</Text>
                         </Text>
                     </View>
                     {nightModesettings.cannulationAtNight &&
                     <View className="items-center justify-center mr-4">
-                        <Text className="text-[12px] text-center" style={{fontFamily:'geometria-regular'}}>ночная катетеризация</Text>
+                        <Text className="text-[12px] text-center" style={{fontFamily:'geometria-regular'}}>
+                            {t("thirdDataScreen.night_cannulation")}
+                        </Text>
                         <View className="w-[47px] h-[47px]">
                             <NightModeButtonSvg/>
                         </View>
@@ -116,20 +117,28 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                     <View className="max-w-[47px] w-full bg-[#2047e3] rounded-full p-2 items-center justify-center">
                         <NotificationIcon width={28} color={'#fff'}/>
                     </View>
-                    <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>Вы будете получать уведомления, чтобы катетеризироваться вовремя!</Text>
+                    <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
+                        {t("thirdDataScreen.notification_Description")}
+                    </Text>
                 </View>
             </View>
 
             <View className="mt-10 relative">
                 <Text style={{fontFamily:'geometria-regular'}} className="text-[#2980b9]">
-                    Оптимальная частота катетеризаций составляет 4-6 раз в сутки.
-                    Если за одну катетеризацию выделяется более 400 мл мочи, рекомендуется увеличить частоту катетеризаций.
-                    Придерживайтесь интервала катетеризации, назначенного врачом.
+                    {t("thirdDataScreen.notice")}
                 </Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9] my-3">Уточните у врача:</Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">- интервал катетеризации</Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">- Возможность не катетеризироваться в ночное времяa</Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">- Рекомендуемое количество потребляемой жидкости</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9] my-3">
+                    {t("thirdDataScreen.know_from_doctor.title")}
+                </Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
+                    - {t("thirdDataScreen.know_from_doctor.the_catheterization_interval")}
+                </Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
+                    - {t("thirdDataScreen.know_from_doctor.the_possibility_of_not_catheterizing_at_night")}
+                </Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
+                    - {t("thirdDataScreen.know_from_doctor.how_much_water_you_need_to_drink")}
+                </Text>
             </View>
         </View>
     </WelcomeLayout>

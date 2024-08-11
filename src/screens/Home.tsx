@@ -10,7 +10,7 @@ import JournalScreen from './JournalScreen/JournalScreen';
 
 import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIcon';
 import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
-import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/ControllCatetor';
+import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/NelatonIcon';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
 import WaterBalance from './WaterBalance/WaterBalance';

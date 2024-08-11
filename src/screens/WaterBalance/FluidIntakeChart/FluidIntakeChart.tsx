@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Modal from "react-native-modal";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from "react-i18next";
+import LottieView from "lottie-react-native";
 
 import { useAppSelector } from "../../../store/hooks";
 import WaterBalanceInterval from "../WaterBalanceInterval/WaterBalanceInterval";
 import { ClosePopup } from "../../../assets/images/icons";
-import LottieView from "lottie-react-native";
 
 const windowWidth = Dimensions.get('window').width;
 
 const FluidIntakeChart = () => {
+    const {t} = useTranslation();
     const data = useAppSelector(state => state.journal);
     const [result, setResult] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -71,16 +72,14 @@ const FluidIntakeChart = () => {
     <TouchableOpacity activeOpacity={.7} className="mb-4 flex-1" onPress={() => setShowModal(true)}>
         <View className="flex-row flex-wrap justify-between items-center">
             <View className="flex-row items-center">
-                {/* <MaterialCommunityIcons name="chat-question-outline" size={11} color="black" /> */}
                 <View className="w-[20x] h-[20px]">
                     <LottieView
-                        // ref={animationRef}
                         source={require("../../../assets/question-mark.json")}
                         style={{width: 20, height: 20}}
                         autoPlay
-                        />
+                    />
                 </View>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">Водный баланс</Text>
+                <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">{t("waterBalanceComponent.title")}</Text>
             </View>
             <Text style={{fontFamily:'geometria-regular', color: textColor}} className="text-sm">{textAlert.interval}</Text>
         </View>
@@ -100,32 +99,40 @@ const FluidIntakeChart = () => {
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>
                 <View className="mt-2 mx-auto">
-                   <Text style={{fontFamily:'geometria-bold'}}>Формула расчета водного баланса:</Text>
+                   <Text className="text-center" style={{fontFamily:'geometria-bold'}}>
+                        {t("waterBalanceComponent.water_balance_formula")}
+                   </Text>
                    <View className="flex-row items-center justify-center py-5">
-                        <Text style={{fontFamily:'geometria-regular'}} className="mr-1">ВБ =</Text>
+                        <Text style={{fontFamily:'geometria-regular'}} className="mr-1">
+                            {t("waterBalanceComponent.title_short")} =
+                        </Text>
                         <View className="">
-                            <Text className="border-b text-center" style={{fontFamily:'geometria-regular'}}>Выделенная моча</Text>
-                            <Text className="text-center" style={{fontFamily:'geometria-regular'}}>Введенная жидкость</Text>
+                            <Text className="border-b text-center" style={{fontFamily:'geometria-regular'}}>
+                                {t("waterBalanceComponent.urine_output")}
+                            </Text>
+                            <Text className="text-center" style={{fontFamily:'geometria-regular'}}>
+                                {t("waterBalanceComponent.fluid_intake")}
+                            </Text>
                         </View>
                         <Text className="ml-1" style={{fontFamily:'geometria-regular'}}>× 100%</Text> 
                    </View>
                 </View>
                 <Text style={{fontFamily:'geometria-regular'}} className="mb-2">
-                    Норма диуреза составляет 75-80% от количества введенной жидкости.
+                    {t("waterBalanceComponent.description")}
                 </Text>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNegative}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        Отрицательный (&lt;75%): Диапазон показывает, что объем мочеиспускания составляет менее 75% от объема выпитой жидкости. 
+                        {t("waterBalanceComponent.intervals.negative")}
                     </Text>
                 </View>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNormal}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        Нормальный (75-80%): Это оптимальное соотношение, при котором объем мочи составляет 75-80% от объема выпитой жидкости. Это состояние указывает на здоровый водный баланс. 
+                        {t("waterBalanceComponent.intervals.normal")}
                     </Text>
                 </View>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorPositive}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        Положительный (80-100%): Этот диапазон показывает, что объем мочи составляет 80-100% от объема выпитой жидкости. Повышенный диурез, организм выделяет больше жидкости, чем обычно.
+                        {t("waterBalanceComponent.intervals.positive")}
                     </Text>
                 </View>
             </View>

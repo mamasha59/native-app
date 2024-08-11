@@ -1,11 +1,13 @@
 import { RefObject, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changeYellowInterval } from "../../store/slices/timerStatesSlice";
 
 const NoticesOfCannulation = () => { //TODO smart alarm
+    const {t} = useTranslation();
     const dispatch = useAppDispatch();
     const settings = useAppSelector(state => state.timerStates.yellowInterval);
     
@@ -45,12 +47,12 @@ const NoticesOfCannulation = () => { //TODO smart alarm
 
   return (
     <View className="mt-4">
-        <Text style={{fontFamily:'geometria-bold'}}>Уведомления о катетеризации:</Text>
+        <Text style={{fontFamily:'geometria-bold'}}>{t("noticeOfCatheterizationComponent.title")}</Text>
 
         <TouchableOpacity onPress={focusInputWhenShowNoticeBeforeCannulation} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
-            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>Перед катетеризацией</Text>
+            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>{t("noticeOfCatheterizationComponent.beforeCatheterization")}</Text>
             <View className="flex-row items-center">
-                <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>за</Text>
+                <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>{t("before")}</Text>
                 <TextInput
                     ref={inputRefWhenShowNoticeBeforeCannulation}
                     value={whenShowNoticeBeforeCannulation}
@@ -61,26 +63,28 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                     maxLength={2}
                     selectTextOnFocus
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}> мин.</Text>
+                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}> {t("min")}</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">
                     <Pencil/>
                 </View>
             </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSwitchAlarm} className="mt-2 py-2 flex-row justify-between border-b border-[#bdc3c75e]">
-            <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>Функция умного будильника</Text>
+            <Text className="text-[17px] text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>{t("noticeOfCatheterizationComponent.smartAlarm")}</Text>
             <View className="flex-row items-center">
                 <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>
                     {switchAlarm ? 'вкл.' : 'выкл.'}
                 </Text>
-            </View>
-            <View className="w-[20px] h-[20px] items-center justify-center ml-1">
-                <Pencil/>
+                <View className="w-[20px] h-[20px] items-center justify-center ml-1">
+                    <Pencil/>
+                </View>
             </View>
         </TouchableOpacity>
 
         <View className="mt-2 flex-row justify-between">
-            <Text className="text-sm leading-4 text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>После вечерней катетеризации мы расчитаем время ночной катетеризации и настроим будильник.</Text>
+            <Text className="text-sm leading-4 text-[#2980b9]" style={{fontFamily:'geometria-regular'}}>
+                {t("noticeOfCatheterizationComponent.notice")}
+            </Text>
         </View>
     </View>
   );

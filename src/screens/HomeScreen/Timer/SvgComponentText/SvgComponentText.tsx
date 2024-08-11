@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {Svg, Circle, Text, TextPath, TSpan, G, Path} from 'react-native-svg';
 
 interface iSvgComponentText {
@@ -12,7 +13,7 @@ interface iSvgComponentText {
 }
 
 export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgComponentText) => {
-
+  const {t} = useTranslation();
   const [currentColor, setCurrentColor] = useState('#4BAAC5'); // начальное значение цвета
 
   useEffect(() => { // изменяем цвет внешнего круга, пунктирные линии
@@ -75,7 +76,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         <Text fontSize="12">
           <TextPath href="#circle" startOffset={4}>
             <TSpan dy={-22} > 
-              н о р м а л ь н ы й     и н т е р в а л 
+              {t("timer.intervals.normal")}
             </TSpan>
           </TextPath>
         </Text>
@@ -105,7 +106,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         <Text fontSize="12">
           <TextPath href="#circle" startOffset={424}>
             <TSpan dy={-22}>
-              к р и т и ч е с к и й   и н т е р в а л
+              {t("timer.intervals.critical")}
             </TSpan>
           </TextPath>
         </Text>

@@ -4,12 +4,13 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import { ClosePopup } from "../../assets/images/icons";
 import SetTimeInterval from "../SetTimeInterval/SetTimeInterval";
+import { useTranslation } from "react-i18next";
 
 const windowWidth = Dimensions.get('window').width;
 
 interface iModalSetInterval {
     showModalSetInterval: boolean,
-    pressSaveButoon?: () => void,
+    pressSaveButton?: () => void,
     newInterval: {
         selectedIndexHour: number;
         selectedIndexMinutes: number
@@ -24,9 +25,10 @@ interface iModalSetInterval {
 }
 
 const ModalSetInterval = (props:iModalSetInterval) => {
+    const {t} = useTranslation();
     const {
         showModalSetInterval,
-        pressSaveButoon,
+        pressSaveButton,
         newInterval,
         setNewInterval,
         handleOpenModalChangeInterval,
@@ -44,7 +46,7 @@ const ModalSetInterval = (props:iModalSetInterval) => {
             <TouchableOpacity onPress={handleOpenModalChangeInterval} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                 <ClosePopup width={15} height={15}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={pressSaveButoon} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
+            <TouchableOpacity onPress={pressSaveButton} className="flex-grow-0 min-w-[141px]" activeOpacity={0.6}>
                 <LinearGradient
                     colors={['#83B759', '#609B25']}
                     start={{ x: 0, y: 0.5 }}

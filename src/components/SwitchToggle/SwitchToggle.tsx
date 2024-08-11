@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { View, Text, Switch, TouchableOpacity, Dimensions } from "react-native";
 
 interface iSwitchToggle {
@@ -9,6 +10,7 @@ interface iSwitchToggle {
 const window = Dimensions.get('window');
 
 const SwitchToggle = ({isEnabled, onValueChange, title}:iSwitchToggle) => {
+    const {t} = useTranslation();
   return (
     <View className="items-center flex-row justify-between w-full">
         <TouchableOpacity
@@ -21,7 +23,7 @@ const SwitchToggle = ({isEnabled, onValueChange, title}:iSwitchToggle) => {
             </Text>
         </TouchableOpacity>
         <View style={{width: window.width / 0.4}} className="flex-row flex-1">
-            <Text className="pr-2" style={{fontFamily:'geometria-regular'}}>Нет</Text>
+            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-regular'}}>{t('no')}</Text>
             <Switch
                 trackColor={{false: '#767577', true: '#81b0ff'}}
                 thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
@@ -30,7 +32,7 @@ const SwitchToggle = ({isEnabled, onValueChange, title}:iSwitchToggle) => {
                 onValueChange={onValueChange}
                 className="h-5 border w-9"
             />
-            <Text className="pr-2" style={{fontFamily:'geometria-regular'}}>Да</Text>
+            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-regular'}}>{t('yes')}</Text>
         </View>
     </View>
   );

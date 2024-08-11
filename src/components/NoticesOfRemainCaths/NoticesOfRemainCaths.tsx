@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { RefObject, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { addCatheter } from "../../store/slices/journalDataSlice";
@@ -7,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setDaysInAdvanceWhenShowNoticeOfRemainCaths } from "../../store/slices/noticeSettingsSlice";
 
 const NoticesOfRemainCaths = () => {
+    const {t} = useTranslation();
     const dispatch = useAppDispatch();
     const settingsOfNotice = useAppSelector(state => state.noticeSettingsSlice);
     const settings = useAppSelector(state => state.journal.initialCathetherAmount);
@@ -59,12 +61,16 @@ const NoticesOfRemainCaths = () => {
 
   return (
     <View className="mt-6">
-        <Text style={{fontFamily:'geometria-bold'}}>Уведомления об остатке катеторов:</Text>
+        <Text style={{fontFamily:'geometria-bold'}}>
+            {t("noticeOfRemainCaths.title")}
+        </Text>
 
         <TouchableOpacity onPress={focusInputNoticeOfCathsRemain} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
-            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>При остатке менее чем:</Text>
+            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>
+                {t("noticeOfRemainCaths.when_the_stock_is_less_then")}
+            </Text>
             <View className="flex-row items-center">
-                <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>на</Text>
+                <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>{t("blank")}</Text>
                 <TextInput
                     ref={inputRefNoticeOfCathsRemain}
                     value={whenShowNoticeOfCathsRemain}
@@ -75,12 +81,14 @@ const NoticesOfRemainCaths = () => {
                     maxLength={1}
                     selectTextOnFocus
                     className="text-[15px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>дней</Text>
+                <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>{t("day")}</Text>
             </View>
         </TouchableOpacity>
         
         <TouchableOpacity onPress={focusInputAddCatheters} className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
-            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>Сколько катеторов у вас есть?:</Text>
+            <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>
+                {t("noticeOfRemainCaths.how_many_caths")}
+            </Text>
             <View className="flex-row items-center">
                 <TextInput
                     ref={inputRefaddCatheters}
@@ -92,7 +100,7 @@ const NoticesOfRemainCaths = () => {
                     maxLength={3}
                     selectTextOnFocus
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>шт</Text>
+                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>{t("pieces")}</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center">
                     <Pencil/>
                 </View>

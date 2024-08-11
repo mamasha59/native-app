@@ -1,7 +1,7 @@
 interface iLanguage{
     id: string,
     title: string,
-    chosed:boolean,
+    selected:boolean,
     icon?: string,
 }
 

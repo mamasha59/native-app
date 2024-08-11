@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Timer from "./Timer/Timer";
 import ModalLiquidAmount from "./ModalLiquidAmount/ModalLiquidAmount";
@@ -13,6 +14,7 @@ import { popupLiquidState } from '../../store/slices/appStateSlicer';
 import ModalLeakageHappened from './ModalLeakageHappened/ModalLeakageHappened';
 
 const HomeScreen = () => {
+  const {t} = useTranslation();
   const [modalLeakageVisible, setModalLeakageVisible] = useState<boolean>(false); // состояние модального окна Учет випитой жидкости
 
   const [toastOpened, setToastOpened] = useState<boolean>(false);  // состояние тоста
@@ -34,13 +36,13 @@ const HomeScreen = () => {
         <DoubleButton
           handlePressRightButton={openModal}
           handlePressLeftButton={handlePressLeftButton}
-          textOfLeftButton='Подтекание'
-          textOfRightButton='Выпито'
+          textOfLeftButton={t("homeScreen.doubleButtonComponent.leakage")}
+          textOfRightButton={t("homeScreen.doubleButtonComponent.drink")}
           showIcon
         />
       </View>
 
-      <ModalLiquidAmount key={'Выпито'}/>
+      <ModalLiquidAmount key={'drank'}/>
       <ModalLeakageHappened modalLeakageVisible={modalLeakageVisible} setModalLeakageVisible={setModalLeakageVisible} setToastOpened={setToastOpened} key={'leakagemodal'}/>
       <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'Подтекание-тоаст'}/>
     </MainLayout>

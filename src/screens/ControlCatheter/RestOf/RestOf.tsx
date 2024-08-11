@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity, Platform, Pressable, Modal, TextInput, Dimensions } from "react-native";
 import {useState} from "react";
+import { useTranslation } from "react-i18next";
 
-import ControllCatetor from "../../../assets/images/iconsComponent/TabMenuIcons/ControllCatetor";
+import NelatonIcon from "../../../assets/images/iconsComponent/TabMenuIcons/NelatonIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
@@ -11,6 +12,7 @@ import { ClosePopup } from "../../../assets/images/icons";
 const window = Dimensions.get('window');
 
 const RestOf = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation<StackNavigationRoot>();
   const currentRoute = useNavigationState(state => state.routes[state.index].name);
   
@@ -55,11 +57,13 @@ const RestOf = () => {
                                   activeOpacity={.8} 
                                   onPress={handleOpenPopup} 
                                   className="bg-main-blue rounded-xl w-full max-h-[96px] p-[10px] relative">
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">Remaning catheters</Text>
-            <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">{initial.nelaton} шт.</Text>
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">Через 3 дня останется 0шт.</Text>
+            <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">
+              {t("catheterStockComponent.title")}
+            </Text>
+            <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">{initial.nelaton} {t("units")}</Text>
+            <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">{t("in")} 3 {t("days")}, 0 {t("catheterStockComponent.units_will_remain")}</Text>
             <View className="border border-[#ffff] absolute right-[15px] top-[15px] rounded-full p-2">
-              <ControllCatetor width={25} color={'#f8e40c'}/>
+              <NelatonIcon width={25} color={'#f8e40c'}/>
             </View>
         </TouchableOpacity>
       </View>

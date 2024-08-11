@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import { useState } from "react";
 import { format, set, subHours } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
@@ -9,6 +10,8 @@ import { setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode }
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
 
 const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
+    const {t} = useTranslation();
+
     const dispatch = useAppDispatch();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
     
@@ -64,12 +67,14 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
 
   return (
     <View className="flex-1">
-        <Text className="text-base" style={{fontFamily:'geometria-bold'}}>Укажите ваше обычное время сна:</Text>
+        <Text className="text-base" style={{fontFamily:'geometria-bold'}}>
+            {t('componentSleepTimeStartEnd.title')}
+        </Text>
         <View className="flex-row items-center flex-1">
-            <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>c</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart || 'Выбрать'}/>
-            <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>до</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd || 'Выбрать'}/>
+            <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>{t('componentSleepTimeStartEnd.from')}</Text>
+            <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart || t('componentSleepTimeStartEnd.select')}/>
+            <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>{t('componentSleepTimeStartEnd.to')}</Text>
+            <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd || t('componentSleepTimeStartEnd.select')}/>
             <View className="w-[40px] h-[40px] items-center justify-center">
                 <Pencil/>
             </View>
@@ -86,7 +91,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
                 newInterval={intervalOfStartSleep}
                 setNewInterval={setIntervalOfStartSleep}
                 showModalSetInterval={showModalSetIntervalStart}
-                pressSaveButoon={handleSetStartTime}
+                pressSaveButton={handleSetStartTime}
                 title="Выберите время когда вы ложитесь спать"
                 is24Hours
             />
@@ -95,7 +100,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
             newInterval={intervalOfEndSleep}
             setNewInterval={setIntervalOfEndSleep}
             showModalSetInterval={showModalSetIntervalEnd}
-            pressSaveButoon={handleSetEndTime}
+            pressSaveButton={handleSetEndTime}
             title="Выберите время когда вы просыпаетесь"
             is24Hours
         />

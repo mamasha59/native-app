@@ -5,39 +5,42 @@ import { Feather } from '@expo/vector-icons';
 import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
 import { iLanguage } from "../../types/index";
 import { NavigationPropsWelcome } from "../UserData/UserData";
+import { useAppDispatch } from "../../store/hooks";
+import { setLanguage } from "../../store/slices/appStateSlicer";
 
 interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}
 
 const LanguageScreen = ({navigation}:iLanguageScreen) => {
 
+  const dispatch = useAppDispatch();
   const [chosenLanguage, setChosenLanguage] = useState<iLanguage>(); // берем выбранный язык
   const shakeAnimation = useRef(new Animated.Value(0)).current;
 
     const languages: iLanguage[] = [
         {
-          id: 'Russian',
+          id: 'rus',
           title: 'Русский',
-          chosed: false,
+          selected: false,
         },
         {
-          id: 'English',
+          id: 'eng',
           title: 'English',
-          chosed: false,
+          selected: false,
         },
         {
-          id: 'Deutsch',
+          id: 'deu',
           title: 'Deutsch',
-          chosed: false,
+          selected: false,
         },
         {
           id: 'Français',
           title: 'Français',
-          chosed: false,
+          selected: false,
         },
         {
           id: 'Italiano',
           title: 'Italiano',
-          chosed: false,
+          selected: false,
         },
       ];
       
@@ -62,6 +65,7 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
     }
 
     const handleClickLang = (language:iLanguage) => {
+      dispatch(setLanguage(language.id));
       setChosenLanguage(language);
     }
 

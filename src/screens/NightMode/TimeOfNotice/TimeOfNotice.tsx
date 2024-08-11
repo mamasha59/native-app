@@ -67,7 +67,7 @@ const TimeOfNotice = () => {
           newInterval={intervalTimeOfNotice}
           setNewInterval={setIntervalTimeOfNotice}
           showModalSetInterval={showModalSetTimeOfNotice}
-          pressSaveButoon={handleSetTimeOfNotice}
+          pressSaveButton={handleSetTimeOfNotice}
           title="Выберите время когда показать уведомление"
           is24Hours
         />

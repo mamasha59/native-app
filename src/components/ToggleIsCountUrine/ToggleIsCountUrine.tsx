@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SwitchToggle from "../SwitchToggle/SwitchToggle";
 import { setWhetherCountUrine } from "../../store/slices/appStateSlicer";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 const ToggleIsCountUrine = () => {
+    const {t} = useTranslation();
     const settings = useAppSelector((state) => state.appStateSlice); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
     const dispatch = useAppDispatch();
     
@@ -22,7 +24,7 @@ const ToggleIsCountUrine = () => {
     }
 
   return (
-    <SwitchToggle key={'counturine'} title="Измерение кол-ва выделяемой мочи" onValueChange={handleIsCountUrine} isEnabled={isEnabled}/>
+    <SwitchToggle key={'counturine'} title={t("toggleCountUrineComponent.title")} onValueChange={handleIsCountUrine} isEnabled={isEnabled}/>
   );
 };
 

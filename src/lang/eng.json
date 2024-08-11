@@ -1,0 +1,143 @@
+{
+    "translation": {
+        "firstDataScreen": {
+            "title": "Welcome to the Nelaton Smart Assistant",
+            "description": "Please answer a few simple questions so I can set up a catheterization plan.",
+            "setIntervalTitle": "Select new interval"
+        },
+
+        "secondDataScreen_description": "Measuring fluid intake and urine output helps maintain optimal hydration levels in the body.",
+
+        "thirdDataScreen": {
+            "title": "Your Self-Catheterization Plan:",
+            "description": "This plan will be adapted to you. After each self-catheterization, the time until the next one will be calculated, and notifications will be activated. Always catheterize until the end of the interval.",
+            "cannulationEachTime": "Catheterization every",
+            "night_cannulation": "Night catheterization",
+            "notification_Description": "You will receive notifications to catheterize on time!",
+            "notice": "The optimal frequency of catheterizations is 4-6 times a day. If more than 400ml of urine is released per catheterization, it is recommended to increase the frequency of catheterizations. Adhere to the catheterization interval prescribed by your doctor.",
+            "know_from_doctor": {
+                "title": "Consult your doctor about:",
+                "the_catheterization_interval": "the catheterization interval",
+                "the_possibility_of_not_catheterizing_at_night": "the possibility of not catheterizing at night",
+                "how_much_water_you_need_to_drink": "how much water you need to drink"
+            }
+        },
+
+        "fourthDataScreen": {
+            "title": "Notification Settings"
+        },
+
+        "continue": "continue",
+        "yes": "yes",
+        "no": "no",
+        "before": "before",
+        "hour": "hrs.",
+        "min": "min.",
+        "every": "every",
+        "ml": "ml",
+        "day": "days",
+        "blank": "",
+        "pieces": "pcs",
+        "units": "units",
+        "in": "in",
+
+        "componentSleepTimeStartEnd": {
+            "title": "Indicate your usual sleep time:",
+            "select": "select",
+            "from": "from",
+            "to": "to"
+        },
+
+        "toggleCannulationAtNightComponent": {
+            "title": "Catheterization at night"
+        },
+
+        "toggleCountUrineComponent": {
+            "title": "Measure urine output"
+        },
+
+        "setChangeIntervalComponent": {
+            "title": "Specify the catheterization interval:",
+            "every": "every"
+        },
+
+        "waterBalanceComponent": {
+            "title": "Water Balance",
+            "title_short": "WB",
+            "water_balance_formula": "Water balance calculation formula:",
+            "urine_output": "Urine output",
+            "fluid_intake": "Fluid intake",
+            "description": "Normal diuresis is 75-80% of the amount of fluid intake.",
+            "intervals": {
+               "negative": "Negative (<75%): This range indicates that the volume of urination is less than 75% of the volume of fluid intake.",
+               "normal": "Normal (75-80%): This is the optimal ratio where the urine volume is 75-80% of the volume of fluid intake. This indicates a healthy water balance.",
+               "positive": "Positive (80-100%): This range indicates that the urine volume is 80-100% of the volume of fluid intake. Increased diuresis, the body excretes more fluid than usual." 
+            }
+        },
+
+        "clueAtTheBottom": {
+            "title": "You can always change this selection in the tab.",
+            "where": "Profile"
+        },
+
+        "catheterizationReminder": {
+            "firstPartTitle": "We will remind you to catheterize",
+            "secondPartTitle": " minutes before the end of the interval. You can change these and other settings below."
+        },
+
+        "noticeOfCatheterizationComponent": {
+            "title": "Catheterization Notifications:",
+            "beforeCatheterization": "Before catheterization",
+            "smartAlarm": "Smart Alarm Function",
+            "notice": "After the evening catheterization, we will calculate the time for the night catheterization and set the alarm."
+        },
+
+        "noticeOfWaterConsumptionComponents": {
+            "title": "Fluid Intake Notifications:",
+            "evening_time_take_water": "Evening fluid intake:",
+            "set_daily_goal": "Set a daily goal:",
+            "remind_to_reached_water_goal_time": "Remind throughout the day until the goal is reached:"
+        },
+
+        "noticeOfRemainCaths": {
+            "title": "Catheter Stock Notifications:",
+            "when_the_stock_is_less_then": "When the stock is less than",
+            "how_many_caths": "How many catheters do you have?"
+        },
+
+        "catheterStockComponent": {
+            "title": "Catheter Stock",
+            "units_will_remain": "units will remain"
+        },
+
+        "intervalInfoComponent": {
+            "title": "Catheterization Interval:"
+        },
+
+        "homeScreen": {
+            "doubleButtonComponent": {
+                "leakage": "leakage",
+                "drink": "drink"
+            }
+        },
+
+        "waterBalanceScreen": {
+            "charts": {
+                "fluid_intake_chart": "Fluid Intake Chart",
+                "urine_output_chart": "Urine Output Chart"
+            },
+            "waterBalanceInfo": "Water balance is the ratio between the amount of fluid entering the body and the amount of fluid leaving the body over a specific period of time. Measuring your fluid intake and urine output will help you maintain optimal hydration levels in your body."
+        },
+
+        "timer": {
+            "start": "start",
+            "titles": {
+                "catheterization_interval": "Time to catheterize:"
+            },
+            "intervals": {
+                "normal": "n o r m a l     i n t e r v a l ",
+                "critical": "c r i t i c a l   i n t e r v a l "
+            }
+        }
+    }
+}

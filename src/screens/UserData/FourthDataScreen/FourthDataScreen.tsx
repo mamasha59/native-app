@@ -1,3 +1,6 @@
+import { View, Text } from "react-native";
+import { useTranslation } from "react-i18next";
+
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
@@ -8,13 +11,10 @@ import NoticesOfWaterConsumption from "../../../components/NoticesOfWaterConsump
 import CatheterizationReminder from "../../../components/CatheterizationReminder/CatheterizationReminder";
 import NotificationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
 
-import { View } from "react-native";
-import { Text } from "react-native";
-
-
 interface iFourthDataScreen extends NavigationPropsWelcome<'FourthDataScreen'>{}
 
 const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
+    const {t} = useTranslation();
     const dispatch = useAppDispatch();
 
     const proceedNextScreen = () => {
@@ -23,12 +23,12 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
     }
 
   return (
-    <WelcomeLayout currentScreen={4} showRobotIconOnTop={false} buttonTitle="продолжить" titleCenter handleProceed={proceedNextScreen}>
+    <WelcomeLayout currentScreen={4} showRobotIconOnTop={false} buttonTitle={t("continue")} titleCenter handleProceed={proceedNextScreen}>
         <View className="max-w-[60px] my-5 w-full mx-auto bg-main-blue rounded-full p-4 items-center justify-center">
             <NotificationIcon width={28} color={'#fff'}/>
         </View>
         <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-center text-lg leading-5">
-            Настройка уведомления
+            {t("fourthDataScreen.title")}
         </Text>
         <CatheterizationReminder/>
         <NoticesOfCannulation/>

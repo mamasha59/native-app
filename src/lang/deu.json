@@ -1,0 +1,17 @@
+{
+    "translation": {
+        "firstDataScreen_Title": "Willkommen beim Nelaton Smart Assistant Ich werde Sie an die Selbstkatheterisierung erinnern.",
+        "firstDataScreen_Description": "Bitte beantworten Sie ein paar einfache Fragen, damit ich einen Katheterisierungsplan erstellen kann.",
+        "componentSleepTimeStartEnd": {
+            "title": "Geben Sie Ihre üblichen Schlafzeiten an:",
+            "select": "auswählen",
+            "from": "from",
+            "to": "to"
+        },
+        "toggleCannulationAtNightComponent": {
+            "title": "Catheterization at night",
+            "yes": "yes",
+            "no": "no"
+        }
+    }
+}

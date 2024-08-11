@@ -1,3 +1,4 @@
+import './src/lang/i18n';
 import 'react-native-get-random-values';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';

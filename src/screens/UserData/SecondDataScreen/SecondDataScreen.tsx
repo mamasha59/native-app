@@ -1,4 +1,5 @@
 import { Text } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
@@ -9,16 +10,16 @@ import ToggleIsCountUrine from "../../../components/ToggleIsCountUrine/ToggleIsC
 interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'>{}
 
 const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
-
+    const {t} = useTranslation();
     const proceedNextScreen = () => {
         navigation.navigate('ThirdDataScreen');
     }
 
   return (
-    <WelcomeLayout currentScreen={2} buttonTitle="продолжить" handleProceed={proceedNextScreen}>
+    <WelcomeLayout currentScreen={2} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
         <FluidIntakeChart/>
         <Text className="text-base my-3" style={{fontFamily:'geometria-regular'}}>
-            Измерение потребляемой жидкости и выделенной мочи поможет поддерживать оптимальный уровень воды в организме.
+            {t("secondDataScreen_description")}
         </Text>
         <ToggleIsCountUrine/>
         <ClueAtTheBottom/>

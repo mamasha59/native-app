@@ -5,6 +5,7 @@ import { differenceInSeconds, format, isAfter, parse } from "date-fns";
 import { useStopwatch, useTimer } from "react-timer-hook";
 import { v4 as uuidv4 } from 'uuid';
 import * as Notifications from 'expo-notifications';
+import { useTranslation } from "react-i18next";
 
 import IntervalUI from "../IntervalUI/IntervalUI";
 import { SvgComponentText } from "../SvgComponentText/SvgComponentText";
@@ -22,6 +23,7 @@ import { addUrineDiaryRecord, decreaseCatheterAmount } from "../../../../store/s
 import { dateFormat } from "../../../../utils/const";
 
 const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
+    const {t} = useTranslation();
     const now = new Date();
     const dispatch = useAppDispatch();
   
@@ -279,15 +281,16 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
   return (
     <View className="flex-1 items-center justify-center w-full h-full">
         <SvgComponentText
-        partTime={partTime}
-        start={timerRunning}
-        initialNumberOfStrip={initialStrip}/>
+            partTime={partTime}
+            start={timerRunning}
+            initialNumberOfStrip={initialStrip}
+        />
     
         <View className="absolute items-center justify-center flex-1">
             <View className="items-center">
             <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-center leading-5 text-[#000] max-w-[200px]">
                 {!settings.stateOfTimerTitleForFirstTimeInApp 
-                    ? 'Время катетеризироваться:' 
+                    ? t("timer.titles.catheterization_interval")
                     : (!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:')
                 }
             </Text>
@@ -310,8 +313,8 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                     end={{ x: 1, y: 0.5 }}
                     locations={[0.0553, 0.9925]}
                     className="rounded-[43px]">
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
-                        {timerRunning || stopwatchRunning ? 'Выполнено' : 'Начать'}
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-base capitalize leading-5 text-[#FFFFFF] text-center px-6 py-3">
+                        {timerRunning || stopwatchRunning ? 'Выполнено' : t("timer.start")}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>

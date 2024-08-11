@@ -1,0 +1,29 @@
+{
+    "translation": {
+        "firstDataScreen_Title": "Вас приветствует умный помощник Nelaton",
+        "firstDataScreen_Description": "Я буду напоминать Вам о катетеризации. Пожалуйста, ответьте на несколько простых вопросов, чтобы я мог настроить план катетеризации.",
+        "firstDataScreen_setIntervalTitle": "Укажите ваше обычное время сна:",
+        "secondDataScreen_description": "Измерение потребляемой жидкости и выделенной мочи поможет поддерживать оптимальный уровень воды в организме.",
+        "continue": "продолжить",
+        "componentSleepTimeStartEnd": {
+            "title": "Укажите ваше обычное время сна:",
+            "select": "выбрать",
+            "from": "с",
+            "to": "до"
+        },
+        "toggleCannulationAtNightComponent": {
+            "title": "Катетеризация в ночное время",
+            "yes": "да",
+            "no": "нет"
+        },
+        "setChangeIntervalComponent": {
+            "title": "Укажите интервал катетеризации:",
+            "every": "каждые",
+            "hour": "ч.",
+            "min": "мин."
+        },
+        "waterBalanceComponent": {
+            "title": "Водный баланс"
+        }
+    }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { View, Text } from "react-native";
 import WheelPicker from "react-native-wheely";
 
@@ -9,7 +10,7 @@ interface iSetTimeInterval {
   }
 
 const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTimeInterval) => { // компонент с вращающим колесом с числами, выбор интервала
-
+    const {t} = useTranslation();
     const generateSecondsArray = ():string[] => {
         let numbersArray:string[] = [];
         for (let i = 0; i <= 59; i++) {
@@ -50,7 +51,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
             selectedIndicatorStyle={{backgroundColor:'#4babc573'}}
         />
         <View>
-            <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">ч.</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">{t("hour")}</Text>
         </View>
     </View>
     {/* МИНУТЫ */}
@@ -69,7 +70,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
             selectedIndicatorStyle={{backgroundColor:'#4babc573'}} decelerationRate={"normal"}
         />
         <View>
-            <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">мин.</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-lg mx-1 text-black">{t("min")}</Text>
         </View>
     </View>
     </>

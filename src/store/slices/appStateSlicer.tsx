@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { dateFormat } from "../../utils/const";
 
 interface iAppStateSlicer {
+  setLanguage: string,
   isExist: boolean,
   open: boolean,
   ifCountUrinePopupLiquidState: boolean,
@@ -24,6 +25,7 @@ interface iAppStateSlicer {
 }
 
 const initialState:iAppStateSlicer = {
+    setLanguage: '',
     isExist: false,                        // есть ли юзер в локал сторедж
     open: false,                          // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
@@ -47,6 +49,9 @@ const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
     reducers: {
+      setLanguage: (state, action:PayloadAction<string>) => {
+        state.setLanguage = action.payload;
+      },
       changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояние приложение, 
         state.isExist = action.payload;
       },
@@ -101,6 +106,7 @@ const appStateSlice = createSlice({
     }
 })
 export const {
+    setLanguage,
     changeIsExist,
     popupLiquidState,
     ifCountUrineChangeState,

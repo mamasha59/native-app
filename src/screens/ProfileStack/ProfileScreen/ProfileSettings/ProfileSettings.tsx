@@ -57,7 +57,7 @@ const ProfileSettings = () => { // TODO clean the code
             newInterval={newInterval}
             setNewInterval={setNewInterval}
             showModalSetInterval={showModalSetInterval}
-            pressSaveButoon={handlePressSave}
+            pressSaveButton={handlePressSave}
             title="Выберите новый интервал"
             is24Hours={false}
             key={'profilescreen'}

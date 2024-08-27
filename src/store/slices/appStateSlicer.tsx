@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { format } from "date-fns";
+
 import { dateFormat } from "../../utils/const";
+import { iLanguage, iUnits } from "../../types";
 
 interface iAppStateSlicer {
-  setLanguage: string,
+  units: iUnits,
+  robotText: string,
+  loader: boolean,
+  setLanguage: iLanguage,
   isExist: boolean,
   open: boolean,
   ifCountUrinePopupLiquidState: boolean,
   urineMeasure: boolean,
   calendareDay: string,
   tabBarBadgeJournalScreen: number,
-  intervalWhenCloseApp: string,
   stateOfTimerTitleForFirstTimeInApp: boolean,
   cannulationAtNight: {
     value: boolean,
@@ -21,17 +25,30 @@ interface iAppStateSlicer {
   scaleLiquidPopup: boolean,
   openModalNightMode: boolean,
   helperForModalTurnOnNightMode: boolean,
-  surveyAnswers: { [key: number]: number | undefined },
+  doubleButtonProfileScreenClickable: {
+    leftButton: boolean,
+    rightButton: boolean,
+  },
 }
 
 const initialState:iAppStateSlicer = {
-    setLanguage: '',
+    units: {
+      title: 'ml',
+      id: 'ml'
+    },
+    robotText:'',
+    loader: false,
+    setLanguage: {
+      id: '',
+      title: '',
+      selected: false,
+      icon: '',
+    },
     isExist: false,                        // есть ли юзер в локал сторедж
     open: false,                          // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
     calendareDay: format(new Date(), dateFormat).slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
-    intervalWhenCloseApp: '',
     stateOfTimerTitleForFirstTimeInApp: false,
     cannulationAtNight: {
       value: true,
@@ -42,14 +59,26 @@ const initialState:iAppStateSlicer = {
     scaleLiquidPopup: false,
     openModalNightMode: false,
     helperForModalTurnOnNightMode: false,
-    surveyAnswers: {},
-
+    doubleButtonProfileScreenClickable: {
+      leftButton: false,
+      rightButton: false,
+    },
 }
 const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
     reducers: {
-      setLanguage: (state, action:PayloadAction<string>) => {
+      switchUnits: (state, action:PayloadAction<iUnits>) => {
+        state.units = action.payload;
+      },
+      handleLoader: (state, action:PayloadAction<boolean>) => {
+        state.loader = action.payload;
+      },
+      activateRobotSpeech: (state, action:PayloadAction<string>) => {
+        state.robotText = action.payload;
+      },
+      setLanguage: (state, action:PayloadAction<iLanguage>) => {
+        if (action.payload.id)
         state.setLanguage = action.payload;
       },
       changeIsExist: (state, action:PayloadAction<boolean>) => { // главное состояние приложение, 
@@ -75,9 +104,6 @@ const appStateSlice = createSlice({
       resetBadges: (state) => {
         state.tabBarBadgeJournalScreen = 0;
       },
-      recordIntervalWhenCloseApp: (state, action:PayloadAction<string>) => {
-        state.intervalWhenCloseApp = action.payload;
-      },
       changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {
         state.stateOfTimerTitleForFirstTimeInApp = action.payload;
       },
@@ -96,16 +122,18 @@ const appStateSlice = createSlice({
       setHelperForModalTurnOnNightMode: (state, action:PayloadAction<boolean>) => {
         state.helperForModalTurnOnNightMode = action.payload;
       },
-      saveAnswer: (state, action:PayloadAction<{ questionId: number; answerId: number }>) => {
-        const { questionId, answerId } = action.payload;
-        state.surveyAnswers[questionId] = answerId;
-      },
-      resetAnswers: (state) => {
-        state.surveyAnswers = {};
-      },
+      switchCheckedButtonProfileScreen: (state, action:PayloadAction<{leftButton:boolean, rightButton:boolean}>) => {
+        state.doubleButtonProfileScreenClickable = {
+          leftButton: action.payload.leftButton,
+          rightButton: action.payload.rightButton
+        };
+      }
     }
 })
 export const {
+    switchUnits,
+    handleLoader,
+    activateRobotSpeech,
     setLanguage,
     changeIsExist,
     popupLiquidState,
@@ -113,7 +141,6 @@ export const {
     setCalendareDay,
     addBadgesJournalScreen,
     resetBadges,
-    recordIntervalWhenCloseApp,
     changeStateOfTimerTitleForFirstTimeInApp,
     switchCannulationAtNightNight,
     setWhetherCountUrine,
@@ -121,8 +148,7 @@ export const {
     changeScalePopup,
     switchNightModeModal,
     setHelperForModalTurnOnNightMode,
-    saveAnswer,
-    resetAnswers,
+    switchCheckedButtonProfileScreen
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

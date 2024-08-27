@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { format } from 'date-fns';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { iChart, iDairyRecord } from '../types';
 
-import { format } from 'date-fns';
 import { dateFormat } from '../utils/const';
 
 interface iuseUpdateChart {

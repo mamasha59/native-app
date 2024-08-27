@@ -1,17 +1,20 @@
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changeYellowInterval } from "../../store/slices/timerStatesSlice";
+import Alert from "../Alert/Alert";
 
 const NoticesOfCannulation = () => { //TODO smart alarm
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
-    const settings = useAppSelector(state => state.timerStates.yellowInterval);
+    const settings = useAppSelector(state => state.timerStates);
+
+    const [modalAlert, setModalAlert] = useState<boolean>(false);
     
-    const [whenShowNoticeBeforeCannulation, setWhenShowNoticeBeforeCannulation] = useState<string>(''+settings);
+    const [whenShowNoticeBeforeCannulation, setWhenShowNoticeBeforeCannulation] = useState<string>(''+settings.yellowInterval);
     const [switchAlarm, setSwitchAlarm] = useState(false);
  
     const inputRefWhenShowNoticeBeforeCannulation = useRef<TextInput>(null);
@@ -38,9 +41,16 @@ const NoticesOfCannulation = () => { //TODO smart alarm
 
     const focusInputWhenShowNoticeBeforeCannulation = () => focusInput(inputRefWhenShowNoticeBeforeCannulation);
 
-    const submitTimeWhenShowNoticeBeforeCannulation = () => { // set new Yellow Interval for timer
-        dispatch(changeYellowInterval(+whenShowNoticeBeforeCannulation));
+    const handelModalAlert = () => setModalAlert(!modalAlert);
+
+    const submitInputWhenShowNoticeBeforeCannulation = () => { // set new Yellow Interval for timer
+        if (+whenShowNoticeBeforeCannulation * 60 >= settings.interval) {
+            handelModalAlert();
+        } else {
+            dispatch(changeYellowInterval(+whenShowNoticeBeforeCannulation));
+        }
     }
+
     const handleSwitchAlarm = () => {
         setSwitchAlarm(!switchAlarm);
     }
@@ -56,7 +66,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                 <TextInput
                     ref={inputRefWhenShowNoticeBeforeCannulation}
                     value={whenShowNoticeBeforeCannulation}
-                    onEndEditing={submitTimeWhenShowNoticeBeforeCannulation}
+                    onEndEditing={submitInputWhenShowNoticeBeforeCannulation}
                     onChangeText={(e) => handleInputWhenShowNoticeBeforeCannulation(e)}
                     style={{fontFamily:'geometria-bold'}}
                     keyboardType="numeric"
@@ -86,6 +96,17 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                 {t("noticeOfCatheterizationComponent.notice")}
             </Text>
         </View>
+        <Alert key={'noticesettings'} modalAlertState={modalAlert} setModalAlertState={setModalAlert}>
+            <View className="justify-between flex-1">
+                <Text style={{fontFamily:'geometria-bold'}} className="text-center text-2xl">
+                    Время не может быть больше или равно Интервалу катетеризации
+                </Text>
+            
+                <TouchableOpacity onPress={handelModalAlert} className="bg-main-blue py-3 rounded-[89px]">
+                    <Text className="text-center text-2xl text-[#fff]" style={{fontFamily:'geometria-bold'}}>Я понял!</Text>
+                </TouchableOpacity>
+            </View>
+        </Alert>
     </View>
   );
 };

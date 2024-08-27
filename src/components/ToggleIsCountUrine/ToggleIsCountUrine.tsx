@@ -24,7 +24,12 @@ const ToggleIsCountUrine = () => {
     }
 
   return (
-    <SwitchToggle key={'counturine'} title={t("toggleCountUrineComponent.title")} onValueChange={handleIsCountUrine} isEnabled={isEnabled}/>
+    <SwitchToggle
+      key={'counturine'}
+      title={t("toggleCountUrineComponent.title")}
+      onValueChange={handleIsCountUrine}
+      isEnabled={isEnabled}
+    />
   );
 };
 

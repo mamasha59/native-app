@@ -1,8 +1,11 @@
 import { format } from "date-fns";
 import { View, Text, TouchableOpacity, Animated, Easing } from "react-native";
-import { DropDown } from "../../../assets/images/icons";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { DropDown } from "../../../assets/images/icons";
 import { dateFormat } from "../../../utils/const";
+import { useAppSelector } from "../../../store/hooks";
 
 interface iStatistics {
     selectedCalendareDate: string,
@@ -14,14 +17,16 @@ interface iStatistics {
     }
 }
 
-const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {//TODO при смене языка менять формат даты
+const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {
+    const {t} = useTranslation();
+    const units = useAppSelector(state => state.appStateSlice.units.title);
     const [showStatistics, setShowStatistics] = useState<boolean>(false);
     const rotation = useRef(new Animated.Value(0)).current;
 
     const rotate = () => {
         Animated.timing(rotation, {
             toValue: showStatistics ? 1 : 0,
-            duration: 400,
+            duration: 200,
             easing: Easing.linear,
             useNativeDriver: true,
         }).start();
@@ -38,32 +43,32 @@ const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {//
     }
     
   return (
-    <>
-    <TouchableOpacity onPress={openStatistics} className="flex-row items-center">
-        <View className="items-start mb-1 mr-2">
-            <Text style={{fontFamily:'geometria-bold'}}>
-                Statistics for {selectedCalendareDate === format(new Date(), dateFormat).slice(0,10) ? 'today' : selectedCalendareDate}:
+    <TouchableOpacity activeOpacity={.9} onPress={openStatistics}>
+        <View className="flex-row items-center">
+            <View className="items-start mb-1 mr-2">
+                <Text style={{fontFamily:'geometria-bold'}}>
+                    {t("journalScreen.dailyStatistics.daily_statistics")} {t("for")} {selectedCalendareDate === format(new Date(), dateFormat).slice(0,10) ? t("today") : selectedCalendareDate}:
+                </Text>
+            </View>
+            <Animated.View style={{ transform: [{ rotate: spin }] }} className={'mb-1'}>
+            <DropDown/>
+            </Animated.View>
+        </View>
+        <View className={`flex-0 mb-1 ${showStatistics ? 'block' : 'hidden'}`}>
+            <Text style={{fontFamily:'geometria-regular'}} className="mr-2">{t("journalScreen.dailyStatistics.catheterizations")}
+                <Text className="text-purple-button"> {statisticPerDay.cannulation}</Text>
+            </Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="mr-2">{t("journalScreen.dailyStatistics.urine_leakages")}
+                <Text className="text-purple-button"> {statisticPerDay.leakage}</Text>
+            </Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="mr-2">{t("journalScreen.dailyStatistics.fluid_intake")}
+                <Text className="text-purple-button"> {statisticPerDay.amountOfDrankFluids} {units}</Text>
+            </Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="mr-2">{t("journalScreen.dailyStatistics.urine_output")}
+                <Text className="text-purple-button"> {statisticPerDay.amountOfReleasedUrine} {units}</Text>
             </Text>
         </View>
-        <Animated.View style={{ transform: [{ rotate: spin }] }} className={'mb-1'}>
-          <DropDown/>
-        </Animated.View>
     </TouchableOpacity>
-    <View className={`flex-0 mb-1 ${showStatistics ? 'block' : 'hidden'}`}>
-        <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Catheterizations:
-            <Text className="text-purple-button"> {statisticPerDay.cannulation}</Text>
-        </Text>
-        <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Leakage:
-            <Text className="text-purple-button"> {statisticPerDay.leakage}</Text>
-        </Text>
-        <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Drinking liquids:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfDrankFluids} ml.</Text>
-        </Text>
-        <Text style={{fontFamily:'geometria-regular'}} className="mr-2">Fluid discharged:
-            <Text className="text-purple-button"> {statisticPerDay.amountOfReleasedUrine} ml.</Text>
-        </Text>
-    </View>
-    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Animated, Text, TouchableOpacity, Vibration, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { NavigationPropsWelcome } from "../UserData";
@@ -10,28 +10,15 @@ import SleepTimeStartEnd from "../../NightMode/SleepTimeStartEnd/SleepTimeStartE
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import ToggleCannulationAtNight from "../../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
+import { activateRobotSpeech } from "../../../store/slices/appStateSlicer";
 
 interface iFirstDataScreen extends NavigationPropsWelcome<'FirstDataScreen'>{}
 
 const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
     const dispatch = useAppDispatch();
-    const selectedLanguage = useAppSelector(state => state.appStateSlice.setLanguage);
-    const {t, i18n} = useTranslation();
-    
-    useEffect(() => {
-        const changeLanguage = () => {
-            i18n.changeLanguage(selectedLanguage)
-            .then(() => {
-                console.log('changed');
-            })
-            .catch((e) => {
-                console.log('Error', e)
-            })
-        }
-        changeLanguage()
-    },[])
+    const {t} = useTranslation();
 
-    const {timeSleepStart, timeSleepEnd} = useAppSelector(state => state.nightOnDoarding);
+    const {timeSleepStart, timeSleepEnd} = useAppSelector(state => state.nightOnBoarding);
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
     const shakeAnimation = useRef(new Animated.Value(0)).current;
@@ -68,6 +55,7 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
             navigation.navigate('SecondDataScreen');
             Vibration.cancel();
         } else {
+            dispatch(activateRobotSpeech(t("fill_in_the_field")));
             Vibration.vibrate(50, true);
             startShakeAnimation();
         }

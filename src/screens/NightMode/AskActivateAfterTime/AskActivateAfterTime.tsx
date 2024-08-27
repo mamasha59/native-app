@@ -6,9 +6,11 @@ import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
+import { useTranslation } from "react-i18next";
 
 const AskActivateAfterTime = () => {
-    const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
+    const {t} = useTranslation();
+    const nightModeTimeSettings = useAppSelector(state => state.nightOnBoarding);
     const dispatch = useAppDispatch();
     
     const [showModalAskActivateAfter, setShowModalAskActivateAfter] = useState<boolean>(false); // попап Спрашивать активировать после времени
@@ -45,7 +47,7 @@ const AskActivateAfterTime = () => {
   return (
     <View className="mb-3">
         <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
-            Спрашивать об активации ночного режима при катетеризации  после:
+            {t("nightModeScreen.askActivateAfterTimeComponent.askToActivate")}
         </Text>
         <ButtonBluBorder 
             title={nightModeTimeSettings.timeWhenAskToActivate}

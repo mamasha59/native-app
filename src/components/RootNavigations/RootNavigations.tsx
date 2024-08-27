@@ -9,13 +9,13 @@ import RecomendationsStack from '../../screens/RecomendationsStack/Recomendation
 import PdfOnBoarding from '../../screens/PdfOnBoarding/PdfOnBoarding';
 import Survey from '../../screens/Survey/Survey';
 import NightMode from '../../screens/NightMode/NightMode';
-import ControlСatheter from '../../screens/ControlCatheter/ControlСatheter';
+import ControlCatheter from '../../screens/ControlCatheter/ControlСatheter';
 
   export type RootStacNativeParamList = {
     WelcomeScreens: undefined;
     MainScreen: undefined;
-    Recomendation: undefined;
-    PdfOnBoarding: undefined;
+    Recommendation: undefined;
+    PdfOnBoarding: {cameFrom?: string};
     Survey: {cameFrom?: string};
     NightMode: undefined;
     ControlCatheter: undefined;
@@ -39,15 +39,15 @@ import ControlСatheter from '../../screens/ControlCatheter/ControlСatheter';
     <NavigationContainer>
         <Stack.Navigator initialRouteName={userData ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
 
-            <Stack.Screen name='MainScreen' component={Home}/>
-            <Stack.Screen name='WelcomeScreens' component={UserData}/>
+          <Stack.Screen name='MainScreen' component={Home}/>
+          <Stack.Screen name='WelcomeScreens' component={UserData}/>
 
-            <Stack.Screen name='Recomendation' component={RecomendationsStack}/>
+          <Stack.Screen name='Recommendation' component={RecomendationsStack}/>
 
-            <Stack.Screen name='PdfOnBoarding' component={PdfOnBoarding}/>
-            <Stack.Screen name='Survey' component={Survey}/>
-            <Stack.Screen name='NightMode' component={NightMode}/>
-            <Stack.Screen name='ControlCatheter' component={ControlСatheter}/>
+          <Stack.Screen name='PdfOnBoarding' component={PdfOnBoarding}/>
+          <Stack.Screen name='Survey' component={Survey}/>
+          <Stack.Screen name='NightMode' component={NightMode}/>
+          <Stack.Screen name='ControlCatheter' component={ControlCatheter}/>
         
         </Stack.Navigator>
 

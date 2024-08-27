@@ -11,6 +11,7 @@ const {width} = Dimensions.get("window");
 
 const ChartDrankWater = () => {
   const drankWater = useAppSelector((state) => state.journal.drankWaterChart); // массив всех записей где указанно Выпитая вода
+  const units = useAppSelector((state) => state.appStateSlice.units); // массив всех записей где указанно Выпитая вода
   const weekDays = useSevenPreviousDays(day); // хук создание массива предыдущих дней недели
   useUpdateChart({category:'amountOfDrankFluids', dispatchAction: addChartValueDrankWaterToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
@@ -23,8 +24,8 @@ const ChartDrankWater = () => {
         labels: weekDays,
         datasets: [
           {
-              data: valueArray,
-              withScrollableDot: false
+            data: valueArray,
+            withScrollableDot: false
           }
         ]
         }}
@@ -34,7 +35,7 @@ const ChartDrankWater = () => {
         segments={0}
         transparent={true}
         yAxisInterval={1} // optional, defaults to 1
-        yAxisSuffix=" мл"
+        yAxisSuffix={units.title}
         withVerticalLines={false}
         
         chartConfig={

@@ -8,16 +8,17 @@ interface iWaterBalanceInterval{
 }
 
 const WaterBalanceInterval = ({showResult, result, bgColor}:iWaterBalanceInterval) => { 
+     console.log(result);
      
   return (
     <View className="flex-1 items-center justify-center py-1 relative" style={{ backgroundColor: bgColor }}>
         {showResult && 
         <View className={`absolute -top-12 w-16 h-10 border right-0 rounded-full items-center`}>
             <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center p-1">
-              {result === Infinity || Number.isNaN(result) ? 	'∞' : `${Math.floor(result)}%`}
+              {result === 0 || Number.isNaN(result) ? '∞' : `${Math.floor(result)}%`}
             </Text>
             <View className="-mt-3">
-                <MaterialIcons name="arrow-drop-down" size={34} color="black" />
+              <MaterialIcons name="arrow-drop-down" size={34} color="black" />
             </View>
         </View>}
     </View>

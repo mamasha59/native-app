@@ -1,16 +1,17 @@
 import { Text, TouchableOpacity } from "react-native";
+import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 import { setCalendareDay } from "../../../../store/slices/appStateSlicer";
 import { useAppDispatch } from "../../../../store/hooks";
 import { iDay } from "../../../../types";
-import { day, daysOfWeekEng } from "../../../../utils/date";
-import { format } from "date-fns";
+import { day } from "../../../../utils/date";
 import { dateFormat } from "../../../../utils/const";
 
 type iCalendarDay = {e: iDay}
 
 const CalendarDay = ({e}:iCalendarDay) => {
-  //TODO при смене языка надо менять locales
+  const {t} = useTranslation()
   const currentDay = format( new Date(e.year, e.month.index, e.dayNumber), dateFormat).slice(0,10);
   
   const dispatch = useAppDispatch();
@@ -21,6 +22,16 @@ const CalendarDay = ({e}:iCalendarDay) => {
     dispatch(setCalendareDay(currentDay));
   }
 
+  const daysOfWeek = [
+    { value: t("weekDays.sun"), short: t("weekDays.sun") },
+    { value: t("weekDays.mon"), short: t("weekDays.mon") },
+    { value: t("weekDays.tue"), short: t("weekDays.tue") },
+    { value: t("weekDays.wed"), short: t("weekDays.wed") },
+    { value: t("weekDays.thu"), short: t("weekDays.thu") },
+    { value: t("weekDays.fri"), short: t("weekDays.fri") },
+    { value: t("weekDays.sat"), short: t("weekDays.sat") },
+];
+
   return (
     <TouchableOpacity
       onPress={() => selectDate()}
@@ -29,7 +40,7 @@ const CalendarDay = ({e}:iCalendarDay) => {
         <Text
           style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
           className={`${isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'}  text-[10px]`}>
-            {daysOfWeekEng[e.weekNumber].short}
+            {daysOfWeek[e.weekNumber].short}
         </Text>
         <Text
           style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}

@@ -1,11 +1,13 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import {useState} from "react";
+import { useTranslation } from "react-i18next";
 
 import { DropDown } from "../../../assets/images/icons";
 import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 import { Option } from "../../../types";
 
 const CathetersForRoad = ({filteredRecords}:{filteredRecords:number}) => {
+    const {t} = useTranslation();
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [numberOfDays, setNumberOfDays] = useState<Option>({title: '7',value: '7'});
 
@@ -29,23 +31,25 @@ const CathetersForRoad = ({filteredRecords}:{filteredRecords:number}) => {
     <View className="mb-5">
         <TouchableOpacity activeOpacity={.8} onPress={() => setOpenModal(!openModal)}>
             <View className="flex-row items-center mb-[10px]">
-                <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">Расчитать катетеры в дорогу на:</Text>
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">
+                    {t("cathetersForRoadComponent.calculate_catheters_for_travel")}
+                </Text>
                 <View className="ml-2 flex-row items-center mx-[10px]">
                     <Text style={{ fontFamily: "geometria-bold" }} className="text-lg mr-2">{numberOfDays?.title}</Text>
                     <DropDown/>
                 </View>
-                <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">день + 1шт. в день</Text>
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">{t("day")} + 1{t("units")} {t("per_day")}</Text>
             </View>
             <View className="border border-border-color p-4 flex-1 rounded-xl">
                 <Text style={{ fontFamily: "geometria-bold" }} className="text-xs text-black">
-                    На {numberOfDays?.title} вам понадобится {cathetersForSpecificDays} катетеров
+                    {t("cathetersForRoadComponent.you_will_need")} {cathetersForSpecificDays} {t("for")} {numberOfDays?.title} {t("day")}
                 </Text>
             </View>
         </TouchableOpacity>
         <ModalSelect
             showIcon={false}
             row
-            title="Выберите кол-во дней:"
+            title={t("cathetersForRoadComponent.select_number_of_days")}
             options={options}
             onItemPress={onDayPress}
             openModal={openModal}

@@ -7,16 +7,19 @@ import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 import NotificationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useFormatInterval } from "../../../hooks/useFormatInterval";
 import NightModeButtonSvg from "../../../assets/images/iconsComponent/NightMode";
+import { activateRobotSpeech } from "../../../store/slices/appStateSlicer";
 
 interface iThirdDataScreen extends NavigationPropsWelcome<'ThirdDataScreen'>{}
 
 const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const {t} = useTranslation();
+
+    const dispatch = useAppDispatch();
     const timerSettings = useAppSelector(state => state.timerStates);
-    const nightModesettings = useAppSelector(state => state.nightOnDoarding);
+    const nightModesettings = useAppSelector(state => state.nightOnBoarding);
     
     const timeString = useFormatInterval({intervalInSeconds: timerSettings.interval});
 
@@ -24,6 +27,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     const [intervalsAtNight, setIntervalsAtNight] = useState<string[]>([]);
 
     useEffect(() => {
+        dispatch(activateRobotSpeech(t("your_plan_is_ready")));
         const now = new Date();
         const startTimeDay = parse(nightModesettings.timeSleepEnd, 'HH:mm', now); // утро
         const endTimeDay = parse(nightModesettings.timeSleepStart, 'HH:mm', now); // ночь
@@ -80,7 +84,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                         <View className="border-main-blue border max-w-[47px] rounded-full p-2">
                             <NelatonIcon/>
                         </View>
-                        <Text className="text-[#2980b9] text-[12px] leading-4" style={{fontFamily:'geometria-regular'}}>
+                        <Text className="text-[#2980b9] text-[12px] leading-4 text-center" style={{fontFamily:'geometria-regular'}}>
                             {t("thirdDataScreen.cannulationEachTime")}
                             <Text style={{fontFamily:'geometria-bold'}} className="underline"> {timeString}</Text>
                         </Text>

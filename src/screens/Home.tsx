@@ -1,6 +1,8 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../store/hooks';
 
@@ -15,6 +17,7 @@ import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIco
 import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
 import WaterBalance from './WaterBalance/WaterBalance';
 import ProfileScreen from './ProfileStack/ProfileScreen/ProfileScreen';
+import Loader from '../components/Loader/Loader';
 
 export type RootStackParamList = {
   ProfileScreen: undefined;
@@ -33,7 +36,19 @@ export type NavigationPropsHome<RouteName extends keyof RootStackParamList> = {
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function Home() {
+  const {t, i18n} = useTranslation();
+
   const badges = useAppSelector((state) => state.appStateSlice.tabBarBadgeJournalScreen);
+  const language = useAppSelector((state) => state.appStateSlice.setLanguage);
+  const loaderState = useAppSelector((state) => state.appStateSlice.loader);
+  
+  if(loaderState) return <Loader/>
+  
+  useEffect(() => {
+    if(language.id)
+    i18n.changeLanguage(language.id);
+  },[i18n.language]);
+
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -46,12 +61,11 @@ export default function Home() {
       }}
       screenOptions = {{
         headerShown:false,
-        // tabBarActiveBackgroundColor:'#4BAAC5',  // цвет кнопки когда мы на странице
-        // tabBarActiveTintColor: '#ffffff', // цвет иконки когда активна color
         tabBarItemStyle: { // стили самой кнопки перехода по страницам(дом, профиль и тд.)
-          borderRadius: 100,
+          // borderRadius: 100,
           marginVertical: 10,
-          marginHorizontal: 13,
+          marginHorizontal: 0,
+          // backgroundColor: "#000"
         },
         tabBarStyle: { // cтили самого меню
           height: 70,
@@ -66,7 +80,7 @@ export default function Home() {
         name='ProfileScreen'
         component={ProfileScreen}
         options={{
-          tabBarLabel:'Profile',
+          tabBarLabel:t("tabBar.profile"),
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon width={size} color={color}/>
           ),
@@ -76,7 +90,7 @@ export default function Home() {
         name='WaterBalance'
         component={WaterBalance}
         options={{
-          tabBarLabel:'Water',
+          tabBarLabel:t("tabBar.water_balance"),
           tabBarIcon: ({ color, size }) => (
             <ControllCatetor width={size} color={color}/>
           ),
@@ -86,7 +100,7 @@ export default function Home() {
         name='Home'
         component={HomeScreen}
         options={{
-          tabBarLabel:'Home',
+          tabBarLabel:t("tabBar.home"),
           tabBarIcon: ({ color, size }) => (
             <HomeIcon width={size} color={color}/>
           ),
@@ -96,7 +110,7 @@ export default function Home() {
         name='JournalScreen'
         component={JournalScreen}
         options={{
-          tabBarLabel:'Journal',
+          tabBarLabel:t("tabBar.journal"),
           tabBarIcon: ({ color, size }) => (
             <JournalIcon width={size} color={color}/>
           ),
@@ -107,7 +121,7 @@ export default function Home() {
         name='NoticeNavigationScreen'
         component={NoticeNavigationScreen}
         options={{
-          tabBarLabel:'Notice',
+          tabBarLabel:t("tabBar.notice"),
           tabBarIcon: ({ color, size }) => (
             <NotificationIcon color={color} width={size}/>
           ),

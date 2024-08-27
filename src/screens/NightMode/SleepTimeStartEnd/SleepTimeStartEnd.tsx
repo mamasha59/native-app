@@ -13,7 +13,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const {t} = useTranslation();
 
     const dispatch = useAppDispatch();
-    const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
+    const nightModeTimeSettings = useAppSelector(state => state.nightOnBoarding);
     
     const [intervalOfStartSleep, setIntervalOfStartSleep] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
         selectedIndexHour: 22,
@@ -81,9 +81,9 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         </View>
 
         {showInfo && <View className="mb-3">
-            <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>Ночной режим: </Text>
+            <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>{t("night_mode")}:</Text>
             <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
-                Если вы не планируете катетеризацию в ночное время, активируйте ночной режим во время вечерней катетеризации или используя кнопку «Ночной режим» на главном экране.
+                {t("componentSleepTimeStartEnd.night_mode_description")}
             </Text>
         </View>}
         <ModalSetInterval

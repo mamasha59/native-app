@@ -12,9 +12,11 @@ const windowSize = Dimensions.get('window');
 const NoticesOfWaterConsumption = () => {
     const now = new Date();
     const {t} = useTranslation();
+
     const dispatch = useAppDispatch();
     const settings = useAppSelector(state => state.appStateSlice.dayGoalOfDrinkWater);
-    const settingsNightMode = useAppSelector(state => state.nightOnDoarding.timeSleepStart);
+    const settingsNightMode = useAppSelector(state => state.nightOnBoarding.timeSleepStart);
+    const units = useAppSelector(state => state.appStateSlice.units);
 
     const startTimeNight = parse(settingsNightMode, 'HH:mm', now); // начало ночного интервала
     const newTime = subHours(startTimeNight, 2);
@@ -76,7 +78,7 @@ const NoticesOfWaterConsumption = () => {
                         selectTextOnFocus
                         className="text-[15px] max-w-[45px] border-b flex-1 text-center p-0 m-0"/>
                     <Text className="text-[15px]" style={{fontFamily:'geometria-bold'}}>
-                        {t("ml")}
+                        {units.title}
                     </Text>
                 </View>
                 <View className="w-[20px] h-[20px] items-center justify-center ml-1">

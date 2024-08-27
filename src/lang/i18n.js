@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
+
 import eng from './eng.json';
 import deu from './deu.json';
 import rus from './rus.json';

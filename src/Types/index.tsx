@@ -1,8 +1,13 @@
-interface iLanguage{
+interface iLanguage {
     id: string,
     title: string,
     selected:boolean,
-    icon?: string,
+    icon: string,
+}
+
+interface iUnits {
+    title: string,
+    id: string,
 }
 
 interface iUser {
@@ -74,4 +79,4 @@ interface Option {
     value: boolean | string
 }
     
-export {iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay};
+export {iUnits, iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay};

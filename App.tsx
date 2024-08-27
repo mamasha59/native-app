@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator} from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -50,7 +50,6 @@ Notifications.setNotificationCategoryAsync("its-about-cannulation", [
 ]);
 
 export default function App() {
-
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   const [notification, setNotification] = useState<Notifications.Notification>();
   const notificationListener = useRef<Notifications.Subscription>();
@@ -90,18 +89,18 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-        <RootSiblingParent>
-          <SafeAreaProvider onLayout={onLayoutRootView}>
+        <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
+          <RootSiblingParent>
+            <SafeAreaProvider onLayout={onLayoutRootView}>
               <GradientBackground>
                 <SafeAreaView className="flex-1 h-full">
                 <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
                   <RootNavigations/>
                 </SafeAreaView>
               </GradientBackground>
-          </SafeAreaProvider>
-        </RootSiblingParent>
-      </PersistGate>
+            </SafeAreaProvider>
+          </RootSiblingParent>
+        </PersistGate>
     </Provider>
   );
 }
@@ -126,7 +125,7 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
+      // alert('Failed to get push token for push notification!');
       return;
     }
     token = await Notifications.getExpoPushTokenAsync({ 
@@ -134,7 +133,7 @@ async function registerForPushNotificationsAsync() {
     });
     console.log(token);
   } else {
-    alert('Must use physical device for Push Notifications');
+    // alert('Must use physical device for Push Notifications');
   }
 
   return token && token.data;

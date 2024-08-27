@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import { useState } from "react";
 import { format, set } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
@@ -8,7 +9,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setMorningNoticeTime } from "../../../store/slices/nightStateSlice";
 
 const TimeOfNotice = () => {
-  const nightModeTimeSettings = useAppSelector(state => state.nightOnDoarding);
+  const {t} = useTranslation();
+  const nightModeTimeSettings = useAppSelector(state => state.nightOnBoarding);
   const dispatch = useAppDispatch();
 
   const [showModalSetTimeOfNotice, setShowModalSetTimeOfNotice] = useState<boolean>(false); // попап Конца Сна
@@ -57,7 +59,7 @@ const TimeOfNotice = () => {
   return ( 
     <View className={`mb-3 ${!nightModeTimeSettings.morningNotice && 'bg-[#b2bec3]'} rounded-xl pt-1 px-1`}>
         <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
-            Укажите время, когда вы хотели бы получить уведомление.
+          {t("nightModeScreen.timeOfNoticeComponent.specify_the_time")}
         </Text>
         <ButtonBluBorder
           handlePressButton={handleOpenModSetTimeOfNotice}

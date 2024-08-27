@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+interface iTimerStatesSlice {
+    startFromCountdown: boolean,
+    intervalDifference: number,
+    initialStripWhenCloseApp: number,
+    interval: number,
+    yellowInterval: number,
+    showModalSuccess: boolean,
+}
+
+const initialState:iTimerStatesSlice = {
     startFromCountdown: true,
     intervalDifference: 0,
     initialStripWhenCloseApp: 0,
@@ -31,7 +40,7 @@ const timerStatesSlice = createSlice({
         },
         changeYellowInterval: (state, action:PayloadAction<number>) => {
             state.yellowInterval = action.payload;
-        }
+        },
     }
 });
 

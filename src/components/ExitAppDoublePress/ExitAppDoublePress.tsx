@@ -1,7 +1,9 @@
 import { ToastAndroid, Vibration, BackHandler, Platform } from "react-native";
 import {useState, useEffect} from "react";
+import { useTranslation } from "react-i18next";
 
 export const ExitAppDoublePress = () => {
+    const {t} = useTranslation();
     const [exitApp, setExitApp] = useState(0);
 
     const backAction = () => {
@@ -12,7 +14,7 @@ export const ExitAppDoublePress = () => {
         if (exitApp === 0) {
           setExitApp(exitApp + 1);
           Vibration.vibrate(10, true)
-          ToastAndroid.show('Нажмите еше раз для выхода', ToastAndroid.SHORT);
+          ToastAndroid.show(t("press_one_more_time"), ToastAndroid.SHORT);
         } else if (exitApp === 1) {
           BackHandler.exitApp();
         }

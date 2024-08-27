@@ -17,13 +17,13 @@ const SwitchToggle = ({isEnabled, onValueChange, title}:iSwitchToggle) => {
             style={{width: window.width / 1.6}}
             activeOpacity={.7}
             onPress={onValueChange}
-            className="border border-main-blue rounded-xl mr-[5px] max-w-[290px] items-center p-4 justify-center">
+            className="border border-main-blue rounded-xl mr-[5px] max-w-[290px] items-center p-3 justify-center">
             <Text style={{fontFamily:'geometria-regular'}} className="text-sm text-center">
                 {title}
             </Text>
         </TouchableOpacity>
         <View style={{width: window.width / 0.4}} className="flex-row flex-1">
-            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-regular'}}>{t('no')}</Text>
+            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-bold'}}>{t('no')}</Text>
             <Switch
                 trackColor={{false: '#767577', true: '#81b0ff'}}
                 thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
@@ -32,7 +32,7 @@ const SwitchToggle = ({isEnabled, onValueChange, title}:iSwitchToggle) => {
                 onValueChange={onValueChange}
                 className="h-5 border w-9"
             />
-            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-regular'}}>{t('yes')}</Text>
+            <Text className="pr-2 capitalize" style={{fontFamily:'geometria-bold'}}>{t('yes')}</Text>
         </View>
     </View>
   );

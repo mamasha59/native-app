@@ -17,11 +17,13 @@ interface iQuestionItem{
 }
 
 const QuestionItem = ({question, onAnswerChange, selectedAnswer}:iQuestionItem) => {
-        //  console.log(selectedAnswer);
          
   return (
     <View className="mb-4">
-        <Text style={{ fontFamily: 'geometria-regular' }}>{question.text}</Text>
+        <Text style={{ fontFamily: 'geometria-regular'}}>
+            <Text style={{ fontFamily: 'geometria-regular'}}>{question.id}. </Text>
+            {question.text}
+        </Text>
         <View className="mt-2">
             {question.answers.map((answer) => (
                 <TouchableOpacity
@@ -29,7 +31,7 @@ const QuestionItem = ({question, onAnswerChange, selectedAnswer}:iQuestionItem) 
                     key={answer.id}
                     className={`items-center flex-row mb-1 py-2 pl-2 rounded-lg ${selectedAnswer === answer.id && 'bg-[#bdc3c77d]'}`}>
                     <FontAwesome6 name={answer.iconName} size={24} color={answer.iconColor} />
-                    <Text className="ml-2" style={{fontFamily:'geometria-bold'}}>
+                    <Text className="ml-2 capitalize" style={{fontFamily:'geometria-bold'}}>
                         {answer.text}
                     </Text>
                 </TouchableOpacity>

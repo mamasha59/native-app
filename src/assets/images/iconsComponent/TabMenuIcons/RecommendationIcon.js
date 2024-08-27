@@ -1,6 +1,6 @@
 import Svg, { G, Path, Defs, ClipPath } from "react-native-svg";
 
-const RecomendationIcon = ({color,width}) => (
+const RecommendationIcon = ({color,width}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}
@@ -17,4 +17,4 @@ const RecomendationIcon = ({color,width}) => (
     </Defs>
   </Svg>
 )
-export default RecomendationIcon;
+export default RecommendationIcon;

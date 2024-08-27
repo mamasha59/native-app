@@ -11,6 +11,7 @@ const {width} = Dimensions.get("window");
 
 const ChartReleasedUrine = () => {
     const dataUrine = useAppSelector((state) => state.journal);
+    const units = useAppSelector((state) => state.appStateSlice.units);
     const weekDays = useSevenPreviousDays(day); // хук создание массива предыдущих дней недели
     useUpdateChart({category:'amountOfReleasedUrine', dispatchAction: addChartValueToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
@@ -23,8 +24,8 @@ const ChartReleasedUrine = () => {
             labels: weekDays,
             datasets: [
                 {
-                    data: valueArray,
-                    withScrollableDot: false
+                  data: valueArray,
+                  withScrollableDot: false
                 }
             ]
         }}
@@ -34,7 +35,7 @@ const ChartReleasedUrine = () => {
         segments={0}
         transparent={true}
         yAxisInterval={1} // optional, defaults to 1
-        yAxisSuffix=" мл"
+        yAxisSuffix={units.title}
         onDataPointClick={(value) => console.log(value.value)}
         withVerticalLines={false}
         chartConfig={

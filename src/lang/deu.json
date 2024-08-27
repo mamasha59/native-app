@@ -1,17 +1,385 @@
 {
     "translation": {
-        "firstDataScreen_Title": "Willkommen beim Nelaton Smart Assistant Ich werde Sie an die Selbstkatheterisierung erinnern.",
-        "firstDataScreen_Description": "Bitte beantworten Sie ein paar einfache Fragen, damit ich einen Katheterisierungsplan erstellen kann.",
-        "componentSleepTimeStartEnd": {
-            "title": "Geben Sie Ihre üblichen Schlafzeiten an:",
-            "select": "auswählen",
-            "from": "from",
-            "to": "to"
+        "switching_language": "Sprache wechseln...",
+        "your_plan_is_ready": "Ich habe deinen Plan vorbereitet!",
+        "firstDataScreen": {
+            "title": "Willkommen beim Nelaton Smart Assistant",
+            "description": "Ich werde Sie an die Katheterisierung erinnern. Bitte beantworten Sie einige einfache Fragen, damit ich den Katheterisierungsplan anpassen kann.",
+            "setIntervalTitle": "Intervall wählen"
         },
+
+        "secondDataScreen_description": "Die Messung der aufgenommenen Flüssigkeit und des ausgeschiedenen Urins hilft, ein optimales Flüssigkeitsniveau im Körper zu erhalten.",
+
+        "thirdDataScreen": {
+            "title": "Ihr Katheterisierungsplan:",
+            "description": "Dieser Plan wird an Sie angepasst. Nach jeder Katheterisierung wird die Zeit bis zur nächsten berechnet, und Benachrichtigungen werden aktiviert. Katheterisieren Sie immer bis zum Ende des Intervalls.",
+            "cannulationEachTime": "Katheterisierung alle",
+            "night_cannulation": "Nachtkatheterisierung",
+            "notification_Description": "Sie erhalten Benachrichtigungen, um sich rechtzeitig zu katheterisieren!",
+            "notice": "Die optimale Frequenz der Katheterisierungen liegt bei 4-6 Mal pro Tag. Wenn bei einer Katheterisierung mehr als 400 ml Urin ausgeschieden werden, wird empfohlen, die Häufigkeit der Katheterisierungen zu erhöhen. Halten Sie sich an das von Ihrem Arzt verordnete Katheterisierungsintervall.",
+            "know_from_doctor": {
+                "title": "Konsultieren Sie Ihren Arzt bezüglich:",
+                "the_catheterization_interval": "des Katheterisierungsintervalls",
+                "the_possibility_of_not_catheterizing_at_night": "der Möglichkeit, nachts keine Katheterisierung durchzuführen",
+                "how_much_water_you_need_to_drink": "wie viel Wasser Sie trinken sollten"
+            }
+        },
+
+        "fourthDataScreen": {
+            "title": "Benachrichtigungseinstellungen"
+        },
+
+        "continue": "weiter",
+        "yes": "ja",
+        "no": "nein",
+        "before": "vor",
+        "hour": "Std.",
+        "min": "Min.",
+        "month": "Monat",
+        "every": "jede",
+        "ml": "ml",
+        "fl_oz": "fl oz",
+        "day": "Tag",
+        "blank": "",
+        "units": "Stk",
+        "in": "in",
+        "save": "Speichern",
+        "exit": "Beenden",
+        "back": "Zurück",
+        "nelaton": "Nelaton",
+        "ok": "Ok",
+        "сatheter": "Katheter",
+        "per_day": "pro Tag",
+        "per_month": "pro Monat",
+        "for": "für",
+        "notification": "Benachrichtigungen",
+        "night_mode": "Nachtmodus",
+        "sleep": "Schlaf",
+        "fill_in_the_field": "Feld ausfüllen",
+        "dont_want_to_fill_out": "ich möchte nicht ausfüllen",
+        "document": "Dokument",
+        "language": "Sprache",
+        "today": "heute",
+        "unit": "Maßeinheit",
+
+        "componentSleepTimeStartEnd": {
+            "title": "Geben Sie Ihre übliche Schlafenszeit an:",
+            "select": "auswählen",
+            "from": "von",
+            "to": "bis",
+            "night_mode_description": "Wenn Sie keine nächtliche Katheterisierung planen, aktivieren Sie den Nachtmodus während der abendlichen Katheterisierung oder verwenden Sie die „Nachtmodus“-Taste auf dem Startbildschirm."
+        },
+
         "toggleCannulationAtNightComponent": {
-            "title": "Catheterization at night",
-            "yes": "yes",
-            "no": "no"
-        }
+            "title": "Katheterisierung in der Nacht"
+        },
+
+        "toggleCountUrineComponent": {
+            "title": "Messung der Urinmenge"
+        },
+
+        "setChangeIntervalComponent": {
+            "title": "Geben Sie das Katheterisierungsintervall an:",
+            "every": "alle"
+        },
+
+        "waterBalanceComponent": {
+            "title": "Wasserbilanz",
+            "title_short": "WB",
+            "water_balance_formula": "Berechnungsformel der Wasserbilanz:",
+            "urine_output": "Urinmenge",
+            "fluid_intake": "Flüssigkeitsaufnahme",
+            "description": "Die normale Diurese liegt bei 75-80 % der aufgenommenen (getrunkenen) Flüssigkeitsmenge.",
+            "intervals": {
+                "negative": "Negativ",
+                "normal": "Normal",
+                "positive": "Positiv",
+                "negative_text": "(<75 %): Dieser Bereich zeigt, dass das Urinvolumen weniger als 75 % der aufgenommenen Flüssigkeit beträgt.",
+                "normal_text": "(75-80 %): Dies ist das optimale Verhältnis, bei dem das Urinvolumen 75-80 % der aufgenommenen Flüssigkeit entspricht. Dies weist auf eine gesunde Wasserbilanz hin.",
+                "positive_text": "(80-100 %): Dieser Bereich zeigt, dass das Urinvolumen 80-100 % der aufgenommenen Flüssigkeit entspricht. Erhöhte Diurese, der Körper scheidet mehr Flüssigkeit aus als üblich."
+            }
+        },
+
+        "clueAtTheBottom": {
+            "title": "Sie können diese Auswahl jederzeit im Tab ändern",
+            "where": "Profil"
+        },
+
+        "catheterizationReminder": {
+            "firstPartTitle": "Wir erinnern Sie daran, sich",
+            "secondPartTitle": "Minuten vor Ende des Intervalls zu katheterisieren. Sie können diese und andere Einstellungen unten ändern."
+        },
+
+        "noticeOfCatheterizationComponent": {
+            "title": "Benachrichtigungen zur Katheterisierung:",
+            "beforeCatheterization": "Vor der Katheterisierung",
+            "smartAlarm": "Smart-Alarm-Funktion",
+            "notice": "Nach der abendlichen Katheterisierung berechnen wir die Zeit für die nächtliche Katheterisierung und stellen den Wecker ein."
+        },
+
+        "noticeOfWaterConsumptionComponents": {
+            "title": "Benachrichtigungen zur Flüssigkeitsaufnahme:",
+            "evening_time_take_water": "Abendliche Flüssigkeitsaufnahme:",
+            "set_daily_goal": "Tagesziel festlegen:",
+            "remind_to_reached_water_goal_time": "Erinnern Sie tagsüber bis zur Zielerreichung:"
+        },
+
+        "noticeOfRemainCaths": {
+            "title": "Benachrichtigungen zum Katheterbestand:",
+            "when_the_stock_is_less_then": "Wenn der Bestand weniger als",
+            "how_many_caths": "Wie viele Katheter haben Sie?"
+        },
+
+        "catheterStockComponent": {
+            "title": "Katheterbestand",
+            "units_will_remain": "Stück verbleiben",
+            "modalEditCatheters": {
+                "how_many_catheters_do_you_have": "Wie viele Katheter haben Sie?",
+                "press_to_write": "drücken"
+            }
+        },
+
+        "intervalInfoComponent": {
+            "title": "Katheterisierungsintervall:"
+        },
+
+        "homeScreen": {
+            "doubleButtonComponent": {
+                "leakage": "Leckage",
+                "drink": "getrunken"
+            }
+        },
+
+        "waterBalanceScreen": {
+            "charts": {
+                "fluid_intake_chart": "Diagramm der Flüssigkeitsaufnahme",
+                "urine_output_chart": "Diagramm des Urinvolumens"
+            },
+            "waterBalanceInfo": "Die Wasserbilanz ist das Verhältnis zwischen der Menge an Flüssigkeit, die in den Körper gelangt, und der Menge an Flüssigkeit, die über einen bestimmten Zeitraum ausgeschieden wird. Die Messung der aufgenommenen Flüssigkeit und des ausgeschiedenen Urins hilft Ihnen, ein optimales Flüssigkeitsniveau im Körper zu erhalten."
+        },
+
+        "timer": {
+            "start": "Starten",
+            "completed": "Abgeschlossen",
+            "titles": {
+                "catheterization_interval": "Katheterisierungsintervall:",
+                "since_last_catheterization": "Seit der letzten Katheterisierung",
+                "before_catheterization": "Bis zur Katheterisierung:"
+            },
+            "intervals": {
+                "normal": "n o r m a l e s   i n t e r v a l l ",
+                "critical": "k r i t i s c h e s   i n t e r v a l l "
+            }
+        },
+
+        "journalScreen": {
+            "title": "Katheterisierungstagebuch",
+            "no_records_for_the_selected_day": "Keine Aufzeichnungen für den ausgewählten Tag",
+            "dailyStatistics": {
+                "daily_statistics": "Statistiken",
+                "catheterizations": "Katheterisierungen:",
+                "urine_leakages": "Urinlecks:",
+                "fluid_intake": "Aufgenommene Flüssigkeit:",
+                "urine_output": "Ausgeschiedener Urin:"
+            },
+            "send": "Senden",
+            "download_PDF": "PDF herunterladen",
+
+            "filters": {
+                "all": "alle",
+                "catheterizations": "Katheterisierungen",
+                "urine_output": "ausgeschiedener Urin",
+                "fluid_intake": "aufgenommene Flüssigkeit",
+                "urine_leakage": "Urinleckage"
+            },
+
+            "recordTitles": {
+                "time": "Zeit",
+                "leakage": "Leckage",
+                "catheterization": "Katheter isierung",
+                "drank_fluids": "Getrunkene Flüssigkeit"
+            }
+        },
+
+        "questionnaireScreen": {
+            "always": "Immer",
+            "often": "Oft",
+            "sometimes": "Manchmal",
+            "rarely": "Selten",
+            "never": "Nie",
+            "very_convenient": "Sehr bequem",
+            "convenient": "Bequem",
+            "neutral": "Neutral",
+            "inconvenient": "Unbequem",
+            "very_inconvenient": "Sehr unbequem",
+            "reset_button": "Zurücksetzen",
+            "confirm_and_download_PDF": "Bestätigen und PDF herunterladen",
+            "question_one": "Wie oft haben Sie Schmerzen oder Beschwerden bei der Katheterisierung?",
+            "question_two": "Gab es Fälle von Blutungen nach der Katheterisierung?",
+            "question_three": "Haben Sie nach der Katheterisierung Anzeichen einer Infektion bemerkt, wie Fieber, häufiges Wasserlassen, Schmerzen oder Brennen?",
+            "question_four": "Hatten Sie allergische Reaktionen oder Hautreizungen durch die Verwendung des Katheters oder von Gleitmitteln?",
+            "question_five": "Wie bewerten Sie den Komfort bei der Verwendung des verwendeten Katheters und der Gleitmittel?",
+            "question_six": "Hatten Sie Schwierigkeiten bei der Katheterisierung, die auf unzureichendes Training zurückzuführen sein könnten?",
+            "question_seven": "Gab es Fälle, in denen die Katheterisierung fehlschlug und Sie dringend medizinische Hilfe benötigten?",
+            "question_eight": "Hatten Sie Schwierigkeiten beim Einführen des Katheters? Wenn ja, beschreiben Sie bitte, welche Probleme auftraten.",
+            "question_nine": "Welche zusätzlichen Probleme oder Komplikationen im Zusammenhang mit der Katheterisierung möchten Sie anmerken?"
+        },
+    
+        "catheterStockScreen": {
+            "catheter_stock_screen": "Katheterbestand:",
+            "average_catheter_usage": "Durchschnittlicher Katheterverbrauch:"
+        },
+    
+        "cathetersForRoadComponent": {
+            "calculate_catheters_for_travel": "Katheter für die Reise berechnen für:",
+            "you_will_need": "Sie werden brauchen",
+            "select_number_of_days": "Wählen Sie die Anzahl der Tage"
+        },
+    
+        "catheterNoticeComponent": {
+            "when_the_stock_is_less_than": "Wenn der Bestand weniger als"
+        },
+    
+        "profileScreen": {
+            "title": "Ihr Profil",
+            "profileSettingsComponent": {
+                "change_interval": "Intervall ändern",
+                "normal_interval": "Normales Intervall",
+                "confirm_new_interval": "Neues Intervall bestätigen"
+            },
+            "personal_data_for_PDF": "Persönliche Daten für PDF"
+        },
+    
+        "nightModeScreen": {
+            "title": "Nachtmodus-Einstellungen für Katheterisierung",
+            "askActivateAfterTimeComponent": {
+                "askToActivate": "Fragen Sie nach der Aktivierung des Nachtmodus bei Katheterisierung nach"
+            },
+            "notificationsAtNightComponent": {
+                "night_time_notifications": "Benachrichtigungen in der Nacht:",
+                "description_first_part": "Nach der Katheterisierung vor dem Schlafengehen und der Aktivierung des",
+                "description_second_part": "bis zum Morgen werden keine Benachrichtigungen gesendet."
+            },
+    
+            "morningCathNoticeDescription": "Möchten Sie morgens Benachrichtigungen über die Notwendigkeit einer Katheterisierung erhalten?",
+            
+            "timeOfNoticeComponent": {
+                "specify_the_time": "Geben Sie die Zeit an, zu der Sie eine Benachrichtigung erhalten möchten."
+            },
+    
+            "reducingFluidIntakeComponent": {
+                "receive_notifications_to_reduce_fluid_intake": "Möchten Sie Benachrichtigungen erhalten, um den Flüssigkeitsverbrauch zu reduzieren:"
+            },
+    
+            "notice": "Besprechen Sie die Katheterisierungsfrequenz und die Möglichkeit, sie nachts auszuschließen, mit Ihrem Arzt."
+        },
+    
+        "personalizationScreen": {
+            "title": "Personalisieren Sie Ihr Urintagebuch",
+            "description": "Diese Daten werden in der PDF-Version Ihres Urintagebuchs angezeigt. Die ausgefüllten Informationen helfen Ihrem Arzt, Ihr Dokument zu erkennen und es zur Überwachung Ihrer Gesundheit und gegebenenfalls zur Anpassung der Behandlung zu verwenden.",
+            "your_gender": "Ihr Geschlecht*",
+            "male": "Männlich",
+            "female": "Weiblich",
+            "boy": "Junge",
+            "girl": "Mädchen",
+            "your_first_name": "Ihr Vorname*",
+            "your_last_name": "Ihr Nachname*",
+            "your_age": "Ihr Alter*",
+            "bladder_volume": "Blasenvolumen",
+            "catheter_size": "Kathetergröße Ch/FR",
+            "which_catheter_do_you_use": "Welchen Katheter verwenden Sie? Modellname/Hersteller",
+            "which_catheter_do_you_use_hint": "Diese Information finden Sie auf der Verpackung der verwendeten Katheter.",
+            "additional_information": "Hier können Sie zusätzliche Informationen für Ihren Arzt hinterlassen (Diagnosen, Verletzungsarten, Medikamenteneinnahme)",
+            "additional": "Zusätzlich",
+            "volume_info": "\"Allgemeine\" Normen: Frauen - 250-500 ml, Männer - 350-700 ml, Kinder - 35-400 ml (je nach Alter)"
+        },
+    
+        "modalUrineLeakage": {
+            "title": "Das Leck trat auf:",
+            "options": {
+                "rest": "In Ruhe",
+                "coughing": "Husten",
+                "physical_activity": "Körperliche Aktivität"
+            },
+            "write_your_own_option": "Schreiben Sie Ihre eigene Option"
+        },
+    
+        "modalCatheterizationCompleted": {
+            "excellent": "Ausgezeichnet!",
+            "catheterization_completed": "Katheterisierung abgeschlossen!",
+            "next_catheterization": "Nächste Katheterisierung:"
+        },
+    
+        "modalDocumentCreation": {
+            "title": "Dokumenterstellung",
+            "select_document_interval": "Wählen Sie das Dokumentintervall:",
+            "format": "Format:",
+            "yyyy_mm_dd": " jjjj-mm-tt",
+            "range_of_days": "Zeitraum",
+            "one_day": "Ein Tag",
+            "complete_and_include_PDF_questionnaire": "PDF-Fragebogen zur Zufriedenheit mit der Katheterisierung ausfüllen und beifügen",
+            "fill_in_personal_data": "Persönliche Daten ausfüllen",
+            "generate_and": "Erstellen und",
+            "share_document": "Teilen",
+            "download_document": "Herunterladen"
+        },
+    
+        "modalFluidIntake": {
+            "how_much_fluid_did_you_drink": "Wie viel Flüssigkeit haben Sie getrunken?"
+        },
+    
+        "modalUrineOutput": {
+            "not_measured": "Nicht gemessen?",
+            "continue_without_recording_the_urine_volume": "Ohne Aufzeichnung des Urinvolumens fortfahren",
+            "how_much_urine_was_released": "Wie viel Urin wurde abgegeben?",
+            "noticeWhenPressClose": {
+                "title": "Bitte geben Sie an, wie viel Urin abgegeben wurde.",
+                "description": "Wenn Sie den Wert nicht ständig angeben möchten, können Sie dies auf dem Profilbildschirm ändern.",
+                "got_it": "Verstanden."
+            }
+        },
+    
+        "weekDays": {
+            "mon": "Mo",
+            "tue": "Di",
+            "wed": "Mi",
+            "thu": "Do",
+            "fri": "Fr",
+            "sat": "Sa",
+            "sun": "So"
+        },
+    
+        "months": {
+            "january": "Januar",
+            "february": "Februar",
+            "march": "März",
+            "april": "April",
+            "may": "Mai",
+            "june": "Juni",
+            "july": "Juli",
+            "august": "August",
+            "september": "September",
+            "october": "Oktober",
+            "november": "November",
+            "december": "Dezember"
+        },
+    
+        "tabBar": {
+            "profile": "Profil",
+            "water_balance": "Wasserbilanz",
+            "home": "Startseite",
+            "journal": "Tagebuch",
+            "notice": "Benachrichtigungen"
+         },
+    
+         "pdfPattern": {
+            "urine_diary": "Urin-Tagebuch",
+            "full_name": "Name",
+            "date": "Datum",
+            "action": "Aktion",
+            "leaking_condition": "Zustand beim Auslaufen"
+         },
+    
+         "press_one_more_time": "Drücken Sie erneut, um zu beenden"
     }
 }

@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
       <ModalLiquidAmount key={'drank'}/>
       <ModalLeakageHappened modalLeakageVisible={modalLeakageVisible} setModalLeakageVisible={setModalLeakageVisible} setToastOpened={setToastOpened} key={'leakagemodal'}/>
-      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'Подтекание-тоаст'}/>
+      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'leakage-toast'}/>
     </MainLayout>
   );
 };

@@ -85,7 +85,7 @@ const NoticesOfRemainCaths = () => {
             </View>
         </TouchableOpacity>
         
-        <TouchableOpacity onPress={focusInputAddCatheters} className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
+        <TouchableOpacity onPress={focusInputAddCatheters} className="mt-2 py-3 flex-row flex-wrap justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>
                 {t("noticeOfRemainCaths.how_many_caths")}
             </Text>
@@ -100,7 +100,7 @@ const NoticesOfRemainCaths = () => {
                     maxLength={3}
                     selectTextOnFocus
                     className="text-[17px] border-b max-w-[40px] flex-1 text-center"/>
-                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>{t("pieces")}</Text>
+                <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>{t("units")}</Text>
                 <View className="w-[20px] h-[20px] items-center justify-center">
                     <Pencil/>
                 </View>

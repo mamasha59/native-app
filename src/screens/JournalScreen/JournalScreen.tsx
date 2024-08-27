@@ -1,13 +1,13 @@
-import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity} from "react-native";
+import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Modal, Dimensions, FlatList, Pressable} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
-import { Dropdown } from "react-native-element-dropdown";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 import { DropDown } from "../../assets/images/icons";
 
 import JournalRecord from "./JournalRecord/JournalRecord";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
-import { day, getCurrentMonth, monthsEng } from "../../utils/date";
+import { day, getCurrentMonth } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iDairyRecord, iMonth } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -24,8 +24,12 @@ interface iJournalScreen{
   navigation: StackNavigationRoot,
 }
 
-const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать статистику из стора
+const {height,width} = Dimensions.get('window');
+
+const JournalScreen = ({navigation}:iJournalScreen) => {
+  const {t, i18n} = useTranslation();
   const dispatch = useAppDispatch();
+
   const {urineDiary, modalCustomizePdfDocument} = useAppSelector((state) => state.journal); // массив записей из хранилища редакса
   const {calendareDay} = useAppSelector(user => user.appStateSlice); // достаем из стора редакса выбранню дату на календаре и ответы
 
@@ -34,8 +38,25 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
   const [loading, setLoading] = useState<boolean>(true);
   const [buttonName, setButtonName] = useState<string>('');
 
-  const [filterSetting, setFilterSetting] = useState('');
+  const [filterSetting, setFilterSetting] = useState<string>('');
+  const [openSelectMonth, setOpenSelectmonth] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  const nelaton = t("nelaton");
+  const months = [
+    { value: t("months.january"), index: 0},
+    { value: t("months.february"), index: 1},
+    { value: t("months.march"), index: 2},
+    { value: t("months.april"), index: 3},
+    { value: t("months.may"), index: 4},
+    { value: t("months.june"), index: 5},
+    { value: t("months.july"), index: 6},
+    { value: t("months.august"), index: 7},
+    { value: t("months.september"), index: 8},
+    { value: t("months.october"), index: 9},
+    { value: t("months.november"), index: 10},
+    { value: t("months.december"), index: 11},
+];
 
   const [statisticPerDay, setStatisticPerDay] = useState<{cannulation?:number,leakage?:number,amountOfDrankFluids?:number,amountOfReleasedUrine?:number}>({
     cannulation: 0,
@@ -43,9 +64,9 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
     amountOfDrankFluids:0,
     amountOfReleasedUrine: 0,
   });
-  
+   
   const [month, setSelectedMonth] = useState<iMonth>({
-    month: monthsEng[getCurrentMonth].value,
+    month: months[getCurrentMonth].value,
     index: getCurrentMonth,
   });
 
@@ -69,8 +90,8 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
   useEffect(() => { // filtering by catagories
     const applyFilter = (records: iDairyRecord[], filter: string) => {
       switch (filter) {
-        case 'Нелатон':
-          return records.filter((e) => e.catheterType === filter);
+        case nelaton:
+          return records.filter((e) => e.catheterType?.length! > 0);
         case 'amountOfReleasedUrine':
           return records.filter((e) => e.amountOfReleasedUrine && e.amountOfReleasedUrine > 0);
         case 'amountOfDrankFluids':
@@ -118,6 +139,10 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
     setStatisticPerDay(setStatistics);
   },[calendareDay,urineDiary,day]);
 
+  useEffect(() => { // set correct name of month if language if changed
+    setSelectedMonth({month: months[month.index].value, index: month.index});
+  },[i18n.language])
+
   const updateRecords = useCallback(() => { // обновление списка, тяним тапом по списку
     setRefreshing(true);
     setTimeout(() => {
@@ -125,29 +150,50 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
       dispatch(resetBadges());
     }, 2000);
     scrollViewRef.current?.scrollTo({x:0,y:0,animated:true});
-  }, []);
+  }, [i18n.language]);
+
+  const handleModalSelectMonth = () => {
+    setOpenSelectmonth(!openSelectMonth);
+  }
+
+  const onMonthClick = (month: { value: string; index: number;}) => {
+    setSelectedMonth({month: month.value, index: month.index});
+    handleModalSelectMonth();
+  }
 
   return (
-    <MainLayout title="Дневник мочеиспускания">
-      <Dropdown
-        data={monthsEng}
-        style={{width: 100,}}
-        fontFamily="geometria-regular"
-        labelField="value"
-        valueField="value"
-        placeholder={month.month}
-        containerStyle={{width:210}}
-        autoScroll
-        activeColor="#4BAAC5"
-        mode="modal"
-        value={month.month}
-        accessibilityLabel={month.month}
-        renderRightIcon={() => <DropDown/>}
-        onChange={item => {
-          setSelectedMonth({month: item.value, index: item.index});
-      }}
-      />
-      <ListOfCalendarDays month={month} setSelectedMonth={setSelectedMonth} />
+    <MainLayout title={t("journalScreen.title")}>
+      <TouchableOpacity className="flex-row items-center mb-2" onPress={handleModalSelectMonth}>
+        <Text style={{fontFamily:'geometria-regular'}} className="text-xl text-start mr-2">{month.month}</Text>
+        <DropDown/>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        onRequestClose={handleModalSelectMonth}
+        visible={openSelectMonth}>
+        <Pressable
+          onPress={(event) => event.target === event.currentTarget && handleModalSelectMonth()}
+          className="flex-1 justify-center items-center mx-auto bg-[#00000037] w-full h-full">
+          <View
+            style={{width: width / 2, height: height / 1.5}}
+            className="bg-[#fff] items-center justify-center py-2">
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={months}
+              renderItem={({item}) =>
+                <TouchableOpacity className={`py-3 border-b w-full ${getCurrentMonth === item.index && 'bg-[#00000037]'}`} onPress={() => onMonthClick(item)}>
+                  <Text style={{fontFamily:'geometria-regular'}} className="text-xl text-center">{item.value}</Text>
+                </TouchableOpacity>
+              }
+              keyExtractor={item => item.value}
+            />
+          </View>
+        </Pressable>
+      </Modal>
+
+      <ListOfCalendarDays month={month} months={months} setSelectedMonth={setSelectedMonth} />
       <FilterCategories setFilterSetting={setFilterSetting}/>
       <Statistics selectedCalendareDate={calendareDay} statisticPerDay={statisticPerDay}/>
       <ScrollView
@@ -163,32 +209,34 @@ const JournalScreen = ({navigation}:iJournalScreen) => { // TODO убрать с
           :
           (urineDiary.length === 0 || filtredJournalRecords.length === 0
             ? <View focusable={false}>
-                <Text style={{fontFamily:'geometria-regular'}} className="text-lg">There are no entries here yet...</Text>
+                <Text style={{fontFamily:'geometria-regular'}} className="text-lg">
+                  {t("journalScreen.no_records_for_the_selected_day")}...
+                </Text>
               </View>
             : filtredJournalRecords.map((e,index) => 
-                <JournalRecord
-                  timeStamp={e.timeStamp}
-                  id={e.id}
-                  key={index} 
-                  whenWasCanulisation={e.whenWasCanulisation}
-                  amountOfDrankFluids={e.amountOfDrankFluids}
-                  catheterType={e.catheterType}
-                  amountOfReleasedUrine={e.amountOfReleasedUrine}
-                  leakageReason={e.leakageReason}
-                />)
+              <JournalRecord
+                timeStamp={e.timeStamp}
+                id={e.id}
+                key={index} 
+                whenWasCanulisation={e.whenWasCanulisation}
+                amountOfDrankFluids={e.amountOfDrankFluids}
+                catheterType={e.catheterType}
+                amountOfReleasedUrine={e.amountOfReleasedUrine}
+                leakageReason={e.leakageReason}
+              />)
           )
         }
       </ScrollView>
       <DoubleButton
         showIcon={false}
-        textOfLeftButton="Отправить"
-        textOfRightButton="Скачать PDF"
+        textOfLeftButton={t("journalScreen.send")}
+        textOfRightButton={t("journalScreen.download_PDF")}
         handlePressLeftButton={() => handlePressButton('share')}
         handlePressRightButton={() => handlePressButton('download')}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('Survey', {})} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
+      {/* <TouchableOpacity onPress={() => navigation.navigate('Survey', {})} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
         <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center">опросник</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <ModalCustomizePdf buttonName={buttonName} handleModalState={handleModalState} key={'modalcustomizepdfjournalscreen'}/>
     </MainLayout>
   );

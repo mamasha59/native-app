@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { View, Text, ScrollView } from "react-native";
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
@@ -14,6 +15,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { setWhetherDoCannulationAtNight } from "../../store/slices/nightStateSlice";
 
 const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
+    const {t} = useTranslation();
     const dispatch = useAppDispatch();
 
     const hadleExitNightModeScreen = () => {
@@ -27,7 +29,7 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
     }
 
   return (
-    <MainLayout title="Настройка ночного режима:">
+    <MainLayout title={t("nightModeScreen.title")}>
         <ScrollView className="flex-1 h-full">
             <SleepTimeStartEnd/>
             <AskActivateAfterTime/>
@@ -37,13 +39,13 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
             <ReducingFluidIntake/>
             <View className="mb-3 justify-center items-center flex-1">
                 <Text className="text-sm text-center" style={{fontFamily:'geometria-regular'}}>
-                    Обсудите периодичность катетеризации и возможность её исключения ночью с вашим врачом.
+                    {t("nightModeScreen.notice")}
                 </Text>
             </View>
             <DoubleButton
                 showIcon={false}
-                textOfLeftButton="Выйти"
-                textOfRightButton="Сохранить"
+                textOfLeftButton={t("exit")}
+                textOfRightButton={t("save")}
                 handlePressLeftButton={hadleExitNightModeScreen}
                 handlePressRightButton={hadleSafeSettings}
             />

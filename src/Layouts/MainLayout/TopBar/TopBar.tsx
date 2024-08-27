@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { ArrowBack } from "../../../assets/images/icons";
-import RecomendationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/RecomendationIcon";
 import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
+import RecommendationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/RecommendationIcon";
 
 const TopBar = () => {
     const route = useRoute(); // берем имена маршрутов
@@ -23,10 +23,10 @@ const TopBar = () => {
             <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-[#fff]">easily</Text>
           </View>
         )
-        // КНОПКА НАЗАД
+        // Back button
         : (<TouchableOpacity onPress={goBack}><ArrowBack width={20} height={28} color={'#ffff'}/></TouchableOpacity>)}
-        <TouchableOpacity onPress={() => navigation.navigate('Recomendation')}>
-            <RecomendationIcon color={'#fff'} width={20}/>
+        <TouchableOpacity onPress={() => navigation.navigate('Recommendation')}>
+            <RecommendationIcon color={'#fff'} width={20}/>
         </TouchableOpacity>
     </View>
   );

@@ -11,7 +11,7 @@ import { ClosePopup } from "../../../assets/images/icons";
 const windowWidth = Dimensions.get('window').width;
 
 const FluidIntakeChart = () => {
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const data = useAppSelector(state => state.journal);
     const [result, setResult] = useState<number>(0);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -21,9 +21,8 @@ const FluidIntakeChart = () => {
         showNormal: false,
         showPositive: false,
     });
-    const [textAlert, setTextAlert] = useState<{interval: string, alert: string}>({
+    const [textAlert, setTextAlert] = useState<{interval: string}>({
         interval:'',
-        alert: ''
     });
 
     const [textColor, setTextColor] = useState<string>('#000');
@@ -39,34 +38,26 @@ const FluidIntakeChart = () => {
 
     const calculatedResult = (urine / water) * 100;
     setResult(calculatedResult);
+        if(result !==0){
+            if (calculatedResult < 75) {
+                setTextAlert ({ interval: t("waterBalanceComponent.intervals.negative") });
+                setShowResult({showNegative: true, showNormal: false, showPositive: false});
+                setTextColor(colorNegative);
 
-        if (calculatedResult < 75) {
-            setTextAlert ({
-                alert: "Задержка жидкости в организме. Пониженное выделение мочи. Возможно, стоит уменьшить потребление жидкости и проконсультироваться с врачом.",
-                interval: 'Отрицательный'
-            });
-            setShowResult({showNegative: true, showNormal: false, showPositive: false});
-            setTextColor(colorNegative);
+            } else if (calculatedResult >= 75 && calculatedResult < 80) {
+                setTextAlert ({ interval: t("waterBalanceComponent.intervals.normal") });
+                setShowResult({showNegative: false, showNormal: true, showPositive: false});
+                setTextColor(colorNormal);
 
-        } else if (calculatedResult >= 75 && calculatedResult < 80) {
-            setTextAlert ({
-                alert: "Баланс воды в норме! Продолжайте в том же духе.",
-                interval: 'Нормальный'
-            });
-            setShowResult({showNegative: false, showNormal: true, showPositive: false});
-            setTextColor(colorNormal);
-
-        } else if (calculatedResult >= 80 ) {
-            setTextAlert ({
-                alert: "Выделение мочи превышает введенную жидкость. Это может означать потерю воды. Возможно, необходимо пить больше воды и проконсультироваться с врачом.",
-                interval: 'Положительный'
-            });
-            setShowResult({showNegative: false, showNormal: false, showPositive: true});
-            setTextColor(colorPositive);
-        }else {
-            setShowResult({showNegative: false, showNormal: true, showPositive: false});
+            } else if (calculatedResult >= 80 ) {
+                setTextAlert ({ interval: t("waterBalanceComponent.intervals.positive") });
+                setShowResult({showNegative: false, showNormal: false, showPositive: true});
+                setTextColor(colorPositive);
+            }else {
+                setShowResult({showNegative: false, showNormal: true, showPositive: false});
+            }
         }
-    }, [data]);
+    }, [data, i18n.language]);
 
   return (
     <TouchableOpacity activeOpacity={.7} className="mb-4 flex-1" onPress={() => setShowModal(true)}>
@@ -122,17 +113,17 @@ const FluidIntakeChart = () => {
                 </Text>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNegative}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        {t("waterBalanceComponent.intervals.negative")}
+                    {t("waterBalanceComponent.intervals.negative")} {t("waterBalanceComponent.intervals.negative_text")}
                     </Text>
                 </View>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNormal}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        {t("waterBalanceComponent.intervals.normal")}
+                    {t("waterBalanceComponent.intervals.normal")} {t("waterBalanceComponent.intervals.normal_text")}
                     </Text>
                 </View>
                 <View className="my-2 border-l-4 pl-2" style={{borderColor:colorPositive}}>
                     <Text style={{fontFamily:'geometria-bold'}}>
-                        {t("waterBalanceComponent.intervals.positive")}
+                    {t("waterBalanceComponent.intervals.positive")} {t("waterBalanceComponent.intervals.positive_text")}
                     </Text>
                 </View>
             </View>

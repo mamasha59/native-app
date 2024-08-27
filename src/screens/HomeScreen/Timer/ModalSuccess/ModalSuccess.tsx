@@ -2,15 +2,17 @@ import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { addSeconds, format, subSeconds } from "date-fns";
 import { useEffect, useState } from "react";
+import LottieView from "lottie-react-native";
+import { useTranslation } from "react-i18next";
 
 import NotificationIcon from "../../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setShowModalSuccess } from "../../../../store/slices/timerStatesSlice";
-import LottieView from "lottie-react-native";
 
 const windowSize = Dimensions.get('window');
 
 const ModalSuccess = () => {
+    const {t} = useTranslation();
     const settings = useAppSelector(state => state.timerStates);
     const dispatch = useAppDispatch();
 
@@ -42,24 +44,30 @@ const ModalSuccess = () => {
         >
         <View style={{height: windowSize.height / 2 }} className="bg-[#fff] rounded-t-[40px] p-5 items-center justify-between">
             <View style={{backgroundColor: 'transparent'}} className="-mt-20 w-[200px] h-[200px]">
-                <LottieView
-                  source={require("../../../../assets/dance.json")}
-                  style={{width: 200, height: 200, backgroundColor: 'transparent'}}
-                  autoPlay
-                  loop
-                />
+              <LottieView
+                source={require("../../../../assets/dance.json")}
+                style={{width: 200, height: 200, backgroundColor: 'transparent'}}
+                autoPlay
+                loop
+              />
             </View>
             <>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center">Отлично!</Text>
-                <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-xl text-center">Катетеризация выполнена!</Text>
-                <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start">Следующая катетеризация:</Text>
-                <View className="items-center flex-row justify-center py-3"> 
-                    <NotificationIcon color={'#000'} width={20}/>
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCathTime}</Text> 
-                </View>
+              <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center">
+                {t("modalCatheterizationCompleted.excellent")}
+              </Text>
+              <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-xl text-center">
+                {t("modalCatheterizationCompleted.catheterization_completed")}
+              </Text>
+              <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start">
+                {t("modalCatheterizationCompleted.next_catheterization")}:
+              </Text>
+              <View className="items-center flex-row justify-center py-3"> 
+                  <NotificationIcon color={'#000'} width={20}/>
+                  <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCathTime}</Text> 
+              </View>
             </>
-          <TouchableOpacity onPress={() => dispatch(setShowModalSuccess(false))} className="bg-main-blue px-3 py-3 w-full rounded-lg">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center text-[#fff]">Хорошо</Text>
+          <TouchableOpacity activeOpacity={.8} onPress={() => dispatch(setShowModalSuccess(false))} className="bg-main-blue px-3 py-3 w-full rounded-lg">
+            <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center text-[#fff]">{t("ok")}</Text>
           </TouchableOpacity>
         </View>
       </Modal>

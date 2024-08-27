@@ -1,23 +1,28 @@
 import { FilteredRecords } from "../../screens/JournalScreen/ModalCustomizePdf/ModalCustomizePdf";
-import { iUser } from "../../types";
-import { questions } from "../SurveyQuestions/SurveyQuestions";
+import { iUnits, iUser } from "../../types";
+import { generateQuestions } from "../SurveyQuestions/SurveyQuestions";
+
+import i18next from "i18next";
 
 interface iGeneratePdfPattern{
     filteredRecordByDate: FilteredRecords | null,
     userData: iUser,
     answers?: { [key: number]: number | undefined };
     showSurvey: boolean,
+    units?: iUnits
 }
 
-export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey}:iGeneratePdfPattern) => {
+export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey, units}:iGeneratePdfPattern) => {
+    const questions = generateQuestions();
+
     return `
     <html lang="rus">
     <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta http-equiv="Content-Disposition" content="attachment; filename="Мое.pdf">
-    <title>Дневник мочеиспускания</title>
+    <meta http-equiv="Content-Disposition" content="attachment; filename="Urine-diary.pdf">
+    <title>${i18next.t("pdfPattern.urine_diary")}</title>
     </head>
     <body style="padding: 0; font-family: 'geometria-regular'; margin: 0">
         <header
@@ -32,7 +37,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             <div style="display: flex; flex-direction: column;">
             ${userData.name && 
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Ф.И.О:
+                    ${i18next.t("pdfPattern.full_name")}:
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.name} ${userData.surname}
                     </b>
@@ -40,7 +45,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             }
             ${userData.age &&
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Возраст:
+                    ${i18next.t("personalizationScreen.your_age")}:
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.age}
                     </b>
@@ -48,7 +53,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             }
             ${userData.sex &&
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Пол:
+                    ${i18next.t("personalizationScreen.your_gender")}:
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.sex}
                     </b>
@@ -56,15 +61,15 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             }
             ${userData.volume && 
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Объем мочевого пузыря:
+                    ${i18next.t("personalizationScreen.bladder_volume")}:
                     <b style="margin-left: 10px; font-size: 15px;">
-                        ${userData.volume} мл
+                        ${userData.volume} ${units && units.title}
                     </b>
                 </p>`
             }
             ${userData.catheterSize &&             
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Размер катетера:
+                    ${i18next.t("personalizationScreen.catheter_size")}:
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.catheterSize}
                     </b>
@@ -72,8 +77,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             }
             ${userData.catheterType &&
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Каким катетером пользуетесь. <br/>
-                    Название / Производитель:
+                    ${i18next.t("personalizationScreen.which_catheter_do_you_use")}
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.catheterType}
                     </b>
@@ -81,7 +85,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             }
             ${userData.additionalInfo && 
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
-                    Дополнительно для врача:
+                    ${i18next.t("personalizationScreen.additional")}
                     <b style="margin-left: 10px; font-size: 15px;">
                         ${userData.additionalInfo}
                     </b>
@@ -97,7 +101,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
             </div>
         </header>
         <h2 style="font-size: 40px; margin: 5px 0; text-align: center;">
-            Дневник мочеиспускания
+            ${i18next.t("pdfPattern.urine_diary")}
         </h2>
 
         ${filteredRecordByDate && Object.entries(filteredRecordByDate).map(([date, records]) => (
@@ -105,16 +109,16 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                 `<section style="padding: 0 20px;">
                     <div style="margin-top: 20px; justify-content: start;">
                         <p style="padding: 0; margin: 0; font-size: 20px;">
-                            Дата:
+                            ${i18next.t("pdfPattern.date")}:
                             <b style="margin-left: 10px; font-size: 20px;">
                                 ${date}
                             </b>
                         </p>
                         <div>
-                            <p style="font-size: 20px;">Катетеризаций: ${records.filter(e => e.catheterType).length}</p>
-                            <p style="font-size: 20px;">Подтекании: ${records.filter(e => e.leakageReason).length}</p>
-                            <p style="font-size: 20px;">Выпито жидкости: ${records.map((e) => e.amountOfDrankFluids).reduce((acc,e) => acc! + (e || 0), 0)} мл</p>
-                            <p style="font-size: 20px;">Выделено жидкости: ${records.map((e) => e.amountOfReleasedUrine).reduce((acc,e) => acc! + (e || 0), 0)} мл</p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.catheterizations")}: ${records.filter(e => e.catheterType).length}</p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_leakage")}: ${records.filter(e => e.leakageReason).length}</p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.fluid_intake")}: ${records.map((e) => e.amountOfDrankFluids).reduce((acc,e) => acc! + (e || 0), 0)} ${units && units.title}</p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_output")}: ${records.map((e) => e.amountOfReleasedUrine).reduce((acc,e) => acc! + (e || 0), 0)} ${units && units.title}</p>
                         </div>
                     </div>
                 </section>
@@ -122,12 +126,12 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                     <table class="GeneratedTable">
                         <thead style="font-size: 20px; line-height: 24px;">
                             <tr>
-                            <th>Дата</th>
-                            <th>Время</th>
-                            <th>Действие</th>
-                            <th>Объем выпитой жидкости, мл</th>
-                            <th>Объем выделенной мочи, мл</th>
-                            <th>Состояние при подтекании</th>
+                            <th>${i18next.t("pdfPattern.date")}</th>
+                            <th>${i18next.t("journalScreen.recordTitles.time")}</th>
+                            <th>${i18next.t("pdfPattern.action")}</th>
+                            <th>${i18next.t("journalScreen.filters.fluid_intake")}, ${units && units.title}</th>
+                            <th>${i18next.t("journalScreen.filters.urine_output")}, ${units && units.title}</th>
+                            <th>${i18next.t("pdfPattern.leaking_condition")}</th>
                             </tr>
                         </thead>
                         ${filteredRecordByDate &&
@@ -136,7 +140,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                                 <tr key=${index}>
                                 <td style="text-align: center; width: fit-content; width: 100%;">${e.timeStamp?.slice(0, 10) || ''}</td>
                                 <td style="text-align: center;">${e.whenWasCanulisation || ''}</td>
-                                <td style="text-align: center;">${e.catheterType ? `Катетеризация` : e.amountOfDrankFluids ? 'Выпито жидкости' : e.leakageReason ? 'Подтекание' : ''} </td>
+                                <td style="text-align: center;">${e.catheterType ? i18next.t("journalScreen.filters.catheterizations") : e.amountOfDrankFluids ? i18next.t("journalScreen.filters.fluid_intake") : e.leakageReason ? i18next.t("journalScreen.filters.urine_leakage") : ''} </td>
                                 <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfDrankFluids|| ''}</td>
                                 <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfReleasedUrine || ''}</td>
                                 <td style="text-align: center;">${e.leakageReason || ''}</td>
@@ -159,7 +163,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                         <p>${question.text}</p>
                         ${question.answers.map(answer => `
                             <div style="padding-left: 10px; max-width: fit-content;">
-                                <p style="font-weight: 700; color: ${answer.iconColor}; ${answers![question.id] === answer.id ? 'background-color: #bdc3c77d;' : ''}">
+                                <p style="font-weight: 700; color: ${answer.iconColor}; ${answers && answers[question.id] === answer.id ? 'background-color: #bdc3c77d;' : ''}">
                                     ${answer.text}
                                 </p>
                             </div>

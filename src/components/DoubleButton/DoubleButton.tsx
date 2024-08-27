@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
+import Entypo from '@expo/vector-icons/Entypo';
 
 import { Drop, Graphic } from "../../assets/images/icons";
+import { useAppSelector } from "../../store/hooks";
 
 interface iDoubleButton {
     textOfLeftButton: string;
@@ -8,22 +10,57 @@ interface iDoubleButton {
     handlePressRightButton?: () => void;
     handlePressLeftButton?: (data?:any) => void;
     showIcon: boolean;
+    marginBottom?: boolean,
+    clickable?: boolean
 }
 
-const DoubleButton = ({handlePressRightButton, handlePressLeftButton, textOfLeftButton, textOfRightButton, showIcon}:iDoubleButton) => {
+const DoubleButton = (props:iDoubleButton) => {
+  const {
+    handlePressRightButton,
+    handlePressLeftButton,
+    textOfLeftButton,
+    textOfRightButton,
+    showIcon,
+    marginBottom = true,
+    clickable
+  } = props;
+  const {leftButton, rightButton} = useAppSelector(state => state.appStateSlice.doubleButtonProfileScreenClickable);
+  
   return (
-    <View className="flex-row gap-[13px] mb-[15px]">
-        <TouchableOpacity
-          onPress={handlePressLeftButton}
-          activeOpacity={0.6}
-          className="min-h-[44px] p-1 flex-1 bg-purple-button rounded-[89px] flex-row items-center justify-center">
-            {showIcon && <Drop width={16} height={17} color={'#fff'}/>}
-            <Text style={{fontFamily:'geometria-bold'}} className="ml-1 text-[#FFFFFF] text-sm text-center">{textOfLeftButton}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlePressRightButton} activeOpacity={0.6} className="min-h-[44px] p-1 flex-1 bg-main-blue rounded-[89px] flex-row items-center justify-center">
-            {showIcon && <View className="mr-4"><Graphic width={16} height={16} color={'#fff'}/></View> }
-            <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center leading-4">{textOfRightButton}</Text>
-        </TouchableOpacity>
+    <View className={`relative flex-row gap-[13px] ${marginBottom && 'mb-[15px]'}`}>
+      <TouchableOpacity
+        onPress={handlePressLeftButton}
+        activeOpacity={0.6}
+        className="min-h-[44px] p-1 flex-1 bg-purple-button rounded-[89px] flex-row items-center justify-center">
+
+          {showIcon && <Drop width={16} height={17} color={'#fff'}/>}
+
+          <Text style={{fontFamily:'geometria-bold'}} className="ml-1 text-[#FFFFFF] text-sm text-center">
+            {textOfLeftButton}
+          </Text>
+
+         {clickable && leftButton &&
+         <View className="absolute top-1 right-1">
+            <Entypo name="check" size={30} color="#f5dd4b" />
+          </View>}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handlePressRightButton}
+        activeOpacity={0.6}
+        className="min-h-[44px] p-1 flex-1 bg-main-blue rounded-[89px] flex-row items-center justify-center">
+
+        {showIcon && <View className="mr-4"><Graphic width={16} height={16} color={'#fff'}/></View> }
+
+        <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center leading-4">
+          {textOfRightButton}
+        </Text>
+
+        {clickable && rightButton &&
+        <View className="absolute top-1 right-1">
+            <Entypo name="check" size={30} color="#f5dd4b" />
+          </View>}
+      </TouchableOpacity>
     </View>
   );
 };

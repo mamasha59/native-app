@@ -1,4 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
+
 import NoticesOfCannulation from "../../components/NoticesOfCannulation/NoticesOfCannulation";
 import NoticesOfWaterConsumption from "../../components/NoticesOfWaterConsumption/NoticesOfWaterConsumption";
 import NoticesOfRemainCaths from "../../components/NoticesOfRemainCaths/NoticesOfRemainCaths";
@@ -6,8 +8,9 @@ import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import CatheterizationReminder from "../../components/CatheterizationReminder/CatheterizationReminder";
 
 const NoticeNavigationScreen = () => {
+  const {t} = useTranslation();
   return (
-    <MainLayout title="Настройка уведомлений">
+    <MainLayout title={t("fourthDataScreen.title")}>
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1 my-5">
           <CatheterizationReminder/>
           <NoticesOfCannulation/>

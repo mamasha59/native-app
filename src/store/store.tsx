@@ -4,23 +4,25 @@ import journalDataSlice from "./slices/journalDataSlice";
 import timerStatesSlice from "./slices/timerStatesSlice";
 import nightStateSlice from "./slices/nightStateSlice";
 import noticeSettingsSlice from "./slices/noticeSettingsSlice";
+import surveySlice from "./slices/surveySlice";
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,  } from 'redux-persist';
 
-const persistConfig = { // конфиг персиста
+const persistConfig = { // config persist
     key: 'root',
     storage: AsyncStorage,
   };
 
 const persistedReducer = persistReducer(persistConfig, combineReducers({
     user: createUserReducer,
-    appStateSlice: appStateSlicer, // слайс состояние приложения - есть ли данные в локал сторедж
+    appStateSlice: appStateSlicer,
     journal: journalDataSlice,
     timerStates: timerStatesSlice,
-    nightOnDoarding: nightStateSlice,
+    nightOnBoarding: nightStateSlice,
     noticeSettingsSlice: noticeSettingsSlice,
+    surveySlice: surveySlice,
 }));
 
 export const store = configureStore({

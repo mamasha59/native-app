@@ -1,6 +1,7 @@
 import { View, TextInput, Text, TouchableOpacity, Modal } from "react-native";
 import { Controller } from "react-hook-form";
 import { useEffect, useState} from 'react';
+import { useTranslation } from "react-i18next";
 
 import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
 import { Keyboard } from "../../utils/enums";
@@ -21,6 +22,7 @@ interface iInputData{
 }
 
 const InputData = (props:iInputData) => {
+    const {t} = useTranslation();
     const {control,
             inputsValue,
             errors,
@@ -86,7 +88,9 @@ const InputData = (props:iInputData) => {
         </>
         }
         {errors &&
-            <Text style={{fontFamily:'geometria-regular'}} className="text-error absolute -bottom-5">Заполните поле</Text>
+            <Text style={{fontFamily:'geometria-regular'}} className="text-error absolute -bottom-5">
+                {t("fill_in_the_field")}
+            </Text>
         }
     </View>
   );

@@ -29,14 +29,14 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
   
     const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
     const journal = useAppSelector((state) => state.journal); // кол-во катетеров
-    const settingsNighMode = useAppSelector((state) => state.nightOnDoarding); // кол-во катетеров
-    const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // кол-во катетеров
+    const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // кол-во катетеров
+    const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // timer settings
   
     const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
     const [startFromСountdown , setStartFromСountdown] = useState(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
     
     const [timerInterval, setTimerInterval] = useState<number>(interval); // интервал Оптимальный 
-    const [timerIntervalStopwatch, setTimerIntervalStopwatch] = useState<number>(interval); // интервал Нормальный и Крит.
+    const [timerIntervalStopwatch, setTimerIntervalStopwatch] = useState<number>(interval); // интервал Крит.
   
     const [partTime, setPartTime] = useState<{firstPartTime: boolean, secondPartTime: boolean, thirdPartTime: boolean}>({
       firstPartTime: false,
@@ -46,6 +46,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
     const [laoder, setLoader] = useState<boolean>(false);
     const appState = useRef(AppState.currentState);
     const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    const [daysFromLastCannulation, setDaysFromLastCannulation] = useState<number>(0);
    
     const timeWhenAskToActivateNightMode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now);
     const formattedCurrentTime = parse(format(now, 'HH:mm'), 'HH:mm', new Date());
@@ -129,7 +130,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             updateStopWatch();
         }
     }, [intervalDifference, appStateVisible]);
-    const [daysFromLastCannulation, setDaysFromLastCannulation] = useState<number>(0);
+    
     useEffect(() => { // рассчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
         if(!settings.cannulationAtNight.value){
             if(journal.urineDiary.length > 0) {
@@ -147,7 +148,8 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
 
     useEffect(() => { // делаем желтый интервал активным, этот хук если приложение не было закрыто
         if(partTime.firstPartTime){
-            if(timerTotalSeconds === timerInterval - (yellowInterval * 60)){
+            const convertedYellowInterval = yellowInterval * 60;
+            if(timerTotalSeconds === convertedYellowInterval){
                 setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false});
             }
         }
@@ -168,19 +170,19 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
         
     }, [timerRunning, partTime, stopwatchRunning, startFromСountdown]);
 
-    useEffect(() => {
-        const handleAppStateChange = (nextAppState:any) => {
-        if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-            // Приложение вернулось на передний план
-            const strip = Math.ceil((timerInterval - timerTotalSeconds) * 105 / timerInterval);
-            setInitialStrip(strip);
-        }
-        appState.current = nextAppState;
-        };
-        const subscription = AppState.addEventListener('change', handleAppStateChange);
-        // Очистка подписки при размонтировании компонента
-        return () => { subscription.remove() };
-    }, [timerInterval, timerTotalSeconds]);
+    // useEffect(() => {
+    //     const handleAppStateChange = (nextAppState:any) => {
+    //     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+    //         // Приложение вернулось на передний план
+    //         const strip = Math.ceil((timerInterval - timerTotalSeconds) * 105 / timerInterval);
+    //         setInitialStrip(strip);
+    //     }
+    //     appState.current = nextAppState;
+    //     };
+    //     const subscription = AppState.addEventListener('change', handleAppStateChange);
+    //     // Очистка подписки при размонтировании компонента
+    //     return () => { subscription.remove() };
+    // }, [timerInterval, timerTotalSeconds]);
 
     useEffect(() => { // stop timer if turn on Night Mode
         const stopTimer = () => {
@@ -256,7 +258,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                 dispatch(addUrineDiaryRecord({
                     id: uuidv4(),
                     whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
-                    catheterType: 'Нелатон',
+                    catheterType: t("nelaton"),
                     timeStamp: format(new Date(), dateFormat),
                 }));
                 dispatch(addBadgesJournalScreen(1));
@@ -291,7 +293,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
             <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-center leading-5 text-[#000] max-w-[200px]">
                 {!settings.stateOfTimerTitleForFirstTimeInApp 
                     ? t("timer.titles.catheterization_interval")
-                    : (!partTime.thirdPartTime ? 'До катетеризации:' : 'С последней катетеризации:')
+                    : (!partTime.thirdPartTime ? t("timer.titles.before_catheterization") : t("timer.titles.since_last_catheterization"))
                 }
             </Text>
             <IntervalUI
@@ -314,7 +316,7 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
                     locations={[0.0553, 0.9925]}
                     className="rounded-[43px]">
                     <Text style={{fontFamily:'geometria-bold'}} className="text-base capitalize leading-5 text-[#FFFFFF] text-center px-6 py-3">
-                        {timerRunning || stopwatchRunning ? 'Выполнено' : t("timer.start")}
+                        {timerRunning || stopwatchRunning ? t("timer.completed") : t("timer.start")}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>
@@ -324,19 +326,6 @@ const TimerT = ({setToastShow}:{setToastShow:(value:boolean) => void}) => {
 };
 
 export default TimerT;
-
-
-// async function schedulePushNotification(title:string,body:string) { // уведомления
-//     await Notifications.scheduleNotificationAsync({
-//       content: {
-//         title: title,
-//         body: body,
-//         subtitle:'Мы контролируем твою катетеризацию',
-//         data: { data: new Date() },
-//       },
-//       trigger: {seconds:10} ,
-//     });
-//   }
 
   async function schedulePushNotification(title:string, body:string, time:number) { // уведомления
     console.log(time);

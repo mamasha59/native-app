@@ -1,5 +1,6 @@
 import { Dimensions, TextInput, Vibration, KeyboardAvoidingView, Platform, Keyboard, Text, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
+import { Svg, G, Path, ClipPath, Defs, Rect } from "react-native-svg";
 import Animated, 
 {
   useAnimatedProps,
@@ -15,7 +16,6 @@ import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { changeScalePopup } from "../../../../store/slices/appStateSlicer";
-import { Svg, G, Path, ClipPath, Defs, Rect } from "react-native-svg";
 
 const windowSize = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -27,11 +27,7 @@ interface iGlass {
 }
 
 const Glass = ({onValueChange, customValue}:iGlass) => {
-  const backgroundColorDrankWater = '#3bacf7';
-  const backgroundUrineMeasure = '#fdcb6e';
 
-  const modalUrineMaxPointOfScroll = 500;
-  const modalUrineMaxPointOfInput = 1000;
   const setting = useAppSelector(state => state.appStateSlice);
   const dispatch = useAppDispatch();
 
@@ -45,6 +41,14 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   
   const scale = useSharedValue(1); // scale of Glass itself if input on focus
   const scaleRangePointer = useSharedValue(1);// scale of rangeButton
+
+  const isFlOz = setting.units.title === "fl oz";
+
+  const backgroundColorDrankWater = '#3bacf7';
+  const backgroundUrineMeasure = '#fdcb6e';
+
+  const modalUrineMaxPointOfScroll = 500;
+  const modalUrineMaxPointOfInput = 1000;
 
   const ifCountUrine = setting.urineMeasure && setting.ifCountUrinePopupLiquidState; // если выбрано измерение мочи
   const maxScrollHeight = windowSize.height / 1.9; // bottom point of max scroll down
@@ -121,6 +125,9 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
     Vibration.cancel();
   }
 
+  const changeUnits = isFlOz ? 1 : 10;
+  const changeMaxAmount = isFlOz ? 34 : 10;
+  
   const gesture = Gesture.Pan()
     .onStart(() => {
       scaleRangePointer.value = withSpring(1.2);
@@ -131,7 +138,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
       const combinedValue = Math.max(Math.min(e.translationY + start.value.y, maxScrollHeight), 0);
       scrollRangeButton.value = { y: combinedValue };
     
-      value.value = Math.round(Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * ml, ml) / 10, 1)) * 10;
+      value.value = Math.round(Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * ml, ml) / changeMaxAmount, changeUnits)) * changeUnits;
       
       startOfInnerGlass.value = {y: combinedValue}; // change height of inner colored background
 
@@ -198,52 +205,27 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
         }
       }
     };
-    
-    // const animatedClip = useDerivedValue(() => { // animated inner block scroll
-    //   return `M 0 554 
-    //   L 1 ${startOfInnerGlass.value.y} 
-    //   C 100 ${startOfInnerGlass.value.y + 50}, 200 ${startOfInnerGlass.value.y - 50}, 300 ${startOfInnerGlass.value.y} 
-    //   S 400 ${startOfInnerGlass.value.y + 50}, 441 ${startOfInnerGlass.value.y}
-    //   L 440 554 Z`
-    // }, [startOfInnerGlass.value.y]);
 
     const glassPath = 'M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z';
-    const glassPathSharp = 'M 28 90 L 26 10 C 26 10 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 10 74 10 L 72 90 Z';
+    const glassPathSharp = 'M 30 90 L 26 10 C 26 10 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 10 74 10 L 71 90 Z';
     const changePath = () => !ifCountUrine ? glassPath : glassPathSharp;
-
+    
   return (
-    <View className="flex-1 w-full">
+    <View className="flex-1 w-full mx-auto justify-center">
       <Animated.View className="flex-1" style={[animatedStyleScale]}>
         <GestureHandlerRootView>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-            <View className="w-full h-full overflow-hidden">
+            <View className="w-full h-full overflow-hidden items-center">
              {ifCountUrine && 
-              <Svg height="30" width='100%'>
+              <Svg height="30" width='86%'>
                 <Rect
                   width="100%"
-                  height="30"
-                  fill="rgb(73, 60, 60)"
+                  height="100%"
+                  fill="rgb(113, 96, 96)"
                 />
               </Svg>}
-              <Svg height='100%' width='100%' viewBox="19 17 63 63">
-                <G clipPath="url(#clip)">
-                  <Path // outer glass with border
-                    d={changePath()}
-                    fill={'none'}
-                    stroke={backgroundColorDrankWater}
-                    strokeWidth={2}
-                    // transform={`scale(5.7) translate(-18, -8.8)`}
-                    />
-                  <Path // inner gray background of glass
-                    d={changePath()}
-                    fill={'#ecf0f1'}
-                    strokeWidth={2}
-                  />
-                  <AnimatedInnerBackgroundPath // inner colorful background to fill the glass
-                    animatedProps={animatedPath} scale={'0.21'}
-                    fill={bgColor()}
-                  />
-                </G>
+
+              <Svg height='100%' width='100%' viewBox={!ifCountUrine ? "19 14 63 63" : "18 17 65 65"}>
                 <Defs>
                   <ClipPath id="clip">
                     <Path
@@ -251,8 +233,30 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
                     />
                   </ClipPath>
                 </Defs>
+
+                <G clipPath="url(#clip)">
+                  <Path // outer glass with border
+                    d={changePath()}
+                    fill={'#ecf0f1'}
+                    stroke={backgroundColorDrankWater}
+                    strokeWidth={2}
+                    />
+                  <AnimatedInnerBackgroundPath // inner colorful background to fill the glass
+                    animatedProps={animatedPath}
+                    scale={'0.17'}
+                    fill={bgColor()}
+                  />
+                </G>
+                
+                <Path // Внешний контур стакана с границей
+                  d={changePath()}
+                  fill={'none'} // Заполнение не нужно, так как это граница
+                  stroke={'#ecf0f1'} // Цвет границы
+                  strokeWidth={2.1} // Толщина границы
+                />
               </Svg>
             </View>
+            
             <GestureDetector gesture={gesture}>
               <Animated.View className='flex-1 absolute items-center top-1 left-0 right-0 h-[60px]' style={[animatedStyleScrollUpDown]}>
                 <Animated.View className="items-center absolute border border-opacity-25 bg-[#3498db] p-2 -top-4 rounded-full" style={[{ zIndex: 4 }, animatedStyleScaleRangePointer]}>
@@ -278,7 +282,9 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
             selectionColor={'#4BAAC5'}
             textAlign={'center'}
             animatedProps={propsLabel}/>
-        <Text className="text-xl mx-1" style={{fontFamily:'geometria-bold', color:'#000'}}>мл</Text>
+        <Text className="text-xl mx-1" style={{fontFamily:'geometria-bold', color:'#000'}}>
+          {setting.units.title}
+        </Text>
         <FontAwesome5 name="pencil-alt" size={15} color="#0000007f" />
       </View>
     </View>

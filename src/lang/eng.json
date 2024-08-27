@@ -1,5 +1,7 @@
 {
     "translation": {
+        "switching_language": "Switching language...",
+        "your_plan_is_ready": "I prepare a plan for you!",
         "firstDataScreen": {
             "title": "Welcome to the Nelaton Smart Assistant",
             "description": "Please answer a few simple questions so I can set up a catheterization plan.",
@@ -24,7 +26,7 @@
         },
 
         "fourthDataScreen": {
-            "title": "Notification Settings"
+            "title": "Notification settings"
         },
 
         "continue": "continue",
@@ -33,19 +35,39 @@
         "before": "before",
         "hour": "hrs.",
         "min": "min.",
+        "month": "month",
         "every": "every",
         "ml": "ml",
-        "day": "days",
+        "fl_oz": "fl oz",
+        "day": "day(s)",
         "blank": "",
-        "pieces": "pcs",
-        "units": "units",
         "in": "in",
+        "save": "Save",
+        "exit": "Exit",
+        "back": "Back",
+        "nelaton": "Nelaton",
+        "ok": "Ok",
+        "сatheter": "сatheter(s)",
+        "per_day": "per day",
+        "per_month": "per month",
+        "for": "for",
+        "notification": "Notification",
+        "night_mode": "Night Mode",
+        "sleep": "sleep",
+        "fill_in_the_field": "Fill in the field",
+        "dont_want_to_fill_out": "I don't want to fill out",
+        "document": "document",
+        "language": "Language",
+        "today": "today",
+        "date": "Date",
+        "unit": "Units",
 
         "componentSleepTimeStartEnd": {
             "title": "Indicate your usual sleep time:",
             "select": "select",
             "from": "from",
-            "to": "to"
+            "to": "to",
+            "night_mode_description": "If you do not plan to catheterize at night, activate Night Mode during evening catheterization or by using the \"Night Mode\""
         },
 
         "toggleCannulationAtNightComponent": {
@@ -69,9 +91,12 @@
             "fluid_intake": "Fluid intake",
             "description": "Normal diuresis is 75-80% of the amount of fluid intake.",
             "intervals": {
-               "negative": "Negative (<75%): This range indicates that the volume of urination is less than 75% of the volume of fluid intake.",
-               "normal": "Normal (75-80%): This is the optimal ratio where the urine volume is 75-80% of the volume of fluid intake. This indicates a healthy water balance.",
-               "positive": "Positive (80-100%): This range indicates that the urine volume is 80-100% of the volume of fluid intake. Increased diuresis, the body excretes more fluid than usual." 
+               "negative": "Negative",
+               "normal": "Normal",
+               "positive": "Positive",
+               "negative_text": "(<75%): This range indicates that the volume of urination is less than 75% of the volume of fluid intake.",
+               "normal_text": "(75-80%): This is the optimal ratio where the urine volume is 75-80% of the volume of fluid intake. This indicates a healthy water balance.",
+               "positive_text": "(80-100%): This range indicates that the urine volume is 80-100% of the volume of fluid intake. Increased diuresis, the body excretes more fluid than usual." 
             }
         },
 
@@ -107,7 +132,11 @@
 
         "catheterStockComponent": {
             "title": "Catheter Stock",
-            "units_will_remain": "units will remain"
+            "units_will_remain": "units will remain",
+            "modalEditCatheters": {
+                "how_many_catheters_do_you_have": "How many catheters do you have?",
+                "press_to_write": "press to write"
+            }
         },
 
         "intervalInfoComponent": {
@@ -131,13 +160,226 @@
 
         "timer": {
             "start": "start",
+            "completed": "Completed",
             "titles": {
-                "catheterization_interval": "Time to catheterize:"
+                "catheterization_interval": "Time to catheterize:",
+                "since_last_catheterization": "Since last catheterization",
+                "before_catheterization": "Before catheterization:"
             },
             "intervals": {
                 "normal": "n o r m a l     i n t e r v a l ",
                 "critical": "c r i t i c a l   i n t e r v a l "
             }
-        }
+        },
+
+        "journalScreen": {
+            "title": "Journal Screen:",
+            "no_records_for_the_selected_day": "No records for the selected day",
+            "dailyStatistics": {
+                "daily_statistics": "Daily statistics",
+                "catheterizations": "Catheterizations",
+                "urine_leakages": "Urine Leakages:",
+                "fluid_intake": "Fluid Intake:",
+                "urine_output": "Urine Output:"
+            },
+            "send": "Send",
+            "download_PDF": "Download PDF",
+
+            "filters": {
+                "all": "all",
+                "catheterizations": "catheterizations",
+                "urine_output": "urine output",
+                "fluid_intake": "fluid intake",
+                "urine_leakage": "urine leakage"
+            },
+
+            "recordTitles": {
+                "time": "Time",
+                "leakage": "Leakage",
+                "catheterization": "Catheterization",
+                "drank_fluids": "Drank fluids"
+            }
+        },
+
+        "questionnaireScreen": {
+            "always": "Always",
+            "often": "Often",
+            "sometimes": "Sometimes",
+            "rarely": "Rarely",
+            "never": "Never",
+            "very_convenient": "Very Convenient",
+            "convenient": "Convenient",
+            "neutral": "Neutral",
+            "inconvenient": "Inconvenient",
+            "very_inconvenient": "Very Inconvenient",
+            "reset_button": "Reset",
+            "confirm_and_download_PDF": "Confirm and Download PDF",
+            "question_one": "How often do you experience pain or discomfort during catheterization?",
+            "question_two": "Have there been any cases of bleeding after catheterization?",
+            "question_three": "Have you experienced signs of infection after catheterization, such as fever, frequent urination, pain, or burning?",
+            "question_four": "Have you had any allergic reactions or skin irritation caused by the catheter or lubricants?",
+            "question_five": "How would you rate the ease of use of the catheter and lubricants?",
+            "question_six": "Did you experience any difficulties with catheterization due to insufficient training on the procedure?",
+            "question_seven": "Were there any instances where catheterization failed, requiring urgent medical attention?",
+            "question_eight": "Did you encounter any difficulties inserting the catheter? If yes, please describe the difficulties encountered.",
+            "question_nine": "What additional problems or complications related to catheterization would you like to mention?"
+        },
+
+        "catheterStockScreen": {
+            "catheter_stock_screen": "Catheter Stock:",
+            "average_catheter_usage": "Average catheter usage:"
+        },
+
+        "cathetersForRoadComponent": {
+            "calculate_catheters_for_travel": "Calculate catheters for travel:",
+            "you_will_need": "You will need",
+            "select_number_of_days": "Select number of days"
+        },
+
+        "catheterNoticeComponent": {
+            "when_the_stock_is_less_than": "When the stock is less than"
+        },
+
+        "profileScreen": {
+            "title": "Your Profile",
+            "profileSettingsComponent": {
+                "change_interval": "Change Interval",
+                "normal_interval": "Normal Interval",
+                "confirm_new_interval": "Confirm new interval"
+            },
+            "personal_data_for_PDF": "Personal data for PDF"
+        },
+
+        "nightModeScreen": {
+            "title": "Night Mode Catheterization Settings",
+            "askActivateAfterTimeComponent": {
+                "askToActivate": "Ask to activate Night Mode after catheterization after"
+            },
+            "notificationsAtNightComponent": {
+                "night_time_notifications": "Nighttime Notifications:",
+                "description_first_part": "From the time of catheterization before sleep and activation of",
+                "description_second_part": "until morning, notifications will not be sent."
+            },
+
+            "morningCathNoticeDescription": "Would you like to receive morning notifications to remind you to catheterize?",
+            
+            "timeOfNoticeComponent": {
+                "specify_the_time": "Specify the time you would like to receive the notification."
+            },
+
+            "reducingFluidIntakeComponent": {
+                "receive_notifications_to_reduce_fluid_intake": "Would you like to receive notifications to reduce fluid intake:"
+            },
+
+            "notice": "Discuss the catheterization frequency and the possibility of excluding it at night with your doctor."
+        },
+
+        "personalizationScreen": {
+            "title": "Personalize Your Urination Diary",
+            "description": "This data will be reflected in the PDF version of your urination diary. The filled information will help the doctor recognize your document and use it to monitor your health and adjust treatment if necessary.",
+            "your_gender": "Your Gender*",
+            "male": "Male",
+            "female": "Female",
+            "boy": "Boy",
+            "girl": "Girl",
+            "your_first_name": "Your First Name*",
+            "your_last_name": "Your Last Name*",
+            "your_age": "Your Age*",
+            "bladder_volume": "Bladder Volume",
+            "catheter_size": "Catheter Size Ch/FR",
+            "which_catheter_do_you_use": "Which catheter do you use? Model Name/Manufacturer",
+            "which_catheter_do_you_use_hint": "You can find this information on the catheter packaging you use",
+            "additional_information": "Here you can leave additional information for the doctor (diagnoses, types of injuries, medication intake)",
+            "additional": "Additional",
+            "volume_info": "\"general\" norms: Women - 250-500 ml, Men - 350-700 ml, Children - 35-400 ml (depending on age)"
+        },
+
+        "modalUrineLeakage": {
+            "title": "Leakage occurred during:",
+            "options": {
+                "rest": "Rest",
+                "coughing": "Coughing",
+                "physical_activity": "Physical activity"
+            },
+            "write_your_own_option": "Write your own option"
+        },
+
+        "modalCatheterizationCompleted": {
+            "excellent": "Excellent",
+            "catheterization_completed": "Catheterization Completed!",
+            "next_catheterization": "Next catheterization"
+        },
+
+        "modalDocumentCreation": {
+            "title": "Document Creation",
+            "select_document_interval": "Select Document Interval:",
+            "format": "format:",
+            "yyyy_mm_dd": "yyyy-mm-dd",
+            "range_of_days": "range of days",
+            "one_day": "one day",
+            "complete_and_include_PDF_questionnaire": "Complete and include the PDF Catheterization Satisfaction Questionnaire",
+            "fill_in_personal_data": "Fill in personal data",
+            "generate_and": "Generate and",
+            "share_document": "share",
+            "download_document": "download"
+        },
+
+        "modalFluidIntake": {
+            "how_much_fluid_did_you_drink": "How much fluid did you drink?"
+        },
+
+        "modalUrineOutput": {
+            "not_measured": "Not measured?",
+            "continue_without_recording_the_urine_volume": "Continue without recording the urine volume",
+            "how_much_urine_was_released": "How much urine was released?",
+            "noticeWhenPressClose": {
+                "title": "Please indicate the amount of released urine.",
+                "description": "If you don't want to constantly input the value, you can change this in the \"Profile\" screen.",
+                "got_it": "got it"
+            }
+        },
+
+        "weekDays": {
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat",
+            "sun": "Sun"
+        },
+
+        "months": {
+            "january": "January",
+            "february": "February",
+            "march": "March",
+            "april": "April",
+            "may": "May",
+            "june": "June",
+            "july": "July",
+            "august": "August",
+            "september": "September",
+            "october": "October",
+            "november": "November",
+            "december": "December"
+         },
+
+         "tabBar": {
+            "profile": "Profile",
+            "water_balance": "Water balance",
+            "home": "Home",
+            "journal": "Journal",
+            "notice": "Notice settings"
+         },
+
+         "pdfPattern": {
+            "urine_diary": "Urine diary",
+            "full_name": "Full name",
+            "date": "Date",
+            "action": "Action",
+            "leaking_condition": "Leaking condition"
+         },
+
+         "press_one_more_time": "Press one more time to exit"
     }
 }

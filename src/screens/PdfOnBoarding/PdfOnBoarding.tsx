@@ -2,6 +2,7 @@ import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
 import {useState } from "react";
 import { BlurView } from 'expo-blur';
+import { useTranslation } from "react-i18next";
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import InputData from "../../components/InputData/InputData";
@@ -17,8 +18,9 @@ import ClueAtTheBottom from "../../components/ClueAtTheBottom/ClueAtTheBottom";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 import { handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 
-const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
-
+const PdfOnBoarding = ({navigation, route}:NavigationPropsRoot<'PdfOnBoarding'>) => {
+    const {t} = useTranslation();
+    const { cameFrom } = route.params;
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
     
@@ -41,6 +43,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
     });
 
     const inputsValue = watch();        // состояние инпута при его изменении
+console.log(inputsValue);
 
     const closeModal = () => setOpenModalSelectSex(!openModalSelectSex);
     
@@ -49,14 +52,16 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
         closeModal();
     }
 
-    const onSelectCathetorSize = (catheterSize:Option) => { // функция при выборе Размера катетора
+    const onSelectCatheterSize = (catheterSize:Option) => { // функция при выборе Размера катетора
         setValue('catheterSize', catheterSize.title);
         setOpenModalSelectSize(!openModalSelectSize);
     }
 
     const goBackAndOpenModalCustomizePdf = () => {
         navigation.goBack();
-        dispatch(handleModalCustomizePdfDocument(true));
+        if(cameFrom === 'JournalScreen'){
+            dispatch(handleModalCustomizePdfDocument(true));
+        }
     }
 
     const onSubmit = (data:any) => { // при нажатии кнопки Сохранить
@@ -65,28 +70,30 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
     }
   
   return (
-    <MainLayout title="Персонализируйте ваш Дневник мочеиспускания">
+    <MainLayout title={t("personalizationScreen.title")}>
         <ScrollView className="flex-1">
             <Text style={{fontFamily:'geometria-regular'}} className="mb-6">
-                Эти данные будут отображены в PDF-версии вашего дневника.Заполненные
-                сведения помогут вашему врачу легко распознать ваш документ и
-                использовать его для наблюдения за вашим здоровьем и, при необходимости,
-                корректировки лечения.
+                {t("personalizationScreen.description")}
             </Text>
             <>
             <ButtonSelect
                 inputValue={inputsValue.sex}
                 openModal={openModalSelectSex}
-                placeholder={'Ваш пол*'}
+                placeholder={t("personalizationScreen.your_gender")}
                 setOpenModal={setOpenModalSelectSex}
-                key={'Ваш пол*'}/>
+                key={'your_gender'}/>
             <ModalSelect
+                height={3}
                 row
                 logo={false}
                 showIcon={false}
                 onItemPress={(item) => onSelectSexPress(item)}
                 openModal={openModalSelectSex}
-                options={[{title: 'Женский', value: 'female'}, {title:'Мужской', value: 'male'}, {title: 'Мальчик', value: 'boy'}, {title: 'Девочка', value: 'girl'}]}
+                options={[
+                    {title: t("personalizationScreen.female"), value: 'female'},
+                    {title: t("personalizationScreen.male"), value: 'male'},
+                    {title: t("personalizationScreen.boy"), value: 'boy'},
+                    {title: t("personalizationScreen.girl"), value: 'girl'}]}
                 setOpenModal={closeModal}
                 title={'Ваш пол*'}/>
             </>
@@ -96,7 +103,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.name}
                     inputsValue={inputsValue.name || userData.name}
-                    placeholder="Ваше имя *"
+                    placeholder={t("personalizationScreen.your_first_name")}
                     name={"name"}
                     inputMode={Keyboard.String}
                     maxLength={40}
@@ -109,7 +116,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.surname}
                     inputsValue={inputsValue.surname}
-                    placeholder="Ваша фамилия *"
+                    placeholder={t("personalizationScreen.your_last_name")}
                     name={"surname"}
                     inputMode={Keyboard.String}
                     maxLength={40}
@@ -122,7 +129,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.age}
                     inputsValue={inputsValue.age}
-                    placeholder="Ваш возраст *"
+                    placeholder={t("personalizationScreen.your_age")}
                     name={"age"}
                     inputMode={Keyboard.Numeric}
                     maxLength={3}
@@ -135,29 +142,29 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.volume}
                     inputsValue={inputsValue.volume}
-                    placeholder="Объем мочевого пузыря"
+                    placeholder={t("personalizationScreen.bladder_volume")}
                     name={"volume"}
                     inputMode={Keyboard.Numeric}
                     maxLength={4}
                     showPrompt
-                    textPrompt="«общие» нормы : У женщин – 250-500 мл, У мужчин – 350-700 мл, У детей – 35-400 мл (в зависимости от возраста)"
+                    textPrompt={t("personalizationScreen.volume_info")}
                     />
             </View>
             <>
                 <ButtonSelect
                     inputValue={inputsValue.catheterSize}
                     openModal={openModalSelectSize}
-                    placeholder={'Размер катетера Ch/Fr'}
+                    placeholder={t("personalizationScreen.catheter_size")}
                     setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                    key={'Размер катетера Ch/Fr'}/>
+                    key={'catheter_size'}/>
                 <ModalSelect
                     row
                     showIcon={false}
-                    onItemPress={(item) => onSelectCathetorSize(item)}
+                    onItemPress={(item) => onSelectCatheterSize(item)}
                     openModal={openModalSelectSize}
                     options={generateEvenNumbersOfSize()}
                     setOpenModal={() => setOpenModalSelectSize(!openModalSelectSize)}
-                    title={'Размер катетера Ch/Fr'}/>
+                    title={t("personalizationScreen.catheter_size")}/>
             </>
             <View className="w-full">
                 <InputData
@@ -165,12 +172,14 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.catheterInfo}
                     inputsValue={inputsValue.catheterInfo}
-                    placeholder="Каким катетером пользуетесь Название/производитель"
+                    placeholder={t("personalizationScreen.which_catheter_do_you_use")}
                     name={"catheterInfo"}
                     inputMode={Keyboard.String}
                     maxLength={40}
                     isRequired={false}
                     multiline
+                    showPrompt
+                    textPrompt={t("personalizationScreen.which_catheter_do_you_use_hint")}
                     />
             </View>
             <View className="w-full">
@@ -179,7 +188,7 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
                     control={control}
                     errors={errors.additionalInfo}
                     inputsValue={inputsValue.additionalInfo}
-                    placeholder="Дополнительно для врача"
+                    placeholder={t("personalizationScreen.additional_information")}
                     name={"additionalInfo"}
                     inputMode={Keyboard.String}
                     maxLength={140}
@@ -193,10 +202,10 @@ const PdfOnBoarding = ({navigation}:NavigationPropsRoot<'PdfOnBoarding'>) => {
             </BlurView>}
             <DoubleButton
             showIcon= {false}
-            textOfLeftButton="Назад"
-            textOfRightButton="Сохранить"
+            textOfLeftButton={t("back")}
+            textOfRightButton={t("save")}
+            handlePressLeftButton={goBackAndOpenModalCustomizePdf}
             handlePressRightButton={handleSubmit(onSubmit)}
-             handlePressLeftButton={goBackAndOpenModalCustomizePdf}
             />
             <ClueAtTheBottom/>
         </ScrollView>

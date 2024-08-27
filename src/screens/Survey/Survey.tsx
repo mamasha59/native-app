@@ -2,25 +2,28 @@ import { ScrollView, Text, View } from "react-native";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as Print from 'expo-print';
+import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import InputData from "../../components/InputData/InputData";
-import { useForm } from "react-hook-form";
 import { Keyboard } from "../../utils/enums";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
 import QuestionItem from "./QuestionItem/QuestionItem";
-import { questions } from "../../utils/SurveyQuestions/SurveyQuestions";
+import { generateQuestions } from "../../utils/SurveyQuestions/SurveyQuestions";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { resetAnswers, saveAnswer } from "../../store/slices/appStateSlicer";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 import { handleCheckBoxAddSurveyInPdf, handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 import { generatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
+import { resetAnswers, saveAnswer } from "../../store/slices/surveySlice";
+// import { questions } from "../../utils/SurveyQuestions/SurveyQuestions";
 
 const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO set input data
+    const {t, i18n} = useTranslation();
     const { cameFrom } = route.params;
     
     const dispatch = useAppDispatch();
-    const answersState = useAppSelector(state => state.appStateSlice.surveyAnswers);
+    const answers = useAppSelector(state => state.surveySlice.surveyAnswers);
     const userData = useAppSelector(state => state.user);
 
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
@@ -29,7 +32,7 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
             additional: '',
         }
     });
-
+    const questions = generateQuestions();
     const inputsValue = watch();        // состояние инпута при его изменении
 
     const handleAnswerChange = (questionId: number, answerId: number) => {
@@ -56,7 +59,12 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
     }
 
     const downLoadSurveyPdf = async () => {
-        const pdf = await generatePdfPattern({showSurvey: true, filteredRecordByDate: null, answers: answersState, userData: userData});
+        const pdf = await generatePdfPattern({
+            showSurvey: true,
+            filteredRecordByDate: null,
+            answers: answers,
+            userData: userData
+        });
         const { uri } = await Print.printToFileAsync({html:pdf, useMarkupFormatter:true, base64:true});
 
         const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
@@ -81,12 +89,14 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
                 <QuestionItem 
                     key={question.id}
                     question={question}
-                    selectedAnswer={answersState[question.id]}
+                    selectedAnswer={answers[question.id]}
                     onAnswerChange={handleAnswerChange}
                 />
             ))}
             <View className="mb-4">
-                <Text style={{fontFamily:'geometria-regular'}}>8. Сталкивались ли вы с трудностями при введении катетера? Если да, опишите, какие именно трудности возникали.</Text>
+                <Text style={{fontFamily:'geometria-regular'}}>
+                    8. {t("questionnaireScreen.question_eight")}
+                </Text>
                 <InputData
                     key={"difficulties"}
                     control={control}
@@ -100,7 +110,9 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
                 />
             </View>
             <View className="mb-4">
-                <Text style={{fontFamily:'geometria-regular'}}>9. Какие дополнительные проблемы или осложнения связанные с катетеризацией вы бы хотели отметить?</Text>
+                <Text style={{fontFamily:'geometria-regular'}}>
+                    9. {t("questionnaireScreen.question_nine")}
+                </Text>
                 <InputData
                     key={"additional"}
                     control={control}
@@ -114,8 +126,8 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
                 />
             </View>
             <DoubleButton 
-                textOfLeftButton={cameFrom === 'customizePdf' ? 'не хочу заполнять' : 'сбросить'}
-                textOfRightButton={cameFrom === 'customizePdf' ? 'подтвердить' : "подтвердить и скачать PDF"}
+                textOfLeftButton={cameFrom === 'customizePdf' ? t("dont_want_to_fill_out") : t("questionnaireScreen.reset_button")}
+                textOfRightButton={cameFrom === 'customizePdf' ? t("save") : t("questionnaireScreen.confirm_and_download_PDF")}
                 handlePressLeftButton={cameFrom === 'customizePdf' ? goBack : resetAnswersOfSurvey}
                 handlePressRightButton={cameFrom === 'customizePdf' ? acceptAndProceed : downLoadSurveyPdf}
                 showIcon={false}

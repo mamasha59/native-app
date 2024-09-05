@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { Text, TouchableOpacity, Animated, View, Vibration } from "react-native";
+import { Text, TouchableOpacity, Animated, View, Vibration, ActivityIndicator } from "react-native";
 import { useState, useRef } from "react";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
@@ -7,10 +7,11 @@ import { useTranslation } from "react-i18next";
 import WelcomeLayout from "../../Layouts/WelcomeLayout/WelcomeLayout";
 import { iLanguage } from "../../types/index";
 import { NavigationPropsWelcome } from "../UserData/UserData";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { activateRobotSpeech, handleLoader, setLanguage } from "../../store/slices/appStateSlicer";
+import { useAppDispatch } from "../../store/hooks";
+import { activateRobotSpeech, setLanguage } from "../../store/slices/appStateSlicer";
 import { languages } from "../../utils/const";
-import Loader from "../../components/Loader/Loader";
+import Alert from "../../components/Alert/Alert";
+import Error from "../../components/Alert/Error/Error";
 
 interface iLanguageScreen extends NavigationPropsWelcome<'LanguageScreen'>{}
 
@@ -18,8 +19,8 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
   const {t} = useTranslation();
 
   const dispatch = useAppDispatch();
-  const loader = useAppSelector(state => state.appStateSlice.loader);
-
+  const [loader, setLoader] = useState<boolean>(false);
+  const [error, showError] = useState<boolean>(false);
   const [chosenLanguage, setChosenLanguage] = useState<iLanguage>({
     id: '',
     title: '',
@@ -53,24 +54,26 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
       i18next.changeLanguage(language.id)
       .then(() => {
         dispatch(setLanguage(language));
-        dispatch(handleLoader(true));
+        setLoader(true);
         dispatch(activateRobotSpeech(t("switching_language")));
       })
-      .catch((e) => {console.log(e)})
+      .catch((e) => showError(!error))
       .finally(() => {
         setTimeout(() => {
-          dispatch(handleLoader(false));
-        },1000)
+          setLoader(false);
+        },300)
       })
       setChosenLanguage(language);
     }
   }
 
+  const closeErrorModal = () => showError(!error); 
+
   return (
     <WelcomeLayout currentScreen={0} buttonTitle={t("continue")} handleProceed={handleBegin}>
        <Animated.ScrollView style={{ transform: [{ translateX: shakeAnimation }], position:'relative' }}>
       {loader 
-        ? <Loader/>
+        ? <ActivityIndicator size="large" color="#0000ff" />
         : languages.map((el:iLanguage, index:number) =>
           <TouchableOpacity
             className="flex-row justify-between items-center mb-5 py-5 px-2 border-b border-[#bdc3c755]"
@@ -94,6 +97,9 @@ const LanguageScreen = ({navigation}:iLanguageScreen) => {
           </TouchableOpacity>
         )}
       </Animated.ScrollView>
+      <Alert modalAlertState={error} setModalAlertState={showError} key={'languagescreenerror'}>
+        <Error close={closeErrorModal}/>
+      </Alert>
     </WelcomeLayout>
   );
 };

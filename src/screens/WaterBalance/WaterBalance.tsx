@@ -14,7 +14,7 @@ const WaterBalance = () => {
 
   return (
     <MainLayout>
-        <ScrollView className="flex-1 mb-4">
+        <ScrollView showsVerticalScrollIndicator={false} className="flex-1 mb-4">
             <FluidIntakeChart/>
             <Text style={{fontFamily:'geometria-bold'}} className="text-[#101010] text-[22px] leading-[26px]">
                 {t("waterBalanceScreen.charts.fluid_intake_chart")}

@@ -2,13 +2,13 @@ import { Text, TouchableOpacity, Alert, View } from "react-native";
 import * as Notifications from 'expo-notifications';
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-
-import MainLayout from '../../../Layouts/MainLayout/MainLayout';
-import { persistor } from "../../../store/store";
+import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
+import { persistor } from "../../store/store";
+import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import ProfileSettings from "./ProfileSettings/ProfileSettings";
-import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
-import SwitchLanguage from "./ProfileSettings/SwitchLanguage/SwitchLanguage";
 import SwitchUnits from "./ProfileSettings/SwitchUnits/SwitchUnits";
+import SwitchLanguage from "./ProfileSettings/SwitchLanguage/SwitchLanguage";
+
 
 const ProfileScreen = () => { //TODO clear the chaos with folders
   const {t} = useTranslation();

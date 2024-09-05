@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
-    cannulationAtNight: true,
+    cannulationAtNight: false,
     timeSleepStart: '',
     timeSleepEnd: '',
     timeWhenAskToActivate: '',
@@ -10,6 +10,7 @@ const initialState = {
     timeOfMorningNotice: '',
     reducingFluidIntakeTimeOfNotice: 2,
     reducingFluidIntake: true,
+    timeOfNoticeAtNightOneTime: '',
 }
 
 const nightStateSlice = createSlice({
@@ -40,6 +41,9 @@ const nightStateSlice = createSlice({
         setTimeReducingFluidIntakeNotice: (state, action:PayloadAction<number>) => {
             state.reducingFluidIntakeTimeOfNotice = action.payload
         },
+        setTimeOfNoticeAtNightOneTime: (state, action:PayloadAction<string>) => {
+            state.timeOfNoticeAtNightOneTime = action.payload;
+        },
     }
 });
 
@@ -51,6 +55,7 @@ export const {
     setMorningNotice,
     setReducingFluidIntake,
     setMorningNoticeTime,
-    setTimeReducingFluidIntakeNotice
+    setTimeReducingFluidIntakeNotice,
+    setTimeOfNoticeAtNightOneTime
 } = nightStateSlice.actions;
 export default nightStateSlice.reducer;

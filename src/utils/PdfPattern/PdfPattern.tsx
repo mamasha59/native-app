@@ -63,7 +63,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                 `<p style="padding: 0; margin: 0; font-size: 15px;">
                     ${i18next.t("personalizationScreen.bladder_volume")}:
                     <b style="margin-left: 10px; font-size: 15px;">
-                        ${userData.volume} ${units && units.title}
+                        ${userData.volume}
                     </b>
                 </p>`
             }
@@ -115,10 +115,24 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                             </b>
                         </p>
                         <div>
-                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.catheterizations")}: ${records.filter(e => e.catheterType).length}</p>
-                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_leakage")}: ${records.filter(e => e.leakageReason).length}</p>
-                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.fluid_intake")}: ${records.map((e) => e.amountOfDrankFluids).reduce((acc,e) => acc! + (e || 0), 0)} ${units && units.title}</p>
-                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_output")}: ${records.map((e) => e.amountOfReleasedUrine).reduce((acc,e) => acc! + (e || 0), 0)} ${units && units.title}</p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.catheterizations")}
+                                : ${records.filter(e => e.catheterType).length}
+                            </p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_leakage")}
+                                : ${records.filter(e => e.leakageReason).length}
+                            </p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.fluid_intake")}
+                                : ${records
+                                    .filter(e => e && e.amountOfDrankFluids)
+                                    .map((e) => e.amountOfDrankFluids)
+                                    .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0)} ${units && units.title}
+                            </p>
+                            <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_output")}
+                                : ${records
+                                    .filter(e => e && e.amountOfReleasedUrine)
+                                    .map((e) => e.amountOfReleasedUrine)
+                                    .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0)} ${units && units.title}
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -129,8 +143,8 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                             <th>${i18next.t("pdfPattern.date")}</th>
                             <th>${i18next.t("journalScreen.recordTitles.time")}</th>
                             <th>${i18next.t("pdfPattern.action")}</th>
-                            <th>${i18next.t("journalScreen.filters.fluid_intake")}, ${units && units.title}</th>
-                            <th>${i18next.t("journalScreen.filters.urine_output")}, ${units && units.title}</th>
+                            <th>${i18next.t("journalScreen.filters.fluid_intake")}</th>
+                            <th>${i18next.t("journalScreen.filters.urine_output")}</th>
                             <th>${i18next.t("pdfPattern.leaking_condition")}</th>
                             </tr>
                         </thead>

@@ -8,7 +8,6 @@ interface iWaterBalanceInterval{
 }
 
 const WaterBalanceInterval = ({showResult, result, bgColor}:iWaterBalanceInterval) => { 
-     console.log(result);
      
   return (
     <View className="flex-1 items-center justify-center py-1 relative" style={{ backgroundColor: bgColor }}>

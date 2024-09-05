@@ -2,12 +2,13 @@ import { View, Text, TouchableOpacity, Platform, Pressable, Modal, TextInput, Di
 import {useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-import NelatonIcon from "../../../assets/images/iconsComponent/TabMenuIcons/NelatonIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCatheter } from "../../../store/slices/journalDataSlice";
 import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
 import { ClosePopup } from "../../../assets/images/icons";
+import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 
 const window = Dimensions.get('window');
 
@@ -48,31 +49,33 @@ const RestOf = () => {
 
   return (
     <>
-      <View className="justify-center items-center flex-grow-0">
-        <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
-                                  shadowColor: 'black', 
-                                  shadowOffset: { width: 0, height: 2 }, 
-                                  shadowOpacity: 0.25,
-                                  shadowRadius: 4,}} 
-                                  activeOpacity={.8} 
-                                  onPress={handleOpenPopup} 
-                                  className="bg-main-blue rounded-xl w-full max-h-[96px] p-[10px] relative">
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">
-              {t("catheterStockComponent.title")}
-            </Text>
-            <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">{initial.nelaton} {t("units")}</Text>
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">{t("in")} 3 {t("day")}, 0 {t("catheterStockComponent.units_will_remain")}</Text>
-            <View className="border border-[#ffff] absolute right-[15px] top-[8px] rounded-full p-2">
-              <NelatonIcon width={25} color={'#f8e40c'}/>
-            </View>
-            {currentRoute !== 'Home' && 
+      <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
+                                shadowColor: 'black', 
+                                shadowOffset: { width: 0, height: 2 }, 
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,}} 
+                                activeOpacity={.8} 
+                                onPress={handleOpenPopup} 
+                                className="bg-main-blue rounded-xl w-full max-h-[96px] p-[10px] relative">
+          <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">
+            {t("catheterStockComponent.title")}
+          </Text>
+          <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">{initial.nelaton} {t("units")}</Text>
+          <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">{t("in")} 3 {t("day")}, 0 {t("catheterStockComponent.units_will_remain")}</Text>
+          <View className="items-center bg-[#fff] absolute right-[15px] top-[8px] rounded-full p-2">
+            { currentRoute !== 'Home'
+              ?<NelatonIcon/>
+              :<FontAwesome5 name="external-link-alt" size={20} color="black"/>
+            }
+          </View>
+          {currentRoute !== 'Home' &&
             <View className="items-end absolute right-0 bottom-0 p-2">
               <Text style={{ fontFamily: "geometria-regular" }} className="text-[#ffff] text-xs text-end underline">
                 Редактировать
               </Text>
-            </View>}
-        </TouchableOpacity>
-      </View>
+            </View>
+          }
+      </TouchableOpacity>
       <Modal
         transparent={true}
         visible={modalVisible}

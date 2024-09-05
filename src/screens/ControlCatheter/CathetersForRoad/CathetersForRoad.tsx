@@ -28,7 +28,7 @@ const CathetersForRoad = ({filteredRecords}:{filteredRecords:number}) => {
     const cathetersForSpecificDays = numberOfDays?.value && +numberOfDays?.value * filteredRecords;
 
   return (
-    <View className="mb-5">
+    <View className="mb-5 flex-1">
         <TouchableOpacity activeOpacity={.8} onPress={() => setOpenModal(!openModal)}>
             <View className="flex-row items-center mb-[10px]">
                 <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">

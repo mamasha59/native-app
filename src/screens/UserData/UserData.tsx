@@ -7,6 +7,7 @@ import { RootStacNativeParamList } from "../../components/RootNavigations/RootNa
 import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
 import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
 import FourthDataScreen from "./FourthDataScreen/FourthDataScreen";
+import CathetersScreen from "./CathetersScreen/CathetersScreen";
 
 export type RootStackParamList = {
   LanguageScreen: undefined;
@@ -14,7 +15,7 @@ export type RootStackParamList = {
   SecondDataScreen: undefined;
   ThirdDataScreen: undefined;
   FourthDataScreen: undefined;
-  SliderScreen: undefined;
+  CathetersScreen: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -37,6 +38,8 @@ const UserData = () => {
         <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
         <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
         <Stack.Screen name="FourthDataScreen" component={FourthDataScreen}/>
+
+        <Stack.Screen name="CathetersScreen" component={CathetersScreen}/>
     </Stack.Navigator>
   );
 };

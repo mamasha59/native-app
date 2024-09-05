@@ -3,7 +3,6 @@ import { ScrollView } from "react-native";
 
 import NoticesOfCannulation from "../../components/NoticesOfCannulation/NoticesOfCannulation";
 import NoticesOfWaterConsumption from "../../components/NoticesOfWaterConsumption/NoticesOfWaterConsumption";
-import NoticesOfRemainCaths from "../../components/NoticesOfRemainCaths/NoticesOfRemainCaths";
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import CatheterizationReminder from "../../components/CatheterizationReminder/CatheterizationReminder";
 
@@ -15,7 +14,6 @@ const NoticeNavigationScreen = () => {
           <CatheterizationReminder/>
           <NoticesOfCannulation/>
           <NoticesOfWaterConsumption/>
-          <NoticesOfRemainCaths/>
         </ScrollView>
     </MainLayout>
   );

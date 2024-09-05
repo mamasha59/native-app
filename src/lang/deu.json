@@ -197,7 +197,8 @@
                 "time": "Zeit",
                 "leakage": "Leckage",
                 "catheterization": "Katheter isierung",
-                "drank_fluids": "Getrunkene Flüssigkeit"
+                "drank_fluids": "Getr. Fl.",
+                "excreted_urine": "Abfl."
             }
         },
 
@@ -252,6 +253,8 @@
     
         "nightModeScreen": {
             "title": "Nachtmodus-Einstellungen für Katheterisierung",
+            "modal_title_set_time_of_start_sleep": "Wählen Sie eine Zeit, zu der Sie ins Bett gehen",
+            "modal_title_set_time_of_end_sleep": "Wählen Sie eine Zeit, zu der Sie aufwachen",
             "askActivateAfterTimeComponent": {
                 "askToActivate": "Fragen Sie nach der Aktivierung des Nachtmodus bei Katheterisierung nach"
             },

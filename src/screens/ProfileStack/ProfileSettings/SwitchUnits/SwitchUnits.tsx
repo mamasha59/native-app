@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import { Text, FlatList,TouchableOpacity } from "react-native";
 import {useEffect, useState } from "react";
 
-import ModalSelect from "../../../../../components/ModalSelect/ModalSelect";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { iUnits } from "../../../../../types";
-import { switchUnits } from "../../../../../store/slices/appStateSlicer";
+import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { iUnits } from "../../../../types";
+import { switchUnits } from "../../../../store/slices/appStateSlicer";
 
 const SwitchUnits = () => {
     const {t, i18n} = useTranslation();
@@ -49,7 +49,6 @@ const SwitchUnits = () => {
         height={3.4}
         showIcon={false}
         title="Изменить единицу"
-        onItemPress={(item) => console.log(item)}
         openModal={openModalChangeUnits}
         setOpenModal={handleModalChangeLanguage}
         >

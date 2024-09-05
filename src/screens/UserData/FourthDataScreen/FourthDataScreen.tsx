@@ -23,7 +23,7 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
     }
 
   return (
-    <WelcomeLayout currentScreen={4} showRobotIconOnTop={false} buttonTitle={t("continue")} titleCenter handleProceed={proceedNextScreen}>
+    <WelcomeLayout currentScreen={5} showRobotIconOnTop={false} buttonTitle={t("continue")} titleCenter handleProceed={proceedNextScreen}>
         <View className="max-w-[60px] my-5 w-full mx-auto bg-main-blue rounded-full p-4 items-center justify-center">
             <NotificationIcon width={28} color={'#fff'}/>
         </View>
@@ -33,7 +33,6 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
         <CatheterizationReminder/>
         <NoticesOfCannulation/>
         <NoticesOfWaterConsumption/>
-        <NoticesOfRemainCaths/>
     </WelcomeLayout>
   );
 };

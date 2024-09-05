@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Alert, Platform } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Platform } from "react-native";
 import {Calendar, DateData} from 'react-native-calendars';
 import * as Sharing from 'expo-sharing';
 import * as Print from 'expo-print';
@@ -18,6 +18,8 @@ import { StackNavigationRoot } from "../../../components/RootNavigations/RootNav
 import { dateFormat } from "../../../utils/const";
 import { iDairyRecord } from "../../../types";
 import { handleCheckBoxAddSurveyInPdf } from "../../../store/slices/journalDataSlice";
+import Alert from "../../../components/Alert/Alert";
+import Error from "../../../components/Alert/Error/Error";
 
 interface iModalCustomizePdf {
     handleModalState: () => void,
@@ -35,7 +37,8 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const chooseCalendarDay = '#50cebb'
     const dispatch = useAppDispatch()
     const {urineDiary, modalCustomizePdfDocument, checkBoxAddSurveyInPdf} = useAppSelector(state => state.journal);
-    const {surveyAnswers, calendareDay, units} = useAppSelector(state => state.appStateSlice);
+    const {calendareDay, units} = useAppSelector(state => state.appStateSlice);
+    const {surveyAnswers} = useAppSelector(state => state.surveySlice);
     const userData = useAppSelector(state => state.user);
 
     const navigate = useNavigation<StackNavigationRoot>();
@@ -43,6 +46,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const [markedDates, setMarkedDates] = useState<MarkedDates>({});
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
+    const [error, showError] = useState<boolean>(false);
       
     const maxDate = format(new Date(), dateFormat).slice(0,10);
     useEffect(() => {
@@ -108,19 +112,19 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
         });
       
         urineDiary.forEach(record => {
-            const timeStamp = record.timeStamp;
-            const recordDate = timeStamp.split(' ')[0];
-    
-            if (dateRecords[recordDate]) {
-                dateRecords[recordDate].push(record);
-            }
-        });
+          const timeStamp = record.timeStamp;
+          const recordDate = timeStamp.split(' ')[0];
+  
+          if (dateRecords[recordDate]) {
+            dateRecords[recordDate].push(record);
+          }
+        });        
         const pdf = await generatePdfPattern({
           showSurvey: checkBoxAddSurveyInPdf,
           filteredRecordByDate: dateRecords,
           answers: surveyAnswers,
           userData: userData,
-          units: units,
+          units: units
         });
 
         if(dateRecords) {
@@ -137,7 +141,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
                   .then(async (uri) => {
                     await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
                   })
-                  .catch(e => console.log(e))
+                  .catch(e => showError(!error))
                   .finally(() => handleModalState())
               } else {
                 Sharing.shareAsync(uri);
@@ -148,7 +152,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
           } else {
             const isSharingExist = Sharing.isAvailableAsync();
             if(!isSharingExist) {
-              Alert.alert('Doesnt work on this device!');
+              showError(!error);
               return;
             }
             await Sharing.shareAsync(uri, {dialogTitle:'Title sex', mimeType:'application/pdf'});
@@ -156,7 +160,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
         }
         handleModalState();
       } else {
-        Alert.alert('Выберите интервал!')
+        showError(!error)
       }
     };
 
@@ -191,9 +195,11 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
       setMarkedDates(newMarkedDates);      
     };
 
+    const closeErrorModal = () => showError(!error);
+
   return (
-    <ModalSelect height={1} showIcon={false} title={t("modalDocumentCreation.title")} onItemPress={()=> console.log('hi')} openModal={modalCustomizePdfDocument} setOpenModal={handleModalState}>
-        <ScrollView className="flex-1 h-full pt-2">
+    <ModalSelect height={1} showIcon={false} title={t("modalDocumentCreation.title")} openModal={modalCustomizePdfDocument} setOpenModal={handleModalState}>
+        <ScrollView className="flex-1 h-full">
             <View className="flex-1 items-center justify-between h-full">
               <View className="flex-1 items-center h-full">
                 <Text style={{fontFamily:'geometria-regular'}}>
@@ -280,6 +286,13 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
               </TouchableOpacity>
             </View>
         </ScrollView>
+        <Alert
+          modalAlertState={error}
+          setModalAlertState={showError}
+          key={'modalcustomizepdf'}
+        >
+          <Error close={closeErrorModal}/>
+      </Alert>
     </ModalSelect>
   );
 };

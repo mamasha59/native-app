@@ -43,7 +43,6 @@ const PdfOnBoarding = ({navigation, route}:NavigationPropsRoot<'PdfOnBoarding'>)
     });
 
     const inputsValue = watch();        // состояние инпута при его изменении
-console.log(inputsValue);
 
     const closeModal = () => setOpenModalSelectSex(!openModalSelectSex);
     

@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import { useAppSelector } from "../../../../../store/hooks";
-import { useFormatInterval } from "../../../../../hooks/useFormatInterval";
+import { useFormatInterval } from "../../../../hooks/useFormatInterval";
+import { useAppSelector } from "../../../../store/hooks";
 
 interface iChangeInterval {
   handleChangeOptimalInterval: () => void,

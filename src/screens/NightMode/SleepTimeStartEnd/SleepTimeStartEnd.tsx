@@ -1,13 +1,14 @@
 import { View, Text } from "react-native";
-import { useState } from "react";
-import { format, set, subHours } from "date-fns";
+import { useEffect, useState } from "react";
+import { addDays, addMinutes, differenceInHours, differenceInMinutes, format, parse, set, subHours } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
+import { setTimeOfNoticeAtNightOneTime, setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
+import { day } from "../../../utils/date";
 
 const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const {t} = useTranslation();
@@ -25,14 +26,39 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         selectedIndexMinutes: 0,
     });
 
+    const [calculatedOnceTimeNoticeAtNight, setCalculatedOnceTimeNoticeAtNight] = useState<{sleepTimeStart:string,endTimeStart:string}>({
+        sleepTimeStart: '',
+        endTimeStart: ''
+    });
+
+    useEffect(() => {
+        if (calculatedOnceTimeNoticeAtNight.sleepTimeStart && calculatedOnceTimeNoticeAtNight.endTimeStart){
+            const dateStart = parse(calculatedOnceTimeNoticeAtNight.sleepTimeStart, 'HH:mm', day);
+            let dateEnd = parse(calculatedOnceTimeNoticeAtNight.endTimeStart, 'HH:mm', day);
+            // Если время окончания раньше времени начала, добавляем 1 день к времени окончания
+            if (dateEnd < dateStart) {
+                dateEnd = addDays(dateEnd, 1); // add one day, that means that wake up time on the nex day in the morning
+            }
+            // found total time of sleep
+            const totalTimeOfSleep = differenceInMinutes(dateEnd, dateStart);
+            // Находим середину, поделив разницу пополам
+            const halfDifference = totalTimeOfSleep / 2;
+
+            // We add half the difference to the start time to find the midpoint
+            const middleTime = addMinutes(dateStart, halfDifference);
+            if (middleTime)
+            dispatch(setTimeOfNoticeAtNightOneTime(middleTime.toTimeString().slice(0, 5)));
+        }
+    },[calculatedOnceTimeNoticeAtNight]);
+
     const [showModalSetIntervalStart, setShowModalSetIntervalStart] = useState<boolean>(false); // попап Начала Сна
     const [showModalSetIntervalEnd, setShowModalSetIntervalEnd] = useState<boolean>(false); // попап Конца Сна
 
-    const handleOpenModalStart = () => { // открытие попапа Начала Сна
+    const handleOpenModalStart = () => { // modal set time Start of Sleep
         setShowModalSetIntervalStart(!showModalSetIntervalStart);
     }
 
-    const handleOpenModalEnd = () => { // открытие попапа Конца Сна
+    const handleOpenModalEnd = () => { // modal set time of End Sleep
         setShowModalSetIntervalEnd(!showModalSetIntervalEnd);
     }
 
@@ -50,19 +76,22 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     
     const handleSetStartTime = () => { // при подтверждении интверала Начала сна
         const dateWithTime = createDateFromTime(intervalOfStartSleep.selectedIndexHour, intervalOfStartSleep.selectedIndexMinutes);        
-        const timeStartSleep = formatDateToTimeString(dateWithTime);
-        const timeWhenAskActivate = formatDateToTimeString(subHours(dateWithTime, 2)); // вычитаем два часа до сна что бы определить время уведомления
+        const timeStartSleep = formatDateToTimeString(dateWithTime);// time start sleep
+        const timeWhenAskActivate = formatDateToTimeString(subHours(dateWithTime, 2)); // take 2 hours from time
         
-        dispatch(setTimeWhenAskToActivateNightMode(timeWhenAskActivate));
-        dispatch(setTimeSleepStart(timeStartSleep));
+        setCalculatedOnceTimeNoticeAtNight({sleepTimeStart: timeStartSleep, endTimeStart: calculatedOnceTimeNoticeAtNight.endTimeStart});
+        dispatch(setTimeWhenAskToActivateNightMode(timeWhenAskActivate)); // set time to component - time when ask to activate
+        dispatch(setTimeSleepStart(timeStartSleep)); // save time start sleep in store redux
         handleOpenModalStart();
     }
 
     const handleSetEndTime = () => { // при подтверждении интверала Конца сна
         const dateWithTime = createDateFromTime(intervalOfEndSleep.selectedIndexHour, intervalOfEndSleep.selectedIndexMinutes);
-        const time = formatDateToTimeString(dateWithTime)
+        const time = formatDateToTimeString(dateWithTime);
+
+        setCalculatedOnceTimeNoticeAtNight({sleepTimeStart:calculatedOnceTimeNoticeAtNight.sleepTimeStart,endTimeStart: time});
         dispatch(setTimeSleepEnd(time));
-        handleOpenModalEnd()
+        handleOpenModalEnd();
     }
 
   return (
@@ -72,28 +101,33 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         </Text>
         <View className="flex-row items-center flex-1">
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>{t('componentSleepTimeStartEnd.from')}</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalStart} title={nightModeTimeSettings.timeSleepStart || t('componentSleepTimeStartEnd.select')}/>
+            <ButtonBluBorder
+                handlePressButton={handleOpenModalStart}
+                title={nightModeTimeSettings.timeSleepStart || t('componentSleepTimeStartEnd.select')}/>
             <Text className="text-lg px-3" style={{fontFamily:'geometria-regular'}}>{t('componentSleepTimeStartEnd.to')}</Text>
-            <ButtonBluBorder handlePressButton={handleOpenModalEnd} title={nightModeTimeSettings.timeSleepEnd || t('componentSleepTimeStartEnd.select')}/>
+            <ButtonBluBorder
+                handlePressButton={handleOpenModalEnd}
+                title={nightModeTimeSettings.timeSleepEnd || t('componentSleepTimeStartEnd.select')}/>
             <View className="w-[40px] h-[40px] items-center justify-center">
                 <Pencil/>
             </View>
         </View>
 
-        {showInfo && <View className="mb-3">
+        {showInfo && 
+        <View className="mb-3">
             <Text className="text-lg" style={{fontFamily:'geometria-bold'}}>{t("night_mode")}:</Text>
             <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
                 {t("componentSleepTimeStartEnd.night_mode_description")}
             </Text>
         </View>}
         <ModalSetInterval
-                handleOpenModalChangeInterval={handleOpenModalStart}
-                newInterval={intervalOfStartSleep}
-                setNewInterval={setIntervalOfStartSleep}
-                showModalSetInterval={showModalSetIntervalStart}
-                pressSaveButton={handleSetStartTime}
-                title="Выберите время когда вы ложитесь спать"
-                is24Hours
+            handleOpenModalChangeInterval={handleOpenModalStart}
+            newInterval={intervalOfStartSleep}
+            setNewInterval={setIntervalOfStartSleep}
+            showModalSetInterval={showModalSetIntervalStart}
+            pressSaveButton={handleSetStartTime}
+            title={t("nightModeScreen.modal_title_set_time_of_start_sleep")}
+            is24Hours
             />
         <ModalSetInterval
             handleOpenModalChangeInterval={handleOpenModalEnd}
@@ -101,7 +135,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
             setNewInterval={setIntervalOfEndSleep}
             showModalSetInterval={showModalSetIntervalEnd}
             pressSaveButton={handleSetEndTime}
-            title="Выберите время когда вы просыпаетесь"
+            title={t("nightModeScreen.modal_title_set_time_of_end_sleep")}
             is24Hours
         />
     </View>

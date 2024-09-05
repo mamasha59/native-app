@@ -1,6 +1,5 @@
 import { Text, TouchableOpacity } from "react-native";
 import AnimatedPlaceholder from "../AnimatedPlaceholder/AnimatedPlaceholder";
-import { useAppSelector } from "../../store/hooks";
 
 interface iButtonSelect{
     placeholder: string;

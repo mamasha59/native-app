@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity, Modal, Dimensions, FlatList, Pressable} from "react-native";
+import { Text, View, ActivityIndicator, TouchableOpacity, Modal, Dimensions, FlatList, Pressable} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -34,13 +34,13 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
   const {calendareDay} = useAppSelector(user => user.appStateSlice); // достаем из стора редакса выбранню дату на календаре и ответы
 
   const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
-  const [filtredJournalRecords, setFiltredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
+  const [filteredJournalRecords, setFilteredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
   const [loading, setLoading] = useState<boolean>(true);
   const [buttonName, setButtonName] = useState<string>('');
 
   const [filterSetting, setFilterSetting] = useState<string>('');
   const [openSelectMonth, setOpenSelectmonth] = useState<boolean>(false);
-  const scrollViewRef = useRef<ScrollView>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const nelaton = t("nelaton");
   const months = [
@@ -93,9 +93,9 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
         case nelaton:
           return records.filter((e) => e.catheterType?.length! > 0);
         case 'amountOfReleasedUrine':
-          return records.filter((e) => e.amountOfReleasedUrine && e.amountOfReleasedUrine > 0);
+          return records.filter((e) => e.amountOfReleasedUrine && +e.amountOfReleasedUrine.split(' ')[0] > 0);
         case 'amountOfDrankFluids':
-          return records.filter((e) => e.amountOfDrankFluids && e.amountOfDrankFluids > 0);
+          return records.filter((e) => e.amountOfDrankFluids && +e.amountOfDrankFluids.split(' ')[0] > 0);
         case 'leakageReason':
           return records.filter((e) => e.leakageReason && e.leakageReason?.length > 0);
         case 'timeStamp':
@@ -109,25 +109,28 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
       const todayJournal = urineDiary.filter((e) => e.timeStamp?.slice(0, 10) === calendareDay);
         
       const filteredRecords = applyFilter(todayJournal, filterSetting);
-      setFiltredJournalRecords(filteredRecords);
-      setLoading(false); // Скрыть индикатор загрузки
+        setFilteredJournalRecords(filteredRecords);
+        setLoading(false); // Скрыть индикатор загрузки
     }, 500);
 
   }, [filterSetting, calendareDay, urineDiary, day]);  
   
   useEffect(() => { // добавление данных в блок Статистика за сегодня
-    const filteredRecords = urineDiary.filter(e => e.timeStamp?.slice(0, 10) === calendareDay); // фильтруем по даты, либо выбранной дате
+    const filteredRecords:iDairyRecord[] = urineDiary.filter(e => e.timeStamp?.slice(0, 10) === calendareDay); // фильтруем по даты, либо выбранной дате
     
     const cannulationStaticPerDay = filteredRecords.filter(e => e.catheterType); // фильтруем по типу катетора, для статистики Катетеризаций:
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
 
     const amountOfDrankFluidsPerDay = filteredRecords
+      .filter(e => e && e.amountOfDrankFluids)
       .map((e) => e.amountOfDrankFluids)
-      .reduce((acc,e) => acc! + (e || 0), 0);
+      .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
 
     const amountOfReleasedUrinePerDay = filteredRecords
+      .filter(e => e && e.amountOfReleasedUrine)
       .map((e) => e.amountOfReleasedUrine)
-      .reduce((acc,e) => acc! + (e || 0), 0);
+      .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
+
 
     const setStatistics = {
       cannulation:cannulationStaticPerDay.length,
@@ -135,7 +138,6 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
       amountOfDrankFluids: amountOfDrankFluidsPerDay!,
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
     }
-
     setStatisticPerDay(setStatistics);
   },[calendareDay,urineDiary,day]);
 
@@ -148,8 +150,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
     setTimeout(() => {
       setRefreshing(false);
       dispatch(resetBadges());
-    }, 2000);
-    scrollViewRef.current?.scrollTo({x:0,y:0,animated:true});
+    }, 1000);
   }, [i18n.language]);
 
   const handleModalSelectMonth = () => {
@@ -195,48 +196,50 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
 
       <ListOfCalendarDays month={month} months={months} setSelectedMonth={setSelectedMonth} />
       <FilterCategories setFilterSetting={setFilterSetting}/>
-      <Statistics selectedCalendareDate={calendareDay} statisticPerDay={statisticPerDay}/>
-      <ScrollView
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={updateRecords}/>}
-        className="flex-1 overflow-hidden"
-        showsVerticalScrollIndicator={false}
-        snapToStart={true}
-        ref={scrollViewRef}
-      >
-        {/* list */}
-        {loading 
-          ? <ActivityIndicator size={"large"}/>
-          :
-          (urineDiary.length === 0 || filtredJournalRecords.length === 0
-            ? <View focusable={false}>
-                <Text style={{fontFamily:'geometria-regular'}} className="text-lg">
-                  {t("journalScreen.no_records_for_the_selected_day")}...
-                </Text>
-              </View>
-            : filtredJournalRecords.map((e,index) => 
-              <JournalRecord
-                timeStamp={e.timeStamp}
-                id={e.id}
-                key={index} 
-                whenWasCanulisation={e.whenWasCanulisation}
-                amountOfDrankFluids={e.amountOfDrankFluids}
-                catheterType={e.catheterType}
-                amountOfReleasedUrine={e.amountOfReleasedUrine}
-                leakageReason={e.leakageReason}
-              />)
+      <Statistics selectedCalendarDate={calendareDay} statisticPerDay={statisticPerDay}/>
+
+      <FlatList
+        data={loading || urineDiary.length === 0 || filteredJournalRecords.length === 0 ? [] : filteredJournalRecords}
+        renderItem={({ item }) => (
+          <JournalRecord
+            timeStamp={item.timeStamp}
+            id={item.id}
+            whenWasCanulisation={item.whenWasCanulisation}
+            amountOfDrankFluids={item.amountOfDrankFluids}
+            catheterType={item.catheterType}
+            amountOfReleasedUrine={item.amountOfReleasedUrine}
+            leakageReason={item.leakageReason}
+          />
           )
         }
-      </ScrollView>
+        keyExtractor={(item, index) => item.id.toString() || index.toString()}
+        ListEmptyComponent={loading 
+          ? <ActivityIndicator size="large" /> 
+          : <View focusable={false}>
+              <Text style={{ fontFamily: 'geometria-regular' }} className="text-lg">
+                {t("journalScreen.no_records_for_the_selected_day")}...
+              </Text>
+            </View>
+        }
+        showsVerticalScrollIndicator={false}
+        snapToStart={true}
+        snapToInterval={70}
+        decelerationRate={'fast'}
+        refreshing={refreshing}
+        ref={flatListRef}
+        onRefresh={updateRecords}
+        className="flex-1 overflow-hidden"
+        ListFooterComponent={<View className="h-14"/>}
+      />
+
       <DoubleButton
+        blurView
         showIcon={false}
         textOfLeftButton={t("journalScreen.send")}
         textOfRightButton={t("journalScreen.download_PDF")}
         handlePressLeftButton={() => handlePressButton('share')}
         handlePressRightButton={() => handlePressButton('download')}
       />
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Survey', {})} activeOpacity={0.6} className="max-h-[40px] p-1 flex-1 min-w-[250px] bg-main-blue rounded-[89px] flex-row items-center justify-center mx-auto mb-2">
-        <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center">опросник</Text>
-      </TouchableOpacity> */}
       <ModalCustomizePdf buttonName={buttonName} handleModalState={handleModalState} key={'modalcustomizepdfjournalscreen'}/>
     </MainLayout>
   );

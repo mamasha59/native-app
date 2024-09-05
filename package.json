@@ -33,7 +33,7 @@
     "expo-task-manager": "~11.8.2",
     "expo-updates": "~0.25.24",
     "i18next": "^23.12.2",
-    "lottie-react-native": "6.7.0",
+    "lottie-react-native": "6.7.2",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-error-boundary": "^4.0.13",
@@ -59,7 +59,8 @@
     "tailwindcss": "3.3.2",
     "typescript": "5.3.3",
     "uuid": "^9.0.1",
-    "expo-image": "~1.12.15"
+    "expo-image": "~1.12.15",
+    "expo-clipboard": "~6.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

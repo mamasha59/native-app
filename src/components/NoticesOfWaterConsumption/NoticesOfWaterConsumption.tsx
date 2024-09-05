@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity, TextInput, Dimensions } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { format, parse, subHours } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setDayGoalOfDrinkWater } from "../../store/slices/appStateSlicer";
+import { focusInput } from "../../utils/const";
 
 const windowSize = Dimensions.get('window');
 
@@ -14,37 +15,36 @@ const NoticesOfWaterConsumption = () => {
     const {t} = useTranslation();
 
     const dispatch = useAppDispatch();
-    const settings = useAppSelector(state => state.appStateSlice.dayGoalOfDrinkWater);
+    const {dayGoalOfDrinkWater, units} = useAppSelector(state => state.appStateSlice);
     const settingsNightMode = useAppSelector(state => state.nightOnBoarding.timeSleepStart);
-    const units = useAppSelector(state => state.appStateSlice.units);
 
     const startTimeNight = parse(settingsNightMode, 'HH:mm', now); // начало ночного интервала
     const newTime = subHours(startTimeNight, 2);
     const formattedNewTime = format(newTime, 'HH:mm');
 
-    const [dayGoalOfWater, setDayGoalOfWater] = useState<string>(''+settings);
+    const [dayGoalOfWater, setDayGoalOfWater] = useState<string>(''+dayGoalOfDrinkWater);
     const inputRef = useRef<TextInput>(null);
 
-    const focusInput = () => {
-        if (inputRef.current) {
-          inputRef.current.blur(); // Сначала снимаем фокус
-          setTimeout(() => {
-            inputRef.current && inputRef.current.focus(); // Затем устанавливаем фокус
-          }, 100); // Немного задержки для корректной работы
+    useEffect(() => {
+        if(units.title === 'fl oz'){
+            setDayGoalOfWater(''+51);
+        }else {
+            setDayGoalOfWater(''+1500);
         }
-      };
+    },[units])
 
-    const handleInputDayGoalOfWater = (value:string) => {
-        if(+value <= 0){
-            setDayGoalOfWater('');
-        }else{
-            setDayGoalOfWater(value);
-        }
-    }
+    const inputOnChangeDayGoalOfWater = (value: string) => {
+        const convertedValue = +value;
+        const equalZero = convertedValue <= 0;
+        const newDayGoalOfWater =
+            (units.title === 'fl oz' && (equalZero || convertedValue > 180)) ||
+            (units.title !== 'fl oz' && (equalZero || convertedValue > 5000))
+                ? ''
+                : value;
+        setDayGoalOfWater(newDayGoalOfWater);
+    };
 
-    const adDayGoalOfWater = () => {
-        dispatch(setDayGoalOfDrinkWater(+dayGoalOfWater))
-    }
+    const adDayGoalOfWater = () => dispatch(setDayGoalOfDrinkWater(+dayGoalOfWater));
 
   return (
     <View className="mt-4">
@@ -61,7 +61,7 @@ const NoticesOfWaterConsumption = () => {
             </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={focusInput} className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
+        <TouchableOpacity onPress={() => focusInput(inputRef)} className="mt-2 py-3 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>
                 {t("noticeOfWaterConsumptionComponents.set_daily_goal")}
             </Text>
@@ -71,7 +71,7 @@ const NoticesOfWaterConsumption = () => {
                         ref={inputRef}
                         value={dayGoalOfWater}
                         onEndEditing={adDayGoalOfWater}
-                        onChangeText={(e) => handleInputDayGoalOfWater(e)}
+                        onChangeText={(e) => inputOnChangeDayGoalOfWater(e)}
                         style={{fontFamily:'geometria-bold'}}
                         keyboardType="numeric"
                         maxLength={4}

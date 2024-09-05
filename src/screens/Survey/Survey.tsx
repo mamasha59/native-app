@@ -16,17 +16,17 @@ import { NavigationPropsRoot } from "../../components/RootNavigations/RootNaviga
 import { handleCheckBoxAddSurveyInPdf, handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 import { generatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
 import { resetAnswers, saveAnswer } from "../../store/slices/surveySlice";
-// import { questions } from "../../utils/SurveyQuestions/SurveyQuestions";
+import Alert from "../../components/Alert/Alert";
 
 const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO set input data
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const { cameFrom } = route.params;
     
     const dispatch = useAppDispatch();
     const answers = useAppSelector(state => state.surveySlice.surveyAnswers);
     const userData = useAppSelector(state => state.user);
 
-    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+    const { control, formState: { errors }, watch } = useForm({
         defaultValues: {
             difficulties : '',
             additional: '',

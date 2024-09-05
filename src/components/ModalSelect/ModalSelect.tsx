@@ -7,8 +7,8 @@ interface iModalSelect {
     setOpenModal: (state?: boolean) => void;
     openModal: boolean;
     options?: Option[];
-    onItemPress: (item: Option) => void;
-    title: string;
+    onItemPress?: (item: Option) => void;
+    title?: string;
     children?: React.ReactNode,
     showIcon?: boolean,
     row?: boolean,
@@ -35,12 +35,16 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
                 <View className="mx-auto -mt-[150px] mb-1">
                     {logo}
                 </View>}
-                {title.length > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-4">{title}</Text>}
+                {title && title.length > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-4">{title}</Text>}
                 {options &&
                     <ScrollView className="flex-1 h-full w-full">
                         <View className={`justify-center items-center mb-4 flex-wrap ${row ? 'flex-row' : 'flex mx-auto'}`}>
                             {options!.map((item, index) =>
-                                <TouchableOpacity key={index} className={`rounded-lg p-2 bg-main-blue min-w-[40px] max-w-[250px] m-3 ${!row && 'w-full'}`} activeOpacity={0.6} onPress={() => onItemPress(item)}>
+                                <TouchableOpacity
+                                    key={index}
+                                    className={`rounded-lg p-2 bg-main-blue min-w-[40px] max-w-[250px] m-3 ${!row && 'w-full'}`}
+                                    activeOpacity={0.6}
+                                    onPress={() => onItemPress!(item)}>
                                     <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-[#fff] text-center">{item.title}</Text>
                                 </TouchableOpacity>)
                             }

@@ -95,7 +95,7 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
             pressSaveButton={safeNewInterval}
             title={t("firstDataScreen.setIntervalTitle")}
             is24Hours={false}
-            key={'firstdatascreen'}
+            key={'firstDataScreenSetCatheterizationInterval'}
         />
     </WelcomeLayout>
   );

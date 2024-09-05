@@ -43,8 +43,8 @@ interface iDairyRecord {
     id: string,
     whenWasCanulisation: string,
     catheterType?: string,
-    amountOfDrankFluids?: number,
-    amountOfReleasedUrine?: number | null,
+    amountOfDrankFluids: string,
+    amountOfReleasedUrine: string,
     leakageReason?: string,
     timeStamp: string,
 }

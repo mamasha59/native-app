@@ -24,7 +24,7 @@ interface iModalSetInterval {
     is24Hours: boolean,
 }
 
-const ModalSetInterval = (props:iModalSetInterval) => {
+const ModalSetInterval = (props:iModalSetInterval) => { // here we use another Modal, cause there is a trouble using native modal with Wheel picker
     const {t} = useTranslation();
     const {
         showModalSetInterval,
@@ -39,7 +39,9 @@ const ModalSetInterval = (props:iModalSetInterval) => {
   return (
     <Modal isVisible={showModalSetInterval} animationIn={'slideInUp'} animationOut={'zoomOut'} useNativeDriverForBackdrop onBackButtonPress={handleOpenModalChangeInterval}>
         <View style={{width:windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] p-10">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-center">{title}</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="text-base text-center min-h-[46px]">
+                {title}
+            </Text>
             <View className="flex-row justify-center items-center mb-3">
                 <SetTimeInterval is24Hours={is24Hours} visibleRest={1} interval={newInterval} setInterval={setNewInterval}/>
             </View>
@@ -53,7 +55,7 @@ const ModalSetInterval = (props:iModalSetInterval) => {
                     end={{ x: 1, y: 0.5 }}
                     locations={[0.0553, 0.9925]}
                     className="rounded-[43px]">
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF] text-center px-6 py-3">
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-base text-[#FFFFFF] text-center px-6 py-3">
                         {t("save")}
                     </Text>
                 </LinearGradient>

@@ -4,7 +4,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 interface iTimerStatesSlice {
     startFromCountdown: boolean,
     intervalDifference: number,
-    initialStripWhenCloseApp: number,
     interval: number,
     yellowInterval: number,
     showModalSuccess: boolean,
@@ -13,7 +12,6 @@ interface iTimerStatesSlice {
 const initialState:iTimerStatesSlice = {
     startFromCountdown: true,
     intervalDifference: 0,
-    initialStripWhenCloseApp: 0,
     interval: 14400,
     yellowInterval: 15,
     showModalSuccess: false,
@@ -28,9 +26,6 @@ const timerStatesSlice = createSlice({
         },
         setIntervalDifference: (state, action) => {
             state.intervalDifference = action.payload;
-        },
-        setInitialStripWhenCloseApp: (state, action) => {
-            state.initialStripWhenCloseApp = action.payload;
         },
         setInterval: (state, action:PayloadAction<number>) => {
             state.interval = action.payload;
@@ -47,7 +42,6 @@ const timerStatesSlice = createSlice({
 export const { 
     whetherStartFromCountdown,
     setIntervalDifference,
-    setInitialStripWhenCloseApp,
     setInterval,
     setShowModalSuccess,
     changeYellowInterval

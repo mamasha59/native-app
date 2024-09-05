@@ -8,7 +8,6 @@ import { iLanguage, iUnits } from "../../types";
 interface iAppStateSlicer {
   units: iUnits,
   robotText: string,
-  loader: boolean,
   setLanguage: iLanguage,
   isExist: boolean,
   open: boolean,
@@ -37,7 +36,6 @@ const initialState:iAppStateSlicer = {
       id: 'ml'
     },
     robotText:'',
-    loader: false,
     setLanguage: {
       id: '',
       title: '',
@@ -51,17 +49,17 @@ const initialState:iAppStateSlicer = {
     tabBarBadgeJournalScreen: 0,
     stateOfTimerTitleForFirstTimeInApp: false,
     cannulationAtNight: {
-      value: true,
+      value: false,
       timeStamp: format(new Date(), dateFormat)
     },
     urineMeasure: false,
-    dayGoalOfDrinkWater: 1000,
+    dayGoalOfDrinkWater: 1500,
     scaleLiquidPopup: false,
     openModalNightMode: false,
     helperForModalTurnOnNightMode: false,
     doubleButtonProfileScreenClickable: {
       leftButton: false,
-      rightButton: false,
+      rightButton: true,
     },
 }
 const appStateSlice = createSlice({
@@ -70,9 +68,6 @@ const appStateSlice = createSlice({
     reducers: {
       switchUnits: (state, action:PayloadAction<iUnits>) => {
         state.units = action.payload;
-      },
-      handleLoader: (state, action:PayloadAction<boolean>) => {
-        state.loader = action.payload;
       },
       activateRobotSpeech: (state, action:PayloadAction<string>) => {
         state.robotText = action.payload;
@@ -107,7 +102,7 @@ const appStateSlice = createSlice({
       changeStateOfTimerTitleForFirstTimeInApp: (state, action:PayloadAction<boolean>) => {
         state.stateOfTimerTitleForFirstTimeInApp = action.payload;
       },
-      switchCannulationAtNightNight: (state, action:PayloadAction<{ value: boolean, timeStamp: string}>) => {
+      switchCannulationAtNightMode: (state, action:PayloadAction<{ value: boolean, timeStamp: string}>) => {
           state.cannulationAtNight = {timeStamp: action.payload.timeStamp, value: action.payload.value}
       },
       setDayGoalOfDrinkWater: (state, action:PayloadAction<number>) => {
@@ -132,7 +127,6 @@ const appStateSlice = createSlice({
 })
 export const {
     switchUnits,
-    handleLoader,
     activateRobotSpeech,
     setLanguage,
     changeIsExist,
@@ -142,7 +136,7 @@ export const {
     addBadgesJournalScreen,
     resetBadges,
     changeStateOfTimerTitleForFirstTimeInApp,
-    switchCannulationAtNightNight,
+    switchCannulationAtNightMode,
     setWhetherCountUrine,
     setDayGoalOfDrinkWater,
     changeScalePopup,

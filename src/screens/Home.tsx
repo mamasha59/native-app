@@ -1,6 +1,6 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -16,8 +16,7 @@ import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/Nelato
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
 import WaterBalance from './WaterBalance/WaterBalance';
-import ProfileScreen from './ProfileStack/ProfileScreen/ProfileScreen';
-import Loader from '../components/Loader/Loader';
+import ProfileScreen from './ProfileStack/ProfileScreen';
 
 export type RootStackParamList = {
   ProfileScreen: undefined;
@@ -40,10 +39,7 @@ export default function Home() {
 
   const badges = useAppSelector((state) => state.appStateSlice.tabBarBadgeJournalScreen);
   const language = useAppSelector((state) => state.appStateSlice.setLanguage);
-  const loaderState = useAppSelector((state) => state.appStateSlice.loader);
-  
-  if(loaderState) return <Loader/>
-  
+    
   useEffect(() => {
     if(language.id)
     i18n.changeLanguage(language.id);

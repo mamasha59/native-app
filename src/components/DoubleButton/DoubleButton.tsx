@@ -3,6 +3,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import { Drop, Graphic } from "../../assets/images/icons";
 import { useAppSelector } from "../../store/hooks";
+import { BlurView } from "expo-blur";
 
 interface iDoubleButton {
     textOfLeftButton: string;
@@ -11,7 +12,8 @@ interface iDoubleButton {
     handlePressLeftButton?: (data?:any) => void;
     showIcon: boolean;
     marginBottom?: boolean,
-    clickable?: boolean
+    clickable?: boolean,
+    blurView?: boolean,
 }
 
 const DoubleButton = (props:iDoubleButton) => {
@@ -22,16 +24,20 @@ const DoubleButton = (props:iDoubleButton) => {
     textOfRightButton,
     showIcon,
     marginBottom = true,
-    clickable
+    clickable,
+    blurView = false,
   } = props;
   const {leftButton, rightButton} = useAppSelector(state => state.appStateSlice.doubleButtonProfileScreenClickable);
   
   return (
-    <View className={`relative flex-row gap-[13px] ${marginBottom && 'mb-[15px]'}`}>
+    <BlurView
+      intensity={blurView ? 200 : 0}
+      tint="prominent"
+      className={`relative flex-row ${marginBottom && 'mb-[15px]'} ${blurView ? 'absolute bottom-0 left-0 right-0 px-3 m-0 py-3' : ''}`}>
       <TouchableOpacity
         onPress={handlePressLeftButton}
         activeOpacity={0.6}
-        className="min-h-[44px] p-1 flex-1 bg-purple-button rounded-[89px] flex-row items-center justify-center">
+        className="min-h-[44px] mr-[13px] p-1 flex-1 bg-purple-button rounded-[89px] flex-row items-center justify-center">
 
           {showIcon && <Drop width={16} height={17} color={'#fff'}/>}
 
@@ -59,9 +65,9 @@ const DoubleButton = (props:iDoubleButton) => {
         {clickable && rightButton &&
         <View className="absolute top-1 right-1">
             <Entypo name="check" size={30} color="#f5dd4b" />
-          </View>}
+        </View>}
       </TouchableOpacity>
-    </View>
+    </BlurView>
   );
 };
 

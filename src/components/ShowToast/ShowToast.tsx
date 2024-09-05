@@ -1,4 +1,5 @@
 import {useEffect} from "react";
+import { Text } from "react-native";
 import Toast from "react-native-root-toast";
 
 interface iShowToast {
@@ -20,14 +21,15 @@ const ShowToast = ({show, setShowToast, text}:iShowToast) => {
 
   return (
     <Toast
-        visible={show}
-        position={50}
-        shadow={true}
-        animation={true}
-        hideOnPress={true}
-        delay={10}
+      visible={show}
+      position={50}
+      shadow={true}
+      opacity={.9}
+      animation={true}
+      hideOnPress={true}
+      delay={10}
     >
-        {text}
+      <Text style={{fontFamily:'geometria-bold'}} className="text-[#fff] text-lg">{text}</Text>
     </Toast>
   );
 };

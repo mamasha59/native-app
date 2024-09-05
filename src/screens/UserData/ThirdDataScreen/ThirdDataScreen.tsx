@@ -1,7 +1,8 @@
-import { Text, View, Image } from "react-native";
+import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { addSeconds, format, parse } from "date-fns";
 import { useTranslation } from "react-i18next";
+import { Image } from "expo-image";
 
 import { NavigationPropsWelcome } from "../UserData";
 import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
@@ -19,7 +20,8 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
 
     const dispatch = useAppDispatch();
     const timerSettings = useAppSelector(state => state.timerStates);
-    const nightModesettings = useAppSelector(state => state.nightOnBoarding);
+    const nightModeSettings = useAppSelector(state => state.nightOnBoarding);
+    const {doubleButtonProfileScreenClickable} = useAppSelector(state => state.appStateSlice);
     
     const timeString = useFormatInterval({intervalInSeconds: timerSettings.interval});
 
@@ -29,11 +31,12 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     useEffect(() => {
         dispatch(activateRobotSpeech(t("your_plan_is_ready")));
         const now = new Date();
-        const startTimeDay = parse(nightModesettings.timeSleepEnd, 'HH:mm', now); // утро
-        const endTimeDay = parse(nightModesettings.timeSleepStart, 'HH:mm', now); // ночь
+        const startTimeDay = parse(nightModeSettings.timeSleepEnd, 'HH:mm', now); // утро
+        const endTimeDay = parse(nightModeSettings.timeSleepStart, 'HH:mm', now); // ночь
     
-        const startTimeNight = parse(nightModesettings.timeSleepStart, 'HH:mm', now); // начало ночного интервала
-        const endTimeNight = parse(nightModesettings.timeSleepEnd, 'HH:mm', now); // конец ночного интервала
+        const startTimeNight = parse(nightModeSettings.timeSleepStart, 'HH:mm', now); // начало ночного интервала
+        const endTimeNight = parse(nightModeSettings.timeSleepEnd, 'HH:mm', now); // конец ночного интервала
+        
         endTimeNight.setDate(endTimeNight.getDate() + 1); // добавляем один день к конечному времени ночного интервала
     
         const calculateIntervals = (start:Date, end:Date) => {
@@ -52,7 +55,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
           const dayIntervals = calculateIntervals(startTimeDay, endTimeDay); // Рассчитываем дневные интервалы
           setIntervals(dayIntervals);
     
-          if (nightModesettings.cannulationAtNight) {
+          if (nightModeSettings.cannulationAtNight) {
             const nightIntervals = calculateIntervals(startTimeNight, endTimeNight);
             setIntervalsAtNight(nightIntervals);
           } else {
@@ -61,7 +64,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
         };
     
         updateIntervals();
-      }, [nightModesettings, timerSettings.interval, nightModesettings.cannulationAtNight]);
+      }, [nightModeSettings, timerSettings.interval]);
       
       
     const proceedNextScreen = () => {
@@ -69,16 +72,20 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     };
 
   return (
-    <WelcomeLayout showGradiend currentScreen={3} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
+    <WelcomeLayout showGradiend currentScreen={4} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
         <View className="py-4">
             <Text className="flex-1" style={{fontFamily:'geometria-regular'}}>
                 {t("thirdDataScreen.description")}
             </Text>
             <View className="mx-auto">
-                <Image style={{width:40, height:40}} source={require('../../../assets/images/icons/wakeUpIcon.jpeg')}/>
+                <Image
+                    style={{width:40, height:40}}
+                    source={require('../../../assets/images/icons/wakeUpIcon.jpeg')}
+                    transition={1000}
+                />
             </View>
 
-            <View className="flex-row justify-center items-start flex-1 mt-4 relative">
+            <View className="flex-row justify-center items-start flex-1 mt-4">
                 <View className="items-center max-w-[127px] w-full justify-between h-[80%]">
                     <View className="items-center justify-center">
                         <View className="border-main-blue border max-w-[47px] rounded-full p-2">
@@ -89,12 +96,12 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                             <Text style={{fontFamily:'geometria-bold'}} className="underline"> {timeString}</Text>
                         </Text>
                     </View>
-                    {nightModesettings.cannulationAtNight &&
-                    <View className="items-center justify-center mr-4">
+                    {nightModeSettings.cannulationAtNight &&
+                    <View className="items-center justify-center mt-3">
                         <Text className="text-[12px] text-center" style={{fontFamily:'geometria-regular'}}>
                             {t("thirdDataScreen.night_cannulation")}
                         </Text>
-                        <View className="w-[47px] h-[47px]">
+                        <View className="w-[38px] h-[38px] mt-2">
                             <NightModeButtonSvg/>
                         </View>
                     </View>}
@@ -105,25 +112,42 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
                         {intervals.map((e, index) => {
                             return <Text key={index} className="mb-2" style={{fontFamily:'geometria-bold'}}>{e}</Text>
                         })}
-                    <Image style={{width:40, height:40}} source={require('../../../assets/images/icons/sleepIcon.jpeg')}/>
+                    <Image
+                        style={{width:40, height:40}}
+                        source={require('../../../assets/images/icons/sleepIcon.jpeg')}
+                        transition={1000}
+                    />
                     
-                    {nightModesettings.cannulationAtNight && 
-                    <View className="flex-row items-start flex-1">
-                        <View className="justify-start items-start pt-2">
-                            {intervalsAtNight.map((e, index) => {
-                                return <Text key={index} className="mb-2" style={{fontFamily:'geometria-bold'}}>{e}</Text>
-                            })}
-                        </View>
-                    </View>}
+                    {nightModeSettings.cannulationAtNight && doubleButtonProfileScreenClickable.rightButton
+                        ?   (<View className="flex-row items-start flex-1">
+                                <View className="justify-start items-start pt-2">
+                                    {intervalsAtNight.map((e, index) => {
+                                        return <Text key={index} className="mb-2" style={{fontFamily:'geometria-bold'}}>{e}</Text>
+                                    })}
+                                </View>
+                            </View>)
+                        :   (!doubleButtonProfileScreenClickable.rightButton && 
+                            <Text key={nightModeSettings.timeOfNoticeAtNightOneTime} className="mt-2" style={{fontFamily:'geometria-bold'}}>
+                                {nightModeSettings.timeOfNoticeAtNightOneTime}
+                            </Text>)
+                        }
                 </View>
 
-                <View className="items-center max-w-[127px] w-full ">
-                    <View className="max-w-[47px] w-full bg-[#2047e3] rounded-full p-2 items-center justify-center">
-                        <NotificationIcon width={28} color={'#fff'}/>
+                <View className="items-center max-w-[127px] w-full">
+                    <View className="flex-1 w-full items-center">
+                        <View className="max-w-[40px] w-full bg-[#2047e3] rounded-full p-2 items-center justify-center">
+                            <NotificationIcon width={23} color={'#fff'}/>
+                        </View>
+                        <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
+                            {t("thirdDataScreen.notification_Description")}
+                        </Text>
                     </View>
-                    <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
-                        {t("thirdDataScreen.notification_Description")}
-                    </Text>
+                {!doubleButtonProfileScreenClickable.rightButton &&
+                    <View className="flex-1 w-full items-center">
+                        <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
+                            Уведомление один раз за ночь
+                        </Text>
+                    </View>}
                 </View>
             </View>
 

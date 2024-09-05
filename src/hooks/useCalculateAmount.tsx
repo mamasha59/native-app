@@ -12,7 +12,7 @@ interface iuseUpdateChart {
     category: keyof iDairyRecord,
 }
 
-export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
+export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => { //TODO whether we need date
   const [currentDate, setCurrentDate] = useState(format(new Date(), dateFormat).slice(0,10));
   const journalData = useAppSelector((state) => state.journal);
   const dispatch = useAppDispatch();
@@ -22,8 +22,8 @@ export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
           .filter(item => item.timeStamp.slice(0,10) === currentDate && item[category])
           .map(e => e[category])
           .reduce((acc,value) => {
-              if (typeof acc === 'number' && typeof value === 'number'){
-                  return acc + value;
+              if (typeof acc === 'number' && typeof value === 'string'){
+                  return acc + +value.split(' ')[0];
               } else {
                   return 0;
               }
@@ -35,14 +35,6 @@ export const useUpdateChart = ({dispatchAction, category}:iuseUpdateChart) => {
               value: +amountOfDrankWaterPerDay,
           })
       );
-      // Обновляем currentDate каждый день в полночь
-      const now = new Date();
-      const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      const timeUntilMidnight = nextDay.getTime() - now.getTime();
-      
-      const timeoutId = setTimeout(() => setCurrentDate(nextDay.toISOString().slice(0,10)), timeUntilMidnight);
-     
-      return () => clearTimeout(timeoutId); // Очищаем таймер при размонтировании компонента
 
   }, [journalData.urineDiary.length, currentDate]);
 }

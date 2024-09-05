@@ -45,7 +45,7 @@ const ModalSuccess = () => {
         <View style={{height: windowSize.height / 2 }} className="bg-[#fff] rounded-t-[40px] p-5 items-center justify-between">
             <View style={{backgroundColor: 'transparent'}} className="-mt-20 w-[200px] h-[200px]">
               <LottieView
-                source={require("../../../../assets/dance.json")}
+                source={require("../../../../assets/success.json")}
                 style={{width: 200, height: 200, backgroundColor: 'transparent'}}
                 autoPlay
                 loop

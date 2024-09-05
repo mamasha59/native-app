@@ -34,6 +34,7 @@ const HomeScreen = () => {
         <RestOf/>
         <Timer />
         <DoubleButton
+          key={'doubleButtonHomeScreen'}
           handlePressRightButton={openModal}
           handlePressLeftButton={handlePressLeftButton}
           textOfLeftButton={t("homeScreen.doubleButtonComponent.leakage")}
@@ -43,7 +44,12 @@ const HomeScreen = () => {
       </View>
 
       <ModalLiquidAmount key={'drank'}/>
-      <ModalLeakageHappened modalLeakageVisible={modalLeakageVisible} setModalLeakageVisible={setModalLeakageVisible} setToastOpened={setToastOpened} key={'leakagemodal'}/>
+      <ModalLeakageHappened
+        modalLeakageVisible={modalLeakageVisible}
+        setModalLeakageVisible={setModalLeakageVisible}
+        setToastOpened={setToastOpened}
+        key={'leakagemodal'}
+      />
       <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'leakage-toast'}/>
     </MainLayout>
   );

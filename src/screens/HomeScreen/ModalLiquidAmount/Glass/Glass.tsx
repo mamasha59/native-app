@@ -1,8 +1,7 @@
 import { Dimensions, TextInput, Vibration, KeyboardAvoidingView, Platform, Keyboard, Text, View } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import { Svg, G, Path, ClipPath, Defs, Rect } from "react-native-svg";
-import Animated, 
-{
+import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
@@ -27,31 +26,29 @@ interface iGlass {
 }
 
 const Glass = ({onValueChange, customValue}:iGlass) => {
-
-  const setting = useAppSelector(state => state.appStateSlice);
   const dispatch = useAppDispatch();
 
-  const [ml, setMl] = useState<number>(400); // the hight point of scroll -- it will change for 500 if count urine turned "true" after press button on timer
+  const { units, urineMeasure, ifCountUrinePopupLiquidState } = useAppSelector(state => state.appStateSlice); 
+  const isFlOz = units.title === "fl oz";
+
+  const [maxWaterVolumeOfGlass, setMaxWaterVolumeOfGlass] = useState<number>(400); // the hight point of scroll -- it will change for 500 if count urine turned "true" after press button on timer
 
   const scrollRangeButton = useSharedValue({y: 150}); // scroll of rangeButton, and initial point
-  const start = useSharedValue({y: 150});
+  const startValue = useSharedValue({y: 150});
   const value = useSharedValue(150); // Shared value to hold the current value
-
   const startOfInnerGlass = useSharedValue({ y: 150 }); // start of inner glass to scroll its up and down
-  
-  const scale = useSharedValue(1); // scale of Glass itself if input on focus
-  const scaleRangePointer = useSharedValue(1);// scale of rangeButton
-
-  const isFlOz = setting.units.title === "fl oz";
+  const glassScale = useSharedValue(1); // scale of Glass itself if input on focus
+  const pointerScale = useSharedValue(1);// scale of rangeButton
 
   const backgroundColorDrankWater = '#3bacf7';
   const backgroundUrineMeasure = '#fdcb6e';
-
-  const modalUrineMaxPointOfScroll = 500;
-  const modalUrineMaxPointOfInput = 1000;
-
-  const ifCountUrine = setting.urineMeasure && setting.ifCountUrinePopupLiquidState; // если выбрано измерение мочи
   const maxScrollHeight = windowSize.height / 1.9; // bottom point of max scroll down
+  const bgColor = () => (ifCountUrine ? backgroundUrineMeasure : backgroundColorDrankWater);
+
+  const ifCountUrine = urineMeasure && ifCountUrinePopupLiquidState; // если выбрано измерение мочи
+  const flOzMaxValueOfInputUrine = 30; // max value of urine in input if FL OZ
+  const modalUrineMaxPointOfScroll = 500; // max point of scroll if ML
+  const modalUrineMaxPointOfInput = isFlOz ? flOzMaxValueOfInputUrine : 1000;
   
   const propsLabel = useAnimatedProps(() => ({ // animated input value
     text: `${Math.round(value.value)}` ,
@@ -76,131 +73,122 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
   const animatedStyleScale = useAnimatedStyle(() => { // animation of scale Glass itself
     return {
-      transform: [{ scale: withTiming(scale.value, { duration: 100 })}],
+      transform: [{ scale: withTiming(glassScale.value, { duration: 100 })}],
     };
   });
 
   const animatedStyleScaleRangePointer = useAnimatedStyle(() => { // animation of rangeButton
     return {
-      transform: [{ scale: withTiming(scaleRangePointer.value, { duration: 100 })}],
+      transform: [{ scale: withTiming(pointerScale.value, { duration: 100 })}],
     };
   });
 
   const handleFocus = () => { // focus input
-    scrollRangeButton.value = {y: ml / 2};
-    startOfInnerGlass.value = {y: ml / 2};
-    scale.value = .6;
+    scrollRangeButton.value = {y: maxWaterVolumeOfGlass / 2};
+    startOfInnerGlass.value = {y: maxWaterVolumeOfGlass / 2};
+    glassScale.value = .6;
     dispatch(changeScalePopup(true));
   };
 
   const handleBlur = () => { // blur input
     Keyboard.dismiss();
-    scale.value = 1;
+    glassScale.value = 1;
     dispatch(changeScalePopup(false));
   };
 
   useEffect(() => { // to set max point on gest if count urine state change
     if(ifCountUrine) {
-      setMl(modalUrineMaxPointOfScroll);
+      setMaxWaterVolumeOfGlass(modalUrineMaxPointOfScroll);
     }
-  },[]);
+  },[ifCountUrine, isFlOz]);
 
-  useEffect(() => {
+  useEffect(() => { //TODO 
     value.value = customValue;
   }, [customValue]);
 
   useEffect(() => { // blur input if keyboard is closed
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      handleBlur();
-    });
-    return () => {
-      hideSubscription.remove();
-    };
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', handleBlur);
+    return () => hideSubscription.remove();
   }, []);
 
-  const triggerVibration = () => {
-    Vibration.vibrate(7, false);
-  }
-  const cancelVibration = () => {
-    Vibration.cancel();
-  }
+  const triggerVibration = () => Vibration.vibrate(7, false);
+  const cancelVibration = () => Vibration.cancel();
 
-  const changeUnits = isFlOz ? 1 : 10;
-  const changeMaxAmount = isFlOz ? 34 : 10;
+  const changeUnits = isFlOz ? 1 : 10; // value.value division 
+  const changeMaxAmount = isFlOz ? 34 : 10; // value.value division - urine 15 - water 12
+
+  const cancelThreshold = ifCountUrine ? [100, modalUrineMaxPointOfScroll] : [100, maxWaterVolumeOfGlass]; // to stop vibration when reach points
+  const cancelThresholdFlOz = ifCountUrine ? [1, 15] : [1, 12]; // to stop vibration when reach points if unit is - FL OZ
   
   const gesture = Gesture.Pan()
     .onStart(() => {
-      scaleRangePointer.value = withSpring(1.2);
+      pointerScale.value = withSpring(1.2);
       runOnJS(handleBlur)();
     })
     .onUpdate((e) => {
       runOnJS(handleBlur)();
-      const combinedValue = Math.max(Math.min(e.translationY + start.value.y, maxScrollHeight), 0);
+      const combinedValue = Math.max(Math.min(e.translationY + startValue.value.y, maxScrollHeight), 0);
       scrollRangeButton.value = { y: combinedValue };
     
-      value.value = Math.round(Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * ml, ml) / changeMaxAmount, changeUnits)) * changeUnits;
+      value.value = Math.round(
+        Math.max(Math.min((maxScrollHeight - combinedValue) / maxScrollHeight * maxWaterVolumeOfGlass, maxWaterVolumeOfGlass) / changeMaxAmount, changeUnits)
+      ) * changeUnits;
       
       startOfInnerGlass.value = {y: combinedValue}; // change height of inner colored background
 
-      const cancelThreshold = ifCountUrine ? [10, modalUrineMaxPointOfScroll] : [10, ml]; // to stop vibration when reach points
-    
-      if (cancelThreshold.includes(value.value)  && value.value !== start.value.y) {
+      if ((isFlOz ? cancelThresholdFlOz : cancelThreshold).includes(value.value) && value.value !== startValue.value.y) {
         runOnJS(cancelVibration)();
       } else {
         runOnJS(triggerVibration)();
       }
     })
     .onEnd((e) => {
-      scaleRangePointer.value = 1;
-      start.value = { y: scrollRangeButton.value.y }; // to start when was scroll
+      pointerScale.value = 1;
+      startValue.value = { y: scrollRangeButton.value.y }; // to start when was scroll
       runOnJS(onValueChange)(`${Math.round(value.value)}`);
       runOnJS(cancelVibration)();
     })
-    .minDistance(3);
-
-    const bgColor = () => {
-      return ifCountUrine ? backgroundUrineMeasure : backgroundColorDrankWater;
-    }
+    .minDistance(1);
 
     const convertInputToScrollValueAndSetScroll = (inputValue:number) => {
-      const inputMin = 0;
-      const inputMax = ifCountUrine? 1000 : 400;
-      const scrollMin = ifCountUrine ? 500 : 400;
-      const scrollMax = 0;
+      const inputMax = ifCountUrine? (isFlOz ? flOzMaxValueOfInputUrine : 1000) : (isFlOz ? 12 : 400);
+      //fl oz - 15 12
+      const scrollMin = ifCountUrine ? (isFlOz ? flOzMaxValueOfInputUrine : 500) : (isFlOz ? 12 : 400);
       // Линейное преобразование inputValue в диапазон scroll
-      const scrollValue = scrollMin + ((inputValue - inputMin) * (scrollMax - scrollMin)) / (inputMax - inputMin);
+      const scrollValue = scrollMin + ((inputValue - 0) * (0 - scrollMin)) / (inputMax - 0);
 
       scrollRangeButton.value = {y: scrollValue};
       startOfInnerGlass.value = {y: scrollValue};
-      start.value = {y: scrollValue};
+      startValue.value = {y: scrollValue};
     };
 
     const onChangeInputText = (text: string) => {
-      let valueInput = text.replace(/\D/g, ''); // "123456"
+      let valueInput = text.replace(/\D/g, ''); // "123456"      
       if(valueInput[0] === '0'){
         value.value = 1;
       } else {
+        const parsedValue = +valueInput;
         if(ifCountUrine){
-          if (+valueInput > modalUrineMaxPointOfInput){
-            scrollRangeButton.value = { y: Math.max(Math.min(+valueInput + start.value.y, maxScrollHeight), 0)}; // set max scroll if input value is bigger than 1000
+          if (parsedValue > modalUrineMaxPointOfInput){
+            scrollRangeButton.value = { y: Math.max(Math.min(parsedValue + startValue.value.y, maxScrollHeight), 0)}; // set max scroll if input value is bigger
+            
             value.value = modalUrineMaxPointOfInput;
-            const max = modalUrineMaxPointOfInput;
-            convertInputToScrollValueAndSetScroll(max);
+            convertInputToScrollValueAndSetScroll(modalUrineMaxPointOfInput);
           } else {
-            onValueChange(valueInput); // set value to useState hook, next to save value in store
-            value.value = +valueInput; // ui
-            convertInputToScrollValueAndSetScroll(+valueInput); // set correct scroll
+            onValueChange(parsedValue +''); // set value to useState hook, next to save value in store
+            value.value = parsedValue; // ui
+            convertInputToScrollValueAndSetScroll(+parsedValue); // set correct scroll
           }
         }
         else {
-          if (+valueInput > 400){
-            value.value = 400;
-            const max = 400;
-            convertInputToScrollValueAndSetScroll(max);
+          const maxVolume = isFlOz ? 12 : maxWaterVolumeOfGlass;
+          if (parsedValue > maxVolume){                  
+            value.value = maxVolume;
+            convertInputToScrollValueAndSetScroll(maxVolume);
           } else {
             onValueChange(valueInput); // set value to useState hook, next to save value in store
-            value.value = +valueInput; // ui
-            convertInputToScrollValueAndSetScroll(+valueInput); // set correct scroll
+            value.value = parsedValue; // ui
+            convertInputToScrollValueAndSetScroll(parsedValue); // set correct scroll
           } 
         }
       }
@@ -208,11 +196,13 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
 
     const glassPath = 'M 35 90 L 26 12 C 26 11 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 11 74 12 L 65 90 Z';
     const glassPathSharp = 'M 30 90 L 26 10 C 26 10 26 10 28 10 C 43 10 59 10 72 10 C 74 10 74 10 74 10 L 71 90 Z';
-    const changePath = () => !ifCountUrine ? glassPath : glassPathSharp;
+    const changePath = () => (ifCountUrine ? glassPathSharp : glassPath);
+
+    const maxLengthOfInput = () => (ifCountUrine && !isFlOz ? 4 : isFlOz ? 2 : 3);
     
   return (
     <View className="flex-1 w-full mx-auto justify-center">
-      <Animated.View className="flex-1" style={[animatedStyleScale]}>
+      <Animated.View className="flex-1 justify-center" style={[animatedStyleScale]}>
         <GestureHandlerRootView>
           <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
             <View className="w-full h-full overflow-hidden items-center">
@@ -224,7 +214,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
                   fill="rgb(113, 96, 96)"
                 />
               </Svg>}
-
+                {/* move-right-left up-bottom scale scale */}
               <Svg height='100%' width='100%' viewBox={!ifCountUrine ? "19 14 63 63" : "18 17 65 65"}>
                 <Defs>
                   <ClipPath id="clip">
@@ -273,7 +263,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
             style={{fontFamily:'geometria-bold', color:'#000'}}
             className="text-3xl underline w-[95px] text-center"
             editable
-            maxLength={setting.ifCountUrinePopupLiquidState ? 4 : 3}
+            maxLength={maxLengthOfInput()}
             inputMode={"numeric"}
             onChangeText={(text) => onChangeInputText(text)}
             onFocus={handleFocus}
@@ -281,9 +271,10 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
             selectTextOnFocus
             selectionColor={'#4BAAC5'}
             textAlign={'center'}
-            animatedProps={propsLabel}/>
+            animatedProps={propsLabel}
+            />
         <Text className="text-xl mx-1" style={{fontFamily:'geometria-bold', color:'#000'}}>
-          {setting.units.title}
+          {units.title}
         </Text>
         <FontAwesome5 name="pencil-alt" size={15} color="#0000007f" />
       </View>

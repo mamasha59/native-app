@@ -7,7 +7,7 @@ import { dateFormat } from "../../../utils/const";
 const СatheterСonsumption = ({filteredRecords, selectedCalendareDate}:{filteredRecords:number, selectedCalendareDate:string}) => {
   const {t} = useTranslation();
   return (
-    <View className="my-5">
+    <View className="my-5 flex-1">
         <View className="flex-row flex-1 justify-between">
           <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px] mb-[10px]">
             {t("catheterStockScreen.average_catheter_usage")}

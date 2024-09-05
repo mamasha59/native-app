@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Text, TouchableOpacity, Alert, FlatList, View } from "react-native";
 import { Image } from 'expo-image';
 
-import ModalSelect from "../../../../../components/ModalSelect/ModalSelect";
-import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { iLanguage } from "../../../../../types";
-import { setLanguage } from "../../../../../store/slices/appStateSlicer";
-import { languages } from "../../../../../utils/const";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { iLanguage } from "../../../../types";
+import { setLanguage } from "../../../../store/slices/appStateSlicer";
+import { languages } from "../../../../utils/const";
+import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
 
 const SwitchLanguage = () => {
     const {t, i18n} = useTranslation();
@@ -55,7 +55,6 @@ const SwitchLanguage = () => {
     <ModalSelect
         showIcon={false}
         title=""
-        onItemPress={(item) => console.log(item)}
         openModal={openModalChangeLanguage}
         setOpenModal={handleModalChangeLanguage}
         >

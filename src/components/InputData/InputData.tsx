@@ -19,11 +19,14 @@ interface iInputData{
     maxLength: number;
     inputMode: Keyboard;
     multiline?: boolean,
+    marginBottom?: number,
+    showErrorText?: boolean,
 }
 
 const InputData = (props:iInputData) => {
     const {t} = useTranslation();
-    const {control,
+    const {
+            control,
             inputsValue,
             errors,
             placeholder,
@@ -34,7 +37,10 @@ const InputData = (props:iInputData) => {
             maxLength,
             inputMode,
             isRequired,
-            multiline} = props;
+            multiline,
+            marginBottom = 40,
+            showErrorText = false,
+        } = props;
     const [prompt, setPrompt] = useState<boolean>(false); // состояние показывать подсказку к инпуту или нет
    
     useEffect(() => { // убирать подсказку через 3 сек после ее показа
@@ -48,7 +54,9 @@ const InputData = (props:iInputData) => {
     }, [prompt]);
 
   return (
-    <View className="mb-10 w-full border-b border-main-blue pb-[10px] items-center relative">
+    <View
+        style={{marginBottom: marginBottom}}
+        className={`w-full border-b border-main-blue pb-[10px] items-center relative ${errors && showErrorText && 'border-b border-error'}`}>
         <Controller
             control={control}
             rules={{required:isRequired || false}}
@@ -63,6 +71,7 @@ const InputData = (props:iInputData) => {
                     onChangeText={(text) => field.onChange(text)} 
                     value={field.value}
                     maxLength={maxLength}
+                    selectTextOnFocus
                 />
             )}
             name={name}
@@ -87,7 +96,7 @@ const InputData = (props:iInputData) => {
             </Modal>
         </>
         }
-        {errors &&
+        {errors && !showErrorText &&
             <Text style={{fontFamily:'geometria-regular'}} className="text-error absolute -bottom-5">
                 {t("fill_in_the_field")}
             </Text>

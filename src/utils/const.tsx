@@ -1,7 +1,7 @@
+import { RefObject } from "react";
 import { Option, iLanguage } from "../types";
 import i18next from "i18next";
-
-const sex = ['Женский', 'Мужской', 'Мальчик', 'Девочка'];
+import { TextInput } from "react-native";
 
 const generateEvenNumbersOfSize = (): Option[] => { // генерируем только четные числа от 6 до 30 размера катетора
     const evenNumbers: Option[] = [];
@@ -74,6 +74,16 @@ const languages: iLanguage[] = [
   },
 ];
 
+const focusInput = (inputRef: RefObject<TextInput>) => { // focus by press on TouchableOpacity
+  if (inputRef.current) {
+    inputRef.current.blur(); // Сначала снимаем фокус
+    setTimeout(() => {
+      inputRef.current && inputRef.current.focus();
+    }, 100);
+  }
+};
+
+
 export {
-    sex, generateEvenNumbersOfSize, filters, languages
+  generateEvenNumbersOfSize, filters, languages, focusInput
 };

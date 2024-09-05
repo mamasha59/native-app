@@ -5,8 +5,8 @@ import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import RestOf from "./RestOf/RestOf";
 import СatheterСonsumption from './СatheterСonsumption/СatheterСonsumption';
 import CathetersForRoad from "./CathetersForRoad/CathetersForRoad";
-import CatheterNotice from "./CatheterNotice/CatheterNotice";
 import { useAppSelector } from "../../store/hooks";
+import NoticeOfRemainCatheters from "../UserData/CathetersScreen/NoticeOfRemainCatheters/NoticeOfRemainCatheters";
 
 const ControlCatheter = () => {
   const {t} = useTranslation();
@@ -21,7 +21,7 @@ const ControlCatheter = () => {
         <RestOf/>
         <СatheterСonsumption filteredRecords={filteredRecords.length} selectedCalendareDate={selectedCalendareDate}/>
         <CathetersForRoad filteredRecords={filteredRecords.length}/>
-        <CatheterNotice/>
+        <NoticeOfRemainCatheters/>
       </ScrollView>
     </MainLayout>
   );

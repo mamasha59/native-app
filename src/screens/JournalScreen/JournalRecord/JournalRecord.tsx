@@ -10,7 +10,9 @@ const JournalRecord = (props:iDairyRecord) => {
     const {whenWasCanulisation,amountOfDrankFluids,catheterType,amountOfReleasedUrine,leakageReason} = props;
     
   return (
-    <View  className={`flex-row justify-between items-center border px-[15px] py-[10px] mb-3 rounded-md border-border-color ${amountOfReleasedUrine && 'border-purple-button' || catheterType && 'border-[#FDD835]'}`}>
+    <View
+        className={`flex-row justify-between items-center border px-[15px] py-[10px] mb-3 rounded-md border-border-color
+        ${amountOfReleasedUrine && 'border-purple-button' || catheterType && 'border-[#FDD835]'}`}>
         <View className={leakageReason ? "flex-0 mr-4" : "items-start flex-1"}>
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">
                 {t("journalScreen.recordTitles.time")}
@@ -33,15 +35,16 @@ const JournalRecord = (props:iDairyRecord) => {
             <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">{catheterType}</Text>
         </View>
     } 
-    {   amountOfDrankFluids || amountOfReleasedUrine ?
-        <View className="items-start flex-1">
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">
-                {amountOfDrankFluids ? t("journalScreen.recordTitles.drank_fluids") : amountOfReleasedUrine ? t("journalScreen.recordTitles.drank_fluids") : ''}:
-            </Text>
-            <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">
-                {(amountOfDrankFluids || amountOfReleasedUrine) && (amountOfDrankFluids || amountOfReleasedUrine) + units}
-            </Text>
-        </View> : ''
+    {   amountOfDrankFluids || amountOfReleasedUrine 
+        ?   <View className="items-start flex-1">
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">
+                    {amountOfDrankFluids ? t("journalScreen.recordTitles.drank_fluids") : amountOfReleasedUrine ? t("journalScreen.recordTitles.excreted_urine") : ''}:
+                </Text>
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">
+                    {(amountOfDrankFluids || amountOfReleasedUrine) && (amountOfDrankFluids || amountOfReleasedUrine)}
+                </Text>
+            </View> 
+        : ''
     }
 
     <View className="gap-1 p-2">

@@ -8,7 +8,7 @@ import ModalSuccess from "./ModalSuccess/ModalSuccess";
 import TimerT from "./Timer-Itself/Timer-Itself";
 
 const Timer = () => {
-  const [toast, setToastShow] = useState<boolean>(false);        // показываем тост наверху экрана при нажатии на кнопку <Выполненно>
+  const [toast, setToastShow] = useState<boolean>(false);// показываем тост наверху экрана при нажатии на кнопку <Выполненно>
 
   return (
     <View className="flex-1 justify-center items-center">

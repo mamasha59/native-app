@@ -23,7 +23,7 @@ const ModalLeakageHappened = ({setModalLeakageVisible, modalLeakageVisible, setT
 
     const [inputLeakageValue, setInputLeakageValue] = useState<string>('');
 
-    const handleAction = (reason?: Option) => { // при клике на причину подтекания или кнопку Ок
+    const handleClickOnReasonOfLeakage = (reason?: Option) => { // при клике на причину подтекания или кнопку Ок
       const leakageReason = reason?.title || inputLeakageValue.trim();
       const whenWasCanulisation = new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0');
       dispatch(addUrineDiaryRecord(
@@ -31,15 +31,17 @@ const ModalLeakageHappened = ({setModalLeakageVisible, modalLeakageVisible, setT
           whenWasCanulisation,
           leakageReason,
           timeStamp: format(new Date(), dateFormat),
+          amountOfDrankFluids:'',
+          amountOfReleasedUrine: '',
         }));
       dispatch(addBadgesJournalScreen(1));
       closeModalOpenToast();
+      setToastOpened(true);
     }
 
     const closeModalOpenToast = () => { // общая функция Закрытия попапа, Показ тоста
       setModalLeakageVisible(!modalLeakageVisible);
       setInputLeakageValue('');
-      setToastOpened(true);
     }
     
     const whyLeakageHappenedReasons:Option[] = [
@@ -50,8 +52,8 @@ const ModalLeakageHappened = ({setModalLeakageVisible, modalLeakageVisible, setT
 
   return (
     <ModalSelect
-        logo={<Image className="w-[150px] h-[150px]" source={require('../../../assets/images/homePageIcons/leakageButtonIcon.jpeg')}/>}
-        onItemPress={handleAction}
+        logo={<Image className="w-[150px] h-[150px]" source={require('../../../assets/images/homePageIcons/leakageButtonIcon.png')}/>}
+        onItemPress={handleClickOnReasonOfLeakage}
         openModal={modalLeakageVisible}
         options={whyLeakageHappenedReasons}
         setOpenModal={closeModalOpenToast}
@@ -67,10 +69,10 @@ const ModalLeakageHappened = ({setModalLeakageVisible, modalLeakageVisible, setT
             className="text-purple-button text-base text-center border-b w-full"
             placeholder={t("modalUrineLeakage.write_your_own_option")}
             onChangeText={(value) => setInputLeakageValue(value)}
-            onSubmitEditing={() => handleAction()}
+            onSubmitEditing={() => handleClickOnReasonOfLeakage()}
         />
         {inputLeakageValue && 
-        <TouchableOpacity onPress={() => handleAction()} className='mx-auto mt-4 bg-main-blue rounded-lg px-4 py-1'>
+        <TouchableOpacity onPress={() => handleClickOnReasonOfLeakage()} className='mx-auto mt-4 bg-main-blue rounded-lg px-4 py-1'>
             <Text style={{fontFamily:'geometria-bold'}} className='text-xl text-[#fff]'>{t("save")}</Text>
         </TouchableOpacity>}
         </>

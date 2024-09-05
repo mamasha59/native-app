@@ -6,7 +6,7 @@ import { NavigationPropsWelcome } from "../UserData";
 import FluidIntakeChart from "../../WaterBalance/FluidIntakeChart/FluidIntakeChart";
 import ClueAtTheBottom from "../../../components/ClueAtTheBottom/ClueAtTheBottom";
 import ToggleIsCountUrine from "../../../components/ToggleIsCountUrine/ToggleIsCountUrine";
-import SwitchUnits from "../../ProfileStack/ProfileScreen/ProfileSettings/SwitchUnits/SwitchUnits";
+import SwitchUnits from "../../ProfileStack/ProfileSettings/SwitchUnits/SwitchUnits";
 
 interface iSecondDataScreen extends NavigationPropsWelcome<'SecondDataScreen'>{}
 
@@ -14,7 +14,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
     const {t} = useTranslation();
     
     const proceedNextScreen = () => {
-        navigation.navigate('ThirdDataScreen');
+        navigation.navigate('CathetersScreen');
     }
 
   return (

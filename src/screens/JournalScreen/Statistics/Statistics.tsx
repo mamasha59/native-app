@@ -8,7 +8,7 @@ import { dateFormat } from "../../../utils/const";
 import { useAppSelector } from "../../../store/hooks";
 
 interface iStatistics {
-    selectedCalendareDate: string,
+    selectedCalendarDate: string,
     statisticPerDay: {
         cannulation?: number,
         leakage?: number,
@@ -17,7 +17,7 @@ interface iStatistics {
     }
 }
 
-const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {
+const Statistics = ({selectedCalendarDate, statisticPerDay}:iStatistics) => {
     const {t} = useTranslation();
     const units = useAppSelector(state => state.appStateSlice.units.title);
     const [showStatistics, setShowStatistics] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const Statistics = ({selectedCalendareDate, statisticPerDay}:iStatistics) => {
         <View className="flex-row items-center">
             <View className="items-start mb-1 mr-2">
                 <Text style={{fontFamily:'geometria-bold'}}>
-                    {t("journalScreen.dailyStatistics.daily_statistics")} {t("for")} {selectedCalendareDate === format(new Date(), dateFormat).slice(0,10) ? t("today") : selectedCalendareDate}:
+                    {t("journalScreen.dailyStatistics.daily_statistics")} {t("for")} {selectedCalendarDate === format(new Date(), dateFormat).slice(0,10) ? t("today") : selectedCalendarDate}:
                 </Text>
             </View>
             <Animated.View style={{ transform: [{ rotate: spin }] }} className={'mb-1'}>

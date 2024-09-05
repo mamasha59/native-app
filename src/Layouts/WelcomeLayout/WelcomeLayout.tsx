@@ -26,9 +26,9 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
 
     const {robotText, loader} = useAppSelector(state => state.appStateSlice);
     const dispatch = useAppDispatch();
-    const [displayedText, setDisplayedText] = useState('');
+    const [displayedText, setDisplayedText] = useState<string>('');
 
-    const dots = Array(4).fill(null); // создаем массив из 4 элементов
+    const dots = Array(5).fill(null); // создаем массив из 4 элементов
 
     useEffect(() => {
         let index = 0;
@@ -39,10 +39,8 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
             
                 if (index === robotText.length) {
                     clearInterval(intervalId);
-                    setTimeout(() => {
-                        setDisplayedText('');
-                        dispatch(activateRobotSpeech(''));
-                    },1000)
+                    setDisplayedText('');
+                    dispatch(activateRobotSpeech(''));
                 }
                 }, 100);
             return () => clearInterval(intervalId);

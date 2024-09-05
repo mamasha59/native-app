@@ -30,8 +30,9 @@ const ModalLiquidAmount = () => {
             id: uuidv4(),
             catheterType: nelaton,
             whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-            amountOfReleasedUrine: +liquidValue,
-            timeStamp: format(new Date(), dateFormat),
+            amountOfReleasedUrine: `${liquidValue} ${settings.units.title}`,
+            amountOfDrankFluids: '',
+            timeStamp: format(new Date(), dateFormat)
           }));
           dispatch(addBadgesJournalScreen(1));
           dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
@@ -40,8 +41,9 @@ const ModalLiquidAmount = () => {
           dispatch(addUrineDiaryRecord({
             id: uuidv4(),
             whenWasCanulisation:new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
-            amountOfDrankFluids: +liquidValue,
-            timeStamp: format(new Date(), dateFormat),
+            amountOfDrankFluids: `${liquidValue} ${settings.units.title}`,
+            amountOfReleasedUrine: '',
+            timeStamp: format(new Date(), dateFormat)
           }));
         }
       }
@@ -54,8 +56,9 @@ const ModalLiquidAmount = () => {
           id: uuidv4(),
           catheterType: nelaton,
           whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-          amountOfReleasedUrine: null,
-          timeStamp: format(new Date(), dateFormat),
+          amountOfReleasedUrine: '',
+          amountOfDrankFluids: '',
+          timeStamp: format(new Date(), dateFormat)
         }));
         dispatch(addBadgesJournalScreen(1));
         dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
@@ -70,7 +73,7 @@ const ModalLiquidAmount = () => {
     const modalAlert = () => setHandleModalAlert(!handleModalAlert);
 
     const customMl = ['100','200','300'];
-    const customFlOz = ['1','2','3'];
+    const customFlOz = ['5','7','10'];
 
   return (
   <Modal

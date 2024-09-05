@@ -43,6 +43,7 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
                 </Text>
             </View>
             <DoubleButton
+                marginBottom={false}
                 showIcon={false}
                 textOfLeftButton={t("exit")}
                 textOfRightButton={t("save")}

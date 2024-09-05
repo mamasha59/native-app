@@ -1,15 +1,15 @@
 import { Text, View } from "react-native";
 import { useState } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useFormatInterval } from "../../../hooks/useFormatInterval";
+import { setInterval } from "../../../store/slices/timerStatesSlice";
 import ChangeInterval from "./ChangeInterval/ChangeInterval";
-import { setInterval } from "../../../../store/slices/timerStatesSlice";
-import { useFormatInterval } from "../../../../hooks/useFormatInterval";
-import ModalSetInterval from "../../../../components/ModalSetInterval/ModalSetInterval";
-import ToggleCannulationAtNight from "../../../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
-import ToggleIsCountUrine from "../../../../components/ToggleIsCountUrine/ToggleIsCountUrine";
-import Alert from "../../../../components/Alert/Alert";
-import DoubleButton from "../../../../components/DoubleButton/DoubleButton";
+import ToggleCannulationAtNight from "../../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
+import ToggleIsCountUrine from "../../../components/ToggleIsCountUrine/ToggleIsCountUrine";
+import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
+import Alert from "../../../components/Alert/Alert";
+import DoubleButton from "../../../components/DoubleButton/DoubleButton";
 
 const ProfileSettings = () => {
     const [showModalSetInterval, setShowModalSetInterval] = useState<boolean>(false);
@@ -41,9 +41,7 @@ const ProfileSettings = () => {
         handleModalAlert();
     }
 
-    const denyChangeInterval = () => {
-        handleModalAlert();
-    }
+    const denyChangeInterval = () => { handleModalAlert() }
 
     const handlePressSave = () => {
         handleModalAlert();

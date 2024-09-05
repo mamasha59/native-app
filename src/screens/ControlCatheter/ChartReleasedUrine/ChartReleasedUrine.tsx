@@ -36,7 +36,6 @@ const ChartReleasedUrine = () => {
         transparent={true}
         yAxisInterval={1} // optional, defaults to 1
         yAxisSuffix={units.title}
-        onDataPointClick={(value) => console.log(value.value)}
         withVerticalLines={false}
         chartConfig={
         {

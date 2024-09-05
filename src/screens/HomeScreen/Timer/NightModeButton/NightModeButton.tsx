@@ -5,29 +5,25 @@ import LottieView from "lottie-react-native";
 import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
 import { Option } from "../../../../types";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { switchCannulationAtNightNight, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
-import NightModeButtonSvg from "../../../../assets/images/iconsComponent/NightMode";
+import { switchCannulationAtNightMode, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
 import { setWhetherDoCannulationAtNight } from "../../../../store/slices/nightStateSlice";
 
 const NightModeButton = () => {
     const settings = useAppSelector(state => state.appStateSlice);
     const dispatch = useAppDispatch();
-
     const animationRef = useRef<LottieView>(null);
 
-    const closeModal = () => {
-        dispatch(switchNightModeModal(!settings.openModalNightMode));
-    }
+    const handleModal = () => dispatch(switchNightModeModal(!settings.openModalNightMode));
 
     const handlePressItem = (value: Option) => {
         const newValue = !!value.value;
-        dispatch(switchCannulationAtNightNight({   
+        dispatch(switchCannulationAtNightMode({   
             timeStamp: new Date().toString(),
             value: newValue
         }));
         dispatch(setWhetherDoCannulationAtNight(!!!value.value));
 
-        closeModal();        
+        handleModal();        
     };
 
     useEffect(() => {
@@ -42,23 +38,23 @@ const NightModeButton = () => {
 
   return (
     <>
-    <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={closeModal}>
-        {/* <NightModeButtonSvg/> */}
+    <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={handleModal}>
         <LottieView
             ref={animationRef}
             source={require("../../../../assets/animation-night-mode.json")}
             style={{width: 100, height: 90}}
             autoPlay={false}
             loop={false}
-            />
+        />
     </TouchableOpacity>
     <ModalSelect
         key={'nightbuttonhomescreen'}
         row
+        height={3}
         showIcon={false}
         onItemPress={(item) => handlePressItem(item)}
         openModal={settings.openModalNightMode}
-        setOpenModal={closeModal}
+        setOpenModal={handleModal}
         title={"Желаете включить ночной режим?"}
         options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
         children={

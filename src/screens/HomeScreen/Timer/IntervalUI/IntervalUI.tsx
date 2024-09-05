@@ -26,7 +26,7 @@ const IntervalUI = (props:iIntervalUI) => {
     <View className="items-center my-[15px]">
       {days > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-3xl">{days} день</Text>}
       <Text style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px]">
-          {loader ? <ActivityIndicator/> : formattedTime}
+        {loader ? <ActivityIndicator/> : formattedTime}
       </Text>
     </View>
   );

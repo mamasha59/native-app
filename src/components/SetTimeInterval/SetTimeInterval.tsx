@@ -36,7 +36,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
     <>
     {/* ЧАСЫ */}
     <View className="flex-row items-center">
-        <WheelPicker
+        <WheelPicker i18nIsDynamicList
             visibleRest={visibleRest ? 1 : 2}
             itemTextStyle={{fontFamily:'geometria-bold', fontSize:20}}
             selectedIndex={interval.selectedIndexHour!}

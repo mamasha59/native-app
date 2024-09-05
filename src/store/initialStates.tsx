@@ -5,13 +5,9 @@ import { iUser } from "../types";
     height: '',
     sex: '',
     age: '',
-    //
     volume: '',
     catheterType: 'Нелатон',
     catheterSize: '',
-    //
-    // useAtNight: 'Да',
-    //
     name: '',
     surname: '',
     birthday: '',

@@ -197,7 +197,8 @@
                 "time": "Время",
                 "leakage": "Подтекание",
                 "catheterization": "Катетеризация",
-                "drank_fluids": "Выпито жид."
+                "drank_fluids": "Выпито жид.",
+                "excreted_urine": "Выделено жид."
             }
         },
 
@@ -252,6 +253,8 @@
 
         "nightModeScreen": {
             "title": "Настройка ночного режима катетеризации",
+            "modal_title_set_time_of_start_sleep": "Выберите время когда вы ложитесь спать",
+            "modal_title_set_time_of_end_sleep": "Выберите время когда вы просыпаетесь",
             "askActivateAfterTimeComponent": {
                 "askToActivate": "Спрашивать об активации ночного режима при катетеризации  после"
             },

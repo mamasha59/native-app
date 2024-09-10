@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import { Text, FlatList,TouchableOpacity } from "react-native";
 import {useEffect, useState } from "react";
 
-import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { iUnits } from "../../../../types";
-import { switchUnits } from "../../../../store/slices/appStateSlicer";
+import ModalSelect from "../../../components/ModalSelect/ModalSelect";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { iUnits } from "../../../types";
+import { switchUnits } from "../../../store/slices/appStateSlicer";
 
 const SwitchUnits = () => {
     const {t, i18n} = useTranslation();
@@ -14,9 +14,7 @@ const SwitchUnits = () => {
   
     const [openModalChangeUnits, setOpenModalChangeUnits] = useState<boolean>(false);
 
-    const handleModalChangeLanguage = () => {
-        setOpenModalChangeUnits(!openModalChangeUnits);
-      }
+    const handleModalChangeLanguage = () => setOpenModalChangeUnits(!openModalChangeUnits);
     
       const handleClickUnit = (item:iUnits) => {
         dispatch(switchUnits(item));
@@ -55,13 +53,13 @@ const SwitchUnits = () => {
         <FlatList
             data={arrayOfUnits}
             renderItem={({item}) =>
-                <TouchableOpacity className="items-center mb-5 px-2 border-b border-main-blue mx-auto" onPress={() => handleClickUnit(item)}>
-                    <Text
-                        style={{fontFamily:'geometria-bold'}}
-                        className={`text-[#101010] text-2xl uppercase ${units.id === item.id && 'text-purple-button'}`}>
-                        {item.title}
+              <TouchableOpacity className="items-center mb-5 px-2 border-b border-main-blue mx-auto" onPress={() => handleClickUnit(item)}>
+                <Text
+                  style={{fontFamily:'geometria-bold'}}
+                  className={`text-[#101010] text-2xl uppercase ${units.id === item.id && 'text-purple-button'}`}>
+                  {item.title}
                 </Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
             }
             keyExtractor={item => item.id!}
         />

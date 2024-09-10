@@ -3,7 +3,9 @@ import { Option, iLanguage } from "../types";
 import i18next from "i18next";
 import { TextInput } from "react-native";
 
-const generateEvenNumbersOfSize = (): Option[] => { // генерируем только четные числа от 6 до 30 размера катетора
+export const email = 'mai-best-cot@gmail.com';
+
+export const generateEvenNumbersOfSize = (): Option[] => { // генерируем только четные числа от 6 до 30 размера катетора
     const evenNumbers: Option[] = [];
     for (let i = 6; i <= 30; i += 2) {
       evenNumbers.push({ title: i.toString(), value: i.toString() });
@@ -13,7 +15,7 @@ const generateEvenNumbersOfSize = (): Option[] => { // генерируем то
 
 export const dateFormat = 'yyyy-MM-dd HH:mm:ss';
 
-const filters = [
+export const filters = [
   {
     id: 'all',
     title: i18next.t("journalScreen.filters.all"),
@@ -41,7 +43,7 @@ const filters = [
   },
 ]
 
-const languages: iLanguage[] = [
+export const languages: iLanguage[] = [
   {
     id: 'rus',
     title: 'Русский',
@@ -72,18 +74,31 @@ const languages: iLanguage[] = [
     selected: false,
     icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
   },
+  {
+    id: '1',
+    title: 'Italiano',
+    selected: false,
+    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
+  },
+  {
+    id: '2',
+    title: 'Italiano',
+    selected: false,
+    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
+  },
+  {
+    id: '3',
+    title: 'Italiano',
+    selected: false,
+    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
+  },
 ];
 
-const focusInput = (inputRef: RefObject<TextInput>) => { // focus by press on TouchableOpacity
+export const focusInput = (inputRef: RefObject<TextInput>) => { // focus by press on TouchableOpacity
   if (inputRef.current) {
     inputRef.current.blur(); // Сначала снимаем фокус
     setTimeout(() => {
       inputRef.current && inputRef.current.focus();
     }, 100);
   }
-};
-
-
-export {
-  generateEvenNumbersOfSize, filters, languages, focusInput
 };

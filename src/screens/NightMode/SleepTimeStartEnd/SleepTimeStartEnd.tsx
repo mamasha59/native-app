@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { addDays, addMinutes, differenceInHours, differenceInMinutes, format, parse, set, subHours } from "date-fns";
+import { addDays, addMinutes, differenceInMinutes, format, parse, set, subHours } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";

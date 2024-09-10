@@ -12,8 +12,8 @@ import NightMode from '../../screens/NightMode/NightMode';
 import ControlCatheter from '../../screens/ControlCatheter/ControlСatheter';
 
   export type RootStacNativeParamList = {
-    WelcomeScreens: undefined;
-    MainScreen: undefined;
+    UserDataScreens: undefined;
+    HomeScreen: undefined;
     Recommendation: undefined;
     PdfOnBoarding: {cameFrom?: string};
     Survey: {cameFrom?: string};
@@ -37,10 +37,10 @@ import ControlCatheter from '../../screens/ControlCatheter/ControlСatheter';
 
   return (// все роуты стоят по порядку их появления при загрузке приложения
     <NavigationContainer>
-        <Stack.Navigator initialRouteName={userData ? 'MainScreen' : 'WelcomeScreens'} screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName={userData ? 'HomeScreen' : 'UserDataScreens'} screenOptions={{headerShown:false}}>
 
-          <Stack.Screen name='MainScreen' component={Home}/>
-          <Stack.Screen name='WelcomeScreens' component={UserData}/>
+          <Stack.Screen name='HomeScreen' component={Home}/>
+          <Stack.Screen name='UserDataScreens' component={UserData}/>
 
           <Stack.Screen name='Recommendation' component={RecomendationsStack}/>
 

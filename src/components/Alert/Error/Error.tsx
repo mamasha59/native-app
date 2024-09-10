@@ -3,14 +3,13 @@ import { TouchableOpacity } from "react-native";
 import * as Clipboard from 'expo-clipboard';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { email } from "../../../utils/const";
 
 interface iError {
   close: () => void,
 }
 
 const Error = ({close}:iError) => {
-
-  const email = 'mai-best-cot@gmail.com';
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(email);

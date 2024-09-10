@@ -53,15 +53,20 @@ const RestOf = () => {
                                 shadowColor: 'black', 
                                 shadowOffset: { width: 0, height: 2 }, 
                                 shadowOpacity: 0.25,
-                                shadowRadius: 4,}} 
-                                activeOpacity={.8} 
+                                shadowRadius: 4,
+                              }}
+                                activeOpacity={.8}
                                 onPress={handleOpenPopup} 
                                 className="bg-main-blue rounded-xl w-full max-h-[96px] p-[10px] relative">
           <Text style={{ fontFamily: "geometria-regular" }} className="text-xs leading-[14px] text-[#ffff]">
             {t("catheterStockComponent.title")}
           </Text>
-          <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">{initial.nelaton} {t("units")}</Text>
-          <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">{t("in")} 3 {t("day")}, 0 {t("catheterStockComponent.units_will_remain")}</Text>
+          <Text style={{ fontFamily: "geometria-bold" }} className="text-lg leading-[22px] text-[#ffff] my-[5px]">
+            {initial.nelaton} {t("units")}
+          </Text>
+          <Text style={{ fontFamily: "geometria-regular" }} className="text-[8px] leading-[10px] text-[#ffff]">
+            {t("in")} 3 {t("day")}, 0 {t("catheterStockComponent.units_will_remain")}
+          </Text>
           <View className="items-center bg-[#fff] absolute right-[15px] top-[8px] rounded-full p-2">
             { currentRoute !== 'Home'
               ?<NelatonIcon/>

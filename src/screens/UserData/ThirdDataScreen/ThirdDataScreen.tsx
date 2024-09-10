@@ -72,7 +72,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     };
 
   return (
-    <WelcomeLayout showGradiend currentScreen={4} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
+    <WelcomeLayout showGradient currentScreen={4} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
         <View className="py-4">
             <Text className="flex-1" style={{fontFamily:'geometria-regular'}}>
                 {t("thirdDataScreen.description")}

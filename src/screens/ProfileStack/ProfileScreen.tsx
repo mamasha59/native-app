@@ -1,29 +1,27 @@
-import { Text, TouchableOpacity, Alert, View } from "react-native";
-import * as Notifications from 'expo-notifications';
+import { Text, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
-import { persistor } from "../../store/store";
-import MainLayout from "../../Layouts/MainLayout/MainLayout";
-import ProfileSettings from "./ProfileSettings/ProfileSettings";
-import SwitchUnits from "./ProfileSettings/SwitchUnits/SwitchUnits";
-import SwitchLanguage from "./ProfileSettings/SwitchLanguage/SwitchLanguage";
 
+import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
+import MainLayout from "../../Layouts/MainLayout/MainLayout";
+import ToggleCannulationAtNight from "../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
+import ToggleIsCountUrine from "../../components/ToggleIsCountUrine/ToggleIsCountUrine";
+import ChangeInterval from "./ChangeInterval/ChangeInterval";
+import SwitchUnits from "./SwitchUnits/SwitchUnits";
+import SwitchLanguage from "./SwitchLanguage/SwitchLanguage";
+import ProfileUtils from "./ProfileUtils/ProfileUtils";
+import ManageSupply from "./ManageSupply/ManageSupply";
 
 const ProfileScreen = () => { //TODO clear the chaos with folders
   const {t} = useTranslation();
   const navigation = useNavigation<StackNavigationRoot>();
 
-  const removeProfile = async () => {
-    Alert.alert('Закройте приложение, и откройте снова')
-    persistor.purge();
-    Notifications.dismissAllNotificationsAsync();
-  }
-
   return (
     <MainLayout title={t("profileScreen.title")}>
-      <ProfileSettings/>
-      <View className="justify-end w-full flex-1">
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
+        <ChangeInterval/>
+        <ToggleCannulationAtNight/>
+        <ToggleIsCountUrine/>
         <SwitchUnits/>
         <SwitchLanguage/>
 
@@ -34,12 +32,9 @@ const ProfileScreen = () => { //TODO clear the chaos with folders
             {t("profileScreen.personal_data_for_PDF")}
           </Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onLongPress={removeProfile} className="py-4 mt-1">
-          <Text style={{fontFamily:'geometria-bold'}} className="text-error">Сбросить профиль - temporarily (long press)</Text>
-        </TouchableOpacity>
-
-      </View>
+        <ManageSupply/>
+        <ProfileUtils/>
+      </ScrollView>
     </MainLayout>
   );
 };

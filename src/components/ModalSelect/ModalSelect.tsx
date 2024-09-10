@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, TouchableOpacity, ScrollView, Modal, Pressable } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, ScrollView, Modal, Pressable} from "react-native";
 
 import { ClosePopup } from "../../assets/images/icons";
 import { Option } from "../../types";
@@ -19,6 +19,7 @@ interface iModalSelect {
 const window = Dimensions.get('window');
 
 const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, children, showIcon = true, row = false, logo, height = 2.2}:iModalSelect) => {
+
   return (
     <Modal
         animationType="fade"
@@ -30,7 +31,8 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
         <Pressable
             onPress={(event) => event.target === event.currentTarget && setOpenModal(!openModal)}
             className="flex-1 justify-end items-center mx-auto bg-[#00000037] w-full h-full">
-            <View style={{width: window.width, maxHeight: window.height / height}} className="bg-[#ffff] p-3 pt-10 w-full flex-1">
+            <View style={{width: window.width, maxHeight: window.height / height}} className="bg-[#ffff] p-3 pt-10 w-full flex-1 rounded-t-3xl">
+                <View className="w-[60px] h-[6px] rounded-lg bg-[#ded4d4] mb-2 self-center"/>
                 {showIcon && 
                 <View className="mx-auto -mt-[150px] mb-1">
                     {logo}

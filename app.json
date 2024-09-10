@@ -6,7 +6,7 @@
     "owner": "zinaidamama",
     "orientation": "portrait",
     "icon": "./src/assets/images/splash-screen/appIcon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/images/splash-screen/SplashScreenNew.png",
       "resizeMode": "cover",
@@ -33,9 +33,6 @@
       },
       "package": "urocontrol.sergeikuleshov",
       "android.googleServicesFile": "./google-services.json"
-    },
-    "web": {
-      "favicon": "./src/assets/images/splash-screen/appIcon.jpeg"
     },
     "extra": {
       "eas": {

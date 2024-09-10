@@ -50,14 +50,14 @@ const ToggleCannulationAtNight = () => {
     }
 
   return (
-    <View className="items-center my-4 bg-[#ecf0f1] p-2 rounded-xl flex-1">
+    <View className="items-center my-4 bg-[#ecf0f1] p-2 rounded-xl h-auto">
         <SwitchToggle
             key={'togglenightmode'}
             title={t('toggleCannulationAtNightComponent.title')}
             onValueChange={handleDeniedToggleUseAtNight}
             isEnabled={toggleNightMode}
         />
-        <View className="flex-1 w-full items-center mt-2">
+        <View className="w-full items-center mt-2">
             {!toggleNightMode &&
                 <TouchableOpacity className="p-2 bg-[#b5b8b933]" onPress={() => navigation.navigate('NightMode')}>
                     <Text style={{fontFamily:'geometria-bold'}} className="text-main-blue">

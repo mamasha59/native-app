@@ -13,7 +13,7 @@ import Glass from "./Glass/Glass";
 import { dateFormat } from "../../../utils/const";
 import Alert from "../../../components/Alert/Alert";
 
-const ModalLiquidAmount = () => {
+const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => void}) => {
     const {t} = useTranslation();
     const nelaton = t("nelaton");
 
@@ -45,6 +45,7 @@ const ModalLiquidAmount = () => {
             amountOfReleasedUrine: '',
             timeStamp: format(new Date(), dateFormat)
           }));
+          setToastOpened(true);
         }
       }
     }
@@ -70,8 +71,8 @@ const ModalLiquidAmount = () => {
       dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние, которое пользователь изменил на экране Timer при нажатии на кнопку, если пользователь выбрал измерение мочи
     }
 
-    const modalAlert = () => setHandleModalAlert(!handleModalAlert);
-
+    const modalAlert = () =>  setHandleModalAlert(!handleModalAlert);
+    
     const customMl = ['100','200','300'];
     const customFlOz = ['5','7','10'];
 

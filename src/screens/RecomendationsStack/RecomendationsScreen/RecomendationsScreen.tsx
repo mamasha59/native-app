@@ -17,9 +17,7 @@ const RecomendationsScreen = ({navigation}:iRecomendations) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  const handleClickButton = () => {
-    navigation.navigate('FeedBackScreen');
-  }
+  const handleClickButton = () => navigation.navigate('FeedBackScreen');
 
   return (
     <MainLayout title={'Рекомендации'} buttonBottomTitle="Отзывы и предложения" buttonAction={handleClickButton} >

@@ -37,35 +37,35 @@ const NightModeButton = () => {
     },[settings.cannulationAtNight.value])
 
   return (
-    <>
-    <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={handleModal}>
-        <LottieView
-            ref={animationRef}
-            source={require("../../../../assets/animation-night-mode.json")}
-            style={{width: 100, height: 90}}
-            autoPlay={false}
-            loop={false}
+    <View>
+        <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={handleModal}>
+            <LottieView
+                ref={animationRef}
+                source={require("../../../../assets/animation-night-mode.json")}
+                style={{width: 100, height: 90}}
+                autoPlay={false}
+                loop={false}
+            />
+        </TouchableOpacity>
+        <ModalSelect
+            key={'nightbuttonhomescreen'}
+            row
+            height={3}
+            showIcon={false}
+            onItemPress={(item) => handlePressItem(item)}
+            openModal={settings.openModalNightMode}
+            setOpenModal={handleModal}
+            title={"Желаете включить ночной режим?"}
+            options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
+            children={
+                <View className="items-center">
+                    <Text className="text-center text-base" style={{fontFamily:'geometria-regular'}}>
+                        Таймер остановится, и вы прекратите получать уведомления, до утренней катетеризации.
+                    </Text>
+                </View>
+            }
         />
-    </TouchableOpacity>
-    <ModalSelect
-        key={'nightbuttonhomescreen'}
-        row
-        height={3}
-        showIcon={false}
-        onItemPress={(item) => handlePressItem(item)}
-        openModal={settings.openModalNightMode}
-        setOpenModal={handleModal}
-        title={"Желаете включить ночной режим?"}
-        options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
-        children={
-            <View className="items-center">
-                <Text className="text-center text-base" style={{fontFamily:'geometria-regular'}}>
-                    Таймер остановится, и вы прекратите получать уведомления, до утренней катетеризации.
-                </Text>
-            </View>
-        }
-    />
-    </>
+    </View>
   );
 };
 

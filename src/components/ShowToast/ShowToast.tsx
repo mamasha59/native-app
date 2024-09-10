@@ -11,13 +11,13 @@ interface iShowToast {
 const ShowToast = ({show, setShowToast, text}:iShowToast) => {
 
     useEffect(() => {
-        if (show) {
-          const timeout = setInterval(() => {
-            setShowToast(!show);
-          }, 2000);
-          return () => clearTimeout(timeout);
-        }
-      },[show])
+      if (show) {
+        const timeout = setInterval(() => {
+          setShowToast(!show);
+        }, 2000);
+        return () => clearTimeout(timeout);
+      }
+    },[show])
 
   return (
     <Toast

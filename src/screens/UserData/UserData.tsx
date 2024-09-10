@@ -8,6 +8,7 @@ import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
 import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
 import FourthDataScreen from "./FourthDataScreen/FourthDataScreen";
 import CathetersScreen from "./CathetersScreen/CathetersScreen";
+import PayWall from "../PayWall/PayWall";
 
 export type RootStackParamList = {
   LanguageScreen: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   ThirdDataScreen: undefined;
   FourthDataScreen: undefined;
   CathetersScreen: undefined;
+  PayWall: undefined;
 };
 
 // Определение типов для navigation и route в каждом экране
@@ -40,6 +42,9 @@ const UserData = () => {
         <Stack.Screen name="FourthDataScreen" component={FourthDataScreen}/>
 
         <Stack.Screen name="CathetersScreen" component={CathetersScreen}/>
+
+        <Stack.Screen name='PayWall' component={PayWall}/>
+
     </Stack.Navigator>
   );
 };

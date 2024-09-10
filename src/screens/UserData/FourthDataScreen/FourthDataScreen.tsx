@@ -5,7 +5,6 @@ import WelcomeLayout from "../../../Layouts/WelcomeLayout/WelcomeLayout";
 import { NavigationPropsWelcome } from "../UserData";
 import { useAppDispatch } from "../../../store/hooks";
 import { changeIsExist } from "../../../store/slices/appStateSlicer";
-import NoticesOfRemainCaths from "../../../components/NoticesOfRemainCaths/NoticesOfRemainCaths";
 import NoticesOfCannulation from "../../../components/NoticesOfCannulation/NoticesOfCannulation";
 import NoticesOfWaterConsumption from "../../../components/NoticesOfWaterConsumption/NoticesOfWaterConsumption";
 import CatheterizationReminder from "../../../components/CatheterizationReminder/CatheterizationReminder";
@@ -18,8 +17,8 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
     const dispatch = useAppDispatch();
 
     const proceedNextScreen = () => {
-        navigation.navigate('MainScreen');
-        dispatch(changeIsExist(true));
+        navigation.navigate('PayWall');
+        // dispatch(changeIsExist(true));
     }
 
   return (

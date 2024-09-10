@@ -19,6 +19,8 @@ import Constants from 'expo-constants';
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
 import RootNavigations from './src/components/RootNavigations/RootNavigations';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
@@ -63,7 +65,6 @@ export default function App() {
     });
     // ниже метод, при клике на уведомление, когда пользователь взаимодействует с уведомлением
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      // console.log(response);
     });
 
     return () => {
@@ -89,18 +90,22 @@ export default function App() {
 
   return (
     <Provider store={store}>
-        <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-          <RootSiblingParent>
-            <SafeAreaProvider onLayout={onLayoutRootView}>
-              <GradientBackground>
-                <SafeAreaView className="flex-1 h-full">
-                <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                  <RootNavigations/>
-                </SafeAreaView>
-              </GradientBackground>
-            </SafeAreaProvider>
-          </RootSiblingParent>
-        </PersistGate>
+      <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
+        <RootSiblingParent>
+          <SafeAreaProvider onLayout={onLayoutRootView}>
+            <GradientBackground>
+              <SafeAreaView className="flex-1 h-full">
+              <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+                <GestureHandlerRootView>
+                  <BottomSheetModalProvider>
+                    <RootNavigations/>
+                  </BottomSheetModalProvider>
+                </GestureHandlerRootView>
+              </SafeAreaView>
+            </GradientBackground>
+          </SafeAreaProvider>
+        </RootSiblingParent>
+      </PersistGate>
     </Provider>
   );
 }
@@ -131,9 +136,8 @@ async function registerForPushNotificationsAsync() {
     token = await Notifications.getExpoPushTokenAsync({ 
       projectId: Constants.expoConfig?.extra?.eas.projectId,
     });
-    console.log(token);
   } else {
-    // alert('Must use physical device for Push Notifications');
+    alert('Must use physical device for Push Notifications');
   }
 
   return token && token.data;

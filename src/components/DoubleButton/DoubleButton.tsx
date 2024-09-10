@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import Entypo from '@expo/vector-icons/Entypo';
+import { BlurView } from "expo-blur";
 
 import { Drop, Graphic } from "../../assets/images/icons";
 import { useAppSelector } from "../../store/hooks";
-import { BlurView } from "expo-blur";
 
 interface iDoubleButton {
     textOfLeftButton: string;

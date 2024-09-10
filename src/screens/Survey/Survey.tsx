@@ -17,6 +17,8 @@ import { handleCheckBoxAddSurveyInPdf, handleModalCustomizePdfDocument } from ".
 import { generatePdfPattern } from "../../utils/PdfPattern/PdfPattern";
 import { resetAnswers, saveAnswer } from "../../store/slices/surveySlice";
 import Alert from "../../components/Alert/Alert";
+import { useState } from "react";
+import Error from "../../components/Alert/Error/Error";
 
 const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO set input data
     const {t} = useTranslation();
@@ -25,6 +27,8 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
     const dispatch = useAppDispatch();
     const answers = useAppSelector(state => state.surveySlice.surveyAnswers);
     const userData = useAppSelector(state => state.user);
+
+    const [error, showError] = useState<boolean>(false);
 
     const { control, formState: { errors }, watch } = useForm({
         defaultValues: {
@@ -54,9 +58,9 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
         dispatch(handleCheckBoxAddSurveyInPdf(true));
     }
 
-    const resetAnswersOfSurvey = () => {
-        dispatch(resetAnswers());
-    }
+    const resetAnswersOfSurvey = () => dispatch(resetAnswers());
+
+    const handleModalError = () => showError(!error);
 
     const downLoadSurveyPdf = async () => {
         const pdf = await generatePdfPattern({
@@ -76,11 +80,12 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
             .then(async (uri) => {
               await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
             })
-            .catch(e => console.log(e))
+            .catch(() => handleModalError())
         } else {
           Sharing.shareAsync(uri);
         }
     }
+
 
   return (
     <MainLayout title="Catheterization Satisfaction Questionnaire">
@@ -134,6 +139,9 @@ const Survey = ({route, navigation}:NavigationPropsRoot<'Survey'>) => {//TODO se
                 key={'survey'}
             />
         </ScrollView>
+        <Alert modalAlertState={error} setModalAlertState={showError} key={'surveyerror'}>
+            <Error close={handleModalError} key={'surveyerror'}/>
+        </Alert>
     </MainLayout>
   );
 };

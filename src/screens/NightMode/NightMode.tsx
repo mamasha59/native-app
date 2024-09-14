@@ -18,12 +18,12 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
 
-    const hadleExitNightModeScreen = () => {
+    const handleExitNightModeScreen = () => {
         dispatch(setWhetherDoCannulationAtNight(true));
         navigation.goBack()
     }
 
-    const hadleSafeSettings = () => {
+    const handleSafeSettings = () => {
         dispatch(setWhetherDoCannulationAtNight(false));
         navigation.goBack()
     }
@@ -47,8 +47,8 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
                 showIcon={false}
                 textOfLeftButton={t("exit")}
                 textOfRightButton={t("save")}
-                handlePressLeftButton={hadleExitNightModeScreen}
-                handlePressRightButton={hadleSafeSettings}
+                handlePressLeftButton={handleExitNightModeScreen}
+                handlePressRightButton={handleSafeSettings}
             />
             <ClueAtTheBottom/>
         </ScrollView>

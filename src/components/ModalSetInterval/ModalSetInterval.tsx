@@ -38,7 +38,7 @@ const ModalSetInterval = (props:iModalSetInterval) => { // here we use another M
   return (
     <Modal onRequestClose={handleOpenModalChangeInterval} animationType="fade" className=" border flex-1" transparent visible={showModalSetInterval}>
         <View className="absolute top-0 left-0 right-0 flex-1 h-full w-full bg-[#2f2f2f53]">
-            <View style={{width: screen.width, height: screen.height / 3}} className="bg-[#ffff] p-10 rounded-t-2xl absolute bottom-0">
+            <View style={{width: screen.width, height: screen.height / 3}} className="bg-white p-10 rounded-t-2xl absolute bottom-0">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base text-center min-h-[2px]">
                     {title}
                 </Text>
@@ -55,7 +55,7 @@ const ModalSetInterval = (props:iModalSetInterval) => { // here we use another M
                         end={{ x: 1, y: 0.5 }}
                         locations={[0.0553, 0.9925]}
                         className="rounded-[43px]">
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-base text-[#FFFFFF] text-center px-6 py-3">
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-base text-white text-center px-6 py-3">
                             {t("save")}
                         </Text>
                     </LinearGradient>

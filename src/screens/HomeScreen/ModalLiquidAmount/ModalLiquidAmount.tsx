@@ -83,7 +83,7 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
     onRequestClose={closeByPressButton}
     animationType="fade">
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <View className="bg-[#ffff] pt-10 pb-[30px] px-6 flex-1 h-full items-end">
+        <View className="bg-white pt-10 pb-[30px] px-6 flex-1 h-full items-end">
           <TouchableOpacity
               onPress={settings.ifCountUrinePopupLiquidState ? modalAlert : closeByPressButton}
               activeOpacity={0.6}
@@ -114,7 +114,7 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
                     onPress={() => setLiquidValue(item)}
                     key={index}
                     activeOpacity={.6}
-                    className="p-1 items-center border bg-[#fff] border-main-blue rounded-xl">
+                    className="p-1 items-center border bg-white border-main-blue rounded-xl">
                     <GlassIcon/> 
                     <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] ital">{item} {settings.units.title}</Text>
                   </TouchableOpacity>
@@ -124,7 +124,7 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
 
           {!settings.scaleLiquidPopup &&     
           <TouchableOpacity onPress={handleOnSubmitSave} activeOpacity={0.6} className="py-[19px] px-[61px] mt-5 mx-auto items-center bg-main-blue rounded-[89px]">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-base text-[#FFFFFF]">
+            <Text style={{fontFamily:'geometria-bold'}} className="text-base text-white">
               {t("save")}
             </Text>
           </TouchableOpacity>}
@@ -137,7 +137,7 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
               <Text style={{fontFamily:'geometria-regular'}} className="text-lg text-center">{t("modalUrineOutput.noticeWhenPressClose.description")}</Text>
             </View>
             <TouchableOpacity onPress={modalAlert} activeOpacity={0.6} className="py-[19px] px-[61px] mt-5 mx-auto items-center bg-main-blue rounded-[89px]">
-              <Text style={{fontFamily:'geometria-bold'}} className="text-base text-[#FFFFFF]">{t("modalUrineOutput.noticeWhenPressClose.got_it")}</Text>
+              <Text style={{fontFamily:'geometria-bold'}} className="text-base text-white">{t("modalUrineOutput.noticeWhenPressClose.got_it")}</Text>
             </TouchableOpacity>
           </View>
         </Alert>

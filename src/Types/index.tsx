@@ -64,9 +64,6 @@ interface iStatisticsPerDay{
 }
 
 interface iJournal {
-    initialCathetherAmount: {
-        nelaton: number ;
-    },
     urineDiary: iDairyRecord[],
     urineChart: iChart[],
     drankWaterChart: iChart[],

@@ -182,7 +182,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
         }
         else {
           const maxVolume = isFlOz ? 12 : maxWaterVolumeOfGlass;
-          if (parsedValue > maxVolume){                  
+          if (parsedValue > maxVolume){
             value.value = maxVolume;
             convertInputToScrollValueAndSetScroll(maxVolume);
           } else {

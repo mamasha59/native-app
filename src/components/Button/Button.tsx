@@ -37,7 +37,7 @@ const Button = ({ buttonAction, buttonBottomTitle }: iButton) => {
         >
           <Text
             style={{ fontFamily: "geometria-bold" }}
-            className="text-[#FFFFFF] text-center text-base leading-5"
+            className="text-white text-center text-base leading-5"
           >
             {buttonBottomTitle}
           </Text>

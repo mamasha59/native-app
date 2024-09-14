@@ -41,7 +41,7 @@ const DoubleButton = (props:iDoubleButton) => {
 
           {showIcon && <Drop width={16} height={17} color={'#fff'}/>}
 
-          <Text style={{fontFamily:'geometria-bold'}} className="ml-1 text-[#FFFFFF] text-sm text-center">
+          <Text style={{fontFamily:'geometria-bold'}} className="ml-1 text-white text-sm text-center">
             {textOfLeftButton}
           </Text>
 
@@ -58,7 +58,7 @@ const DoubleButton = (props:iDoubleButton) => {
 
         {showIcon && <View className="mr-4"><Graphic width={16} height={16} color={'#fff'}/></View> }
 
-        <Text style={{fontFamily:'geometria-bold'}} className="text-[#FFFFFF] text-sm text-center leading-4">
+        <Text style={{fontFamily:'geometria-bold'}} className="text-white text-sm text-center leading-4">
           {textOfRightButton}
         </Text>
 

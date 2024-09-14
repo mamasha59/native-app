@@ -30,7 +30,7 @@ const NoticeOfRemainCatheters = () => {
   const focusInputNoticeOfCathsRemain = () => focusInput(inputRefNoticeOfCathsRemain);
 
   return (
-    <View className="mt-4">
+    <View className="mt-4 flex-1">
       <Text className="text-base leading-5 w-full flex-1 mb-4" style={{fontFamily:'geometria-regular'}}>
         Я напомню вам о необходимости пополнить запас катетеров, когда их останется менее чем:
       </Text>

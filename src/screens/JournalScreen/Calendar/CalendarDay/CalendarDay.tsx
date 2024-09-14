@@ -39,12 +39,12 @@ const CalendarDay = ({e}:iCalendarDay) => {
       className={`${isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[20px] mr-[5px] items-center justify-center rounded-md`}>
         <Text
           style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'}  text-[10px]`}>
+          className={`${isCurrentDay ? 'text-white' : 'text-black'} text-[10px]`}>
             {daysOfWeek[e.weekNumber].short}
         </Text>
         <Text
           style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${isCurrentDay ? 'color-[#ffff]' : 'color-[#000000]'} font-normal text-xl`}>
+          className={`${isCurrentDay ? 'text-white' : 'text-black'} font-normal text-xl`}>
             {e.dayNumber}
         </Text>
     </TouchableOpacity>

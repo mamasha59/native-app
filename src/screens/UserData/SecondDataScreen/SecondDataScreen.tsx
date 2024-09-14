@@ -14,7 +14,7 @@ const SecondDataScreen = ({navigation}:iSecondDataScreen) => {
     const {t} = useTranslation();
     
     const proceedNextScreen = () => {
-        navigation.navigate('CathetersScreen');
+      navigation.navigate('ThirdDataScreen');
     }
 
   return (

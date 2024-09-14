@@ -18,9 +18,9 @@ const TopBar = () => {
       {showLogo 
         ? (
           <View className="justify-center flex-grow-0">
-            <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-[#fff]">Use</Text>
-            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-[#fff]">Nelaton</Text>
-            <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-[#fff]">easily</Text>
+            <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-white">Use</Text>
+            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-white">Nelaton</Text>
+            <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-white">easily</Text>
           </View>
         )
         // Back button

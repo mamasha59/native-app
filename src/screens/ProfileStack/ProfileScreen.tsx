@@ -10,7 +10,6 @@ import ChangeInterval from "./ChangeInterval/ChangeInterval";
 import SwitchUnits from "./SwitchUnits/SwitchUnits";
 import SwitchLanguage from "./SwitchLanguage/SwitchLanguage";
 import ProfileUtils from "./ProfileUtils/ProfileUtils";
-import ManageSupply from "./ManageSupply/ManageSupply";
 
 const ProfileScreen = () => { //TODO clear the chaos with folders
   const {t} = useTranslation();
@@ -32,7 +31,6 @@ const ProfileScreen = () => { //TODO clear the chaos with folders
             {t("profileScreen.personal_data_for_PDF")}
           </Text>
         </TouchableOpacity>
-        <ManageSupply/>
         <ProfileUtils/>
       </ScrollView>
     </MainLayout>

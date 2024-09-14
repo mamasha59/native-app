@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, Dimensions } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import NelatonIcon from "../../../../assets/images/iconsComponent/NelatonIcon";
 import Pencil from "../../../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { addCatheter } from "../../../../store/slices/journalDataSlice";
 import { focusInput } from "../../../../utils/const";
+import { consumableItemChangeQuantity } from "../../../../store/slices/consumablesSlice";
 
 const {width} = Dimensions.get('screen');
 
@@ -15,22 +15,23 @@ const AddCatheters = () => {
     const {t} = useTranslation();
 
     const dispatch = useAppDispatch();
-    const settings = useAppSelector(state => state.journal.initialCathetherAmount);
-
+    const {consumablesItem} = useAppSelector(state => state.consumablesSlice);
+    
     const [caths, setCaths] = useState<string>('');
     const inputRefAddCatheters = useRef<TextInput>(null);
 
     const focusInputAddCatheters = () => focusInput(inputRefAddCatheters);
 
-    useEffect(() => {
-        setCaths(String(settings.nelaton));
-    },[settings])
-
     const handleInputOnChange = (value:string) => {
       +value <= 0 ? setCaths('') : setCaths(value)
     }
     
-    const addCatheters = () => dispatch(addCatheter({amount: +caths}));        
+    const addCatheters = () => {
+        const catheter = consumablesItem[0].id;
+        if(catheter){
+            dispatch(consumableItemChangeQuantity({id:catheter, value:caths}))
+        }
+    };        
 
   return (
     <View className="mb-6 flex-1">

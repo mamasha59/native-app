@@ -11,8 +11,8 @@ const ButtonBluBorder = ({handlePressButton, title, marginRight}:iButtonBluBorde
     <TouchableOpacity
         onPress={handlePressButton}
         activeOpacity={.6}
-        className={`border border-main-blue rounded-xl min-w-[115px] min-h-[44px] flex-1 justify-center items-center mr-${marginRight}`}>
-        <Text style={{fontFamily:'geometria-bold'}} className="text-sm text-center">{title}</Text>
+        className={`border border-main-blue rounded-xl flex-1 py-3 justify-center items-center mr-${marginRight}`}>
+        <Text style={{fontFamily:'geometria-bold'}} className="text-sm">{title}</Text>
     </TouchableOpacity>
   );
 };

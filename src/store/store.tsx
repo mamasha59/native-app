@@ -9,6 +9,7 @@ import surveySlice from "./slices/surveySlice";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,  } from 'redux-persist';
+import consumablesSlice from "./slices/consumablesSlice";
 
 const persistConfig = { // config persist
     key: 'root',
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
     nightOnBoarding: nightStateSlice,
     noticeSettingsSlice: noticeSettingsSlice,
     surveySlice: surveySlice,
+    consumablesSlice: consumablesSlice,
 }));
 
 export const store = configureStore({

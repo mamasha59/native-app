@@ -4,5 +4,6 @@ import ArrowBack from './goBackIcon.svg';
 import DropDown from './dropDown.svg';
 import ClosePopup from '../icons/closePopupIcon.svg';
 import CheckedIcom from '../icons/checkedIcon.svg';
+import WaveBackground from './waveBackground.svg'
 
-export {Graphic, Drop, ArrowBack, DropDown, ClosePopup, CheckedIcom};
+export {Graphic, Drop, ArrowBack, DropDown, ClosePopup, CheckedIcom, WaveBackground};

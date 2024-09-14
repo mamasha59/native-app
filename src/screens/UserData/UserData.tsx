@@ -7,8 +7,8 @@ import { RootStacNativeParamList } from "../../components/RootNavigations/RootNa
 import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
 import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
 import FourthDataScreen from "./FourthDataScreen/FourthDataScreen";
-import CathetersScreen from "./CathetersScreen/CathetersScreen";
 import PayWall from "../PayWall/PayWall";
+import FifthDataScreen from "./FifthDataScreen/FifthDataScreen";
 
 export type RootStackParamList = {
   LanguageScreen: undefined;
@@ -16,7 +16,7 @@ export type RootStackParamList = {
   SecondDataScreen: undefined;
   ThirdDataScreen: undefined;
   FourthDataScreen: undefined;
-  CathetersScreen: undefined;
+  FifthDataScreen: undefined;
   PayWall: undefined;
 };
 
@@ -34,16 +34,15 @@ const Stack = createStackNavigator<RootStackParamList>();
 const UserData = () => {
   return (
     <Stack.Navigator initialRouteName="LanguageScreen" screenOptions={{headerShown:false}}>
-        <Stack.Screen name="LanguageScreen" component={LanguageScreen}/>
+      <Stack.Screen name="LanguageScreen" component={LanguageScreen}/>
 
-        <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
-        <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
-        <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
-        <Stack.Screen name="FourthDataScreen" component={FourthDataScreen}/>
+      <Stack.Screen name="FirstDataScreen" component={FirstDataScreen}/>
+      <Stack.Screen name="SecondDataScreen" component={SecondDataScreen}/>
+      <Stack.Screen name="ThirdDataScreen" component={ThirdDataScreen}/>
+      <Stack.Screen name="FourthDataScreen" component={FourthDataScreen}/>
+      <Stack.Screen name="FifthDataScreen" component={FifthDataScreen}/>
 
-        <Stack.Screen name="CathetersScreen" component={CathetersScreen}/>
-
-        <Stack.Screen name='PayWall' component={PayWall}/>
+      <Stack.Screen name='PayWall' component={PayWall}/>
 
     </Stack.Navigator>
   );

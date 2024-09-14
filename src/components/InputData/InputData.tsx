@@ -89,7 +89,7 @@ const InputData = (props:iInputData) => {
                 visible={prompt}
                 >
                 <View className="p-4 bg-[#636e72] mx-1 justify-start">
-                    <Text style={{fontFamily:'geometria-regular'}} className="text-[#ffff] text-sm text-center">
+                    <Text style={{fontFamily:'geometria-regular'}} className="text-white text-sm text-center">
                         {textPrompt}
                     </Text>
                 </View>

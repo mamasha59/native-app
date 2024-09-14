@@ -85,7 +85,7 @@ const FluidIntakeChart = () => {
             animationOut={'zoomOut'}
             useNativeDriverForBackdrop
             onBackButtonPress={() => setShowModal(false)}>
-            <View style={{width: windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-[#ffff] px-5 py-11 items-start">
+            <View style={{width: windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-white px-5 py-11 items-start">
                 <TouchableOpacity onPress={() => setShowModal(false)} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
                     <ClosePopup width={15} height={15}/>
                 </TouchableOpacity>

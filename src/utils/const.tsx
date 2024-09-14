@@ -63,31 +63,13 @@ export const languages: iLanguage[] = [
     icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/DE.svg'
   },
   {
-    id: 'Français',
+    id: 'fr',
     title: 'Français',
     selected: false,
     icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/FR.svg'
   },
   {
     id: 'Italiano',
-    title: 'Italiano',
-    selected: false,
-    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
-  },
-  {
-    id: '1',
-    title: 'Italiano',
-    selected: false,
-    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
-  },
-  {
-    id: '2',
-    title: 'Italiano',
-    selected: false,
-    icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'
-  },
-  {
-    id: '3',
     title: 'Italiano',
     selected: false,
     icon: 'https://catamphetamine.gitlab.io/country-flag-icons/3x2/IT.svg'

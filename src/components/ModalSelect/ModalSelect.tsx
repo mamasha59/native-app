@@ -31,13 +31,14 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
         <Pressable
             onPress={(event) => event.target === event.currentTarget && setOpenModal(!openModal)}
             className="flex-1 justify-end items-center mx-auto bg-[#00000037] w-full h-full">
-            <View style={{width: window.width, maxHeight: window.height / height}} className="bg-[#ffff] p-3 pt-10 w-full flex-1 rounded-t-3xl">
-                <View className="w-[60px] h-[6px] rounded-lg bg-[#ded4d4] mb-2 self-center"/>
+            <View
+                style={{width: window.width, maxHeight: window.height / height}}
+                className="bg-white p-3 pt-10 w-full flex-1  rounded-t-3xl">
                 {showIcon && 
                 <View className="mx-auto -mt-[150px] mb-1">
                     {logo}
                 </View>}
-                {title && title.length > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-4">{title}</Text>}
+                {title && title.length > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-4 mt-2">{title}</Text>}
                 {options &&
                     <ScrollView className="flex-1 h-full w-full">
                         <View className={`justify-center items-center mb-4 flex-wrap ${row ? 'flex-row' : 'flex mx-auto'}`}>

@@ -19,8 +19,9 @@ import {
     popupLiquidState,
     switchCannulationAtNightMode,
     switchNightModeModal } from "../../../store/slices/appStateSlicer";
-import { addUrineDiaryRecord, decreaseCatheterAmount } from "../../../store/slices/journalDataSlice";
+import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { dateFormat } from "../../../utils/const";
+import { decreaseQuantityOFConsumableItem } from "../../../store/slices/consumablesSlice";
 
 const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const dispatch = useAppDispatch();
@@ -31,9 +32,10 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
   const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // кол-во катетеров
   const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // timer settings
+  const {consumablesItem} = useAppSelector((state) => state.consumablesSlice); // timer settings
 
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
-  const [startFromСountdown , setStartFromСountdown] = useState<boolean>(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
+  const [startFromCountdown , setStartFromCountdown] = useState<boolean>(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
   
   const [timerInterval, setTimerInterval] = useState<number>(interval); // интервал Нормальный 
   const [timerIntervalStopwatch, setTimerIntervalStopwatch] = useState<number>(interval); // интервал Крит.
@@ -43,7 +45,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
     secondPartTime: false,
     thirdPartTime: false,
   });
-  const [laoder, setLoader] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
   const [daysFromLastCannulation, setDaysFromLastCannulation] = useState<number>(0);
   
   const flipValue = useSharedValue<number>(0);
@@ -88,7 +90,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
       setInitialStrip(105);
       dispatch(whetherStartFromCountdown(false));
       setPartTime({firstPartTime: true , secondPartTime: true, thirdPartTime: true}); // делаем Нормальный интервал активным, там время идет на возрастание
-      setStartFromСountdown(false);
+      setStartFromCountdown(false);
       startStopwatch();
       }
   });
@@ -106,7 +108,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
             setLoader(true);
             if(!settings.cannulationAtNight.value){
                 if (intervalDifference && intervalDifference > timerInterval) {// с Крит. интервала, если разница в секундах с записью в журнале больше Оптимального интервала
-                  setStartFromСountdown(false);
+                  setStartFromCountdown(false);
                   setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: true});
                   setInitialStrip(105);
                   const expiryTimestampDifferenceStopWatch = new Date();
@@ -189,8 +191,8 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
     if (!settings.stateOfTimerTitleForFirstTimeInApp) {
       dispatch(changeStateOfTimerTitleForFirstTimeInApp(true));
     }
-    if (journal.initialCathetherAmount.nelaton > 0) {
-      dispatch(decreaseCatheterAmount({amount:1}));
+    if (consumablesItem[0].quantity > 0) {
+      dispatch(decreaseQuantityOFConsumableItem());
     }
     if (!partTime.firstPartTime && !partTime.secondPartTime) {
       setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
@@ -200,7 +202,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
     }
     if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
       resetStopwatch(stopwatchOffset, false);
-      setStartFromСountdown(true);
+      setStartFromCountdown(true);
       setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
       timerRestart(expiryTimestamp);
       setToastOpened(true);
@@ -298,7 +300,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
       clearInterval(intervalId);
     };
       
-  }, [timerRunning, partTime, startFromСountdown]);
+  }, [timerRunning, partTime, startFromCountdown]);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
@@ -330,7 +332,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
                 }
             </Text>
             <IntervalUI
-              startFromСountdown={startFromСountdown}
+              startFromСountdown={startFromCountdown}
               stopwatchHours={stopwatchHours}
               stopwatchMinutes={stopwatchMinutes}
               stopwatchSeconds={stopwatchSeconds}
@@ -338,7 +340,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
               timerHours={timerHours}
               timerMinutes={timerMinutes}
               timerSeconds={timerSeconds}
-              loader={laoder}
+              loader={loader}
             />
           </Animated.View>
           <Animated.View style={[styles.card, backAnimatedStyle]} className='absolute w-[240px] justify-center items-center flex-1 h-full'>
@@ -360,7 +362,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
             end={{ x: 1, y: 0.5 }}
             locations={[0.0553, 0.9925]}
             className="rounded-[43px]">
-            <Text style={{fontFamily:'geometria-bold'}} className="text-base capitalize leading-5 text-[#FFFFFF] text-center px-6 py-3">
+            <Text style={{fontFamily:'geometria-bold'}} className="text-base capitalize leading-5 text-white text-center px-6 py-3">
               {timerRunning || stopwatchRunning ? t("timer.completed") : t("timer.start")}
             </Text>
           </LinearGradient>

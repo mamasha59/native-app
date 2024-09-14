@@ -9,6 +9,7 @@ module.exports = {
       'main-blue' : '#4BAAC5',
       'purple-button' : '#9966AA',
       'black': '#101010',
+      'white': '#ffff',
       'grey': '#77787B',
       'border-color': '#4babc563',
       'error': '#d63031',

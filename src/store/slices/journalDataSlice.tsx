@@ -3,9 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { iChart, iDairyRecord, iJournal } from "../../types";
 
 const initialState:iJournal = {
-    initialCathetherAmount: {
-        nelaton: 0,
-    },
     urineDiary: [],
     urineChart: [
         {
@@ -75,16 +72,6 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
     name: 'journalDataSlice',
     initialState,
     reducers: {
-        addCatheter: (state, action: PayloadAction<{ amount: number }>) => {
-            const { amount } = action.payload;
-            state.initialCathetherAmount.nelaton = amount;
-        },
-        decreaseCatheterAmount: (state, action: PayloadAction<{ amount: number }>) => {
-            const { amount } = action.payload;
-            if(state.initialCathetherAmount.nelaton && state.initialCathetherAmount.nelaton > 0){
-                state.initialCathetherAmount.nelaton = state.initialCathetherAmount.nelaton - amount;
-            }
-        },
         addUrineDiaryRecord: (state, action: PayloadAction<iDairyRecord>) => { // добавляем запись в журнал
             state.urineDiary = [action.payload, ...state.urineDiary];            
         },
@@ -134,11 +121,9 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
 });
 
 export const { 
-    addCatheter,
     addUrineDiaryRecord,
     addChartValueToCurrentDay,
     addChartValueDrankWaterToCurrentDay,
-    decreaseCatheterAmount,
     handleModalCustomizePdfDocument,
     handleCheckBoxAddSurveyInPdf
     } = journalDataSlice.actions;

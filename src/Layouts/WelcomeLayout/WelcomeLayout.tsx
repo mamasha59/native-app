@@ -32,7 +32,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
     const blinkValue = useSharedValue(1);
     const scrollY = useSharedValue(0);
 
-    const dots = Array(5).fill(null); // создаем массив из 4 элементов
+    const dots = Array(5).fill(null);
 
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: blinkValue.value,
@@ -81,7 +81,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
   return (
     <GradientBackground> 
         <LogoTop/>
-        <View className="bg-[#FFFFFF] flex-1 rounded-t-2xl justify-between items-center relative">
+        <View className="bg-white flex-1 rounded-t-2xl justify-between items-center relative">
            {showRobotIconOnTop &&
             <Animated.View style={[animatedStyleScroll]} className="-mt-6 w-[350px] h-[150px] justify-center">
                 <LottieView
@@ -91,9 +91,9 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
                 />
                 {displayedText.length > 0 && 
                 <View className="absolute right-0 top-1/4 px-2 mr-6 max-w-[110px] bg-[#0000002e] rounded-sm">
-                    <Text className="text-[#fff] text-base" style={{fontFamily:'geometria-bold'}}>
+                    <Text className="text-white text-base" style={{fontFamily:'geometria-bold'}}>
                         {displayedText}
-                    <Animated.Text className="text-[#fff] text-base" style={[{fontFamily:'geometria-bold'}, animatedStyle]}>|</Animated.Text>
+                    <Animated.Text className="text-white text-base" style={[{fontFamily:'geometria-bold'}, animatedStyle]}>|</Animated.Text>
                     </Text>
                 </View>}
             </Animated.View>}
@@ -142,7 +142,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
                 <>
                 <Pressable onPress={handleProceed} className='max-w-[300px] w-full'>
                     <LinearGradient className="w-full py-[19px] rounded-[89px] items-center" colors={paywall ? ['#FF6F61', '#FF9671'] : ['#4BAAC5', '#39bee3']}>
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-[#FFFFFF]">{buttonTitle}</Text>
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-base leading-5 text-white">{buttonTitle}</Text>
                     </LinearGradient>
                 </Pressable>
                 {paywall &&

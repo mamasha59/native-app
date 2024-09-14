@@ -25,11 +25,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
 
-Notifications.setNotificationHandler({ // norices foreground
+Notifications.setNotificationHandler({ // notices foreground
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: true,
+    shouldSetBadge: false,
   }),
 });
 
@@ -54,11 +54,13 @@ Notifications.setNotificationCategoryAsync("its-about-cannulation", [
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   const [notification, setNotification] = useState<Notifications.Notification>();
+
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync()
+    .then(token => setExpoPushToken(token));
     // ниже метод выполняется когда пришло уведомление
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
@@ -130,7 +132,7 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      // alert('Failed to get push token for push notification!');
+      alert('Permission not granted to get push token for push notification!');
       return;
     }
     token = await Notifications.getExpoPushTokenAsync({ 

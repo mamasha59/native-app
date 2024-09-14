@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BackHandler, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +9,6 @@ import CathetersForRoad from "./CathetersForRoad/CathetersForRoad";
 import { useAppSelector } from "../../store/hooks";
 import NoticeOfRemainCatheters from "../UserData/FifthDataScreen/NoticeOfRemainCatheters/NoticeOfRemainCatheters";
 import Consumables from "./Consumables/Consumables";
-import { useEffect } from "react";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 
 const ControlCatheter = ({navigation}:NavigationPropsRoot<'ControlCatheter'>) => {

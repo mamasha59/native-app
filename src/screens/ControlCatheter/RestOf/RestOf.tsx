@@ -2,18 +2,18 @@ import { View, Text, TouchableOpacity, Platform } from "react-native";
 import {useCallback, useMemo, useRef} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
-
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
-import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
+import { TextInput } from "react-native-gesture-handler";
 import {
   BottomSheetModal,
   BottomSheetFlatList,
   BottomSheetBackdrop,
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
+
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
+import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 import { consumableItemChangeQuantity } from "../../../store/slices/consumablesSlice";
-import { TextInput } from "react-native-gesture-handler";
 import { ClosePopup } from "../../../assets/images/icons";
 
 const RestOf = () => {
@@ -128,15 +128,15 @@ const RestOf = () => {
                 <View className="flex-row items-center relative">
                   <Text style={{fontFamily:'geometria-regular'}} className="absolute text-xs -top-3 text-center">изменить</Text>
                   <BottomSheetTextInput
-                      ref={inputRef}
-                      value={item.quantity+''}
-                      onChangeText={(value) => handleInputChangeQuantity(item.id, value)}
-                      className="text-xl w-12 text-end"
-                      style={{ fontFamily: "geometria-bold", fontSize: 20, width: 60 }}
-                      selectTextOnFocus
-                      maxLength={4}
-                      keyboardType="numeric"
-                    />
+                    ref={inputRef}
+                    value={item.quantity+''}
+                    onChangeText={(value) => handleInputChangeQuantity(item.id, value)}
+                    className="text-xl w-12 text-end"
+                    style={{ fontFamily: "geometria-bold", fontSize: 20, width: 60 }}
+                    selectTextOnFocus
+                    maxLength={4}
+                    keyboardType="numeric"
+                  />
                     <Text
                     style={{ fontFamily: "geometria-regular" }}
                     className="ml-2 text-lg">

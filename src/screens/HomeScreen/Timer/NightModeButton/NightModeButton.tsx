@@ -38,7 +38,7 @@ const NightModeButton = () => {
 
   return (
     <View>
-        <TouchableOpacity className="absolute top-0 right-0 w-[100px] h-[100px]" onPress={handleModal}>
+        <TouchableOpacity className="absolute -top-4 right-0 w-[100px] h-[100px]" onPress={handleModal}>
             <LottieView
                 ref={animationRef}
                 source={require("../../../../assets/animation-night-mode.json")}
@@ -48,7 +48,7 @@ const NightModeButton = () => {
             />
         </TouchableOpacity>
         <ModalSelect
-            key={'nightbuttonhomescreen'}
+            key={'night-button-home-screen'}
             row
             height={3}
             showIcon={false}

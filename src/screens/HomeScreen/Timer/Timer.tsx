@@ -405,21 +405,4 @@ const styles = StyleSheet.create({
         fontFamily: 'geometria-bold',
         fontSize: 24,
     },
-  });
-
-
-
-
-    // useEffect(() => {
-    //     const handleAppStateChange = (nextAppState:any) => {
-    //     if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-    //         // Приложение вернулось на передний план
-    //         const strip = Math.ceil((timerInterval - timerTotalSeconds) * 105 / timerInterval);
-    //         setInitialStrip(strip);
-    //     }
-    //     appState.current = nextAppState;
-    //     };
-    //     const subscription = AppState.addEventListener('change', handleAppStateChange);
-    //     // Очистка подписки при размонтировании компонента
-    //     return () => { subscription.remove() };
-    // }, [timerInterval, timerTotalSeconds]);
+});

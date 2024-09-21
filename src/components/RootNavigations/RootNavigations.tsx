@@ -1,6 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Linking from 'expo-linking';
 
 import Home from '../../screens/Home';
 import UserData from '../../screens/UserData/UserData';
@@ -10,6 +11,7 @@ import PdfOnBoarding from '../../screens/PdfOnBoarding/PdfOnBoarding';
 import Survey from '../../screens/Survey/Survey';
 import NightMode from '../../screens/NightMode/NightMode';
 import ControlCatheter from '../../screens/ControlCatheter/ControlСatheter';
+import { Text } from 'react-native';
 
   export type RootStacNativeParamList = {
     UserDataScreens: undefined;
@@ -32,8 +34,14 @@ import ControlCatheter from '../../screens/ControlCatheter/ControlСatheter';
 
   const Stack = createNativeStackNavigator<RootStacNativeParamList>();
 
+  const prefix = Linking.createURL('/');
+
   const RootNavigations = () => {
   const userData = useAppSelector(isExist => isExist.appStateSlice.isExist);
+
+  const linking = {
+    prefixes: [prefix],
+  };
 
   return (// все роуты стоят по порядку их появления при загрузке приложения
     <NavigationContainer>

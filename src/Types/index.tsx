@@ -10,6 +10,11 @@ interface iUnits {
     id: string,
 }
 
+interface iTimePicker {
+    selectedIndexHour: number,
+    selectedIndexMinutes: number,
+}
+
 interface iUser {
     weight: string | null,
     height: string | null,
@@ -76,4 +81,4 @@ interface Option {
     value: boolean | string
 }
     
-export {iUnits, iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay};
+export {iUnits, iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay, iTimePicker};

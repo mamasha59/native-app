@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { View, Text } from "react-native";
 import WheelPicker from "react-native-wheely";
+import { iTimePicker } from "../../types";
 
 interface iSetTimeInterval {
-    interval: { selectedIndexHour: number; selectedIndexMinutes: number },
-    setInterval: React.Dispatch<React.SetStateAction<{ selectedIndexHour: number; selectedIndexMinutes: number }>>,
+    interval: iTimePicker,
+    setInterval: React.Dispatch<React.SetStateAction<iTimePicker>>,
     visibleRest?:number,
     is24Hours?: boolean,
   }

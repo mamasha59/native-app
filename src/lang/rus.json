@@ -163,8 +163,8 @@
             "completed": "Выполнено",
             "titles": {
                 "catheterization_interval": "Интервал катетеризации:",
-                "since_last_catheterization": "С последней катетеризации",
-                "before_catheterization": "До катетеризации:"
+                "since_last_catheterization": "Вам необходимо катетеризироваться! С последней катетеризации",
+                "before_catheterization": "Катетеризируйтесь до окончания интервала:"
             },
             "intervals": {
                 "normal": "н о р м а л ь н ы й     и н т е р в а л ",

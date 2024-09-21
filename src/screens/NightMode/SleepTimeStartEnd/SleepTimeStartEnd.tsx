@@ -9,6 +9,9 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setTimeOfNoticeAtNightOneTime, setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
 import { day } from "../../../utils/date";
+import { iTimePicker } from "../../../types";
+import { setEveningTimeOfFluidIntakeNotice } from "../../../store/slices/notificationsSettingsSlice";
+import { createDateFromTime, formatDateToTimeString } from "../../../utils/const";
 
 const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const {t} = useTranslation();
@@ -16,12 +19,12 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
     const dispatch = useAppDispatch();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnBoarding);
     
-    const [intervalOfStartSleep, setIntervalOfStartSleep] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [intervalOfStartSleep, setIntervalOfStartSleep] = useState<iTimePicker>({
         selectedIndexHour: 22,
         selectedIndexMinutes: 0,
     });
     
-    const [intervalOfEndSleep, setIntervalOfEndSleep] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [intervalOfEndSleep, setIntervalOfEndSleep] = useState<iTimePicker>({
         selectedIndexHour: 7,
         selectedIndexMinutes: 0,
     });
@@ -62,33 +65,24 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         setShowModalSetIntervalEnd(!showModalSetIntervalEnd);
     }
 
-    const createDateFromTime = (selectedIndexHour:number, selectedIndexMinutes:number) => { // создает дату со временем типа 2024-06-14T19:00:00.497Z
-        const now = new Date();
-        const dateWithTime = set(now, { hours: selectedIndexHour, minutes: selectedIndexMinutes, seconds: 0 });
-        return dateWithTime;
-    };
-      
-    const formatDateToTimeString = (date:Date) => {
-        const hours = format(date, 'H');
-        const minutes = format(date, 'mm');
-        return `${hours}:${minutes}`;
-    };
-    
-    const handleSetStartTime = () => { // при подтверждении интверала Начала сна
+    const handleSetStartTime = () => { // при подтверждении интервала Начала сна
         const dateWithTime = createDateFromTime(intervalOfStartSleep.selectedIndexHour, intervalOfStartSleep.selectedIndexMinutes);        
         const timeStartSleep = formatDateToTimeString(dateWithTime);// time start sleep
         const timeWhenAskActivate = formatDateToTimeString(subHours(dateWithTime, 2)); // take 2 hours from time
         
         setCalculatedOnceTimeNoticeAtNight({sleepTimeStart: timeStartSleep, endTimeStart: calculatedOnceTimeNoticeAtNight.endTimeStart});
         dispatch(setTimeWhenAskToActivateNightMode(timeWhenAskActivate)); // set time to component - time when ask to activate
+        dispatch(setEveningTimeOfFluidIntakeNotice(timeWhenAskActivate));
+
         dispatch(setTimeSleepStart(timeStartSleep)); // save time start sleep in store redux
         handleOpenModalStart();
+        handleOpenModalEnd();
     }
 
-    const handleSetEndTime = () => { // при подтверждении интверала Конца сна
+    const handleSetEndTime = () => { // при подтверждении интервала Конца сна
         const dateWithTime = createDateFromTime(intervalOfEndSleep.selectedIndexHour, intervalOfEndSleep.selectedIndexMinutes);
         const time = formatDateToTimeString(dateWithTime);
-
+        
         setCalculatedOnceTimeNoticeAtNight({sleepTimeStart:calculatedOnceTimeNoticeAtNight.sleepTimeStart,endTimeStart: time});
         dispatch(setTimeSleepEnd(time));
         handleOpenModalEnd();

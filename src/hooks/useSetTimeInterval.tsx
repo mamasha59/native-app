@@ -1,12 +1,10 @@
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { useAppDispatch } from '../store/hooks';
 import { setInterval } from '../store/slices/timerStatesSlice';
+import { iTimePicker } from '../types';
 
 interface iNewInterval<Action extends ActionCreatorWithPayload<number>> {
-    newInterval: {
-        selectedIndexHour: number;
-        selectedIndexMinutes: number;
-    },
+    newInterval: iTimePicker,
     action: Action,
     setShowModalSetInterval: (state:boolean) => void,
     showModalSetInterval: boolean,

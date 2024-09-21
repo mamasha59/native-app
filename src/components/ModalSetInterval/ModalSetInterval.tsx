@@ -4,23 +4,21 @@ import { useTranslation } from "react-i18next";
 
 import { ClosePopup } from "../../assets/images/icons";
 import SetTimeInterval from "../SetTimeInterval/SetTimeInterval";
+import { iTimePicker } from "../../types";
 
 const screen = Dimensions.get('window');
 
 interface iModalSetInterval {
     showModalSetInterval: boolean,
     pressSaveButton?: () => void,
-    newInterval: {
-        selectedIndexHour: number;
-        selectedIndexMinutes: number
-    },
-    setNewInterval: React.Dispatch<React.SetStateAction<{
-        selectedIndexHour: number;
-        selectedIndexMinutes: number;
-    }>>,
+    newInterval: iTimePicker,
+    setNewInterval: React.Dispatch<React.SetStateAction<iTimePicker>>,
     handleOpenModalChangeInterval: () => void,
     title: string,
     is24Hours: boolean,
+    height?: number,
+    showError?:boolean,
+    errorText?:string,
 }
 
 const ModalSetInterval = (props:iModalSetInterval) => { // here we use another Modal, cause there is a trouble using native modal with Wheel picker
@@ -32,13 +30,22 @@ const ModalSetInterval = (props:iModalSetInterval) => { // here we use another M
         setNewInterval,
         handleOpenModalChangeInterval,
         title,
-        is24Hours
+        is24Hours,
+        height = 3,
+        showError,
+        errorText
     } = props;
 
   return (
     <Modal onRequestClose={handleOpenModalChangeInterval} animationType="fade" className=" border flex-1" transparent visible={showModalSetInterval}>
         <View className="absolute top-0 left-0 right-0 flex-1 h-full w-full bg-[#2f2f2f53]">
-            <View style={{width: screen.width, height: screen.height / 3}} className="bg-white p-10 rounded-t-2xl absolute bottom-0">
+            {showError && 
+            <View className="absolute left-0 right-0 w-full top-1/2 bg-white p-3 rounded-2xl">
+                <Text className="text-center text-lg text-error leading-5" style={{fontFamily:'geometria-bold'}}>
+                    {errorText}
+                </Text>
+            </View>}
+            <View style={{width: screen.width, height: screen.height / height}} className="bg-white p-10 rounded-t-2xl absolute bottom-0">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-base text-center min-h-[2px]">
                     {title}
                 </Text>

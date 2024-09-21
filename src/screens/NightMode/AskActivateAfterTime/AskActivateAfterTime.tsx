@@ -7,6 +7,7 @@ import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInter
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
 import { useTranslation } from "react-i18next";
+import { iTimePicker } from "../../../types";
 
 const AskActivateAfterTime = () => {
     const {t} = useTranslation();
@@ -15,7 +16,7 @@ const AskActivateAfterTime = () => {
     
     const [showModalAskActivateAfter, setShowModalAskActivateAfter] = useState<boolean>(false); // попап Спрашивать активировать после времени
 
-    const [whenAskToActivateNightMode, setWhenAskToActivateNightMode] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [whenAskToActivateNightMode, setWhenAskToActivateNightMode] = useState<iTimePicker>({
         selectedIndexHour: 21,
         selectedIndexMinutes: 0,
     });

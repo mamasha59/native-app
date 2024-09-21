@@ -11,6 +11,7 @@ import Pencil from "../../../assets/images/iconsComponent/Pencil";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import ToggleCannulationAtNight from "../../../components/ToggleCannulationAtNight/ToggleCannulationAtNight";
 import { activateRobotSpeech } from "../../../store/slices/appStateSlicer";
+import { iTimePicker } from "../../../types";
 
 interface iFirstDataScreen extends NavigationPropsWelcome<'FirstDataScreen'>{}
 
@@ -23,7 +24,7 @@ const FirstDataScreen = ({navigation}:iFirstDataScreen) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);        // состояние попапа выбора интервала
     const shakeAnimation = useRef(new Animated.Value(0)).current;
 
-    const [newInterval, setNewInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+    const [newInterval, setNewInterval] = useState<iTimePicker>({
         selectedIndexHour: 4,
         selectedIndexMinutes: 0,
     })

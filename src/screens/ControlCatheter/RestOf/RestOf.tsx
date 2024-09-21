@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import {useCallback, useMemo, useRef} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
@@ -15,6 +15,8 @@ import { StackNavigationRoot } from "../../../components/RootNavigations/RootNav
 import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 import { consumableItemChangeQuantity } from "../../../store/slices/consumablesSlice";
 import { ClosePopup } from "../../../assets/images/icons";
+import GradientBackground from "../../../Layouts/GradientBackground/GradientBackground";
+import { LinearGradient } from "expo-linear-gradient";
 
 const RestOf = () => {
   const {t} = useTranslation();
@@ -53,55 +55,60 @@ const RestOf = () => {
   );
 
   return (
-    <View>
-      <TouchableOpacity style={{elevation:Platform.OS === 'android' ? 5 : 0, 
-                                shadowColor: 'black', 
-                                shadowOffset: { width: 0, height: 2 }, 
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                              }}
-                                activeOpacity={.8}
-                                onPress={handleOpenPopup} 
-                                className="bg-main-blue rounded-xl w-full p-5 relative">
-        {consumablesItem.slice(0, currentRoute === 'Home' ? 1 : consumablesItem.length).map((item) => (
-            <View key={item.id} className="flex-row mb-4 justify-between relative flex-wrap">
-              <View className={`${item.category === 'catheter' ? 'flex-col' : 'flex-row'} flex-1 items-start flex-wrap`}>
-                <Text 
-                  style={{ fontFamily: item.category === 'catheter' ? "geometria-bold" : "geometria-regular"}}
-                  className="mr-2 text-base text-white border-b-[.2px] border-[#f5dd4b] whitespace-pre-wrap">
-                  {item.name}:
-                </Text>
-                <View className="flex-row items-center flex-wrap">
-                  <Text
-                    style={{ fontFamily: "geometria-bold"}}
-                    className="text-base text-white">
-                      {item.quantity+''}
-                    </Text>
-                   <Text
-                    style={{ fontFamily: item.category === 'catheter' ? "geometria-bold" : "geometria-regular" }}
-                    className="ml-2 text-base text-white">
-                      {t("units")}
-                    </Text>
-                </View>
-              </View>
-              {item.category !== 'catheter' 
-                ?(<>
-                  <Text className={`${item.active === true ? 'text-[#69ff6b]' : 'text-[#a50002]'}  text-sm leading-6`} style={{ fontFamily: "geometria-regular" }}>
-                    - {item.active === true ? 'учитываем' : 'не учитываем' } расход
+    <>
+    <TouchableOpacity activeOpacity={.8} onPress={handleOpenPopup} className=" w-full relative">
+        <LinearGradient
+          colors={['#4097fa', '#2ad4dd']}
+          start={[-0.5, 1]}
+          end={[3, 0.9]}
+          className="p-5 rounded-xl"
+        >
+          {consumablesItem.slice(0, currentRoute === 'Home' ? 1 : consumablesItem.length).map((item) => (
+              <View key={item.id} className="flex-row justify-center relative flex-wrap">
+                <View className={`${item.category === 'catheter' ? 'flex-col' : 'flex-row'} flex-1 items-start flex-wrap`}>
+                  <Text 
+                    style={{ fontFamily: item.category === 'catheter' ? "geometria-bold" : "geometria-regular"}}
+                    className="mr-2 text-base text-white border-b-[.2px] border-main-blue whitespace-pre-wrap">
+                    {item.name}:
                   </Text>
-                </>)
-                :(<View className="items-center bg-[#fff] absolute right-0 top-0 rounded-full p-2">
-                  <NelatonIcon/>
-                </View>)
-              }
-            </View>
-        ))}
-        <View className="items-end">
-          <Text className="text-white underline" style={{ fontFamily: "geometria-regular" }}>
-            {currentRoute === 'Home' ? 'Контроль расходников' : 'Редактировать'}
-          </Text>
-        </View>
-      </TouchableOpacity>
+                  <View className="flex-row items-center flex-wrap">
+                    <Text
+                      style={{ fontFamily: "geometria-bold"}}
+                      className="text-base text-white">
+                        {item.quantity+''}
+                      </Text>
+                    <Text
+                      style={{ fontFamily: item.category === 'catheter' ? "geometria-bold" : "geometria-regular" }}
+                      className="ml-2 text-base text-white">
+                        {t("units")}
+                    </Text>
+                  </View>
+                  {currentRoute === 'Home' && 
+                    <Text
+                      style={{ fontFamily: "geometria-bold" }}
+                      className="text-base leading-3 text-white">
+                      ...
+                  </Text>}
+                </View>
+                {item.category !== 'catheter' 
+                  ?(<>
+                    <Text className={`${item.active === true ? 'text-[#69ff6b]' : 'text-[#a50002]'}  text-sm leading-6`} style={{ fontFamily: "geometria-regular" }}>
+                      - {item.active === true ? 'учитываем' : 'не учитываем' } расход
+                    </Text>
+                  </>)
+                  :(<View className="items-center bg-[#fff] absolute right-0 top-0 rounded-full p-2">
+                    <NelatonIcon/>
+                  </View>)
+                }
+              </View>
+          ))}
+          <View className="items-end">
+            <Text className="text-white underline" style={{ fontFamily: "geometria-regular" }}>
+              {currentRoute === 'Home' ? 'перейти в запасы' : 'Редактировать'}
+            </Text>
+          </View>
+        </LinearGradient>
+    </TouchableOpacity>
       <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
@@ -148,7 +155,7 @@ const RestOf = () => {
           />
         </View>
       </BottomSheetModal>
-    </View>
+    </>
   );
 };
 

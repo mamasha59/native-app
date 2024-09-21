@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { useTranslation } from "react-i18next";
 
@@ -6,6 +6,7 @@ import Pencil from "../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { changeYellowInterval } from "../../store/slices/timerStatesSlice";
 import Alert from "../Alert/Alert";
+import { focusInput } from "../../utils/const";
 
 const NoticesOfCannulation = () => { //TODO smart alarm
     const {t} = useTranslation();
@@ -30,17 +31,6 @@ const NoticesOfCannulation = () => { //TODO smart alarm
 
     const handleInputWhenShowNoticeBeforeCannulation = (value: string) => handleInput(value, setWhenShowNoticeBeforeCannulation);
 
-    const focusInput = (inputRef:RefObject<TextInput>) => {
-        if (inputRef.current) {
-            inputRef.current.blur(); // Сначала снимаем фокус
-            setTimeout(() => {
-                inputRef.current && inputRef.current.focus(); // Затем устанавливаем фокус
-            }, 100); // Немного задержки для корректной работы
-        }
-    };
-
-    const focusInputWhenShowNoticeBeforeCannulation = () => focusInput(inputRefWhenShowNoticeBeforeCannulation);
-
     const handelModalAlert = () => setModalAlert(!modalAlert);
 
     const submitInputWhenShowNoticeBeforeCannulation = () => { // set new Yellow Interval for timer
@@ -51,15 +41,13 @@ const NoticesOfCannulation = () => { //TODO smart alarm
         }
     }
 
-    const handleSwitchAlarm = () => {
-        setSwitchAlarm(!switchAlarm);
-    }
+    const handleSwitchAlarm = () => setSwitchAlarm(!switchAlarm);
 
   return (
     <View className="mt-4">
         <Text style={{fontFamily:'geometria-bold'}}>{t("noticeOfCatheterizationComponent.title")}</Text>
 
-        <TouchableOpacity onPress={focusInputWhenShowNoticeBeforeCannulation} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
+        <TouchableOpacity onPress={() => focusInput(inputRefWhenShowNoticeBeforeCannulation)} className="mt-2 py-2 flex-row justify-between items-center border-b border-[#bdc3c75e]">
             <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>{t("noticeOfCatheterizationComponent.beforeCatheterization")}</Text>
             <View className="flex-row items-center">
                 <Text className="text-[17px]" style={{fontFamily:'geometria-regular'}}>{t("before")}</Text>
@@ -96,7 +84,7 @@ const NoticesOfCannulation = () => { //TODO smart alarm
                 {t("noticeOfCatheterizationComponent.notice")}
             </Text>
         </View>
-        <Alert key={'noticesettings'} modalAlertState={modalAlert} setModalAlertState={setModalAlert}>
+        <Alert key={'notice-settings'} modalAlertState={modalAlert} setModalAlertState={setModalAlert}>
             <View className="justify-between flex-1">
                 <Text style={{fontFamily:'geometria-bold'}} className="text-center text-2xl">
                     Время не может быть больше или равно Интервалу катетеризации

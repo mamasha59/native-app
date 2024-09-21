@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import Entypo from '@expo/vector-icons/Entypo';
 import { BlurView } from "expo-blur";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-import { Drop, Graphic } from "../../assets/images/icons";
+import { Drop } from "../../assets/images/icons";
 import { useAppSelector } from "../../store/hooks";
 
 interface iDoubleButton {
@@ -56,7 +57,10 @@ const DoubleButton = (props:iDoubleButton) => {
         activeOpacity={0.6}
         className="min-h-[44px] p-1 flex-1 bg-main-blue rounded-[89px] flex-row items-center justify-center">
 
-        {showIcon && <View className="mr-4"><Graphic width={16} height={16} color={'#fff'}/></View> }
+        {showIcon && 
+          <View className="mr-4">
+            <FontAwesome6 name="glass-water-droplet" size={30} color="white"/>
+          </View> }
 
         <Text style={{fontFamily:'geometria-bold'}} className="text-white text-sm text-center leading-4">
           {textOfRightButton}

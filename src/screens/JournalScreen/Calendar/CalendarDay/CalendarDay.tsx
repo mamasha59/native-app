@@ -2,7 +2,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 
-import { setCalendareDay } from "../../../../store/slices/appStateSlicer";
+import { setCalendarDay } from "../../../../store/slices/appStateSlicer";
 import { useAppDispatch } from "../../../../store/hooks";
 import { iDay } from "../../../../types";
 import { day } from "../../../../utils/date";
@@ -19,7 +19,7 @@ const CalendarDay = ({e}:iCalendarDay) => {
   let isCurrentDay = day.getDate() === e.dayNumber && day.getMonth() === e.month.index;
 
   const selectDate = () => {
-    dispatch(setCalendareDay(currentDay));
+    dispatch(setCalendarDay(currentDay));
   }
 
   const daysOfWeek = [

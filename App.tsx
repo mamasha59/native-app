@@ -9,18 +9,16 @@ import { StatusBar } from 'expo-status-bar';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ActivityIndicator} from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import { Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
-import Constants from 'expo-constants';
 
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
 import RootNavigations from './src/components/RootNavigations/RootNavigations';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { registerForPushNotificationsAsync } from './src/utils/registerForPushNotificationsAsync';
 
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
@@ -29,23 +27,17 @@ Notifications.setNotificationHandler({ // notices foreground
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
+    priority: Notifications.AndroidNotificationPriority.MAX,
   }),
 });
 
 Notifications.setNotificationCategoryAsync("its-about-cannulation", [
   {
     buttonTitle: "Выполнить катетеризацию",
-    identifier: "first",
+    identifier: "first", 
     options: {
       opensAppToForeground: true,
-    },
-  },
-  {
-    buttonTitle: "Проигнорировать",
-    identifier: "second",
-    options: {
-      opensAppToForeground: false,
       isDestructive: true,
     },
   },
@@ -54,7 +46,8 @@ Notifications.setNotificationCategoryAsync("its-about-cannulation", [
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   const [notification, setNotification] = useState<Notifications.Notification>();
-
+  console.log(notification);
+  
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
@@ -63,7 +56,6 @@ export default function App() {
     .then(token => setExpoPushToken(token));
     // ниже метод выполняется когда пришло уведомление
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
     });
     // ниже метод, при клике на уведомление, когда пользователь взаимодействует с уведомлением
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -79,12 +71,12 @@ export default function App() {
     };
   }, []);
 
-  const [fontsLoader, fontError] = useFonts({     // загружаем шрифт
+  const [fontsLoader, fontError] = useFonts({     // LOAD FONTS
     'geometria-bold' : require('./src/assets/fonts/geometria-bold.ttf'),
     'geometria-regular' : require('./src/assets/fonts/geometria-regular.ttf')
-    });
+  });
     
-  const onLayoutRootView = useCallback(async () => { // работа загрузочного экрана
+  const onLayoutRootView = useCallback(async () => { // SPLASH SCREEN
     if (fontsLoader || fontError) await SplashScreen.hideAsync();
     }, [fontsLoader, fontError]);
 
@@ -110,37 +102,4 @@ export default function App() {
       </PersistGate>
     </Provider>
   );
-}
-
-async function registerForPushNotificationsAsync() {
-  let token;
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Permission not granted to get push token for push notification!');
-      return;
-    }
-    token = await Notifications.getExpoPushTokenAsync({ 
-      projectId: Constants.expoConfig?.extra?.eas.projectId,
-    });
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  return token && token.data;
 }

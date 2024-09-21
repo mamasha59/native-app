@@ -3,7 +3,7 @@ import appStateSlicer from "./slices/appStateSlicer";
 import journalDataSlice from "./slices/journalDataSlice";
 import timerStatesSlice from "./slices/timerStatesSlice";
 import nightStateSlice from "./slices/nightStateSlice";
-import noticeSettingsSlice from "./slices/noticeSettingsSlice";
+import notificationsSettingsSlice from "./slices/notificationsSettingsSlice";
 import surveySlice from "./slices/surveySlice";
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
     journal: journalDataSlice,
     timerStates: timerStatesSlice,
     nightOnBoarding: nightStateSlice,
-    noticeSettingsSlice: noticeSettingsSlice,
+    notificationsSettingsSlice: notificationsSettingsSlice,
     surveySlice: surveySlice,
     consumablesSlice: consumablesSlice,
 }));

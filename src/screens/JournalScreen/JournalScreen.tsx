@@ -11,27 +11,28 @@ import { day, getCurrentMonth } from "../../utils/date";
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import { iDairyRecord, iMonth } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { resetBadges, setCalendareDay } from "../../store/slices/appStateSlicer";
+import { resetBadges } from "../../store/slices/appStateSlicer";
 import Statistics from "./Statistics/Statistics";
-import { StackNavigationRoot } from "../../components/RootNavigations/RootNavigations";
 import { handleModalCustomizePdfDocument } from "../../store/slices/journalDataSlice";
 import FilterCategories from "./FilterCategories/FilterCategories";
 import ListOfCalendarDays from "./Calendar/ListOfCalendarDays/ListOfCalendarDays";
 import ModalCustomizePdf from "./ModalCustomizePdf/ModalCustomizePdf";
-import { dateFormat } from "../../utils/const";
-
-interface iJournalScreen{
-  navigation: StackNavigationRoot,
-}
 
 const {height,width} = Dimensions.get('window');
 
-const JournalScreen = ({navigation}:iJournalScreen) => {
+interface iStatistic {
+  cannulation?:number,
+  leakage?:number,
+  amountOfDrankFluids?:number,
+  amountOfReleasedUrine?:number
+}
+
+const JournalScreen = () => {
   const {t, i18n} = useTranslation();
   const dispatch = useAppDispatch();
 
   const {urineDiary, modalCustomizePdfDocument} = useAppSelector((state) => state.journal); // массив записей из хранилища редакса
-  const {calendareDay} = useAppSelector(user => user.appStateSlice); // достаем из стора редакса выбранню дату на календаре и ответы
+  const {calendarDay} = useAppSelector(user => user.appStateSlice); // достаем из стора редакса выбранню дату на календаре и ответы
 
   const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
   const [filteredJournalRecords, setFilteredJournalRecords] = useState<iDairyRecord[]>([]); // массив отфильтрованных по дате записей
@@ -39,7 +40,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
   const [buttonName, setButtonName] = useState<string>('');
 
   const [filterSetting, setFilterSetting] = useState<string>('');
-  const [openSelectMonth, setOpenSelectmonth] = useState<boolean>(false);
+  const [openSelectMonth, setOpenSelectMonth] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 
   const nelaton = t("nelaton");
@@ -58,7 +59,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
     { value: t("months.december"), index: 11},
 ];
 
-  const [statisticPerDay, setStatisticPerDay] = useState<{cannulation?:number,leakage?:number,amountOfDrankFluids?:number,amountOfReleasedUrine?:number}>({
+  const [statisticPerDay, setStatisticPerDay] = useState<iStatistic>({
     cannulation: 0,
     leakage: 0,
     amountOfDrankFluids:0,
@@ -70,22 +71,21 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
     index: getCurrentMonth,
   });
 
-  const handleModalState = () => {    
-    dispatch(handleModalCustomizePdfDocument(!modalCustomizePdfDocument));
-  }
+  const handleModalState = () => dispatch(handleModalCustomizePdfDocument(!modalCustomizePdfDocument));
 
   const handlePressButton = (button:string) => {
     setButtonName(button);
     handleModalState();
   }
 
-  useEffect(() => { // журнал данные всегда по текущий день
-    const today = format(new Date(), dateFormat).slice(0,10);
-    if(today !== calendareDay) {
-      dispatch(setCalendareDay(today));
-      dispatch(resetBadges());
-    }
-  },[])
+  // useEffect(() => { // журнал данные всегда по текущий день
+  //   const today = format(new Date(), dateFormat).slice(0,10);
+        
+  //   if(today !== calendarDay) {
+  //     dispatch(setCalendareDay(today));
+  //     dispatch(resetBadges());
+  //   }
+  // },[])
 
   useEffect(() => { // filtering by catagories
     const applyFilter = (records: iDairyRecord[], filter: string) => {
@@ -106,17 +106,17 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
     };
     setLoading(true);
     setTimeout(() => { // искуственный лоудер
-      const todayJournal = urineDiary.filter((e) => e.timeStamp?.slice(0, 10) === calendareDay);
+      const todayJournal = urineDiary.filter((e) => e.timeStamp?.slice(0, 10) === calendarDay);
         
       const filteredRecords = applyFilter(todayJournal, filterSetting);
         setFilteredJournalRecords(filteredRecords);
         setLoading(false); // Скрыть индикатор загрузки
     }, 500);
 
-  }, [filterSetting, calendareDay, urineDiary, day]);  
+  }, [filterSetting, calendarDay, urineDiary, day]);  
   
   useEffect(() => { // добавление данных в блок Статистика за сегодня
-    const filteredRecords:iDairyRecord[] = urineDiary.filter(e => e.timeStamp?.slice(0, 10) === calendareDay); // фильтруем по даты, либо выбранной дате
+    const filteredRecords:iDairyRecord[] = urineDiary.filter(e => e.timeStamp?.slice(0, 10) === calendarDay); // фильтруем по даты, либо выбранной дате
     
     const cannulationStaticPerDay = filteredRecords.filter(e => e.catheterType); // фильтруем по типу катетора, для статистики Катетеризаций:
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
@@ -139,7 +139,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
     }
     setStatisticPerDay(setStatistics);
-  },[calendareDay,urineDiary,day]);
+  },[calendarDay,urineDiary,day]);
 
   useEffect(() => { // set correct name of month if language if changed
     setSelectedMonth({month: months[month.index].value, index: month.index});
@@ -153,9 +153,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
     }, 1000);
   }, [i18n.language]);
 
-  const handleModalSelectMonth = () => {
-    setOpenSelectmonth(!openSelectMonth);
-  }
+  const handleModalSelectMonth = () => setOpenSelectMonth(!openSelectMonth);
 
   const onMonthClick = (month: { value: string; index: number;}) => {
     setSelectedMonth({month: month.value, index: month.index});
@@ -196,7 +194,7 @@ const JournalScreen = ({navigation}:iJournalScreen) => {
 
       <ListOfCalendarDays month={month} months={months} setSelectedMonth={setSelectedMonth} />
       <FilterCategories setFilterSetting={setFilterSetting}/>
-      <Statistics selectedCalendarDate={calendareDay} statisticPerDay={statisticPerDay}/>
+      <Statistics selectedCalendarDate={calendarDay} statisticPerDay={statisticPerDay}/>
 
       <FlatList
         data={loading || urineDiary.length === 0 || filteredJournalRecords.length === 0 ? [] : filteredJournalRecords}

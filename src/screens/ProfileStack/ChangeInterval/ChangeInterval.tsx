@@ -5,22 +5,25 @@ import { useState } from "react";
 import { useFormatInterval } from "../../../hooks/useFormatInterval";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import Alert from "../../../components/Alert/Alert";
-import DoubleButton from "../../../components/DoubleButton/DoubleButton";
 import { setInterval } from "../../../store/slices/timerStatesSlice";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
+import NoticeAlertToChangeInterval from "./NoticeAlertToChangeInterval/NoticeAlertToChangeInterval";
+import NoticeAlertIfIntervalLessThanYellow from "./NoticeAlertIfIntervalLessThanYellow/NoticeAlertIfIntervalLessThanYellow";
+import { iTimePicker } from "../../../types";
 
 const ChangeInterval = () => {
   const {t} = useTranslation();
 
   const dispatch = useAppDispatch();
-  const interval = useAppSelector((state) => state.timerStates.interval);
+  const {interval, yellowInterval} = useAppSelector((state) => state.timerStates);
 
   const newIntervalText = useFormatInterval({intervalInSeconds: interval}); // return text string interval, like 2 hour 3 min
 
   const [modalAlert, setModalAlert] = useState<boolean>(false);
   const [showModalSetInterval, setShowModalSetInterval] = useState<boolean>(false);
+  const [changeAlert, setChangeAlert] = useState<boolean>(false);
 
-  const [newInterval, setNewInterval] = useState<{selectedIndexHour:number,selectedIndexMinutes:number}>({
+  const [newInterval, setNewInterval] = useState<iTimePicker>({
     selectedIndexHour: 3,
     selectedIndexMinutes: 0,
   })
@@ -28,16 +31,28 @@ const ChangeInterval = () => {
   const handleModalChangeInterval = () => setShowModalSetInterval(!showModalSetInterval); // open modal set interval
   const handleModalAlert = () => setModalAlert(!modalAlert);
 
+
   const handlePressSave = () => {
+    const convertedInterval = convertTimeToSeconds();
+    const convertedYellowInterval = yellowInterval * 60;
+
+    convertedInterval < convertedYellowInterval ? setChangeAlert(true) : setChangeAlert(false);
+    
     handleModalAlert();
-    handleModalChangeInterval();
+    handleModalChangeInterval(); // close modal
   }
-  
-  const handleChangeOptimalInterval = () => { // при подтверждении нового интервала
+
+  const convertTimeToSeconds = () => {
     const hours = newInterval.selectedIndexHour;   // часы
     const minutes = newInterval.selectedIndexMinutes; // минуты
     const initialTime = hours * 3600 + minutes * 60; // складываем часы и минуты в полное время в миллисекундах
-    dispatch(setInterval(initialTime));
+    return initialTime;
+  }
+  
+  const handleChangeOptimalInterval = () => {
+    const convertedInterval = convertTimeToSeconds();
+    
+    dispatch(setInterval(convertedInterval));
     handleModalAlert();
   }
 
@@ -69,37 +84,23 @@ const ChangeInterval = () => {
         pressSaveButton={handlePressSave}
         title="Выберите новый интервал"
         is24Hours={false}
-        key={'profilescreen'}
+        key={'profile-screen'}
       />
 
       <Alert modalAlertState={modalAlert} setModalAlertState={setModalAlert}>
-        <View className="justify-center items-center flex-1 mb-5">
-          <Text style={{fontFamily:'geometria-regular'}} className="mb-2">
-            Давайте уточним, 
-          </Text>
-          <Text style={{fontFamily:'geometria-bold'}} className="w-full mb-1 text-lg">
-            Был интервал: {newIntervalText}
-          </Text> 
-          <Text style={{fontFamily:'geometria-bold'}} className="w-full mb-2 text-lg">
-            Меняем на: {newInterval.selectedIndexHour} ч. {newInterval.selectedIndexMinutes} мин.
-          </Text>
-          <Text style={{fontFamily:'geometria-regular'}} className="w-full mb-2">
-            При следующей катетеризации интервал станет:
-          </Text>
-          <Text style={{fontFamily:'geometria-bold'}} className="text-lg border-b border-main-blue mb-2">
-            {newInterval.selectedIndexHour} ч. {newInterval.selectedIndexMinutes} мин.
-          </Text>
-          <Text style={{fontFamily:'geometria-regular'}}>
-            Вы уверены?
-          </Text>
-        </View>
-        <DoubleButton
-          showIcon={false}
-          textOfLeftButton="Я подумаю"
-          handlePressLeftButton={handleModalAlert}
-          textOfRightButton="Меняем!"
-          handlePressRightButton={handleChangeOptimalInterval}
-        />
+        {changeAlert 
+          ? <NoticeAlertIfIntervalLessThanYellow
+              newIntervalText={newInterval}
+              yellowInterval={yellowInterval}
+              handleModalAlert={handleModalAlert}
+            />
+          : <NoticeAlertToChangeInterval
+              handleChangeOptimalInterval={handleChangeOptimalInterval}
+              handleModalAlert={handleModalAlert}
+              newInterval={newInterval}
+              newIntervalText={newIntervalText}
+            />
+        }
       </Alert>
     </>
   );

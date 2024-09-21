@@ -37,12 +37,12 @@ const NightModeButton = () => {
     },[settings.cannulationAtNight.value])
 
   return (
-    <View>
-        <TouchableOpacity className="absolute -top-4 right-0 w-[100px] h-[100px]" onPress={handleModal}>
+    <>
+        <TouchableOpacity className="w-[90px] h-[65px]" onPress={handleModal}>
             <LottieView
                 ref={animationRef}
                 source={require("../../../../assets/animation-night-mode.json")}
-                style={{width: 100, height: 90}}
+                style={{width: '100%', height: '100%'}}
                 autoPlay={false}
                 loop={false}
             />
@@ -65,7 +65,7 @@ const NightModeButton = () => {
                 </View>
             }
         />
-    </View>
+    </>
   );
 };
 

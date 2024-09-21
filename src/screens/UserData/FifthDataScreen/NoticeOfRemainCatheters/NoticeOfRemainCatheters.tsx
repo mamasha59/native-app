@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import NotificationIcon from "../../../../assets/images/iconsComponent/TabMenuIcons/NotificationIcon";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { setDaysInAdvanceWhenShowNoticeOfRemainCaths } from "../../../../store/slices/noticeSettingsSlice";
+import { setDaysInAdvanceWhenShowNoticeOfRemainCaths } from "../../../../store/slices/notificationsSettingsSlice";
 import { focusInput } from "../../../../utils/const";
 
 const {width} = Dimensions.get('screen');
@@ -13,11 +13,11 @@ const NoticeOfRemainCatheters = () => {
 
   const {t} = useTranslation();
 
-  const settingsOfNotice = useAppSelector(state => state.noticeSettingsSlice);
+  const {daysInAdvanceWhenShowNoticeOfRemainCaths} = useAppSelector(state => state.notificationsSettingsSlice);
   const dispatch = useAppDispatch();
 
   const inputRefNoticeOfCathsRemain = useRef<TextInput>(null);
-  const [whenShowNoticeOfCathsRemain, setWhenShowNoticeOfCathsRemain] = useState<string>(''+settingsOfNotice.daysInAdvanceWhenShowNoticeOfRemainCaths);
+  const [whenShowNoticeOfCathsRemain, setWhenShowNoticeOfCathsRemain] = useState<string>(''+daysInAdvanceWhenShowNoticeOfRemainCaths);
 
   const handleInputNoticeOfCathsRemain = (value:string) => {
     +value <= 0 ? setWhenShowNoticeOfCathsRemain('') : setWhenShowNoticeOfCathsRemain(value);

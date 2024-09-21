@@ -10,11 +10,11 @@ const NoticeNavigationScreen = () => {
   const {t} = useTranslation();
   return (
     <MainLayout title={t("fourthDataScreen.title")}>
-      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 my-5">
-          <CatheterizationReminder/>
-          <NoticesOfCannulation/>
-          <NoticesOfWaterConsumption/>
-        </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        <CatheterizationReminder/>
+        <NoticesOfCannulation/>
+        <NoticesOfWaterConsumption/>
+      </ScrollView>
     </MainLayout>
   );
 };

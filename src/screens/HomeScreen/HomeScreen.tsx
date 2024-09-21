@@ -13,8 +13,6 @@ import RestOf from '../ControlCatheter/RestOf/RestOf';
 import { popupLiquidState } from '../../store/slices/appStateSlicer';
 import ModalLeakageHappened from './ModalLeakageHappened/ModalLeakageHappened';
 import ModalSuccess from './Timer/ModalSuccess/ModalSuccess';
-import IntervalInfo from './IntervalInfo/IntervalInfo';
-import NightModeButton from './Timer/NightModeButton/NightModeButton';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
@@ -35,11 +33,9 @@ const HomeScreen = () => {
       <DoubleTapToClose/>
       <View className="flex-1 justify-between">
         <RestOf/>
-        <IntervalInfo/>
-        <NightModeButton/>
         <Timer setToastOpened={setToastOpened}/>
         <DoubleButton
-          key={'doubleButtonHomeScreen'}
+          key={'double-button-home-screen'}
           handlePressRightButton={openModal}
           handlePressLeftButton={handlePressLeftButton}
           textOfLeftButton={t("homeScreen.doubleButtonComponent.leakage")}
@@ -53,10 +49,10 @@ const HomeScreen = () => {
         modalLeakageVisible={modalLeakageVisible}
         setModalLeakageVisible={setModalLeakageVisible}
         setToastOpened={setToastOpened}
-        key={'leakagemodal'}
+        key={'leakage-modal'}
       />
       <ModalSuccess/>
-      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'toasthomescreen'}/>
+      <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'toast-home-screen'}/>
     </MainLayout>
   );
 };

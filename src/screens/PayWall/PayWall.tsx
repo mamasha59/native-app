@@ -40,9 +40,9 @@ const PayWall = ({navigation}:iPayWall) => {
         handleProceed={handleProceed}
         currentScreen={0}
         titleCenter
-        paywall
+        paywall showRobotIconOnTop={false}
         >
-      <>
+      <View className="flex-1 my-5 ">
       <LinearGradient
         colors={['#FF6F61', '#FF9671']}
         className="rounded-3xl items-center px-5 py-2"
@@ -50,10 +50,10 @@ const PayWall = ({navigation}:iPayWall) => {
         <LottieView
             autoPlay
             style={{
-            width: 90,
-            height: 90,
+            width: 200,
+            height: 200,
             }}
-            source={require('../../assets/padlock.json')}
+            source={require('../../assets/robot-face.json')}
         />
         <View className="items-center flex-1">
             <Text style={{fontFamily:'geometria-bold'}} className="text-center text-lg">
@@ -149,7 +149,7 @@ const PayWall = ({navigation}:iPayWall) => {
             </TouchableOpacity>
         </View>
       </View>
-    </>
+    </View>
     </WelcomeLayout>
   );
 };

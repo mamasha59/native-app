@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
-import Modal from "react-native-modal";
+import { View, Text, TouchableOpacity, Dimensions, Modal } from "react-native";
 import { useTranslation } from "react-i18next";
 import LottieView from "lottie-react-native";
 
@@ -8,7 +7,7 @@ import { useAppSelector } from "../../../store/hooks";
 import WaterBalanceInterval from "../WaterBalanceInterval/WaterBalanceInterval";
 import { ClosePopup } from "../../../assets/images/icons";
 
-const windowWidth = Dimensions.get('window').width;
+const screen = Dimensions.get('window');
 
 const FluidIntakeChart = () => {
     const {t, i18n} = useTranslation();
@@ -80,51 +79,52 @@ const FluidIntakeChart = () => {
             <WaterBalanceInterval result={result} showResult={showResult.showPositive} key={'positive'} bgColor={colorPositive}/>
         </View>
         <Modal
-            isVisible={showModal}
-            animationIn={'slideInUp'}
-            animationOut={'zoomOut'}
-            useNativeDriverForBackdrop
-            onBackButtonPress={() => setShowModal(false)}>
-            <View style={{width: windowWidth * 0.3}} className="min-w-[315px] mx-auto bg-white px-5 py-11 items-start">
-                <TouchableOpacity onPress={() => setShowModal(false)} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
-                    <ClosePopup width={15} height={15}/>
-                </TouchableOpacity>
-                <View className="mt-2 mx-auto">
-                   <Text className="text-center" style={{fontFamily:'geometria-bold'}}>
-                        {t("waterBalanceComponent.water_balance_formula")}
-                   </Text>
-                   <View className="flex-row items-center justify-center py-5">
-                        <Text style={{fontFamily:'geometria-regular'}} className="mr-1">
-                            {t("waterBalanceComponent.title_short")} =
+            visible={showModal}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setShowModal(false)}>
+            <View className="flex-1 w-full h-full bg-[#00000037]">
+                <View style={{width: screen.width / 1.3, height: screen.height / 1.5}} className="justify-center my-auto rounded-md mx-auto bg-white px-5 py-11 items-start">
+                    <TouchableOpacity onPress={() => setShowModal(false)} activeOpacity={0.6} className="p-2 absolute top-[5%] right-[5%]">
+                        <ClosePopup width={15} height={15}/>
+                    </TouchableOpacity>
+                    <View className="mt-2 mx-auto">
+                    <Text className="text-center" style={{fontFamily:'geometria-bold'}}>
+                            {t("waterBalanceComponent.water_balance_formula")}
+                    </Text>
+                    <View className="flex-row items-center justify-center py-5">
+                            <Text style={{fontFamily:'geometria-regular'}} className="mr-1">
+                                {t("waterBalanceComponent.title_short")} =
+                            </Text>
+                            <View className="">
+                                <Text className="border-b text-center" style={{fontFamily:'geometria-regular'}}>
+                                    {t("waterBalanceComponent.urine_output")}
+                                </Text>
+                                <Text className="text-center" style={{fontFamily:'geometria-regular'}}>
+                                    {t("waterBalanceComponent.fluid_intake")}
+                                </Text>
+                            </View>
+                            <Text className="ml-1" style={{fontFamily:'geometria-regular'}}>× 100%</Text> 
+                    </View>
+                    </View>
+                    <Text style={{fontFamily:'geometria-regular'}} className="mb-2">
+                        {t("waterBalanceComponent.description")}
+                    </Text>
+                    <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNegative}}>
+                        <Text style={{fontFamily:'geometria-bold'}}>
+                        {t("waterBalanceComponent.intervals.negative")} {t("waterBalanceComponent.intervals.negative_text")}
                         </Text>
-                        <View className="">
-                            <Text className="border-b text-center" style={{fontFamily:'geometria-regular'}}>
-                                {t("waterBalanceComponent.urine_output")}
-                            </Text>
-                            <Text className="text-center" style={{fontFamily:'geometria-regular'}}>
-                                {t("waterBalanceComponent.fluid_intake")}
-                            </Text>
-                        </View>
-                        <Text className="ml-1" style={{fontFamily:'geometria-regular'}}>× 100%</Text> 
-                   </View>
-                </View>
-                <Text style={{fontFamily:'geometria-regular'}} className="mb-2">
-                    {t("waterBalanceComponent.description")}
-                </Text>
-                <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNegative}}>
-                    <Text style={{fontFamily:'geometria-bold'}}>
-                    {t("waterBalanceComponent.intervals.negative")} {t("waterBalanceComponent.intervals.negative_text")}
-                    </Text>
-                </View>
-                <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNormal}}>
-                    <Text style={{fontFamily:'geometria-bold'}}>
-                    {t("waterBalanceComponent.intervals.normal")} {t("waterBalanceComponent.intervals.normal_text")}
-                    </Text>
-                </View>
-                <View className="my-2 border-l-4 pl-2" style={{borderColor:colorPositive}}>
-                    <Text style={{fontFamily:'geometria-bold'}}>
-                    {t("waterBalanceComponent.intervals.positive")} {t("waterBalanceComponent.intervals.positive_text")}
-                    </Text>
+                    </View>
+                    <View className="my-2 border-l-4 pl-2" style={{borderColor:colorNormal}}>
+                        <Text style={{fontFamily:'geometria-bold'}}>
+                        {t("waterBalanceComponent.intervals.normal")} {t("waterBalanceComponent.intervals.normal_text")}
+                        </Text>
+                    </View>
+                    <View className="my-2 border-l-4 pl-2" style={{borderColor:colorPositive}}>
+                        <Text style={{fontFamily:'geometria-bold'}}>
+                        {t("waterBalanceComponent.intervals.positive")} {t("waterBalanceComponent.intervals.positive_text")}
+                        </Text>
+                    </View>
                 </View>
             </View>
         </Modal>

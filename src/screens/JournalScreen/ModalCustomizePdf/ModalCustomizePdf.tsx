@@ -37,7 +37,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const chooseCalendarDay = '#50cebb'
     const dispatch = useAppDispatch()
     const {urineDiary, modalCustomizePdfDocument, checkBoxAddSurveyInPdf} = useAppSelector(state => state.journal);
-    const {calendareDay, units} = useAppSelector(state => state.appStateSlice);
+    const {calendarDay: calendarDay, units} = useAppSelector(state => state.appStateSlice);
     const {surveyAnswers} = useAppSelector(state => state.surveySlice);
     const userData = useAppSelector(state => state.user);
 
@@ -50,9 +50,9 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
       
     const maxDate = format(new Date(), dateFormat).slice(0,10);
     useEffect(() => {
-      setStartDate(calendareDay);
+      setStartDate(calendarDay);
       setMarkedDates({
-        [calendareDay] : { color: '#50cebb', textColor: 'white' }
+        [calendarDay] : { color: '#50cebb', textColor: 'white' }
       })
     },[])
 

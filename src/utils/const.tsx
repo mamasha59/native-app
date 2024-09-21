@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import { Option, iLanguage } from "../types";
 import i18next from "i18next";
 import { TextInput } from "react-native";
+import { format, set } from "date-fns";
 
 export const email = 'mai-best-cot@gmail.com';
 
@@ -83,4 +84,16 @@ export const focusInput = (inputRef: RefObject<TextInput>) => { // focus by pres
       inputRef.current && inputRef.current.focus();
     }, 100);
   }
+};
+
+export const createDateFromTime = (selectedIndexHour:number, selectedIndexMinutes:number) => { // create date like -  2024-06-14T19:00:00.497Z
+  const now = new Date();
+  const dateWithTime = set(now, { hours: selectedIndexHour, minutes: selectedIndexMinutes, seconds: 0 });
+  return dateWithTime;
+};
+
+export const formatDateToTimeString = (date:Date) => { // string from date
+  const hours = format(date, 'H');
+  const minutes = format(date, 'mm');
+  return `${hours}:${minutes}`;
 };

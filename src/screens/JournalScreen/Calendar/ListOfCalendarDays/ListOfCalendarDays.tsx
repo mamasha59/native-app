@@ -7,7 +7,7 @@ import { iDay, iMonth } from "../../../../types/index";
 
 import { day } from '../../../../utils/date';
 import { useAppDispatch } from "../../../../store/hooks";
-import { setCalendareDay } from "../../../../store/slices/appStateSlicer";
+import { setCalendarDay } from "../../../../store/slices/appStateSlicer";
 import CalendarDay from "../CalendarDay/CalendarDay";
 import { dateFormat } from "../../../../utils/const";
 
@@ -58,7 +58,7 @@ const ListOfCalendarDays = ({setSelectedMonth, month, months}:iJournalCalendar) 
         setRefreshing(false);
       }, 2000);
       scrollViewRef.current?.scrollTo();
-      dispatch(setCalendareDay(format(new Date(), dateFormat).slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
+      dispatch(setCalendarDay(format(new Date(), dateFormat).slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
       setSelectedMonth({month: months[getCurrentMonth].value, index: getCurrentMonth});
     };
 

@@ -35,7 +35,7 @@ const JournalRecord = (props:iDairyRecord) => {
             <Text style={{ fontFamily: "geometria-regular" }} className="text-sm color-black">{catheterType}</Text>
         </View>
     } 
-    {   amountOfDrankFluids || amountOfReleasedUrine 
+    {   amountOfDrankFluids || amountOfReleasedUrine
         ?   <View className="items-start flex-1">
                 <Text style={{ fontFamily: "geometria-regular" }} className="text-xs opacity-40 color-black">
                     {amountOfDrankFluids ? t("journalScreen.recordTitles.drank_fluids") : amountOfReleasedUrine ? t("journalScreen.recordTitles.excreted_urine") : ''}:

@@ -13,7 +13,7 @@ interface iAppStateSlicer {
   open: boolean,
   ifCountUrinePopupLiquidState: boolean,
   urineMeasure: boolean,
-  calendareDay: string,
+  calendarDay: string,
   tabBarBadgeJournalScreen: number,
   stateOfTimerTitleForFirstTimeInApp: boolean,
   cannulationAtNight: {
@@ -45,7 +45,7 @@ const initialState:iAppStateSlicer = {
     isExist: false,                        // есть ли юзер в локал сторедж
     open: false,                          // состояние попапа жидкости
     ifCountUrinePopupLiquidState: false, // состояние что бы изменить вид попапа Слитой мочи
-    calendareDay: format(new Date(), dateFormat).slice(0,10), // дефолтное состояние календаря, текущий день
+    calendarDay: format(new Date(), dateFormat).slice(0,10), // дефолтное состояние календаря, текущий день
     tabBarBadgeJournalScreen: 0,
     stateOfTimerTitleForFirstTimeInApp: false,
     cannulationAtNight: {
@@ -62,6 +62,7 @@ const initialState:iAppStateSlicer = {
       rightButton: true,
     },
 }
+
 const appStateSlice = createSlice({
     name: 'appStateSlice',
     initialState,
@@ -88,8 +89,8 @@ const appStateSlice = createSlice({
       ifCountUrineChangeState: (state, action:PayloadAction<boolean>) => {
         state.ifCountUrinePopupLiquidState = action.payload;
       },
-      setCalendareDay: (state, action:PayloadAction<string>) => {
-        state.calendareDay = action.payload;
+      setCalendarDay: (state, action:PayloadAction<string>) => {
+        state.calendarDay = action.payload;
       },
       addBadgesJournalScreen: (state, action:PayloadAction<number>) => {
         if(action.payload > 0) {
@@ -132,7 +133,7 @@ export const {
     changeIsExist,
     popupLiquidState,
     ifCountUrineChangeState,
-    setCalendareDay,
+    setCalendarDay,
     addBadgesJournalScreen,
     resetBadges,
     changeStateOfTimerTitleForFirstTimeInApp,

@@ -1,9 +1,10 @@
 {
   "expo": {
-    "name": "UroControl-Nelaton",
+    "name": "use-nelaton-easily",
     "slug": "sergeitest",
     "version": "1.0.0",
     "owner": "zinaidamama",
+    "scheme": "use-nelaton-easily",
     "orientation": "portrait",
     "icon": "./src/assets/images/splash-screen/appIcon.png",
     "userInterfaceStyle": "light",
@@ -32,7 +33,10 @@
         "backgroundColor": "#ffffff"
       },
       "package": "urocontrol.sergeikuleshov",
-      "android.googleServicesFile": "./google-services.json"
+      "android.googleServicesFile": "./google-services.json",
+      "permissions": [
+        "SCHEDULE_EXACT_ALARM"
+      ]
     },
     "extra": {
       "eas": {
@@ -51,7 +55,8 @@
         "expo-notifications",
         {
           "icon": "./src/assets/images/splash-screen/notificationIcon.png",
-          "color": "#ffffff"
+          "color": "#ffffff",
+          "defaultChannel": "default"
         }
       ],
       "expo-localization"

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import * as Notifications from 'expo-notifications';
 import { TextInput } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -33,6 +33,8 @@ const WaterGoalReminderDuringDay = () => {
         const secondsInterval = interval * 3600;
         
         if (identifierOfGoalReminderIntervalDuringDay){
+          console.log("удалено");
+          
           await Notifications.cancelScheduledNotificationAsync(identifierOfGoalReminderIntervalDuringDay);
         }    
         try {
@@ -46,21 +48,30 @@ const WaterGoalReminderDuringDay = () => {
               body: 'Поддерживайте баланс воды в организме!',
               sound: true,
               categoryIdentifier: 'reminder-to-drink-water',
+              data: {
+                title: 'drink-water',
+              }
             },
             trigger: {
-                seconds: secondsInterval,
-                repeats: true,
-                channelId: undefined,
+              seconds: secondsInterval,
+              repeats: true,
+              channelId: undefined,
             },
           });
+          console.log("запланированно");
+
           dispatch(setIdentifierOfGoalReminderIntervalDuringDay(notificationId)); // Устанавливаем ID уведомления
         } catch (error) {
           console.error('Failed to schedule notification:', error);
         }
     };
 
+    useEffect(() => {
+      schedulePushNotification(+intervalGoalReminder)
+    },[intervalGoalReminder])
+
     const submitInputGoalReminderDuringDay = () => { // set new Yellow Interval for timer
-      schedulePushNotification(+intervalGoalReminder);
+      // schedulePushNotification(+intervalGoalReminder);
       dispatch(setGoalReminderIntervalDuringDay(+intervalGoalReminder));
     }
 
@@ -70,24 +81,24 @@ const WaterGoalReminderDuringDay = () => {
             {t("noticeOfWaterConsumptionComponents.remind_to_reached_water_goal_time")}
         </Text>
         <View className="flex-row items-center">
-            <View className="flex-row items-center">
-                <Text className="text-base" style={{fontFamily:'geometria-regular'}}>{t("every")} </Text>
-                <TextInput
-                    value={intervalGoalReminder}
-                    ref={inputRef}
-                    onEndEditing={submitInputGoalReminderDuringDay}
-                    onChangeText={(e) => handleInputGoalReminderDuringDay(e)}
-                    className="text-base"
-                    style={{fontFamily:'geometria-bold'}}
-                    keyboardType="numeric"
-                    maxLength={2}
-                    selectTextOnFocus
-                />
-                <Text className="text-base" style={{fontFamily:'geometria-bold'}}>{t("hour")} </Text>
-            </View>
-            <View className="w-[20px] h-[20px] items-center justify-center ml-1">
-                <Pencil/>
-            </View>
+          <View className="flex-row items-center">
+              <Text className="text-base" style={{fontFamily:'geometria-regular'}}>{t("every")} </Text>
+              <TextInput
+                  value={intervalGoalReminder}
+                  ref={inputRef}
+                  onEndEditing={submitInputGoalReminderDuringDay}
+                  onChangeText={(e) => handleInputGoalReminderDuringDay(e)}
+                  className="text-base"
+                  style={{fontFamily:'geometria-bold'}}
+                  keyboardType="numeric"
+                  maxLength={2}
+                  selectTextOnFocus
+              />
+              <Text className="text-base" style={{fontFamily:'geometria-bold'}}>{t("hour")} </Text>
+          </View>
+          <View className="w-[20px] h-[20px] items-center justify-center ml-1">
+              <Pencil/>
+          </View>
         </View>
     </TouchableOpacity>
   );

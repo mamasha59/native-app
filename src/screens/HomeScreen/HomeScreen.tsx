@@ -9,10 +9,10 @@ import MainLayout from '../../Layouts/MainLayout/MainLayout';
 import DoubleTapToClose from '../../components/ExitAppDoublePress/ExitAppDoublePress';
 import { useAppDispatch } from '../../store/hooks';
 import ShowToast from '../../components/ShowToast/ShowToast';
-import RestOf from '../ControlCatheter/RestOf/RestOf';
 import { popupLiquidState } from '../../store/slices/appStateSlicer';
 import ModalLeakageHappened from './ModalLeakageHappened/ModalLeakageHappened';
 import ModalSuccess from './Timer/ModalSuccess/ModalSuccess';
+import ConsumableItemsWidget from './ConsumableItemsWidget/ConsumableItemsWidget';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
@@ -24,15 +24,13 @@ const HomeScreen = () => {
 
   const openModal = () => dispatch(popupLiquidState(true)); // открытие попапа Выпито
 
-  const handlePressLeftButton = () => {  // при нажатии на левую кнопку
-    setModalLeakageVisible(!modalLeakageVisible);
-  }
+  const handlePressLeftButton = () => setModalLeakageVisible(!modalLeakageVisible);
 
   return (
     <MainLayout>
       <DoubleTapToClose/>
       <View className="flex-1 justify-between">
-        <RestOf/>
+        <ConsumableItemsWidget/>
         <Timer setToastOpened={setToastOpened}/>
         <DoubleButton
           key={'double-button-home-screen'}

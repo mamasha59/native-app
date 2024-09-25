@@ -1,5 +1,5 @@
 import { ScrollView, RefreshControl } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { format, getDate, lastDayOfMonth } from "date-fns";
 
@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../../../store/hooks";
 import { setCalendarDay } from "../../../../store/slices/appStateSlicer";
 import CalendarDay from "../CalendarDay/CalendarDay";
 import { dateFormat } from "../../../../utils/const";
+import AppStateStatusContext from "../../../../utils/AppStateStatusContext/AppStateStatusContext";
 
 interface T { 
   value: string;
@@ -24,7 +25,8 @@ interface iJournalCalendar {
 
 const ListOfCalendarDays = ({setSelectedMonth, month, months}:iJournalCalendar) => {
     const getCurrentMonth = day.getMonth(); // сегоднящний месяц
-    
+    const { appStateStatus } = useContext(AppStateStatusContext);
+
     const scrollViewRef = useRef<ScrollView>(null);
     const [refreshing, setRefreshing] = useState<boolean>(false); // состояние обновления
     const dispatch = useAppDispatch();
@@ -52,15 +54,16 @@ const ListOfCalendarDays = ({setSelectedMonth, month, months}:iJournalCalendar) 
         return getCurrentMonth === month.index ? arrayOfDays.slice(0, numberOfDay) : arrayOfDays;
     }
 
-    const onRefresh = () => { // обновление календаря, тяним тапом по календарю
-      setRefreshing(true);
+    useEffect(() => {
       setTimeout(() => {
         setRefreshing(false);
-      }, 2000);
-      scrollViewRef.current?.scrollTo();
+      }, 1000);
+      scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: true});
       dispatch(setCalendarDay(format(new Date(), dateFormat).slice(0,10))); // всегда сбрасываем тапом календарь на текущий день
       setSelectedMonth({month: months[getCurrentMonth].value, index: getCurrentMonth});
-    };
+    },[appStateStatus, refreshing])
+
+    const onRefresh = () => setRefreshing(true);
 
   return (
     <ScrollView
@@ -71,9 +74,7 @@ const ListOfCalendarDays = ({setSelectedMonth, month, months}:iJournalCalendar) 
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         className={`flex-grow-0 overflow-hidden ${refreshing && 'opacity-70'}`}>
-
         {daysArray.reverse().map((e) => <CalendarDay key={e.dayNumber} e={e}/>)}
-
     </ScrollView>
   );
 };

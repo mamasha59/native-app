@@ -1,14 +1,13 @@
 import './src/lang/i18n';
 import 'react-native-get-random-values';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState} from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ActivityIndicator} from 'react-native';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import { ActivityIndicator, AppStateStatus} from 'react-native';
 import Animated from 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -18,7 +17,10 @@ import * as Notifications from 'expo-notifications';
 import { persistor, store } from './src/store/store';
 import GradientBackground from './src/Layouts/GradientBackground/GradientBackground';
 import RootNavigations from './src/components/RootNavigations/RootNavigations';
+import { NavigationContainer } from '@react-navigation/native';
 import { registerForPushNotificationsAsync } from './src/utils/registerForPushNotificationsAsync';
+import AppStateStatusContext from './src/utils/AppStateStatusContext/AppStateStatusContext';
+import useAppStateCheck from './src/hooks/useAppStateCheck';
 
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
@@ -35,7 +37,18 @@ Notifications.setNotificationHandler({ // notices foreground
 Notifications.setNotificationCategoryAsync("its-about-cannulation", [
   {
     buttonTitle: "Выполнить катетеризацию",
-    identifier: "first", 
+    identifier: "do-catheterization",
+    options: {
+      opensAppToForeground: true,
+      isDestructive: true,
+    },
+  },
+]);
+
+Notifications.setNotificationCategoryAsync("reminder-to-drink-water", [
+  {
+    buttonTitle: "Выпить воду",
+    identifier: "drink-water",
     options: {
       opensAppToForeground: true,
       isDestructive: true,
@@ -45,30 +58,14 @@ Notifications.setNotificationCategoryAsync("its-about-cannulation", [
 
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
-  const [notification, setNotification] = useState<Notifications.Notification>();
-  console.log(notification);
-  
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  const [appStateStatus, setAppStateStatus] = useState<AppStateStatus>('unknown');
+
+  useAppStateCheck({ setAppStateStatus });
 
   useEffect(() => {
     registerForPushNotificationsAsync()
     .then(token => setExpoPushToken(token));
     // ниже метод выполняется когда пришло уведомление
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    });
-    // ниже метод, при клике на уведомление, когда пользователь взаимодействует с уведомлением
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    });
-
-    return () => {
-      if(notificationListener.current) {
-        Notifications.removeNotificationSubscription(notificationListener.current);
-      }
-      if(responseListener.current){
-        Notifications.removeNotificationSubscription(responseListener.current);
-      }
-    };
   }, []);
 
   const [fontsLoader, fontError] = useFonts({     // LOAD FONTS
@@ -84,22 +81,24 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-        <RootSiblingParent>
-          <SafeAreaProvider onLayout={onLayoutRootView}>
-            <GradientBackground>
-              <SafeAreaView className="flex-1 h-full">
-              <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                <GestureHandlerRootView>
-                  <BottomSheetModalProvider>
-                    <RootNavigations/>
-                  </BottomSheetModalProvider>
-                </GestureHandlerRootView>
-              </SafeAreaView>
-            </GradientBackground>
-          </SafeAreaProvider>
-        </RootSiblingParent>
-      </PersistGate>
+      <AppStateStatusContext.Provider value={{ appStateStatus, setAppStateStatus }}>
+        <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
+            <SafeAreaProvider onLayout={onLayoutRootView}>
+              <NavigationContainer>
+                <GradientBackground>
+                  <SafeAreaView className="flex-1 h-full">
+                  <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+                    <GestureHandlerRootView>
+                      <BottomSheetModalProvider>
+                        <RootNavigations/>
+                      </BottomSheetModalProvider>
+                    </GestureHandlerRootView>
+                  </SafeAreaView>
+                </GradientBackground>
+              </NavigationContainer>
+            </SafeAreaProvider>
+        </PersistGate>
+      </AppStateStatusContext.Provider>
     </Provider>
   );
 }

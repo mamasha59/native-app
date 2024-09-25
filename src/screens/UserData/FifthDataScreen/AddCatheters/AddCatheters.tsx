@@ -47,7 +47,7 @@ const AddCatheters = () => {
                 onChangeText={(e) => handleInputOnChange(e)}
                 style={{fontFamily:'geometria-bold', width: width / 2}}
                 keyboardType="numeric"
-                maxLength={3}
+                maxLength={4}
                 selectTextOnFocus
                 className="text-[17px] border-b text-center"/>
             <Text className="text-[17px]" style={{fontFamily:'geometria-bold'}}>{t("units")}</Text>

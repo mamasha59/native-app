@@ -20,10 +20,11 @@ const TimeOfNotice = () => {
   const dispatch = useAppDispatch();
 
   const [showModalSetTimeOfNotice, setShowModalSetTimeOfNotice] = useState<boolean>(false);
+  const hoursMinutes = timeSleepEnd.split(':');
 
   const [intervalTimeOfNotice, setIntervalTimeOfNotice] = useState<iTimePicker>({
-    selectedIndexHour: 7,
-    selectedIndexMinutes: 0,
+    selectedIndexHour: +hoursMinutes[0],
+    selectedIndexMinutes: +hoursMinutes[1],
   });
 
   const handleOpenModSetTimeOfNotice = () => { // открытие попапа Конца Сна
@@ -68,10 +69,9 @@ const TimeOfNotice = () => {
     if (morningNotice && !cannulationAtNight){
       schedulePushNotification(dateObject);
     }else {
-      // console.log('удален');
       Notifications.cancelScheduledNotificationAsync(identifierOfMorningReminderToDoCatheterization);
     }
-  },[timeOfMorningNotice, morningNotice])
+  },[timeOfMorningNotice, morningNotice, timeSleepEnd, cannulationAtNight]);
 
   const handleSetTimeOfNotice = () => { // при подтверждении интервала Начала сна
     const dateWithTime = createDateFromTime(intervalTimeOfNotice.selectedIndexHour, intervalTimeOfNotice.selectedIndexMinutes);

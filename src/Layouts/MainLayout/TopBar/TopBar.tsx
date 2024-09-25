@@ -11,7 +11,7 @@ const TopBar = () => {
 
     const showLogo = route.name === 'Home'
 
-    const goBack = () => navigation.canGoBack() && navigation.goBack(); // проверяем есть ли куда назад еще идти 
+    const goBack = () => navigation.canGoBack() && navigation.goBack(); // проверяем есть ли куда назад еще идти
 
   return (
     <View className="flex-row justify-between items-center h-16 px-6">

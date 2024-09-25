@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";
 import ModalSetInterval from "../../../components/ModalSetInterval/ModalSetInterval";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setTimeOfNoticeAtNightOneTime, setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
+import { setMorningNoticeTime, setTimeOfNoticeAtNightOneTime, setTimeSleepEnd, setTimeSleepStart, setTimeWhenAskToActivateNightMode } from "../../../store/slices/nightStateSlice";
 import Pencil from "../../../assets/images/iconsComponent/Pencil";
 import { day } from "../../../utils/date";
 import { iTimePicker } from "../../../types";
@@ -85,6 +85,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
         
         setCalculatedOnceTimeNoticeAtNight({sleepTimeStart:calculatedOnceTimeNoticeAtNight.sleepTimeStart,endTimeStart: time});
         dispatch(setTimeSleepEnd(time));
+        dispatch(setMorningNoticeTime(time));
         handleOpenModalEnd();
     }
 
@@ -122,6 +123,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
             pressSaveButton={handleSetStartTime}
             title={t("nightModeScreen.modal_title_set_time_of_start_sleep")}
             is24Hours
+            height={2.6}
             />
         <ModalSetInterval
             handleOpenModalChangeInterval={handleOpenModalEnd}
@@ -131,6 +133,7 @@ const SleepTimeStartEnd = ({showInfo = true}:{showInfo?:boolean}) => {
             pressSaveButton={handleSetEndTime}
             title={t("nightModeScreen.modal_title_set_time_of_end_sleep")}
             is24Hours
+            height={2.8}
         />
     </View>
   );

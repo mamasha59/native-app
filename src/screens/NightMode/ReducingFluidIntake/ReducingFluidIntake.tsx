@@ -12,10 +12,10 @@ const ReducingFluidIntake = () => {
   const {t} = useTranslation();
 
   const dispatch = useAppDispatch();
-  const {reducingFluidIntakeTimeOfNotice, reducingFluidIntake, timeSleepStart} = useAppSelector(state => state.nightOnBoarding);
+  const {reducingFluidIntakeTimeOfNotice, reducingFluidIntake, timeSleepStart, cannulationAtNight} = useAppSelector(state => state.nightOnBoarding);
   const {identifierOfReducingFluidIntakeBeforeSleep} = useAppSelector(state => state.notificationsSettingsSlice);
 
-  const [time, setTime] = useState(''+reducingFluidIntakeTimeOfNotice);
+  const [timeBeforeSleep, setTimeBeforeSleep] = useState(''+reducingFluidIntakeTimeOfNotice);
 
   const schedulePushNotification = async (date:Date) => {
     if (identifierOfReducingFluidIntakeBeforeSleep){
@@ -25,11 +25,11 @@ const ReducingFluidIntake = () => {
       const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
           priority: Notifications.AndroidNotificationPriority.MAX,
-          title: '',
+          title: 'Внимание! Внимание! ',
           launchImageName:'image',
           subtitle:'Напоминание!',
           interruptionLevel:'timeSensitive',
-          body: `До сна осталось ${time} часа, следует уменьшить потребление жидкости!`,
+          body: `До сна осталось ${timeBeforeSleep} часа, следует уменьшить потребление жидкости!`,
           sound: true,
           categoryIdentifier: 'reduce-fluid-intake-before-sleep',
         },
@@ -50,21 +50,20 @@ const ReducingFluidIntake = () => {
     const hoursMinutes = timeSleepStart.split(':');
     const dateObject = setMinutes(setHours(new Date(), +hoursMinutes[0]), +hoursMinutes[1]);
 
-    const takeHours = subHours(dateObject, Number(time)); // take hours from date
+    const takeHours = subHours(dateObject, Number(timeBeforeSleep)); // take hours from date
 
-    if (reducingFluidIntake){
+    if (reducingFluidIntake && !cannulationAtNight){
       schedulePushNotification(takeHours);
     }else {
-      console.log('удален');
       Notifications.cancelScheduledNotificationAsync(identifierOfReducingFluidIntakeBeforeSleep);
     }
-  },[time, timeSleepStart, reducingFluidIntake]);
+  },[timeBeforeSleep, timeSleepStart, reducingFluidIntake, cannulationAtNight]);
 
   const handleInputOnChange = (value:string) => {
     if (+value <= 0 || +value > 5) {
-      setTime('');
+      setTimeBeforeSleep('');
     } else {
-      setTime(value);
+      setTimeBeforeSleep(value);
     }
   }
 
@@ -74,8 +73,8 @@ const ReducingFluidIntake = () => {
   }
 
   const handleInputReducingFluidIntakeTime = () =>{
-    if(+time > 0){
-      dispatch(setTimeReducingFluidIntakeNotice(+time));
+    if(+timeBeforeSleep > 0){
+      dispatch(setTimeReducingFluidIntakeNotice(+timeBeforeSleep));
     }
   } 
 
@@ -88,7 +87,7 @@ const ReducingFluidIntake = () => {
 
         <View className="mt-3 max-w-[250px] flex-row mx-auto">
           <TextInput
-            value={time}
+            value={timeBeforeSleep}
             editable={reducingFluidIntake}
             onChangeText={(e) => handleInputOnChange(e)}
             onEndEditing={handleInputReducingFluidIntakeTime}

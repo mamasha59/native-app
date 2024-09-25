@@ -1,6 +1,5 @@
 import { Text, View, ActivityIndicator, TouchableOpacity, Modal, Dimensions, FlatList, Pressable} from "react-native";
 import { useCallback, useState, useRef, useEffect } from "react";
-import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 import { DropDown } from "../../assets/images/icons";

@@ -13,12 +13,14 @@ const AskActivateAfterTime = () => {
     const {t} = useTranslation();
     const nightModeTimeSettings = useAppSelector(state => state.nightOnBoarding);
     const dispatch = useAppDispatch();
+
+    const hoursMinutes = nightModeTimeSettings.timeWhenAskToActivate.split(':');
     
     const [showModalAskActivateAfter, setShowModalAskActivateAfter] = useState<boolean>(false); // попап Спрашивать активировать после времени
 
     const [whenAskToActivateNightMode, setWhenAskToActivateNightMode] = useState<iTimePicker>({
-        selectedIndexHour: 21,
-        selectedIndexMinutes: 0,
+        selectedIndexHour: +hoursMinutes[0],
+        selectedIndexMinutes: +hoursMinutes[1],
     });
 
     const handleOpenModalAskToActivateAfterTime = () => { // открытие попапа Активация после
@@ -63,6 +65,7 @@ const AskActivateAfterTime = () => {
             pressSaveButton={handleSetTimeWhenAsk}
             title="Выберите время когда вы хотите что бы вас спросили включать ночной режим"
             is24Hours
+            height={2.6}
         />
     </View>
   );

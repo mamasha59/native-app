@@ -10,6 +10,7 @@ import ChangeInterval from "./ChangeInterval/ChangeInterval";
 import SwitchUnits from "./SwitchUnits/SwitchUnits";
 import SwitchLanguage from "./SwitchLanguage/SwitchLanguage";
 import ProfileUtils from "./ProfileUtils/ProfileUtils";
+import SwitchWidgetConsumableItems from "./SwitchWidgetConsumableItems/SwitchWidgetConsumableItems";
 
 const ProfileScreen = () => { //TODO clear the chaos with folders
   const {t} = useTranslation();
@@ -23,7 +24,7 @@ const ProfileScreen = () => { //TODO clear the chaos with folders
         <ToggleIsCountUrine/>
         <SwitchUnits/>
         <SwitchLanguage/>
-
+        <SwitchWidgetConsumableItems/>
         <TouchableOpacity
           onPress={() => navigation.navigate('PdfOnBoarding', {})}
           className="py-4 mt-2 border-b border-main-blue">

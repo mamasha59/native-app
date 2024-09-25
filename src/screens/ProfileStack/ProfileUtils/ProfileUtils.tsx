@@ -11,9 +11,15 @@ const ProfileUtils = () => {
     const handleModalPolicies = () => setModalPolicies(!modalPolicies);
 
     const removeProfile = async () => {
-        Alert.alert('Закройте приложение, и откройте снова')
-        persistor.purge();
-        Notifications.dismissAllNotificationsAsync();
+      try {
+        await Notifications.cancelAllScheduledNotificationsAsync()
+        await Notifications.dismissAllNotificationsAsync();
+        await persistor.purge();
+      } catch (error) {
+        console.error(error)
+      }finally{
+        Alert.alert('Профиль удалён', 'Пожалуйста, закройте и откройте приложение снова для применения изменений.');
+      }
     }
 
   return (

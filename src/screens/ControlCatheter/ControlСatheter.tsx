@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-import { BackHandler, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import MainLayout from '../../Layouts/MainLayout/MainLayout';
-import RestOf from "./RestOf/RestOf";
 import СatheterСonsumption from './СatheterСonsumption/СatheterСonsumption';
 import CathetersForRoad from "./CathetersForRoad/CathetersForRoad";
 import { useAppSelector } from "../../store/hooks";
@@ -11,6 +9,8 @@ import NoticeOfRemainCatheters from "../UserData/FifthDataScreen/NoticeOfRemainC
 import Consumables from "./Consumables/Consumables";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 import useBackHandler from "../../hooks/useBackHandler";
+import ManageConsumableItems from "./ManageConsumableItems/ManageConsumableItems";
+import SwitchWidgetConsumableItems from "../ProfileStack/SwitchWidgetConsumableItems/SwitchWidgetConsumableItems";
 
 const ControlCatheter = ({navigation}:NavigationPropsRoot<'ControlCatheter'>) => {
   const {t} = useTranslation();
@@ -24,7 +24,8 @@ const ControlCatheter = ({navigation}:NavigationPropsRoot<'ControlCatheter'>) =>
   return (
     <MainLayout title='Контроль расходников:'>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <RestOf/>
+        <ManageConsumableItems/>
+        <SwitchWidgetConsumableItems/>
         <СatheterСonsumption filteredRecords={filteredRecords.length} selectedCalendareDate={selectedCalendarDate}/>
         <CathetersForRoad filteredRecords={filteredRecords.length}/>
         <NoticeOfRemainCatheters/>

@@ -8,7 +8,6 @@ import NotificationIcon from "../../../assets/images/iconsComponent/TabMenuIcons
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import InputData from "../../InputData/InputData";
 import { Keyboard } from "../../../utils/enums";
-import ButtonBluBorder from "../../ButtonBluBorder/ButtonBluBorder";
 import { setTimeOfNoticeAtNightOneTime } from "../../../store/slices/nightStateSlice";
 
 interface iModalOneNoticeAtNight {
@@ -31,13 +30,11 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
     
     const inputsValue = watch();
 
-    const handlePressChangeTime = () => { // show change time block
-        setShowChangeTimeBlock(!showChangeTimeBlock);
-    }
+    const handlePressChangeTime = () => setShowChangeTimeBlock(!showChangeTimeBlock);
 
     const handleAppearModal = () => {
         handleModalOnceAtNight(); // show or close modal
-        handlePressChangeTime() // hide change time block
+        setShowChangeTimeBlock(false);
     }
 
     const handleSaveNewTime = () => { // press save
@@ -46,9 +43,8 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
         const getInputValues = getValues();
         const computedTime = `${getInputValues.hours}:${getInputValues.minutes}`;
         dispatch(setTimeOfNoticeAtNightOneTime(computedTime));
-        setTimeout(() => {
-            handleModalOnceAtNight();
-        },1000)
+        handleModalOnceAtNight();
+        handlePressChangeTime();
     }
 
   return (
@@ -142,11 +138,12 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                     <Text className="text-xs text-center mt-1 mb-3" style={{fontFamily:'geometria-regular'}}>
                         новое время
                     </Text>
-                    <ButtonBluBorder
-                        handlePressButton={handleSubmit(handleSaveNewTime)}
-                        title={'Сохранить'}
-                        marginRight={0}
-                    />
+                    <TouchableOpacity
+                        onPress={handleSubmit(handleSaveNewTime)}
+                        activeOpacity={.6}
+                        className="border border-main-blue rounded-xl py-3 justify-center items-center">
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-sm">Сохранить</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
     </ModalSelect>

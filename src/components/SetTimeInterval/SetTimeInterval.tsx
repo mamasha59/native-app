@@ -32,7 +32,7 @@ const SetTimeInterval = ({interval, setInterval, visibleRest, is24Hours}:iSetTim
     }
 
     const hours24 = generate24Hours();
-
+    
   return (
     <>
     {/* ЧАСЫ */}

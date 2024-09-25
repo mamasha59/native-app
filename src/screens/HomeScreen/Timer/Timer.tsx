@@ -23,9 +23,9 @@ import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { dateFormat } from "../../../utils/const";
 import { decreaseQuantityOFConsumableItem } from "../../../store/slices/consumablesSlice";
 import SwitchInnerCircleUIToNightMode from "./SwitchInnerCircleUIToNightMode/SwitchInnerCircleUIToNightMode";
-import { setIdentifierOfCatheterizationNotice } from "../../../store/slices/notificationsSettingsSlice";
 import IntervalInfo from "../IntervalInfo/IntervalInfo";
 import NightModeButton from "./NightModeButton/NightModeButton";
+import { useSchedulePushNotificationTimerInterval } from "../../../hooks/useSchedulePushNotificationTimerInterval";
 
 const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const dispatch = useAppDispatch();
@@ -37,7 +37,6 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // кол-во катетеров
   const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // timer settings
   const {consumablesItem} = useAppSelector((state) => state.consumablesSlice); // timer settings
-  const {identifierOfCatheterizationNotice} = useAppSelector(state => state.notificationsSettingsSlice);
 
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
   const [startFromCountdown , setStartFromCountdown] = useState<boolean>(true); // состояние что бы таймер начинался с обратного отсчета Выбранного интервала
@@ -56,6 +55,8 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const flipValue = useSharedValue<number>(0);
 
   const [isItTimeToShowModalTurnOnNightMode, setIsItTimeToShowModalTurnOnNightMode] = useState<boolean>();
+
+  const { schedulePushNotificationTimerInterval } = useSchedulePushNotificationTimerInterval();
   
   const timeWhenAskToActivateNightMode = parse(settingsNighMode.timeWhenAskToActivate, 'HH:mm', now); // made time object from timeWhenAskToActivate
   const formattedCurrentTime = parse(format(now, 'HH:mm'), 'HH:mm', new Date()); // current time object 
@@ -191,41 +192,16 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const requestNotificationPermission = async () => {
     const status = await Notifications.getAllScheduledNotificationsAsync();
     console.log('запланированы',status);
-    
-  };
-  
-  const schedulePushNotification = async (title: string, body: string, time: number) => {
-    const yellowIntervalStarts = interval - time * 60;
-
-    if (identifierOfCatheterizationNotice){
-      await Notifications.cancelScheduledNotificationAsync(identifierOfCatheterizationNotice);
-    }
-    try {
-      const notificationId = await Notifications.scheduleNotificationAsync({
-        content: {
-          priority: Notifications.AndroidNotificationPriority.MAX,
-          title: title,
-          launchImageName:'image',
-          subtitle:'Напоминание!',
-          interruptionLevel:'timeSensitive',
-          body: body,
-          sound: true,
-          categoryIdentifier: 'its-about-cannulation',
-        },
-        trigger: {channelId: undefined, seconds: yellowIntervalStarts, repeats: false},
-      });
-      dispatch(setIdentifierOfCatheterizationNotice(notificationId)); // Устанавливаем ID уведомления
-    } catch (error) {
-      console.error('Failed to schedule notification:', error);
-    }
   };
 
-  const handlePressCommon = () => {
+  const handlePressCommon = async () => {
     setLoader(false);
     const notificationTitle = `Время катетеризироваться! осталось ${yellowInterval} минут`;
-    const lastCatheterizationTime = journal.urineDiary[0] ? `Последняя катетеризация была в ${journal.urineDiary[0].timeStamp}` : '';
-
-    schedulePushNotification(notificationTitle, lastCatheterizationTime, yellowInterval);
+    const lastCatheterizationTimeBodyText = journal.urineDiary[0] ? `Последняя катетеризация была в ${journal.urineDiary[0].timeStamp}` : '';
+    schedulePushNotificationTimerInterval({
+      title: notificationTitle,
+      body: lastCatheterizationTimeBodyText,
+    });
     requestNotificationPermission()
 
     if(!settingsNighMode.cannulationAtNight){ // turn of night mode only IF ITS ON

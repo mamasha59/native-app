@@ -3,7 +3,7 @@ import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 
 import ThirdDataScreen from "./ThirdDataScreen/ThirdDataScreen";
 import LanguageScreen from "../LanguageScreen/LanguageScreen";
-import { RootStacNativeParamList } from "../../components/RootNavigations/RootNavigations";
+import { RootStackNativeParamList } from "../../components/RootNavigations/RootNavigations";
 import FirstDataScreen from "./FirstDataScreen/FirstDataScreen";
 import SecondDataScreen from "./SecondDataScreen/SecondDataScreen";
 import FourthDataScreen from "./FourthDataScreen/FourthDataScreen";
@@ -24,7 +24,7 @@ export type RootStackParamList = {
 export type NavigationPropsWelcome<RouteName extends keyof RootStackParamList> = {
   navigation: CompositeNavigationProp<                    // объединяем роуты для типизации, чтобы с последней страницы перенаправить юзера на стек других экранов
     StackNavigationProp<RootStackParamList, RouteName>, // тут роуты UserData
-    StackNavigationProp<RootStacNativeParamList> // тут роуты App 
+    StackNavigationProp<RootStackNativeParamList> // тут роуты App 
   > 
   route: RouteProp<RootStackParamList, RouteName>;
 };

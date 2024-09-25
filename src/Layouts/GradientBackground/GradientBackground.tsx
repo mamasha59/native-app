@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 
 interface iGradientBackground {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const GradientBackground = ({children}:iGradientBackground) => {

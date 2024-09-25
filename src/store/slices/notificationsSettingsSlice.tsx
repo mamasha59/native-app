@@ -7,6 +7,7 @@ const initialState = {
     identifierOfGoalReminderIntervalDuringDay: '',
     identifierOfMorningReminderToDoCatheterization: '',
     identifierOfReducingFluidIntakeBeforeSleep: '',
+    identifierOfOneNotificationAtNight: '',
 
     daysInAdvanceWhenShowNoticeOfRemainCaths: 7,
     eveningNotificationTimeFluidIntake: '',
@@ -32,6 +33,9 @@ const notificationsSettingsSlice = createSlice({
         setIdentifierOfReducingFluidIntakeBeforeSleep: (state, action:PayloadAction<string>) => {
             state.identifierOfReducingFluidIntakeBeforeSleep = action.payload;
         },
+        setIdentifierOfOneNotificationAtNight: (state, action:PayloadAction<string>) => {
+            state.identifierOfOneNotificationAtNight = action.payload;
+        },
         // up block for Notifications Id
         setDaysInAdvanceWhenShowNoticeOfRemainCaths: (state, action:PayloadAction<number>) => {
             state.daysInAdvanceWhenShowNoticeOfRemainCaths = action.payload;
@@ -53,6 +57,7 @@ export const {
     setGoalReminderIntervalDuringDay,
     setIdentifierOfGoalReminderIntervalDuringDay,
     setIdentifierOfMorningReminderToDoCatheterization,
-    setIdentifierOfReducingFluidIntakeBeforeSleep
+    setIdentifierOfReducingFluidIntakeBeforeSleep,
+    setIdentifierOfOneNotificationAtNight
 } = notificationsSettingsSlice.actions;
 export default notificationsSettingsSlice.reducer;

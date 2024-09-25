@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { View, Text, ScrollView } from "react-native";
-import * as Notifications from 'expo-notifications';
 
 import MainLayout from "../../Layouts/MainLayout/MainLayout";
 import DoubleButton from "../../components/DoubleButton/DoubleButton";
@@ -19,17 +18,14 @@ import useBackHandler from "../../hooks/useBackHandler";
 const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
-    const {identifierOfMorningReminderToDoCatheterization, identifierOfReducingFluidIntakeBeforeSleep} = useAppSelector(state => state.notificationsSettingsSlice)
 
     useBackHandler();
 
     const handleExitNightModeScreen = async () => {
         try {
           // Выполняем действие в Redux
-          dispatch(setWhetherDoCannulationAtNight(true));
+          // dispatch(setWhetherDoCannulationAtNight(true));
           // Отменяем запланированные уведомления
-          await Notifications.cancelScheduledNotificationAsync(identifierOfMorningReminderToDoCatheterization);
-          await Notifications.cancelScheduledNotificationAsync(identifierOfReducingFluidIntakeBeforeSleep);
         } catch (error) {
           console.error("Ошибка при отмене уведомлений:", error);
         } finally {
@@ -38,10 +34,9 @@ const NightMode = ({navigation}:NavigationPropsRoot<'NightMode'>) => {
         }
     };
       
-
     const handleSafeSettings = () => {
-        dispatch(setWhetherDoCannulationAtNight(false));
-        navigation.goBack()
+      dispatch(setWhetherDoCannulationAtNight(false));
+      navigation.goBack()
     }
 
   return (

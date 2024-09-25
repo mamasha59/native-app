@@ -13,7 +13,7 @@ interface iConsumableItem {
 
 const initialState = {
     consumablesItem : [
-        { id: uuidv4(), name: 'Катетер', category: 'catheter', usagePerProcedure: 1, active: true, quantity: 0 },
+        { id: uuidv4(), name: 'Катетеры', category: 'catheters', usagePerProcedure: 1, active: true, quantity: 0 },
     ]
 }
 
@@ -63,11 +63,13 @@ const consumablesSlice = createSlice({
         },
         decreaseQuantityOFConsumableItem: (state) => {
             state.consumablesItem.forEach((item) => {
+                const result = item.quantity - item.usagePerProcedure;
                 if(item.active && item.quantity !== 0){
-                    if(item.quantity < 0){
+                    if(result < 0){
                         item.quantity = 0;
+                    }else {
+                        item.quantity = result;
                     }
-                    item.quantity = item.quantity - item.usagePerProcedure;
                 }
             })
         },

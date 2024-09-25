@@ -28,6 +28,7 @@ interface iAppStateSlicer {
     leftButton: boolean,
     rightButton: boolean,
   },
+  showWidgetConsumableItems: boolean,
 }
 
 const initialState:iAppStateSlicer = {
@@ -61,6 +62,7 @@ const initialState:iAppStateSlicer = {
       leftButton: false,
       rightButton: true,
     },
+    showWidgetConsumableItems: true,
 }
 
 const appStateSlice = createSlice({
@@ -123,6 +125,9 @@ const appStateSlice = createSlice({
           leftButton: action.payload.leftButton,
           rightButton: action.payload.rightButton
         };
+      },
+      toggleWidgetConsumableItems: (state, action:PayloadAction<boolean>) => {
+        state.showWidgetConsumableItems = action.payload;
       }
     }
 })
@@ -143,7 +148,8 @@ export const {
     changeScalePopup,
     switchNightModeModal,
     setHelperForModalTurnOnNightMode,
-    switchCheckedButtonProfileScreen
+    switchCheckedButtonProfileScreen,
+    toggleWidgetConsumableItems
     } = appStateSlice.actions; // экспортируем экшены, что бы использовать
 
 export default appStateSlice.reducer; // импортируем сам редьюсер

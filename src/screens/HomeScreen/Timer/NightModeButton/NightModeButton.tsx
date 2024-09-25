@@ -7,8 +7,11 @@ import { Option } from "../../../../types";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { switchCannulationAtNightMode, switchNightModeModal } from "../../../../store/slices/appStateSlicer";
 import { setWhetherDoCannulationAtNight } from "../../../../store/slices/nightStateSlice";
+import { useTranslation } from "react-i18next";
 
 const NightModeButton = () => {
+    const {t} = useTranslation();
+
     const settings = useAppSelector(state => state.appStateSlice);
     const dispatch = useAppDispatch();
     const animationRef = useRef<LottieView>(null);
@@ -21,7 +24,7 @@ const NightModeButton = () => {
             timeStamp: new Date().toString(),
             value: newValue
         }));
-        dispatch(setWhetherDoCannulationAtNight(!!!value.value));
+        // dispatch(setWhetherDoCannulationAtNight(!!!value.value));
 
         handleModal();        
     };
@@ -55,12 +58,15 @@ const NightModeButton = () => {
             onItemPress={(item) => handlePressItem(item)}
             openModal={settings.openModalNightMode}
             setOpenModal={handleModal}
-            title={"Желаете включить ночной режим?"}
+            title={`Включить «${t("night_mode")}»?`}
             options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
             children={
-                <View className="items-center">
+                <View className="items-center flex-1">
                     <Text className="text-center text-base" style={{fontFamily:'geometria-regular'}}>
                         Таймер остановится, и вы прекратите получать уведомления, до утренней катетеризации.
+                    </Text>
+                    <Text className="text-center text-xs" style={{fontFamily:'geometria-regular'}}>
+                        время можно изменить на экране {`«${t("night_mode")}»`}
                     </Text>
                 </View>
             }

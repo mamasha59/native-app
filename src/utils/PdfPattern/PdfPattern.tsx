@@ -1,5 +1,5 @@
 import { FilteredRecords } from "../../screens/JournalScreen/ModalCustomizePdf/ModalCustomizePdf";
-import { iUnits, iUser } from "../../types";
+import { iSurveyInputs, iUnits, iUser } from "../../types";
 import { generateQuestions } from "../SurveyQuestions/SurveyQuestions";
 
 import i18next from "i18next";
@@ -9,12 +9,13 @@ interface iGeneratePdfPattern{
     userData: iUser,
     answers?: { [key: number]: number | undefined };
     showSurvey: boolean,
-    units?: iUnits
+    units?: iUnits,
+    inputDifficultiesAdditional?: iSurveyInputs,
 }
 
-export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey, units}:iGeneratePdfPattern) => {
+export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey, units, inputDifficultiesAdditional}:iGeneratePdfPattern) => {
     const questions = generateQuestions();
-
+    
     return `
     <html lang="rus">
     <head>
@@ -185,6 +186,19 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                     </div>
                 `).join('')}
             </section>` : ''}
+            ${inputDifficultiesAdditional 
+                ?  `<footer style="padding: 0 20px;">
+                        <div style="margin-bottom: 20px;">
+                        <p>${i18next.t("questionnaireScreen.question_eight")}</p>
+                        <p>${inputDifficultiesAdditional.difficulties}</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                        <p>${i18next.t("questionnaireScreen.question_nine")}</p>
+                        <p>${inputDifficultiesAdditional.difficulties}</p>
+                        </div>
+                    </footer>`
+                : ''
+            }
     </body>
 </html>
 <style>

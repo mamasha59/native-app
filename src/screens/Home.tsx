@@ -71,7 +71,7 @@ export default function Home() {
         tabBarButton: (props) => <TouchableOpacity activeOpacity={.6} {...props} />,
         tabBarHideOnKeyboard: true,
       }}>
-      <Tab.Group >
+      <Tab.Group>
       <Tab.Screen
         name='ProfileScreen'
         component={ProfileScreen}

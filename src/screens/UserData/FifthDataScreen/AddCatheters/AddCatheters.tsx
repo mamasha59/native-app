@@ -40,7 +40,7 @@ const AddCatheters = () => {
                 <NelatonIcon/>
             </View>
             <TextInput
-                placeholder='введите количество'
+                placeholder={t("thirdDataScreen.press_to_write")}
                 ref={inputRefAddCatheters}
                 value={caths}
                 onEndEditing={addCatheters}
@@ -56,7 +56,7 @@ const AddCatheters = () => {
             </View>
         </TouchableOpacity>
         <Text className="text-lg leading-5 text-center mt-4" style={{fontFamily:'geometria-regular'}}>
-            При каждой катетеризации будет списан 1 катетер. Вы всегда будете точно знать, сколько катетеров у вас в запасе.
+            {t("thirdDataScreen.description")}
         </Text>
     </View>
   );

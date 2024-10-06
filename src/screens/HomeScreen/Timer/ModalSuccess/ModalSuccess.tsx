@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { addSeconds, format, subSeconds } from "date-fns";
+import { addSeconds, format, parse, subSeconds } from "date-fns";
 import { useEffect, useState } from "react";
 import LottieView from "lottie-react-native";
 import { useTranslation } from "react-i18next";
@@ -11,26 +11,38 @@ import ModalSelect from "../../../../components/ModalSelect/ModalSelect";
 
 const ModalSuccess = () => {
     const {t} = useTranslation();
-    const settings = useAppSelector(state => state.timerStates);
+    
     const dispatch = useAppDispatch();
+    const {interval, yellowInterval, showModalSuccess} = useAppSelector(state => state.timerStates);
+    const {timeSleepStart, timeOfNoticeAtNightOneTime} = useAppSelector(state => state.nightOnBoarding);
+    const {doubleButtonProfileScreenClickable} = useAppSelector((state) => state.appStateSlice);
 
     const [nextCatheterizationTime, setNextCatheterizationTime] = useState<string>('');
+    const [changeBody, setChangeBody] = useState<boolean>(false);
   
     useEffect(() => {
       const now = new Date(); // Текущее время
-      const futureDate = addSeconds(now, settings.interval); // Добавляем интервал в секундах
-      const futureDateMinusSubtract = subSeconds(futureDate, settings.yellowInterval * 60); // Вычитаем секунды
+      const futureDate = addSeconds(now, interval); // Добавляем интервал в секундах
+      const futureDateMinusSubtract = subSeconds(futureDate, yellowInterval * 60); // Вычитаем секунды
       // Форматируем даты в строку
       const formattedStartTime = format(futureDateMinusSubtract, 'HH:mm');
       const formattedEndTime = format(futureDate, 'HH:mm');
+      const timeSleepStartObject = parse(timeSleepStart, 'HH:mm', new Date())
     
       setNextCatheterizationTime(`${formattedStartTime} - ${formattedEndTime}`);
       
-    },[settings.showModalSuccess])
+      if(doubleButtonProfileScreenClickable.leftButton){
+        if(futureDateMinusSubtract >= timeSleepStartObject){
+          setChangeBody(true);
+        }
+      }else {
+        setChangeBody(false);
+      }
+    },[showModalSuccess])
   
   return (
     <ModalSelect
-      openModal={settings.showModalSuccess}
+      openModal={showModalSuccess}
       setOpenModal={() => dispatch(setShowModalSuccess(false))}
       showIcon={true}
       logo={undefined}
@@ -53,12 +65,18 @@ const ModalSuccess = () => {
               {t("modalCatheterizationCompleted.catheterization_completed")}
             </Text>
             <Text style={{fontFamily:'geometria-regular'}} className="text-[#000] text-xl text-start">
-              {t("modalCatheterizationCompleted.next_catheterization")}:
+              {t("modalCatheterizationCompleted.next_catheterization")}
             </Text>
-            <View className="items-center flex-row justify-center py-3"> 
-              <NotificationIcon color={'#000'} width={20}/>
-              <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCatheterizationTime}</Text> 
-            </View>
+            {!changeBody 
+              ? <View className="items-center flex-row justify-center py-3"> 
+                  <NotificationIcon color={'#000'} width={20}/>
+                  <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{nextCatheterizationTime}</Text> 
+                </View>
+              : <View className="items-center flex-row justify-center py-3"> 
+                  <NotificationIcon color={'#000'} width={20}/>
+                  <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-3xl text-center ml-2">{timeOfNoticeAtNightOneTime}</Text> 
+                </View>
+          }
           </View>
           <TouchableOpacity activeOpacity={.8} onPress={() => dispatch(setShowModalSuccess(false))} className="bg-main-blue px-3 py-3 w-full rounded-lg">
             <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center text-[#fff]">{t("ok")}</Text>

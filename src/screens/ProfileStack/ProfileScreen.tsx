@@ -12,7 +12,7 @@ import SwitchLanguage from "./SwitchLanguage/SwitchLanguage";
 import ProfileUtils from "./ProfileUtils/ProfileUtils";
 import SwitchWidgetConsumableItems from "./SwitchWidgetConsumableItems/SwitchWidgetConsumableItems";
 
-const ProfileScreen = () => { //TODO clear the chaos with folders
+const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation<StackNavigationRoot>();
 

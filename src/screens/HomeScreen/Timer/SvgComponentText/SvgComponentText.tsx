@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Dimensions, useWindowDimensions } from 'react-native';
 import {Svg, Circle, Text, TextPath, TSpan, G, Path} from 'react-native-svg';
 
 interface iSvgComponentText {
@@ -20,6 +21,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
   
   const {t} = useTranslation();
   const [currentColor, setCurrentColor] = useState(blue); // начальное значение цвета
+  const {width} = useWindowDimensions();
 
   useEffect(() => { // изменяем цвет внешнего круга, пунктирные линии
     if(start && partTime.firstPartTime && !partTime.thirdPartTime && !partTime.secondPartTime){
@@ -28,13 +30,13 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
     } else if(partTime.secondPartTime && start) {
       setCurrentColor('#FFB254');
 
-    } else if(partTime.thirdPartTime && !start) {
+    } else if(partTime.thirdPartTime) {
       setCurrentColor('#EA3737');
     }
   },[start,partTime]);
   
   return (
-  <Svg height="340" width="340" viewBox="0 0 300 300" rotation={-90}>
+  <Svg height={width / 1.2} width={width / 1.2} viewBox="0 0 300 300" rotation={-90}>
   {/* КРУГ С DASHED ПОЛОСКИ */}
     {
       Array(Math.floor(105)) // 105 серых полосок

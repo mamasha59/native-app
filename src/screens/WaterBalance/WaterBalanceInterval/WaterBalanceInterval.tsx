@@ -12,7 +12,7 @@ const WaterBalanceInterval = ({showResult, result, bgColor}:iWaterBalanceInterva
   return (
     <View className="flex-1 items-center justify-center py-1 relative" style={{ backgroundColor: bgColor }}>
         {showResult && 
-        <View className={`absolute -top-12 w-16 h-10 border right-0 rounded-full items-center`}>
+        <View className={`absolute -top-12 px-3 h-10 border right-0 rounded-full items-center`}>
             <Text style={{fontFamily:'geometria-bold'}} className="text-xl text-center p-1">
               {result === 0 || Number.isNaN(result) ? '∞' : `${Math.floor(result)}%`}
             </Text>

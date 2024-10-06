@@ -97,3 +97,8 @@ export const formatDateToTimeString = (date:Date) => { // string from date
   const minutes = format(date, 'mm');
   return `${hours}:${minutes}`;
 };
+
+export const capitalizeFirstLetter = (sentence:string) => {
+  if (!sentence) return '';
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}

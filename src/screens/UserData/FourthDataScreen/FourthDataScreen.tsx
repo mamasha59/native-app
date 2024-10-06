@@ -72,10 +72,10 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
     };
 
   return (
-    <WelcomeLayout showGradient currentScreen={4} title={t("thirdDataScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
+    <WelcomeLayout showGradient currentScreen={4} title={t("fourthDataScreenScreen.title")} buttonTitle={t("continue")} handleProceed={proceedNextScreen}>
       <View className="py-4">
           <Text className="flex-1" style={{fontFamily:'geometria-regular'}}>
-              {t("thirdDataScreen.description")}
+              {t("fourthDataScreenScreen.description")}
           </Text>
           <View className="mx-auto">
               <Image
@@ -92,14 +92,14 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
                           <NelatonIcon/>
                       </View>
                       <Text className="text-[#2980b9] text-[12px] leading-4 text-center" style={{fontFamily:'geometria-regular'}}>
-                          {t("thirdDataScreen.cannulationEachTime")}
+                          {t("fourthDataScreenScreen.cannulationEachTime")}
                           <Text style={{fontFamily:'geometria-bold'}} className="underline"> {timeString}</Text>
                       </Text>
                   </View>
                   {nightModeSettings.cannulationAtNight &&
                   <View className="items-center justify-center mt-3">
                       <Text className="text-[12px] text-center" style={{fontFamily:'geometria-regular'}}>
-                          {t("thirdDataScreen.night_cannulation")}
+                          {t("fourthDataScreenScreen.night_cannulation")}
                       </Text>
                       <View className="w-[38px] h-[38px] mt-2">
                           <NightModeButtonSvg/>
@@ -139,13 +139,13 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
                           <NotificationIcon width={23} color={'#fff'}/>
                       </View>
                       <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
-                          {t("thirdDataScreen.notification_Description")}
+                          {t("fourthDataScreenScreen.notification_Description")}
                       </Text>
                   </View>
               {!doubleButtonProfileScreenClickable.rightButton &&
                   <View className="flex-1 w-full items-center">
                       <Text className="text-[12px] text-[#2980b9] leading-4" style={{fontFamily:'geometria-regular'}}>
-                          Уведомление один раз за ночь
+                         {t("notification")} {t("toggleCannulationAtNightComponent.once_at_night.button_title")}
                       </Text>
                   </View>}
               </View>
@@ -153,19 +153,19 @@ const FourthDataScreen = ({navigation}:iFourthDataScreen) => {
 
           <View className="mt-10 relative">
               <Text style={{fontFamily:'geometria-regular'}} className="text-[#2980b9]">
-                  {t("thirdDataScreen.notice")}
+                  {t("fourthDataScreenScreen.notice")}
               </Text>
               <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9] my-3">
-                  {t("thirdDataScreen.know_from_doctor.title")}
+                  {t("fourthDataScreenScreen.know_from_doctor.title")}
               </Text>
               <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
-                  - {t("thirdDataScreen.know_from_doctor.the_catheterization_interval")}
+                  - {t("fourthDataScreenScreen.know_from_doctor.the_catheterization_interval")}
               </Text>
               <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
-                  - {t("thirdDataScreen.know_from_doctor.the_possibility_of_not_catheterizing_at_night")}
+                  - {t("fourthDataScreenScreen.know_from_doctor.the_possibility_of_not_catheterizing_at_night")}
               </Text>
               <Text style={{fontFamily:'geometria-bold'}} className="text-[#2980b9]">
-                  - {t("thirdDataScreen.know_from_doctor.how_much_water_you_need_to_drink")}
+                  - {t("fourthDataScreenScreen.know_from_doctor.how_much_water_you_need_to_drink")}
               </Text>
           </View>
       </View>

@@ -16,7 +16,7 @@ const ThirdDataScreen = ({navigation}:iThirdDataScreen) => {
     <WelcomeLayout
       buttonTitle={t("continue")}
       handleProceed={proceedNextScreen}
-      title="Сколько катетеров у вас есть?"
+      title={t("thirdDataScreen.how_many_catheters_do_you_have")}
       currentScreen={3}
     >
       <AddCatheters/>

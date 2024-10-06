@@ -38,7 +38,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
     const dispatch = useAppDispatch()
     const {urineDiary, modalCustomizePdfDocument, checkBoxAddSurveyInPdf} = useAppSelector(state => state.journal);
     const {calendarDay: calendarDay, units} = useAppSelector(state => state.appStateSlice);
-    const {surveyAnswers} = useAppSelector(state => state.surveySlice);
+    const {surveyAnswers, surveyInputs} = useAppSelector(state => state.surveySlice);
     const userData = useAppSelector(state => state.user);
 
     const navigate = useNavigation<StackNavigationRoot>();
@@ -124,7 +124,11 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
           filteredRecordByDate: dateRecords,
           answers: surveyAnswers,
           userData: userData,
-          units: units
+          units: units,
+          inputDifficultiesAdditional: {
+            additional: surveyInputs.additional,
+            difficulties: surveyInputs.difficulties
+          }
         });
 
         if(dateRecords) {
@@ -252,7 +256,7 @@ const ModalCustomizePdf = ({handleModalState, buttonName}:iModalCustomizePdf) =>
                     </View>
                   </View>
                 </View>
-                <View className="flex-1">
+                <View className="flex-">
                   <TouchableOpacity onPress={handlePressButtonSurvey} activeOpacity={.7} className="items-center px-3 flex-row justify-center">
                       <View className="w-5 h-5 border border-main-blue p-2 items-center justify-center rounded-full mr-2">
                         {checkBoxAddSurveyInPdf && <View className="bg-main-blue rounded-full w-4 h-4"></View>}

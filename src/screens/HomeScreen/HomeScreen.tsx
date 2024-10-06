@@ -13,6 +13,8 @@ import { popupLiquidState } from '../../store/slices/appStateSlicer';
 import ModalLeakageHappened from './ModalLeakageHappened/ModalLeakageHappened';
 import ModalSuccess from './Timer/ModalSuccess/ModalSuccess';
 import ConsumableItemsWidget from './ConsumableItemsWidget/ConsumableItemsWidget';
+import IntervalInfo from './IntervalInfo/IntervalInfo';
+import NightModeButton from './Timer/NightModeButton/NightModeButton';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
@@ -31,6 +33,10 @@ const HomeScreen = () => {
       <DoubleTapToClose/>
       <View className="flex-1 justify-between">
         <ConsumableItemsWidget/>
+        <View className='w-full flex-row items-start justify-between'>
+          <IntervalInfo/>
+          <NightModeButton/>
+        </View>
         <Timer setToastOpened={setToastOpened}/>
         <DoubleButton
           key={'double-button-home-screen'}

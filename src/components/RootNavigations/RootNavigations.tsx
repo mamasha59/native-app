@@ -7,7 +7,7 @@ import * as Notifications from 'expo-notifications';
 import Home from '../../screens/Home';
 import UserData from '../../screens/UserData/UserData';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import RecomendationsStack from '../../screens/RecomendationsStack/RecomendationsStack';
+import RecommendationsStack from '../../screens/RecomendationsStack/RecommendationsStack';
 import PdfOnBoarding from '../../screens/PdfOnBoarding/PdfOnBoarding';
 import Survey from '../../screens/Survey/Survey';
 import NightMode from '../../screens/NightMode/NightMode';
@@ -75,7 +75,7 @@ import { popupLiquidState } from '../../store/slices/appStateSlicer';
       <Stack.Screen name='HomeScreen' component={Home}/>
       <Stack.Screen name='UserDataScreens' component={UserData}/>
 
-      <Stack.Screen name='Recommendation' component={RecomendationsStack}/>
+      <Stack.Screen name='Recommendation' component={RecommendationsStack}/>
 
       <Stack.Screen name='PdfOnBoarding' component={PdfOnBoarding}/>
       <Stack.Screen name='Survey' component={Survey}/>

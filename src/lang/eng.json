@@ -11,6 +11,13 @@
         "secondDataScreen_description": "Measuring fluid intake and urine output helps maintain optimal hydration levels in the body.",
 
         "thirdDataScreen": {
+            "how_many_catheters_do_you_have": "How many catheters do you have?",
+            "press_to_write": "press to write",
+            "description": "One catheter will be discarded for each catheterization. You will always know exactly how many catheters you have in stock.",
+            "notification_description": "I will remind you to refill your catheters when there are less than a"
+        },
+        
+        "fourthDataScreenScreen": {
             "title": "Your Self-Catheterization Plan:",
             "description": "This plan will be adapted to you. After each self-catheterization, the time until the next one will be calculated, and notifications will be activated. Always catheterize until the end of the interval.",
             "cannulationEachTime": "Catheterization every",
@@ -25,7 +32,7 @@
             }
         },
 
-        "fourthDataScreen": {
+        "fifthDataScreen": {
             "title": "Notification settings"
         },
 
@@ -39,7 +46,10 @@
         "every": "every",
         "ml": "ml",
         "fl_oz": "fl oz",
-        "day": "day(s)",
+
+        "day_one": "day",
+        "сatheter": "catheter",
+
         "blank": "",
         "in": "in",
         "save": "Save",
@@ -47,9 +57,7 @@
         "back": "Back",
         "nelaton": "Nelaton",
         "ok": "Ok",
-        "сatheter": "сatheter(s)",
-        "per_day": "per day",
-        "per_month": "per month",
+        "per": "per",
         "for": "for",
         "notification": "Notification",
         "night_mode": "Night Mode",
@@ -61,6 +69,23 @@
         "today": "today",
         "date": "Date",
         "unit": "Units",
+        "change": "Change",
+        "change_time": "change time",
+        "new_time": "new time",
+        "new_interval": "new interval",
+        "change_units": "change the unit",
+        "are_you_sure": "Are you sure?",
+        "ill_think": "I'll think about it",
+        "consumables": "Consumables",
+        "quantity": "Quantity",
+        "treatment": "treatment",
+        "add": "Add",
+        "title": "title",
+        "expense": "expense",
+        "enter": "Enter",
+        "the": "the",
+        "catheterization": "catheterization",
+        "edit": "edit",
 
         "componentSleepTimeStartEnd": {
             "title": "Indicate your usual sleep time:",
@@ -71,7 +96,13 @@
         },
 
         "toggleCannulationAtNightComponent": {
-            "title": "Catheterization at night"
+            "title": "Catheterization at night",
+            "once_at_night": {
+                "button_title": "Once at night",
+                "time_of_night_notification": "Time of night notification",
+                "select_a_time_within_the_range": "Select a time within the range"
+            },
+            "by_interval": "By interval"
         },
 
         "toggleCountUrineComponent": {
@@ -124,21 +155,6 @@
             "remind_to_reached_water_goal_time": "Remind throughout the day until the goal is reached:"
         },
 
-        "noticeOfRemainCaths": {
-            "title": "Catheter Stock Notifications:",
-            "when_the_stock_is_less_then": "When the stock is less than",
-            "how_many_caths": "How many catheters do you have?"
-        },
-
-        "catheterStockComponent": {
-            "title": "Catheter Stock",
-            "units_will_remain": "units will remain",
-            "modalEditCatheters": {
-                "how_many_catheters_do_you_have": "How many catheters do you have?",
-                "press_to_write": "press to write"
-            }
-        },
-
         "intervalInfoComponent": {
             "title": "Catheterization Interval:"
         },
@@ -162,9 +178,10 @@
             "start": "start",
             "completed": "Completed",
             "titles": {
+                "first_title": "Perform catheterization and press the button below to begin",
                 "catheterization_interval": "Time to catheterize:",
-                "since_last_catheterization": "Since last catheterization",
-                "before_catheterization": "Before catheterization:"
+                "since_last_catheterization": "You need to be catheterized! Since last catheterization:",
+                "before_catheterization": "Catheterize until the end of the interval:"
             },
             "intervals": {
                 "normal": "n o r m a l     i n t e r v a l ",
@@ -227,18 +244,25 @@
         },
 
         "catheterStockScreen": {
-            "catheter_stock_screen": "Catheter Stock:",
-            "average_catheter_usage": "Average catheter usage:"
-        },
+            "title": "Catheter flow control",
+            "averageCatheterUsageComponent": {
+                "title": "Average catheter usage",
+                "catheter_per_day": "catheter per day",
+                "catheter_per_month": "catheter per month"
+            },
+            "perform_catheterization": "Perform catheterization",
+            "consumableItems": {
+                "consumable_items_description": "If you use additional consumables during catheterization, you can account for their consumption. To do this, include what you need or add a new one.",
+                "manageConsumableItemsComponent": {
+                    "change_the_amount": "change the amount"
+                }
+            },
 
-        "cathetersForRoadComponent": {
-            "calculate_catheters_for_travel": "Calculate catheters for travel:",
-            "you_will_need": "You will need",
-            "select_number_of_days": "Select number of days"
-        },
-
-        "catheterNoticeComponent": {
-            "when_the_stock_is_less_than": "When the stock is less than"
+            "cathetersForRoadComponent": {
+                "calculate_catheters_for_travel": "Calculate catheters for travel:",
+                "you_will_need": "You will need",
+                "select_number_of_days": "Select number of days"
+            }
         },
 
         "profileScreen": {
@@ -340,6 +364,12 @@
                 "description": "If you don't want to constantly input the value, you can change this in the \"Profile\" screen.",
                 "got_it": "got it"
             }
+        },
+
+        "modalAlertChangeCatheterizationInterval": {
+            "lets_be_clear": "Let's be clear",
+            "interval_was": "The interval was a",
+            "next_catheterization_interval_will_be": "At the next catheterization, the interval will become"
         },
 
         "weekDays": {

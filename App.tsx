@@ -81,22 +81,22 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <AppStateStatusContext.Provider value={{ appStateStatus, setAppStateStatus }}>
+      <AppStateStatusContext.Provider value={{ appStateStatus, setAppStateStatus}}>
         <PersistGate loading={<ActivityIndicator size={'large'}/>} persistor={persistor}>
-            <SafeAreaProvider onLayout={onLayoutRootView}>
-              <NavigationContainer>
-                <GradientBackground>
-                  <SafeAreaView className="flex-1 h-full">
-                  <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
-                    <GestureHandlerRootView>
-                      <BottomSheetModalProvider>
-                        <RootNavigations/>
-                      </BottomSheetModalProvider>
-                    </GestureHandlerRootView>
-                  </SafeAreaView>
-                </GradientBackground>
-              </NavigationContainer>
-            </SafeAreaProvider>
+          <SafeAreaProvider onLayout={onLayoutRootView}>
+            <NavigationContainer>
+              <GradientBackground>
+                <SafeAreaView className="flex-1 h-full">
+                <StatusBar style='auto' translucent={true} backgroundColor='transparent'/>
+                  <GestureHandlerRootView>
+                    <BottomSheetModalProvider>
+                      <RootNavigations/>
+                    </BottomSheetModalProvider>
+                  </GestureHandlerRootView>
+                </SafeAreaView>
+              </GradientBackground>
+            </NavigationContainer>
+          </SafeAreaProvider>
         </PersistGate>
       </AppStateStatusContext.Provider>
     </Provider>

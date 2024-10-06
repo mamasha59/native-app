@@ -10,6 +10,11 @@ interface iUnits {
     id: string,
 }
 
+interface iUrineColor {
+    title: string,
+    color: string
+}
+
 interface iTimePicker {
     selectedIndexHour: number,
     selectedIndexMinutes: number,
@@ -50,6 +55,10 @@ interface iDairyRecord {
     catheterType?: string,
     amountOfDrankFluids: string,
     amountOfReleasedUrine: string,
+    urineColor?: {
+        color: string,
+        title: string
+    },
     leakageReason?: string,
     timeStamp: string,
 }
@@ -74,11 +83,32 @@ interface iJournal {
     drankWaterChart: iChart[],
     modalCustomizePdfDocument: boolean,
     checkBoxAddSurveyInPdf: boolean,
+    urineColor?: iUrineColor,
 }
 
 interface Option {
     title: string,
     value: boolean | string
 }
+
+interface iSurveyInputs {
+    difficulties?: string,
+    additional?: string
+}
     
-export {iUnits, iLanguage, iUser, iDay, iMonth, iDairyRecord, SelectedDairyRecord, iChart, iJournal, Option, iStatisticsPerDay, iTimePicker};
+export {
+    iUnits,
+    iLanguage,
+    iUser,
+    iDay,
+    iMonth,
+    iDairyRecord,
+    SelectedDairyRecord,
+    iChart, 
+    iJournal,
+    Option,
+    iStatisticsPerDay,
+    iTimePicker,
+    iSurveyInputs,
+    iUrineColor
+};

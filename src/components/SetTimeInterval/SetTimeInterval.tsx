@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { View, Text } from "react-native";
 import WheelPicker from "react-native-wheely";
+
 import { iTimePicker } from "../../types";
 
 interface iSetTimeInterval {

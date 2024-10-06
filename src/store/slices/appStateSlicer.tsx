@@ -21,7 +21,6 @@ interface iAppStateSlicer {
     timeStamp: string,
   },
   dayGoalOfDrinkWater: number,
-  scaleLiquidPopup: boolean,
   openModalNightMode: boolean,
   helperForModalTurnOnNightMode: boolean,
   doubleButtonProfileScreenClickable: {
@@ -55,7 +54,6 @@ const initialState:iAppStateSlicer = {
     },
     urineMeasure: false,
     dayGoalOfDrinkWater: 1500,
-    scaleLiquidPopup: false,
     openModalNightMode: false,
     helperForModalTurnOnNightMode: false,
     doubleButtonProfileScreenClickable: {
@@ -111,9 +109,6 @@ const appStateSlice = createSlice({
       setDayGoalOfDrinkWater: (state, action:PayloadAction<number>) => {
         state.dayGoalOfDrinkWater = action.payload;
       },
-      changeScalePopup: (state, action:PayloadAction<boolean>) => {
-        state.scaleLiquidPopup = action.payload;
-      },
       switchNightModeModal: (state, action:PayloadAction<boolean>) => {
         state.openModalNightMode = action.payload;
       },
@@ -145,7 +140,6 @@ export const {
     switchCannulationAtNightMode,
     setWhetherCountUrine,
     setDayGoalOfDrinkWater,
-    changeScalePopup,
     switchNightModeModal,
     setHelperForModalTurnOnNightMode,
     switchCheckedButtonProfileScreen,

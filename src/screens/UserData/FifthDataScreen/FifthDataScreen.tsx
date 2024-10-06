@@ -21,7 +21,7 @@ const FifthDataScreen = ({navigation}:iFifthDataScreen) => {
             <NotificationIcon width={28} color={'#fff'}/>
         </View>
         <Text style={{fontFamily:'geometria-bold'}} className="text-[#000] text-center text-lg leading-5">
-            {t("fourthDataScreen.title")}
+            {t("fifthDataScreen.title")}
         </Text>
         <CatheterizationReminder/>
         <NoticesOfCannulation/>

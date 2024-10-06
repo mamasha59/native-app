@@ -32,7 +32,7 @@ const CathetersForRoad = ({filteredRecords}:{filteredRecords:number}) => {
         <TouchableOpacity activeOpacity={.8} onPress={() => setOpenModal(!openModal)}>
             <View className="flex-row items-center mb-[10px]">
                 <Text style={{ fontFamily: "geometria-regular" }} className="text-grey text-xs leading-[15px]">
-                    {t("cathetersForRoadComponent.calculate_catheters_for_travel")}
+                    {t("catheterStockScreen.cathetersForRoadComponent.calculate_catheters_for_travel")}
                 </Text>
                 <View className="ml-2 flex-row items-center mx-[10px]">
                     <Text style={{ fontFamily: "geometria-bold" }} className="text-lg mr-2">{numberOfDays?.title}</Text>
@@ -42,14 +42,14 @@ const CathetersForRoad = ({filteredRecords}:{filteredRecords:number}) => {
             </View>
             <View className="border border-border-color p-4 flex-1 rounded-xl">
                 <Text style={{ fontFamily: "geometria-bold" }} className="text-xs text-black">
-                    {t("cathetersForRoadComponent.you_will_need")} {cathetersForSpecificDays} {t("for")} {numberOfDays?.title} {t("day")}
+                    {t("catheterStockScreen.cathetersForRoadComponent.you_will_need")} {cathetersForSpecificDays} {t("сatheter")} {t("for")} {numberOfDays?.title} {t("day")}
                 </Text>
             </View>
         </TouchableOpacity>
         <ModalSelect
             showIcon={false}
             row
-            title={t("cathetersForRoadComponent.select_number_of_days")}
+            title={t("catheterStockScreen.cathetersForRoadComponent.select_number_of_days")}
             options={options}
             onItemPress={onDayPress}
             openModal={openModal}

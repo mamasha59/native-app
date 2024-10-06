@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { iTimePicker } from "../../../../types";
@@ -12,7 +11,6 @@ interface iNoticeAlertIfIntervalLessThanYellow{
 
 const NoticeAlertIfIntervalLessThanYellow = ({newIntervalText, yellowInterval, handleModalAlert}:iNoticeAlertIfIntervalLessThanYellow) => {
     const {t} = useTranslation();
-    console.log(newIntervalText);
     
   return (
     <View className="items-center">
@@ -20,7 +18,7 @@ const NoticeAlertIfIntervalLessThanYellow = ({newIntervalText, yellowInterval, h
             <View className="mb-3">
                 <View className="flex-row">
                     <Text className="text-base mr-2" style={{fontFamily:'geometria-bold'}}>
-                        Новый интервал:
+                        {t("new_interval").split('')[0].charAt(0).toUpperCase()}{t("new_interval").slice(1)}:
                     </Text>
                     <Text style={{fontFamily:'geometria-bold'}} className="underline text-base">
                         {newIntervalText.selectedIndexHour} {t("hour")} {newIntervalText.selectedIndexMinutes} {t("min")}

@@ -46,7 +46,7 @@ const SwitchUnits = () => {
     <ModalSelect
         height={3.4}
         showIcon={false}
-        title="Изменить единицу"
+        title={t("change_units")}
         openModal={openModalChangeUnits}
         setOpenModal={handleModalChangeLanguage}
         >

@@ -66,6 +66,10 @@ const initialState:iJournal = {
     ],
     modalCustomizePdfDocument: false,
     checkBoxAddSurveyInPdf: false,
+    urineColor: {
+        color:'#fdcb6e',
+        title: 'Светло-желтая'
+    },
 }
 
 const journalDataSlice = createSlice({ // TODO обьеденить в одну функцию addChartValueToCurrentDay и addChartValueDrankWaterToCurrentDay
@@ -115,6 +119,12 @@ const journalDataSlice = createSlice({ // TODO обьеденить в одну 
         },
         handleCheckBoxAddSurveyInPdf: (state, action:PayloadAction<boolean>) => {
             state.checkBoxAddSurveyInPdf = action.payload;
+        },
+        setUrineColor: (state, action:PayloadAction<{color:string, title: string}>) => {
+            state.urineColor = {
+                color: action.payload.color,
+                title: action.payload.title
+            }
         }
     },
 
@@ -125,6 +135,7 @@ export const {
     addChartValueToCurrentDay,
     addChartValueDrankWaterToCurrentDay,
     handleModalCustomizePdfDocument,
-    handleCheckBoxAddSurveyInPdf
+    handleCheckBoxAddSurveyInPdf,
+    setUrineColor
     } = journalDataSlice.actions;
 export default journalDataSlice.reducer;

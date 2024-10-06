@@ -32,14 +32,14 @@ const NoticeOfRemainCatheters = () => {
   return (
     <View className="mt-4 flex-1">
       <Text className="text-base leading-5 w-full flex-1 mb-4" style={{fontFamily:'geometria-regular'}}>
-        Я напомню вам о необходимости пополнить запас катетеров, когда их останется менее чем:
+        {t("thirdDataScreen.notification_description")}:
       </Text>
       <TouchableOpacity onPress={focusInputNoticeOfCathsRemain} className="flex-row justify-center items-center">
           <View className="pt-3 w-7 h-7 items-center justify-center">
             <NotificationIcon width={28} color={'#061def'}/>
           </View>
           <Text className="text-lg" style={{fontFamily:'geometria-regular'}}>
-            на
+            {t("for")}
           </Text>
           <View className="flex-row items-center">
             <TextInput

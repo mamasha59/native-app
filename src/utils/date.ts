@@ -1,5 +1,5 @@
 const day = new Date();
-const getCurrentMonth = day.getMonth(); // сегоднящний месяц
+const getCurrentMonth = day.getMonth(); // сегодняшний месяц
 
 export {
     day, 

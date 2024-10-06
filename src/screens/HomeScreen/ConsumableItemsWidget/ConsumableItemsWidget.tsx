@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 import { useAppSelector } from "../../../store/hooks";
 import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
@@ -12,10 +12,9 @@ const ConsumableItemsWidget = () => {
   const {showWidgetConsumableItems} = useAppSelector(state => state.appStateSlice);
   
   const navigation = useNavigation<StackNavigationRoot>();
-  const currentRoute = useNavigationState(state => state.routes[state.index].name);
   const navigate = () => navigation.navigate('ControlCatheter');
 
-  const isItHomeScreen = currentRoute === 'Home';
+  const filteredData = consumablesItem.filter(item => item.active);
 
   return (
     <>
@@ -30,28 +29,8 @@ const ConsumableItemsWidget = () => {
       {showWidgetConsumableItems && 
       <View className="w-full relative">
         <BackgroundGradientConsumableItems>
-          {/* {isItHomeScreen && 
-            <View>
-              <Text style={{ fontFamily: "geometria-bold"}}
-                className="mr-2 text-base text-white border-b-[.2px] border-main-blue whitespace-pre-wrap">
-                {consumablesItem[0].name}:
-              </Text>
-              <View className="flex-row items-center">
-                <Text
-                  style={{ fontFamily: "geometria-bold"}}
-                  className="text-base text-white">
-                    {consumablesItem[0].quantity+''}
-                  </Text>
-                <Text
-                  style={{ fontFamily: "geometria-bold" }}
-                  className="ml-2 text-base text-white">
-                    {t("units")}
-                </Text>
-              </View>
-            </View>
-          } */}
           <FlatList
-            data={consumablesItem}
+            data={filteredData}
             keyExtractor={item => item.id}
             horizontal
             className="mt-1"

@@ -61,6 +61,9 @@
         "language": "Sprache",
         "today": "heute",
         "unit": "Maßeinheit",
+        "change_time": "change time",
+        "new_time": "new time",
+        "change_units": "change the unit",
 
         "componentSleepTimeStartEnd": {
             "title": "Geben Sie Ihre übliche Schlafenszeit an:",
@@ -71,7 +74,13 @@
         },
 
         "toggleCannulationAtNightComponent": {
-            "title": "Katheterisierung in der Nacht"
+            "title": "Katheterisierung in der Nacht",
+            "once_at_night": {
+                "button_title": "Once at night",
+                "time_of_night_notification": "Time of night notification",
+                "select_a_time_within_the_range": "Select a time within the range"
+            },
+            "by_interval": "By interval"
         },
 
         "toggleCountUrineComponent": {

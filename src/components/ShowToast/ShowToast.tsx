@@ -3,9 +3,9 @@ import { Text } from "react-native";
 import Toast from "react-native-root-toast";
 
 interface iShowToast {
-    show: boolean;
-    setShowToast: (event:boolean) => void;
-    text: string;
+  show: boolean;
+  setShowToast: (event:boolean) => void;
+  text: string;
 }
 
 const ShowToast = ({show, setShowToast, text}:iShowToast) => {

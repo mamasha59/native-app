@@ -206,6 +206,7 @@ const JournalScreen = () => {
             catheterType={item.catheterType}
             amountOfReleasedUrine={item.amountOfReleasedUrine}
             leakageReason={item.leakageReason}
+            urineColor={item.urineColor}
           />
           )
         }

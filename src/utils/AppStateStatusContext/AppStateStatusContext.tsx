@@ -1,7 +1,12 @@
-import * as React from 'react';
+import { createContext } from 'react';
 import { AppStateStatus } from 'react-native';
 
-const AppStateStatusContext = React.createContext<{appStateStatus: AppStateStatus; setAppStateStatus: React.Dispatch<React.SetStateAction<AppStateStatus>>}>({
+interface iAppStateStatusContext {
+    appStateStatus: AppStateStatus;
+    setAppStateStatus: React.Dispatch<React.SetStateAction<AppStateStatus>>
+}
+
+const AppStateStatusContext = createContext<iAppStateStatusContext>({
     appStateStatus: 'active',
     setAppStateStatus: () => {},
 });

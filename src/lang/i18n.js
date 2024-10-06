@@ -14,9 +14,11 @@ const resources = {
 i18n
     .use(initReactI18next)
     .init({
+        fallbackLng: 'eng',
         compatibilityJSON: 'v3',
         resources,
         lng: 'eng',
+        pluralSeparator: '_',
     });
 
 export default {i18n};

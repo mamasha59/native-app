@@ -9,7 +9,7 @@ import CatheterizationReminder from "../../components/CatheterizationReminder/Ca
 const NoticeNavigationScreen = () => {
   const {t} = useTranslation();
   return (
-    <MainLayout title={t("fourthDataScreen.title")}>
+    <MainLayout title={t("fifthDataScreen.title")}>
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
         <CatheterizationReminder/>
         <NoticesOfCannulation/>

@@ -24,7 +24,7 @@ const IntervalUI = (props:iIntervalUI) => {
         
   return (
     <View className="items-center my-1">
-      {days > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-3xl">{days} день</Text>}
+      {days > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-xl leading-5 underline text-error">{days} день</Text>}
       <Text adjustsFontSizeToFit style={{fontFamily:'geometria-bold'}} className="text-[40px] leading-[48px]">
         {loader ? <ActivityIndicator/> : formattedTime}
       </Text>

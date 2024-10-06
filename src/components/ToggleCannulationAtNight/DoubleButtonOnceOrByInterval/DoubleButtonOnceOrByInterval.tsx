@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
-import { addDays, isAfter, isBefore, setHours, setMinutes, sub } from "date-fns";
+import { addDays, setHours, setMinutes } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import DoubleButton from "../../DoubleButton/DoubleButton";
 import ModalOneNoticeAtNight from "../ModalOneNoticeAtNight/ModalOneNoticeAtNight";
@@ -13,7 +13,7 @@ import { switchCheckedButtonProfileScreen } from "../../../store/slices/appState
 import { StackNavigationRoot } from "../../RootNavigations/RootNavigations";
 import { setIdentifierOfOneNotificationAtNight } from "../../../store/slices/notificationsSettingsSlice";
 import AppStateStatusContext from "../../../utils/AppStateStatusContext/AppStateStatusContext";
-import { useSchedulePushNotificationTimerInterval } from "../../../hooks/useSchedulePushNotificationTimerInterval";
+import { useSchedulePushNotificationTimerInterval } from "../../../hooks/notifications/useSchedulePushNotificationTimerInterval";
 
 const DoubleButtonOnceOrByInterval = () => {
     const {t} = useTranslation();
@@ -73,18 +73,18 @@ const DoubleButtonOnceOrByInterval = () => {
             
             const timeOfNoticeOnceAtNightDateObject = addDays(setMinutes(setHours(new Date(), +timeOfNoticeOnceAtNightHoursMinutes[0]), +timeOfNoticeOnceAtNightHoursMinutes[1]),1);
 
-            const timeStartSleepObject = setMinutes(setHours(new Date(), +timeStartHoursMinutes[0]), +timeStartHoursMinutes[1]); 
-            const timeEndSleepObject = addDays(setMinutes(setHours(new Date(), +timeEndSleepHoursMinutes[0]), +timeEndSleepHoursMinutes[1]),1)
+            const timeStartSleepObject = setMinutes(setHours(new Date(), +timeStartHoursMinutes[0]), +timeStartHoursMinutes[1]);//evening time
+            const timeEndSleepObject = setMinutes(setHours(new Date(), +timeEndSleepHoursMinutes[0]), +timeEndSleepHoursMinutes[1]);//morning time
             // "notification once at night" must not been less then "time start sleep - night" and must not been more than "time end sleep - morning"
-            console.log(timeOfNoticeOnceAtNightDateObject);
-            
-            if(isAfter(new Date(), timeStartSleepObject) && isBefore(new Date(), timeEndSleepObject)){
+            const now = new Date().getHours();
+
+            if(now > timeStartSleepObject.getHours() || now  < timeEndSleepObject.getHours()){
+                console.log('mi tut');
+                
                 if(identifierOfCatheterizationNotice){
                     Notifications.cancelScheduledNotificationAsync(identifierOfCatheterizationNotice);
                 }
                 schedulePushNotification(timeOfNoticeOnceAtNightDateObject);
-            }else {
-                Notifications.cancelScheduledNotificationAsync(identifierOfOneNotificationAtNight);
             }
         }else if(doubleButtonProfileScreenClickable.rightButton){
             if(identifierOfOneNotificationAtNight){
@@ -92,11 +92,12 @@ const DoubleButtonOnceOrByInterval = () => {
             }else if(!identifierOfCatheterizationNotice){
                 schedulePushNotificationTimerInterval({body: 'Тестовое уведомление', title:'Возобновление уведомлений при клике По интервалу.'})
             }
-            //TODO schedule notification by interval
         }
         
     },[doubleButtonProfileScreenClickable.leftButton, timeOfNoticeAtNightOneTime, appStateStatus]);
-
+// when we press One notification per night - left button, this notification will only works after "time when user fall asleep" - time of start sleep,
+// till "time when use wake up" - time of end sleep
+// to trigger this notification user should open the app again to set notification, or find another way to implement it 
     const handleModalOneNoticeAtNight = () => setModalOnceAtNight(!modalOnceAtNight);
 
     const handleLeftButtonOnceAtNight = async () => {
@@ -127,8 +128,8 @@ const DoubleButtonOnceOrByInterval = () => {
                     clickable
                     marginBottom={false}
                     showIcon={false}
-                    textOfLeftButton="1 раз за ночь"
-                    textOfRightButton="по интервалу"
+                    textOfLeftButton={t("toggleCannulationAtNightComponent.once_at_night.button_title")}
+                    textOfRightButton={t("toggleCannulationAtNightComponent.by_interval")}
                     handlePressLeftButton={handleLeftButtonOnceAtNight}
                     handlePressRightButton={handleRightButtonByInterval}
                 />

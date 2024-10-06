@@ -1,4 +1,5 @@
 import { View, Text, Dimensions } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect } from "react";
@@ -18,6 +19,7 @@ const screen = Dimensions.get('screen');
  }
 
 const ModalAddConsumableItem = ({handleModalConsumableItem, modalAddConsumableItem}:iModalAddConsumableItem) => {
+    const {t} = useTranslation();
     const dispatch = useAppDispatch();
     const {consumablesItem} = useAppSelector(state => state.consumablesSlice);
 
@@ -60,7 +62,7 @@ const ModalAddConsumableItem = ({handleModalConsumableItem, modalAddConsumableIt
        <ModalSelect
         openModal={modalAddConsumableItem}
         setOpenModal={handleModalConsumableItem}
-        title="Добавить расходник"
+        title={`${t("add")} ${t("consumables")}`}
         showIcon={false}
         height={2.2}
         >
@@ -71,7 +73,7 @@ const ModalAddConsumableItem = ({handleModalConsumableItem, modalAddConsumableIt
                         control={control}
                         errors={errors.name}
                         inputsValue={inputsValue.name}
-                        placeholder={'название'}
+                        placeholder={t("title")}
                         name={"name"}
                         inputMode={Keyboard.String}
                         maxLength={40}
@@ -84,18 +86,18 @@ const ModalAddConsumableItem = ({handleModalConsumableItem, modalAddConsumableIt
                         control={control}
                         errors={errors.quantity}
                         inputsValue={inputsValue.quantity}
-                        placeholder={'расход'}
+                        placeholder={t("expense")}
                         name={"quantity"}
                         inputMode={Keyboard.Numeric}
                         maxLength={4}
                         isRequired
                         showPrompt
-                        textPrompt="Введите расход за одну катетеризацию"
+                        textPrompt={`${t("enter")} ${t("the")} ${t("expense")} ${t("per")} ${t("catheterization")}`}
                     />
                 </View>
                 {errors.name && <Text style={{ fontFamily: "geometria-regular"}} className="text-base text-error">{errors.name.message}</Text>}
                 <View className="flex-1 w-full max-h-[50px]" style={{width: screen.width / 2}}>
-                    <ButtonBluBorder title={'подтвердить'} handlePressButton={handleSubmit(submitConsumableItem)}/>
+                    <ButtonBluBorder title={t("save")} handlePressButton={handleSubmit(submitConsumableItem)}/>
                 </View>
             </View>
         </ModalSelect>

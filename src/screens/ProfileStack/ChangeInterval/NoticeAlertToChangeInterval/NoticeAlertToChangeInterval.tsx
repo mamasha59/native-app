@@ -3,6 +3,7 @@ import React from "react";
 
 import DoubleButton from "../../../../components/DoubleButton/DoubleButton";
 import { iTimePicker } from "../../../../types";
+import { useTranslation } from "react-i18next";
 
 interface iNoticeAlertToChangeInterval {
     newInterval: iTimePicker,
@@ -12,33 +13,35 @@ interface iNoticeAlertToChangeInterval {
 }
 
 const NoticeAlertToChangeInterval = ({newInterval,newIntervalText,handleModalAlert,handleChangeOptimalInterval}:iNoticeAlertToChangeInterval) => {
-  return (
+    const {t} = useTranslation();
+
+    return (
     <>
         <View className="justify-center items-center flex-1 mb-5">
             <Text style={{fontFamily:'geometria-regular'}} className="mb-2">
-                Давайте уточним, 
+                {t("modalAlertChangeCatheterizationInterval.lets_be_clear")}, 
             </Text>
             <Text style={{fontFamily:'geometria-bold'}} className="w-full mb-1 text-lg">
-                Был интервал: {newIntervalText}
+                {t("modalAlertChangeCatheterizationInterval.interval_was")}: {newIntervalText}
             </Text> 
             <Text style={{fontFamily:'geometria-bold'}} className="w-full mb-2 text-lg">
-                Меняем на: {newInterval.selectedIndexHour} ч. {newInterval.selectedIndexMinutes} мин.
+                {t("change")} {t("for")}: {newInterval.selectedIndexHour} {t("hour")} {newInterval.selectedIndexMinutes} {t("min")}
             </Text>
             <Text style={{fontFamily:'geometria-regular'}} className="w-full mb-2">
-                При следующей катетеризации интервал станет:
+                {t("modalAlertChangeCatheterizationInterval.next_catheterization_interval_will_be")}:
             </Text>
             <Text style={{fontFamily:'geometria-bold'}} className="text-lg border-b border-main-blue mb-2">
-                {newInterval.selectedIndexHour} ч. {newInterval.selectedIndexMinutes} мин.
+                {newInterval.selectedIndexHour} {t("hour")} {newInterval.selectedIndexMinutes} {t("min")}
             </Text>
             <Text style={{fontFamily:'geometria-regular'}}>
-                Вы уверены?
+                {t("are_you_sure")}
             </Text>
         </View>
         <DoubleButton
             showIcon={false}
-            textOfLeftButton="Я подумаю"
+            textOfLeftButton={t("ill_think")}
             handlePressLeftButton={handleModalAlert}
-            textOfRightButton="Меняем!"
+            textOfRightButton={t("change")}
             handlePressRightButton={handleChangeOptimalInterval}
         />
     </>

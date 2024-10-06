@@ -11,6 +11,13 @@
         "secondDataScreen_description": "Измерение потребляемой жидкости и выделенной мочи поможет поддерживать оптимальный уровень воды в организме.",
 
         "thirdDataScreen": {
+            "how_many_catheters_do_you_have": "Сколько катетеров у вас есть?",
+            "press_to_write": "нажмите для ввода",
+            "description": "Один катетер используется после каждой катетеризации. Вы всегда будете точно знать, сколько катетеров у вас в запасе.",
+            "notification_description": "Я буду напоминать вам о необходимости пополнять катетеры, когда их становится меньше"
+        },
+
+        "fourthDataScreenScreen": {
             "title": "Ваш план катетеризации:",
             "description": "Этот план будет адаптироваться под Вас. После каждой катетеризации будет рассчитано время до следующей, и активируются уведомления. Всегда катетеризируйтесь до окончания интервала.",
             "cannulationEachTime": "Катетеризация каждые",
@@ -25,7 +32,7 @@
             }
         },
 
-        "fourthDataScreen": {
+        "fifthDataScreen": {
             "title": "Настройка уведомлений"
         },
 
@@ -39,7 +46,10 @@
         "every": "каждый",
         "ml": "мл",
         "fl_oz": "fl oz",
+
         "day": "дня",
+        "сatheter": "катетеров",
+
         "blank": "",
         "units": "шт",
         "in": "через",
@@ -48,7 +58,6 @@
         "back": "Назад",
         "nelaton": "Нелатон",
         "ok": "Ок",
-        "сatheter": "катетеров",
         "per_day": "в день",
         "per_month": "в месяц",
         "for": "для",
@@ -61,6 +70,21 @@
         "language": "Язык",
         "today": "сегодня",
         "unit": "Единица измерения",
+        "change_time": "изменить время",
+        "new_time": "новое время",
+        "change_units": "изменить единицу",
+        "are_you_sure": "Вы уверены?",
+        "ill_think": "Я подумаю",
+        "consumables": "Расходники",
+        "quantity": "Количество",
+        "treatment": "лечение",
+        "add": "Добавить",
+        "title": "название",
+        "expense": "расход",
+        "enter": "Ввести",
+        "the": "the",
+        "catheterization": "катетеризация",
+        "edit": "редактировать",
 
         "componentSleepTimeStartEnd": {
             "title": "Укажите ваше обычное время сна:",
@@ -71,7 +95,13 @@
         },
 
         "toggleCannulationAtNightComponent": {
-            "title": "Катетеризация в ночное время"
+            "title": "Катетеризация в ночное время",
+            "once_at_night": {
+                "button_title": "Once at night",
+                "time_of_night_notification": "Time of night notification",
+                "select_a_time_within_the_range": "Select a time within the range"
+            },
+            "by_interval": "By interval"
         },
 
         "toggleCountUrineComponent": {
@@ -124,21 +154,6 @@
             "remind_to_reached_water_goal_time": "Напоминать в течение дня до достижения цели:"
         },
 
-        "noticeOfRemainCaths": {
-            "title": "Уведомления об остатке катетеров:",
-            "when_the_stock_is_less_then": "При остатке менее чем на",
-            "how_many_caths": "Сколько катетеров у вас есть?"
-        },
-
-        "catheterStockComponent": {
-            "title": "Запас катетеров",
-            "units_will_remain": "штук останется",
-            "modalEditCatheters": {
-                "how_many_catheters_do_you_have": "Сколько катетеров у вас есть?",
-                "press_to_write": "нажмите"
-            }
-        },
-
         "intervalInfoComponent": {
             "title": "Интервал катетеризации:"
         },
@@ -162,8 +177,9 @@
             "start": "Начать",
             "completed": "Выполнено",
             "titles": {
+                "first_title": "Выполните катетеризацию и нажмите кнопку ниже, чтобы начать",
                 "catheterization_interval": "Интервал катетеризации:",
-                "since_last_catheterization": "Вам необходимо катетеризироваться! С последней катетеризации",
+                "since_last_catheterization": "Вам необходимо катетеризироваться! С последней катетеризации:",
                 "before_catheterization": "Катетеризируйтесь до окончания интервала:"
             },
             "intervals": {
@@ -227,18 +243,25 @@
         },
 
         "catheterStockScreen": {
-            "catheter_stock_screen": "Запас катетеров:",
-            "average_catheter_usage": "Средний расход катетеров:"
-        },
+            "title": "Контроль катетеров",
+            "averageCatheterUsageComponent": {
+                "title": "Средний расход катетеров",
+                "catheter_per_day": "катетеров в день",
+                "catheter_per_month": "катетеров в месяц"
+            },
+            "perform_catheterization": "Выполните катетеризацию",
+            "consumableItems": {
+                "consumable_items_description": "Если вы используете дополнительные расходные материалы при катетеризации, вы можете учитывать их расход. Для этого включите необходимые или добавьте новое.",
+                "manageConsumableItemsComponent": {
+                    "change_the_amount": "изменить количество"
+                }
+            },
 
-        "cathetersForRoadComponent": {
-            "calculate_catheters_for_travel": "Рассчитать катетеры в дорогу на:",
-            "you_will_need": "Вам понадобится",
-            "select_number_of_days": "Выберите кол-во дней"
-        },
-
-        "catheterNoticeComponent": {
-            "when_the_stock_is_less_than": "При остатке менее чем на"
+            "cathetersForRoadComponent": {
+                "calculate_catheters_for_travel": "Рассчитать катетеры в дорогу на:",
+                "you_will_need": "Вам понадобится",
+                "select_number_of_days": "Выберите кол-во дней"
+            }
         },
 
         "profileScreen": {
@@ -246,7 +269,7 @@
             "profileSettingsComponent": {
                 "change_interval": "Изменить интервал",
                 "normal_interval": "Нормальный",
-                "confirm_new_interval": "Подтвердить новый интервал"
+                "select_a_new_interval": "Выберите новый интервал"
             },
             "personal_data_for_PDF": "Персональные данные для PDF"
         },
@@ -340,6 +363,12 @@
                 "description": "Если вы не хотите постоянно указывать значение, то это можно изменить на экране \"Профиля\".",
                 "got_it": "я понял"
             }
+        },
+
+        "modalAlertChangeCatheterizationInterval": {
+            "lets_be_clear": "Давайте уточним",
+            "interval_was": "Интервал был",
+            "next_catheterization_interval_will_be": "При следующей катетеризации интервал станет"
         },
 
         "weekDays": {

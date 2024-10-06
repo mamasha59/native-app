@@ -10,13 +10,11 @@ import {
     BottomSheetTextInput,
   } from '@gorhom/bottom-sheet';
   
-import NelatonIcon from "../../../assets/images/iconsComponent/NelatonIcon";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import BackgroundGradientConsumableItems from "../../../Layouts/BackgroundGradientConsumableItems/BackgroundGradientConsumableItems";
-
 
 import { consumableItemChangeQuantity } from "../../../store/slices/consumablesSlice";
 import { ClosePopup } from "../../../assets/images/icons";
+import { capitalizeFirstLetter } from "../../../utils/const";
 
 const screen = Dimensions.get('screen');
 
@@ -46,11 +44,13 @@ const ManageConsumableItems = () => {
         />
     ),[]);
 
+  const filteredData = consumablesItem.filter(item => item.active);
+
   return (
     <>
     <TouchableOpacity onPress={handleOpenPopup} activeOpacity={.9}>
-        <BackgroundGradientConsumableItems>
-            {consumablesItem.map((item) => (
+        <View className="bg-main-blue p-2 rounded-md">
+            {filteredData.map((item) => (
                 <View key={item.id} className="flex-row justify-center relative flex-wrap my-1">
                     <View className={`${item.category === 'catheter' ? 'flex-col' : 'flex-row'} flex-1 items-start flex-wrap`}>
                         <Text 
@@ -67,20 +67,14 @@ const ManageConsumableItems = () => {
                             </Text>
                         </View>
                     </View>
-                    {item.category !== 'catheter' 
-                        ?   <Text className={`${item.active === true ? 'text-[#69ff6b]' : 'text-[#a50002]'}  text-sm leading-6`} style={{ fontFamily: "geometria-regular" }}>
-                                - {item.active === true ? 'учитываем' : 'не учитываем' } расход
-                            </Text>
-                        :   <View className="items-center bg-[#fff] absolute right-0 top-0 rounded-full p-2">
-                                <NelatonIcon/>
-                            </View>
-                    }
                 </View>
             ))}
             <View className="mt-3 items-end">
-                <Text style={{ fontFamily: "geometria-bold" }} className="text-white underline">изменить количество</Text>
+              <Text style={{ fontFamily: "geometria-bold" }} className="text-white underline">
+                {t("catheterStockScreen.consumableItems.manageConsumableItemsComponent.change_the_amount")}
+              </Text>
             </View>
-        </BackgroundGradientConsumableItems>
+        </View>
     </TouchableOpacity>
     <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -94,7 +88,9 @@ const ManageConsumableItems = () => {
             <ClosePopup width={15} height={15}/>
         </TouchableOpacity>
         <View className="flex-1 p-6">
-          <Text className="text-2xl mb-5" style={{ fontFamily: "geometria-bold" }}>Изменить количество:</Text>
+          <Text className="text-2xl mb-5" style={{ fontFamily: "geometria-bold" }}>
+            {capitalizeFirstLetter(t("catheterStockScreen.consumableItems.manageConsumableItemsComponent.change_the_amount"))}
+          </Text>
           <BottomSheetFlatList
             data={consumablesItem}
             keyExtractor={(i) => i.id}
@@ -107,7 +103,9 @@ const ManageConsumableItems = () => {
                   {item.name}
                 </Text>
                 <View className="flex-row items-center relative">
-                  <Text style={{fontFamily:'geometria-regular'}} className="absolute text-xs -top-4 text-center">редактировать</Text>
+                  <Text style={{fontFamily:'geometria-regular'}} className="absolute text-xs -top-4 text-center">
+                    {t("edit")}
+                  </Text>
                   <BottomSheetTextInput
                     ref={inputRef}
                     value={item.quantity+''}

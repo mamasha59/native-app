@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import InputData from "../../InputData/InputData";
 import { Keyboard } from "../../../utils/enums";
 import { setTimeOfNoticeAtNightOneTime } from "../../../store/slices/nightStateSlice";
+import { useTranslation } from "react-i18next";
 
 interface iModalOneNoticeAtNight {
     modalOnceAtNight: boolean,
@@ -16,6 +17,8 @@ interface iModalOneNoticeAtNight {
 }
 
 const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalOneNoticeAtNight) => {
+    const {t} = useTranslation();
+
     const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // берем из стейта то что выбрал юзер на стартовых экранах (Да/Нет)
     const dispatch = useAppDispatch();
 
@@ -67,7 +70,7 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                     </View>
                     <View className="items-center justify-center">
                         <Text className="text-xs" style={{fontFamily:'geometria-regular'}}>
-                            время ночного уведомления:
+                            {t("toggleCannulationAtNightComponent.once_at_night.time_of_night_notification")}:
                         </Text>
                         <View className="items-center justify-center flex-row border-b border-main-blue">
                             <NotificationIcon color={'#000'} width={20}/>
@@ -77,7 +80,7 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                         </View>
                         <TouchableOpacity onPress={handlePressChangeTime} activeOpacity={.6} className="p-3">
                             <Text className="text-xs" style={{fontFamily:'geometria-regular'}}>
-                                изменить время
+                                {t("change_time")}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -98,7 +101,9 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                         <Text style={{fontFamily:'geometria-bold'}} className="text-lg">|</Text>
                     </View>
                     <>
-                        <Text style={{fontFamily:'geometria-regular'}} className="text-sm text-center">выберете время в диапазоне:</Text>
+                        <Text style={{fontFamily:'geometria-regular'}} className="text-sm text-center">
+                            {t("toggleCannulationAtNightComponent.once_at_night.select_a_time_within_the_range")}:
+                        </Text>
                         <View className="flex-row justify-between items-center mt-2">
                             <Text style={{fontFamily:'geometria-bold'}} className="text-lg underline">{settingsNighMode.timeSleepStart}</Text>
                             <Text style={{fontFamily:'geometria-bold'}} className="text-lg underline">{settingsNighMode.timeSleepEnd}</Text>
@@ -136,13 +141,15 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                         </View>
                     </View>
                     <Text className="text-xs text-center mt-1 mb-3" style={{fontFamily:'geometria-regular'}}>
-                        новое время
+                        {t("new_time")}
                     </Text>
                     <TouchableOpacity
                         onPress={handleSubmit(handleSaveNewTime)}
                         activeOpacity={.6}
                         className="border border-main-blue rounded-xl py-3 justify-center items-center">
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-sm">Сохранить</Text>
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-sm">
+                            {t("save")}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>

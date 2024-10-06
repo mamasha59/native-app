@@ -9,7 +9,7 @@
     "icon": "./src/assets/images/splash-screen/appIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/images/splash-screen/SplashScreenNew.png",
+      "image": "./src/assets/images/splash-screen/SplashScreen.png",
       "resizeMode": "cover",
       "backgroundColor": "#4BAAC5"
     },

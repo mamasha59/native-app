@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, AppState } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, AppState, Vibration } from "react-native";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { differenceInSeconds, format, isAfter, parse } from "date-fns";
@@ -23,15 +23,13 @@ import { addUrineDiaryRecord } from "../../../store/slices/journalDataSlice";
 import { dateFormat } from "../../../utils/const";
 import { decreaseQuantityOFConsumableItem } from "../../../store/slices/consumablesSlice";
 import SwitchInnerCircleUIToNightMode from "./SwitchInnerCircleUIToNightMode/SwitchInnerCircleUIToNightMode";
-import IntervalInfo from "../IntervalInfo/IntervalInfo";
-import NightModeButton from "./NightModeButton/NightModeButton";
-import { useSchedulePushNotificationTimerInterval } from "../../../hooks/useSchedulePushNotificationTimerInterval";
+import { useSchedulePushNotificationTimerInterval } from "../../../hooks/notifications/useSchedulePushNotificationTimerInterval";
 
 const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   const dispatch = useAppDispatch();
   const {t,i18n} = useTranslation();
   const now = new Date();
-
+  
   const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
   const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // кол-во катетеров
@@ -135,14 +133,16 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   useEffect(() => { // рассчитываем разницу по времени между последней катетеризацией и текущем временем, результат в секундах
     if(!settings.cannulationAtNight.value){
       if(journal.urineDiary.length > 0) {
-        const lastRecord = journal.urineDiary.find((e) => e.catheterType)               
-        const targetDate = parse(lastRecord?.timeStamp!, dateFormat, new Date());
-        const currentDate = new Date();
-        const difference = differenceInSeconds(currentDate, targetDate);   
-        // Расчет дней, часов, минут и секунд
-        const days = Math.floor(difference / (24 * 3600));
-        setDaysFromLastCannulation(days);
-        dispatch(setIntervalDifference(difference));
+        const lastRecord = journal.urineDiary.find((e) => e.catheterType);
+        if(lastRecord){
+          const targetDate = parse(lastRecord?.timeStamp!, dateFormat, new Date());
+          const currentDate = new Date();
+          const difference = differenceInSeconds(currentDate, targetDate);   
+          // Расчет дней, часов, минут и секунд
+          const days = Math.floor(difference / (24 * 3600));
+          setDaysFromLastCannulation(days);
+          dispatch(setIntervalDifference(difference));
+        } 
       }
     }
   },[]);
@@ -162,12 +162,12 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
 
   useEffect(() => {
     if (!settings.stateOfTimerTitleForFirstTimeInApp) {
-      setTimerTitle('Выполните катетеризацию и нажмите кнопку ниже, чтобы начать.');
+      setTimerTitle(t("timer.titles.first_title"));
     } else if (partTime.firstPartTime && !partTime.secondPartTime) {
       setTimerTitle(t("timer.titles.before_catheterization"));
     } else if (partTime.secondPartTime && partTime.firstPartTime && !partTime.thirdPartTime) {
       setTimerTitle('Самое время катетеризироваться!');
-    } else if(partTime.thirdPartTime && !timerRunning){
+    } else if(partTime.thirdPartTime){
       setTimerTitle(t("timer.titles.since_last_catheterization"));
     }
   }, [i18n.language, partTime, timerRunning, settings.stateOfTimerTitleForFirstTimeInApp]);
@@ -194,7 +194,10 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
     console.log('запланированы',status);
   };
 
+  const triggerVibration = () => Vibration.vibrate(7, false);
+
   const handlePressCommon = async () => {
+    triggerVibration();
     setLoader(false);
     const notificationTitle = `Время катетеризироваться! осталось ${yellowInterval} минут`;
     const lastCatheterizationTimeBodyText = journal.urineDiary[0] ? `Последняя катетеризация была в ${journal.urineDiary[0].timeStamp}` : '';
@@ -202,7 +205,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
       title: notificationTitle,
       body: lastCatheterizationTimeBodyText,
     });
-    requestNotificationPermission()
+    requestNotificationPermission();
 
     if(!settingsNighMode.cannulationAtNight){ // turn of night mode only IF ITS ON
       dispatch(switchCannulationAtNightMode({   
@@ -211,7 +214,6 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
       })); 
     }
     setDaysFromLastCannulation(0); // reset days from last cannulation
-    dispatch(setShowModalSuccess(true));      // показывает модальное окно об успешной катетеризации
     dispatch(whetherStartFromCountdown(true));// always starts from COUNTDOWN
     setIntervalDifference(0);                 // clear time difference since last catheterization
     if (!settings.stateOfTimerTitleForFirstTimeInApp) {
@@ -237,6 +239,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
   };
 
   const handlePressButton = () => { // при нажатии кнопки, если не выбрано измерение мочи
+    dispatch(setShowModalSuccess(true));      // показывает модальное окно об успешной катетеризации
     if(isItTimeToShowModalTurnOnNightMode && !settingsNighMode.cannulationAtNight && !settings.cannulationAtNight.value) {
       dispatch(switchNightModeModal(!settings.openModalNightMode)); // open modal Turn on Night Mode
     } else {
@@ -307,11 +310,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
     });
 
   return (
-    <View className="flex-1 items-center justify-center w-full h-full relative">
-      <View className='absolute top-0 w-full flex-row items-start justify-between'>
-        <IntervalInfo/>
-        <NightModeButton/>
-      </View>
+    <View className="flex-1 -mt-4 items-center justify-center w-full h-full relative">
       <SvgComponentText
         partTime={partTime}
         start={timerRunning}
@@ -321,7 +320,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
         <View className="items-center">
           <Animated.View style={[styles.card, frontAnimatedStyleInnerCircle]} >
             <Text adjustsFontSizeToFit style={{fontFamily:'geometria-bold'}} className="text-base leading-4 text-center text-[#000] max-w-[200px]">
-                {timerTitle}
+              {timerTitle}
             </Text>
             <IntervalUI
               startFromCountdown={startFromCountdown}

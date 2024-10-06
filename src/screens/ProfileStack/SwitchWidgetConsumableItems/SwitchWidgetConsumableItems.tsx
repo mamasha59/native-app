@@ -1,7 +1,9 @@
-import { Text, TouchableOpacity } from "react-native";
-import React from "react";
+import { Dimensions, Text, TouchableOpacity } from "react-native";
+
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { toggleWidgetConsumableItems } from "../../../store/slices/appStateSlicer";
+
+const screen = Dimensions.get('screen');
 
 const SwitchWidgetConsumableItems = () => {
   const {showWidgetConsumableItems} = useAppSelector(state => state.appStateSlice);
@@ -14,10 +16,18 @@ const SwitchWidgetConsumableItems = () => {
   const title = showWidgetConsumableItems ? 'Скрыть' : 'Показать'
 
   return (
-    <TouchableOpacity activeOpacity={.9} onPress={handleWidgetState} className="mt-2 border-b border-main-blue py-3 text-center flex-1">
-      <Text style={{fontFamily:'geometria-bold'}} className="text-main-blue text-sm uppercase">
-        <Text className={`underline ${showWidgetConsumableItems ? 'text-error' : 'text-[#27ae60]'} `}>{title}</Text> виджет «Запасы» на главном экране
+    <TouchableOpacity
+      activeOpacity={.9}
+      onPress={handleWidgetState}
+      className="mt-2 border-b justify-between w-full border-main-blue py-3 text-center items-center flex-wrap flex-row">
+      <Text style={{fontFamily:'geometria-bold', width: screen.width / 2}} className="text-main-blue text-sm uppercase">
+        Виджет «Запасы» на главном экране
       </Text>
+      <Text
+        style={{fontFamily:'geometria-bold'}}
+        className={`underline text-sm uppercase ${showWidgetConsumableItems ? 'text-error' : 'text-[#27ae60]'} `}>
+          {title}
+        </Text>
     </TouchableOpacity>
   );
 };

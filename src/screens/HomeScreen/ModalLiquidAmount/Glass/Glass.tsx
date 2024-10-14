@@ -51,7 +51,7 @@ const Glass = ({onValueChange, customValue}:iGlass) => {
   const backgroundColorDrankWater = '#3bacf7';
   const backgroundUrineMeasure = urineColor?.color;
 
-  const maxScrollHeight = height / (ifCountUrine ? 2.4 : 1.6); // bottom point of max scroll down
+  const maxScrollHeight = height / (ifCountUrine ? 2.4 : 1.8); // bottom point of max scroll down
   const sizeOfContainer = height / (ifCountUrine ? 2.2 : 1.6);
 
   const bgColor = () => ifCountUrine ? backgroundUrineMeasure : backgroundColorDrankWater;

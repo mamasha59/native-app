@@ -53,13 +53,19 @@ interface iDairyRecord {
     id: string,
     whenWasCanulisation: string,
     catheterType?: string,
-    amountOfDrankFluids: string,
+    amountOfDrankFluids: {
+        value: string,
+        drinkName?: string
+    },
     amountOfReleasedUrine: string,
     urineColor?: {
         color: string,
         title: string
     },
-    leakageReason?: string,
+    leakageReason?: {
+        reason: string,
+        value: string,
+    },
     timeStamp: string,
 }
 

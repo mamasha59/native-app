@@ -39,7 +39,7 @@ const ModalSelect = ({setOpenModal, openModal, options, onItemPress, title, chil
                     {logo}
                 </View>}
                 {title && title.length > 0 && <Text style={{fontFamily:'geometria-bold'}} className="text-2xl text-center mb-4">{title}</Text>}
-                <View className="justify-between flex-1">
+                <View className=" flex-1">
                     {options &&
                         <ScrollView className="flex-1 w-full">
                             <View className={`justify-center items-center flex-wrap ${row ? 'flex-row' : 'flex mx-auto'}`}>

@@ -31,7 +31,7 @@ const ProfileUtils = () => {
         <Text style={{fontFamily:'geometria-regular'}} className="text-grey text-base">Политика</Text>
       </TouchableOpacity>
       <TouchableOpacity onLongPress={removeProfile} className="py-4 mt-1">
-        <Text style={{fontFamily:'geometria-bold'}} className="text-error">Сбросить профиль - temporarily (long press)</Text>
+        <Text style={{fontFamily:'geometria-bold'}} className="text-error">Сбросить профиль - (long press)</Text>
       </TouchableOpacity>
       <ModalSelect
         key={'modalpolicies'}

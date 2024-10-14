@@ -19,7 +19,7 @@ const HoursInterval = ({setTimeIntervalToShowResult, textColor, textAlert}:iHour
     const handleSelectedHour = (hour: number) => {
         setSelectedHour(hour); // Обновляем выбранный час
         setTimeIntervalToShowResult(hour); // Устанавливаем интервал
-      };
+    };
 
   return (
     <View className="mb-4 flex-1">

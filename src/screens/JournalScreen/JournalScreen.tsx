@@ -77,15 +77,6 @@ const JournalScreen = () => {
     handleModalState();
   }
 
-  // useEffect(() => { // журнал данные всегда по текущий день
-  //   const today = format(new Date(), dateFormat).slice(0,10);
-        
-  //   if(today !== calendarDay) {
-  //     dispatch(setCalendareDay(today));
-  //     dispatch(resetBadges());
-  //   }
-  // },[])
-
   useEffect(() => { // filtering by catagories
     const applyFilter = (records: iDairyRecord[], filter: string) => {
       switch (filter) {
@@ -94,9 +85,9 @@ const JournalScreen = () => {
         case 'amountOfReleasedUrine':
           return records.filter((e) => e.amountOfReleasedUrine && +e.amountOfReleasedUrine.split(' ')[0] > 0);
         case 'amountOfDrankFluids':
-          return records.filter((e) => e.amountOfDrankFluids && +e.amountOfDrankFluids.split(' ')[0] > 0);
+          return records.filter((e) => e.amountOfDrankFluids.value && +e.amountOfDrankFluids.value.split(' ')[0] > 0);
         case 'leakageReason':
-          return records.filter((e) => e.leakageReason && e.leakageReason?.length > 0);
+          return records.filter((e) => e.leakageReason?.reason && e.leakageReason.reason.length > 0);
         case 'timeStamp':
           return records;
         default:
@@ -121,16 +112,15 @@ const JournalScreen = () => {
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
 
     const amountOfDrankFluidsPerDay = filteredRecords
-      .filter(e => e && e.amountOfDrankFluids)
-      .map((e) => e.amountOfDrankFluids)
+      .filter(e => e && e.amountOfDrankFluids.value)
+      .map((e) => e.amountOfDrankFluids.value)
       .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
 
     const amountOfReleasedUrinePerDay = filteredRecords
       .filter(e => e && e.amountOfReleasedUrine)
       .map((e) => e.amountOfReleasedUrine)
       .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
-
-
+    
     const setStatistics = {
       cannulation:cannulationStaticPerDay.length,
       leakage:leakageStaticPerDay.length,

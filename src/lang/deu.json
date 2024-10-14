@@ -11,6 +11,13 @@
         "secondDataScreen_description": "Die Messung der aufgenommenen Flüssigkeit und des ausgeschiedenen Urins hilft, ein optimales Flüssigkeitsniveau im Körper zu erhalten.",
 
         "thirdDataScreen": {
+            "how_many_catheters_do_you_have": "How many catheters do you have?",
+            "press_to_write": "press to write",
+            "description": "One catheter will be discarded for each catheterization. You will always know exactly how many catheters you have in stock.",
+            "notification_description": "I will remind you to refill your catheters when there are less than a"
+        },
+        
+        "fourthDataScreenScreen": {
             "title": "Ihr Katheterisierungsplan:",
             "description": "Dieser Plan wird an Sie angepasst. Nach jeder Katheterisierung wird die Zeit bis zur nächsten berechnet, und Benachrichtigungen werden aktiviert. Katheterisieren Sie immer bis zum Ende des Intervalls.",
             "cannulationEachTime": "Katheterisierung alle",

@@ -25,7 +25,7 @@ import { decreaseQuantityOFConsumableItem } from "../../../store/slices/consumab
 import SwitchInnerCircleUIToNightMode from "./SwitchInnerCircleUIToNightMode/SwitchInnerCircleUIToNightMode";
 import { useSchedulePushNotificationTimerInterval } from "../../../hooks/notifications/useSchedulePushNotificationTimerInterval";
 
-const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
+const TimerT = () => {
   const dispatch = useAppDispatch();
   const {t,i18n} = useTranslation();
   const now = new Date();
@@ -233,7 +233,6 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
       setStartFromCountdown(true);
       setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
       timerRestart(expiryTimestamp);
-      setToastOpened(true);
       setInitialStrip(0); // обнуляем секундные полоски
     }
   };
@@ -250,7 +249,7 @@ const TimerT = ({setToastOpened}:{setToastOpened:(value:boolean) => void}) => {
           whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
           catheterType: t("nelaton"),
           timeStamp: format(new Date(), dateFormat),
-          amountOfDrankFluids: '',
+          amountOfDrankFluids: {value:''},
           amountOfReleasedUrine: ''
         }));
         dispatch(addBadgesJournalScreen(1));

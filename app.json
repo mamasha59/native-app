@@ -29,7 +29,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/splash-screen/SplashScreenNew.png",
+        "foregroundImage": "./src/assets/images/splash-screen/SplashScreen.png",
         "backgroundColor": "#ffffff"
       },
       "package": "urocontrol.sergeikuleshov",
@@ -59,7 +59,8 @@
           "defaultChannel": "default"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-asset"
     ]
   }
 }

@@ -1,11 +1,17 @@
+import { Image } from "expo-image";
 import { View, Text } from "react-native";
 
 const LogoTop = () => {
   return (
-    <View className="justify-center flex-grow-0 relative py-5 mx-auto">
-      <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-[20%] text-white">Use</Text>
-      <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-4xl leading-7 text-white">Nelaton</Text>
-      <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-[45%] right-0 text-white">easily</Text>
+    <View className="w-full h-20 py-2 mx-auto">
+      <Image
+        style={{width: '100%', height: '100%'}}
+        source={require('../../../assets/images/AppLogo.png')}
+        contentFit="contain"
+        transition={1000}
+        contentPosition={'center'}
+        alt="Use Nelaton Easily Logo"
+      />
     </View>
   );
 };

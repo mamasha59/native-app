@@ -10,12 +10,12 @@ const NoticesOfWaterConsumption = () => {
 
   return (
     <View className="mt-4">
-        <Text style={{fontFamily:'geometria-bold'}}>
-            {t("noticeOfWaterConsumptionComponents.title")}
-        </Text>
-        <EveningNoticeOfFluidIntake/>
-        <SetWaterGoalDay/>
-        <WaterGoalReminderDuringDay/>
+      <Text style={{fontFamily:'geometria-bold'}}>
+        {t("noticeOfWaterConsumptionComponents.title")}
+      </Text>
+      <EveningNoticeOfFluidIntake/>
+      <SetWaterGoalDay/>
+      <WaterGoalReminderDuringDay/>
     </View>
   );
 };

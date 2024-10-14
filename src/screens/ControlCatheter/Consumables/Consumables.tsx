@@ -68,7 +68,6 @@ const Consumables = () => {
           resizeMode="contain"
           source={require('../../../assets/trash-backet.json')}
         />
-        {/* <Text className="text-error">Delete</Text> */}
       </TouchableOpacity>
     );
   };

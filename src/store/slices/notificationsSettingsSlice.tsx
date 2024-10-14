@@ -3,15 +3,23 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
     identifierOfCatheterizationNotice: '',
-    identifierOfEveningFluidIntakeNotice: '',
-    identifierOfGoalReminderIntervalDuringDay: '',
     identifierOfMorningReminderToDoCatheterization: '',
     identifierOfReducingFluidIntakeBeforeSleep: '',
     identifierOfOneNotificationAtNight: '',
 
+    eveningFluidIntakeNotice: {
+        identifierOfEveningFluidIntakeNotice: '',
+        state: true,
+        time: '',
+    },
+
+    noticeOfGoalReminderDuringDay: {
+        identifierOfGoalReminderDuringDay: '',
+        state: true,
+        interval: 2,
+    },
+
     daysInAdvanceWhenShowNoticeOfRemainCaths: 7,
-    eveningNotificationTimeFluidIntake: '',
-    goalReminderIntervalDuringDay: 2,
 }
 
 const notificationsSettingsSlice = createSlice({
@@ -21,12 +29,30 @@ const notificationsSettingsSlice = createSlice({
         setIdentifierOfCatheterizationNotice: (state, action:PayloadAction<string>) => {
             state.identifierOfCatheterizationNotice = action.payload;
         },
+
+        // ======= \\
         setIdentifierOfEveningFluidIntakeNotice: (state, action:PayloadAction<string>) => {
-            state.identifierOfEveningFluidIntakeNotice = action.payload;
+            state.eveningFluidIntakeNotice.identifierOfEveningFluidIntakeNotice = action.payload;
         },
-        setIdentifierOfGoalReminderIntervalDuringDay: (state, action:PayloadAction<string>) => {
-            state.identifierOfGoalReminderIntervalDuringDay = action.payload;
+        isEnabledEveningFluidIntakeNotice: (state, action:PayloadAction<boolean>) => {
+            state.eveningFluidIntakeNotice.state = action.payload;
         },
+        setEveningTimeOfFluidIntakeNotice: (state, action:PayloadAction<string>) => {
+            state.eveningFluidIntakeNotice.time = action.payload;
+        },
+
+        // ======= \\
+        setIdentifierOfGoalReminderDuringDay: (state, action:PayloadAction<string>) => {
+            state.noticeOfGoalReminderDuringDay.identifierOfGoalReminderDuringDay = action.payload;
+        },
+        setIntervalForGoalReminderDuringDay: (state, action:PayloadAction<number>) => {
+            state.noticeOfGoalReminderDuringDay.interval = action.payload;
+        },
+        isEnabledNoticeOfGoalReminderDuringDay: (state, action:PayloadAction<boolean>) => {
+            state.noticeOfGoalReminderDuringDay.state = action.payload;
+        },
+        // ======= \\
+
         setIdentifierOfMorningReminderToDoCatheterization: (state, action:PayloadAction<string>) => {
             state.identifierOfMorningReminderToDoCatheterization = action.payload;
         },
@@ -40,12 +66,6 @@ const notificationsSettingsSlice = createSlice({
         setDaysInAdvanceWhenShowNoticeOfRemainCaths: (state, action:PayloadAction<number>) => {
             state.daysInAdvanceWhenShowNoticeOfRemainCaths = action.payload;
         },
-        setEveningTimeOfFluidIntakeNotice: (state, action:PayloadAction<string>) => {
-            state.eveningNotificationTimeFluidIntake = action.payload;
-        },
-        setGoalReminderIntervalDuringDay: (state, action:PayloadAction<number>) => {
-            state.goalReminderIntervalDuringDay = action.payload;
-        },
     }
 });
 
@@ -54,10 +74,12 @@ export const {
     setEveningTimeOfFluidIntakeNotice,
     setIdentifierOfCatheterizationNotice,
     setIdentifierOfEveningFluidIntakeNotice,
-    setGoalReminderIntervalDuringDay,
-    setIdentifierOfGoalReminderIntervalDuringDay,
+    setIntervalForGoalReminderDuringDay,
     setIdentifierOfMorningReminderToDoCatheterization,
     setIdentifierOfReducingFluidIntakeBeforeSleep,
-    setIdentifierOfOneNotificationAtNight
+    setIdentifierOfOneNotificationAtNight,
+    isEnabledEveningFluidIntakeNotice,
+    isEnabledNoticeOfGoalReminderDuringDay,
+    setIdentifierOfGoalReminderDuringDay
 } = notificationsSettingsSlice.actions;
 export default notificationsSettingsSlice.reducer;

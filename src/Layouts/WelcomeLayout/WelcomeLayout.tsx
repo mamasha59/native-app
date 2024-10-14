@@ -83,7 +83,7 @@ const WelcomeLayout = ({children,title,handleProceed,buttonTitle, currentScreen,
         <LogoTop/>
         <View className="bg-white flex-1 rounded-t-2xl justify-between items-center relative">
            {showRobotIconOnTop &&
-            <Animated.View style={[animatedStyleScroll]} className="-mt-6 w-[350px] h-[150px] justify-center">
+            <Animated.View style={[animatedStyleScroll]} className="-mt-3 w-[350px] h-[150px] justify-center">
                 <LottieView
                     source={require("../../assets/robot-face.json")}
                     style={{width: '100%', height: 250}}

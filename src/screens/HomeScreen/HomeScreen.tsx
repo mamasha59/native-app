@@ -1,5 +1,6 @@
 import { View } from 'react-native';
-import { useState } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Timer from "./Timer/Timer";
@@ -18,30 +19,34 @@ import NightModeButton from './Timer/NightModeButton/NightModeButton';
 
 const HomeScreen = () => {
   const {t} = useTranslation();
-  const [modalLeakageVisible, setModalLeakageVisible] = useState<boolean>(false); // состояние модального окна Учет випитой жидкости
 
-  const [toastOpened, setToastOpened] = useState<boolean>(false);  // состояние тоста
+  const [toastOpened, setToastOpened] = useState<boolean>(false);// состояние тоста
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);// ref of bottom sheet of leakage happened
 
   const dispatch = useAppDispatch();
 
-  const openModal = () => dispatch(popupLiquidState(true)); // открытие попапа Выпито
+  const openModal = () => dispatch(popupLiquidState(true));// открытие попапа Выпито
 
-  const handlePressLeftButton = () => setModalLeakageVisible(!modalLeakageVisible);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
 
   return (
     <MainLayout>
       <DoubleTapToClose/>
+
       <View className="flex-1 justify-between">
         <ConsumableItemsWidget/>
         <View className='w-full flex-row items-start justify-between'>
           <IntervalInfo/>
           <NightModeButton/>
         </View>
-        <Timer setToastOpened={setToastOpened}/>
+        <Timer/>
+
         <DoubleButton
           key={'double-button-home-screen'}
           handlePressRightButton={openModal}
-          handlePressLeftButton={handlePressLeftButton}
+          handlePressLeftButton={handlePresentModalPress}
           textOfLeftButton={t("homeScreen.doubleButtonComponent.leakage")}
           textOfRightButton={t("homeScreen.doubleButtonComponent.drink")}
           showIcon
@@ -49,14 +54,13 @@ const HomeScreen = () => {
       </View>
 
       <ModalLiquidAmount setToastOpened={setToastOpened} key={'drank'}/>
-      <ModalLeakageHappened
-        modalLeakageVisible={modalLeakageVisible}
-        setModalLeakageVisible={setModalLeakageVisible}
-        setToastOpened={setToastOpened}
-        key={'leakage-modal'}
-      />
+      
+      <ModalLeakageHappened ref={bottomSheetModalRef} setToastOpened={setToastOpened} key={'leakage-modal'}/>
+
       <ModalSuccess/>
+
       <ShowToast setShowToast={setToastOpened} show={toastOpened} text='Сохранено!' key={'toast-home-screen'}/>
+
     </MainLayout>
   );
 };

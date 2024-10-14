@@ -1,8 +1,10 @@
+import * as ImageManipulator from 'expo-image-manipulator';
+import i18next from "i18next";
+import { Asset } from "expo-asset";
+
 import { FilteredRecords } from "../../screens/JournalScreen/ModalCustomizePdf/ModalCustomizePdf";
 import { iSurveyInputs, iUnits, iUser } from "../../types";
 import { generateQuestions } from "../SurveyQuestions/SurveyQuestions";
-
-import i18next from "i18next";
 
 interface iGeneratePdfPattern{
     filteredRecordByDate: FilteredRecords | null,
@@ -15,7 +17,14 @@ interface iGeneratePdfPattern{
 
 export const generatePdfPattern = async ({answers, filteredRecordByDate,userData, showSurvey, units, inputDifficultiesAdditional}:iGeneratePdfPattern) => {
     const questions = generateQuestions();
-    
+
+    const asset = Asset.fromModule(require('../../assets/images/AppLogo.png'));
+    const image = await ImageManipulator.manipulateAsync(
+        asset.localUri ?? asset.uri,
+        [],  // Без изменений изображения
+        { compress: 1, format: ImageManipulator.SaveFormat.PNG, base64: true }  // Сохраняем как PNG, чтобы сохранить прозрачность
+      );
+
     return `
     <html lang="rus">
     <head>
@@ -93,12 +102,8 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                 </p>`
             }
             </div>
-            <div style="position: absolute; right: 10px; top: 5%; display: flex; align-items: center;">
-                <h1 style="font-size: 40px; line-height: 30px;">
-                    <p style="font-size: 2rem; font-weight: 300;">Use</p>
-                    <p style="font-weight: 700;">Nelaton</p>
-                    <p style="text-align: end; font-size: 2rem; font-weight: 300;">easily</p>
-                </h1>
+            <div style="position: absolute; right: 10px; top: 5%; display: flex; align-items: center; width: 220px; height: 100px;">
+                <img style="width: '100%';height: 100%;" src="data:image/jpeg;base64,${image.base64}" alt="app logo">
             </div>
         </header>
         <h2 style="font-size: 40px; margin: 5px 0; text-align: center;">
@@ -125,7 +130,7 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                             <p style="font-size: 20px;">${i18next.t("journalScreen.filters.fluid_intake")}
                                 : ${records
                                     .filter(e => e && e.amountOfDrankFluids)
-                                    .map((e) => e.amountOfDrankFluids)
+                                    .map((e) => e.amountOfDrankFluids.value)
                                     .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0)} ${units && units.title}
                             </p>
                             <p style="font-size: 20px;">${i18next.t("journalScreen.filters.urine_output")}
@@ -145,7 +150,9 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                             <th>${i18next.t("journalScreen.recordTitles.time")}</th>
                             <th>${i18next.t("pdfPattern.action")}</th>
                             <th>${i18next.t("journalScreen.filters.fluid_intake")}</th>
+                            <th>Тип напитка</th>
                             <th>${i18next.t("journalScreen.filters.urine_output")}</th>
+                            <th>Цвет мочи</th>
                             <th>${i18next.t("pdfPattern.leaking_condition")}</th>
                             </tr>
                         </thead>
@@ -156,9 +163,14 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
                                 <td style="text-align: center; width: fit-content; width: 100%;">${e.timeStamp?.slice(0, 10) || ''}</td>
                                 <td style="text-align: center;">${e.whenWasCanulisation || ''}</td>
                                 <td style="text-align: center;">${e.catheterType ? i18next.t("journalScreen.filters.catheterizations") : e.amountOfDrankFluids ? i18next.t("journalScreen.filters.fluid_intake") : e.leakageReason ? i18next.t("journalScreen.filters.urine_leakage") : ''} </td>
-                                <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfDrankFluids|| ''}</td>
+                                <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfDrankFluids.value || ''}</td>
+                                <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfDrankFluids.drinkName || ''}</td>
                                 <td style="text-align: center; width: fit-content; width: 100%;">${e.amountOfReleasedUrine || ''}</td>
-                                <td style="text-align: center;">${e.leakageReason || ''}</td>
+                                <td style="text-align: center; width: fit-content; width: 100%;">
+                                    <div style="width: 20px; height: 20px; border-width: 1px; margin: 0 auto; border-color: #4BAAC5; border-radius: 99999px; background-color: ${e.urineColor?.color || ''}"></div>
+                                    <div style="text-align: center; width: 100%;">${e.urineColor?.title || ''}</div>
+                                </td>
+                                <td style="text-align: center;">${e.leakageReason?.reason || ''} ${e.leakageReason?.value || ''}</td>
                                 </tr>
                                 `).join('')
                             }
@@ -241,6 +253,6 @@ export const generatePdfPattern = async ({answers, filteredRecordByDate,userData
     background-color: #ffffff;
     }
 </style>
-</html>  
+</html> 
     `
 }

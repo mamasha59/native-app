@@ -11,8 +11,10 @@ const {width} = Dimensions.get("window");
 
 const ChartDrankWater = () => {
   const drankWater = useAppSelector((state) => state.journal.drankWaterChart); // массив всех записей где указанно Выпитая вода
-  const units = useAppSelector((state) => state.appStateSlice.units); // массив всех записей где указанно Выпитая вода
+  const units = useAppSelector((state) => state.appStateSlice.units);
+
   const weekDays = useSevenPreviousDays(day); // хук создание массива предыдущих дней недели
+
   useUpdateChart({category:'amountOfDrankFluids', dispatchAction: addChartValueDrankWaterToCurrentDay}); // кастомный хук для подсчета выпитой ждикости за день и отображение на графике
 
   const valueArray = drankWater.map(item => typeof item === 'object' ? item.value : item); // делаем масив из чисел

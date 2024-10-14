@@ -4,6 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { ArrowBack } from "../../../assets/images/icons";
 import { StackNavigationRoot } from "../../../components/RootNavigations/RootNavigations";
 import RecommendationIcon from "../../../assets/images/iconsComponent/TabMenuIcons/RecommendationIcon";
+import { Image } from "expo-image";
 
 const TopBar = () => {
     const route = useRoute(); // берем имена маршрутов
@@ -17,10 +18,15 @@ const TopBar = () => {
     <View className="flex-row justify-between items-center h-16 px-6">
       {showLogo 
         ? (
-          <View className="justify-center flex-grow-0">
-            <Text style={{fontFamily: 'geometria-regular'}} className="absolute top-0 text-white">Use</Text>
-            <Text style={{fontFamily: 'geometria-bold'}} className="py-3 text-xl leading-7 text-white">Nelaton</Text>
-            <Text style={{fontFamily: 'geometria-regular'}} className="absolute bottom-0 right-0 text-white">easily</Text>
+          <View className="w-1/2 py-1">
+              <Image
+                style={{width: '100%', height: '100%'}}
+                source={require('../../../assets/images/AppLogo.png')}
+                contentFit="contain"
+                transition={1000}
+                contentPosition={'left center'}
+                alt="Use Nelaton Easily Logo"
+              />
           </View>
         )
         // Back button

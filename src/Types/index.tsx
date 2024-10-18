@@ -51,13 +51,13 @@ interface iDay {
 
 interface iDairyRecord {
     id: string,
-    whenWasCanulisation: string,
+    whenWasCatheterization: string,
     catheterType?: string,
-    amountOfDrankFluids: {
+    amountOfDrankFluids?: {
         value: string,
         drinkName?: string
     },
-    amountOfReleasedUrine: string,
+    amountOfReleasedUrine?: string,
     urineColor?: {
         color: string,
         title: string
@@ -67,9 +67,9 @@ interface iDairyRecord {
         value: string,
     },
     timeStamp: string,
+    partTime?: iTimerPartTime,
 }
 
-type SelectedDairyRecord = Pick<iDairyRecord, 'catheterType' | 'amountOfDrankFluids' | 'amountOfReleasedUrine' | 'leakageReason'>;
 
 interface iChart { // день в графике
     timestamp: string,
@@ -101,6 +101,12 @@ interface iSurveyInputs {
     difficulties?: string,
     additional?: string
 }
+
+interface iTimerPartTime {
+    firstPartTime: boolean,
+    secondPartTime: boolean,
+    thirdPartTime: boolean,
+}
     
 export {
     iUnits,
@@ -109,12 +115,12 @@ export {
     iDay,
     iMonth,
     iDairyRecord,
-    SelectedDairyRecord,
     iChart, 
     iJournal,
     Option,
     iStatisticsPerDay,
     iTimePicker,
     iSurveyInputs,
-    iUrineColor
+    iUrineColor,
+    iTimerPartTime
 };

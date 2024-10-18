@@ -36,10 +36,12 @@ const NightModeButton = () => {
             }else{
                 dispatch(addUrineDiaryRecord({
                     id: uuidv4(),
-                    whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
+                    whenWasCatheterization: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
                     catheterType: t("nelaton"),
                     timeStamp: format(new Date(), dateFormat),
-                    amountOfDrankFluids: '',
+                    amountOfDrankFluids: {
+                        value: ''
+                    },
                     amountOfReleasedUrine: ''
                   }));
             }
@@ -80,15 +82,15 @@ const NightModeButton = () => {
             onItemPress={(item) => handlePressItem(item)}
             openModal={settings.openModalNightMode}
             setOpenModal={handleModal}
-            title={`Включить «${t("night_mode")}»?`}
-            options={[{title: 'Да', value: true}, {title: 'Нет', value: false}]}
+            title={`${t("modalNightModeHomeScreen.enable")} «${t("night_mode")}»?`}
+            options={[{title: t("yes"), value: true}, {title: t("no"), value: false}]}
             children={
                 <View className="items-center flex-1">
                     <Text className="text-center text-base" style={{fontFamily:'geometria-regular'}}>
-                        Таймер остановится, и вы прекратите получать уведомления, до утренней катетеризации.
+                        {t("modalNightModeHomeScreen.description")}
                     </Text>
                     <Text className="text-center text-xs underline" style={{fontFamily:'geometria-regular'}}>
-                        время можно изменить на экране {`«${t("night_mode")}»`}
+                    {t("modalNightModeHomeScreen.hint")} {`«${t("night_mode")}»`}
                     </Text>
                 </View>
             }

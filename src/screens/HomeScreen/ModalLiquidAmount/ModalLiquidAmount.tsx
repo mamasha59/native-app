@@ -12,7 +12,7 @@ import { addBadgesJournalScreen, ifCountUrineChangeState, popupLiquidState } fro
 import Glass from "./Glass/Glass";
 import { dateFormat } from "../../../utils/const";
 import WithoutMeasuring from "./WithoutMeasuring/WithoutMeasuring";
-import { setShowModalSuccess } from "../../../store/slices/timerStatesSlice";
+import { changePartTimeOfTimer, setShowModalSuccess } from "../../../store/slices/timerStatesSlice";
 import DrinkTypeModal from "./DrinkTypeModal/DrinkTypeModal";
 
 const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => void}) => {
@@ -20,8 +20,9 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
     const nelaton = t("nelaton");
     
     const dispatch = useAppDispatch();                             // изменение состояние попапа
-    const settings = useAppSelector((state) => state.appStateSlice); // состояние попапа
-    const {urineColor} = useAppSelector((state) => state.journal); // состояние попапа
+    const settings = useAppSelector((state) => state.appStateSlice);
+    const {urineColor} = useAppSelector((state) => state.journal);
+    const {partTime} = useAppSelector((state) => state.timerStates);
   
     const [liquidValue, setLiquidValue] = useState<string>('150');// значение полосы прокрутки
 
@@ -49,35 +50,38 @@ const ModalLiquidAmount = ({setToastOpened}:{setToastOpened: (value:boolean) => 
 
     const handleModalAlert = () =>  setModalAlert(!modalAlert);
     const handleDrinkTypeModal = () => setModalDrinType(!modalDrinkType);
-  
-    const handleOnSubmitSave = () => { // при нажатии на кнопку Сохранить изменения
-        triggerVibration();
-        if(+liquidValue > 0) {
-          if(settings.ifCountUrinePopupLiquidState){ // если пользователь выбрал измерять мочу, состояние меняется на экране Timer при нажатии кнопки Выполнено
-            dispatch(setShowModalSuccess(true));      // показывает модальное окно об успешной катетеризации
-            dispatch(addUrineDiaryRecord({
-              id: uuidv4(),
-              catheterType: nelaton,
-              whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
-              amountOfReleasedUrine: `${liquidValue} ${settings.units.title}`,
-              urineColor: urineColor,
-              amountOfDrankFluids: {
-                value: '',
-              },
-              timeStamp: format(new Date(), dateFormat)
-            }));
-            dispatch(popupLiquidState(false));
-            dispatch(addBadgesJournalScreen(1));
-            dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
-          }else{
-            handleDrinkTypeModal();
-          }
-        }
+
+    const handleOnSubmitSave = () => {
+      triggerVibration();
+      const currentDate = new Date(); // Один вызов new Date()
+      const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
+      const timeStamp = format(currentDate, dateFormat);
+
+      if(+liquidValue > 0) {
+        if(settings.ifCountUrinePopupLiquidState){   
+          dispatch(setShowModalSuccess(true));
+          dispatch(addUrineDiaryRecord({
+            id: uuidv4(),
+            catheterType: nelaton,
+            whenWasCatheterization: formattedTime,
+            amountOfReleasedUrine: `${liquidValue} ${settings.units.title}`,
+            urineColor,
+            timeStamp,
+            partTime,
+          }));       
+          dispatch(popupLiquidState(false));
+          dispatch(addBadgesJournalScreen(1));
+          dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние попапа Учет выделенной мочи
+          dispatch(changePartTimeOfTimer({ firstPartTime: true, secondPartTime: false, thirdPartTime: false }));     
+        }else{
+          handleDrinkTypeModal();
+        }          
+      }
     }
 
     const closeByPressButton = () => {
       if(!settings.ifCountUrinePopupLiquidState){
-        dispatch(popupLiquidState(false)); // закрываем попап
+        dispatch(popupLiquidState(false));
         dispatch(ifCountUrineChangeState(false)); // сбрасываем состояние, которое пользователь изменил на экране Timer при нажатии на кнопку, если пользователь выбрал измерение мочи
       } else {
         return;

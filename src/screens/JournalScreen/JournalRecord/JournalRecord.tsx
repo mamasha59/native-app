@@ -1,29 +1,40 @@
 import { useTranslation } from "react-i18next";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 import { iDairyRecord } from "../../../types";
+import { partTimeColors } from "../../../utils/const";
 
 const JournalRecord = (props:iDairyRecord) => {
     const {t} = useTranslation();
-    const {whenWasCanulisation, amountOfDrankFluids, catheterType, amountOfReleasedUrine, leakageReason, urineColor} = props;
+    const {whenWasCatheterization, amountOfDrankFluids, catheterType, amountOfReleasedUrine, leakageReason, urineColor, partTime} = props;
+
+    const getBorderColor = () => {
+        if (partTime?.firstPartTime) {
+            return partTimeColors.blue;
+        } else if (partTime?.secondPartTime) {
+            return partTimeColors.yellow;
+        } else if (partTime?.thirdPartTime) {
+            return partTimeColors.red;
+        } else {
+            return '#4babc563';
+        }
+    };
     
   return (
-    <View
-        className={`flex-row justify-between items-center border px-3 py-3 mb-3 rounded-md border-border-color
-        ${amountOfReleasedUrine && 'border-purple-button' || catheterType && 'border-[#FDD835]'}`}>
+    <View className={`flex-row justify-between items-center border px-3 py-3 mb-3 rounded-md`} style={{borderColor: getBorderColor()}}>
 
-        <View className={ "flex-0 mr-2"}>
+        <View className="flex-0 mr-2">
             <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
                 {t("journalScreen.recordTitles.time")}
             </Text>
-            <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">{whenWasCanulisation}</Text>
+            <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">{whenWasCatheterization}</Text>
         </View>
         {leakageReason &&
         <View className="flex-1 flex-row justify-center">
             {leakageReason?.reason &&      
                 <View className="flex-1 w-full items-center">
                     <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
-                        {leakageReason.reason && t("journalScreen.recordTitles.leakage")}:
+                        {t("journalScreen.recordTitles.leakage")}:
                     </Text>
                     <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-purple-button lowercase">{leakageReason.reason}</Text>
                 </View>
@@ -31,48 +42,57 @@ const JournalRecord = (props:iDairyRecord) => {
             {leakageReason?.value &&      
                 <View className="flex-1 w-full items-center">
                     <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
-                        {leakageReason.value && 'Количество'}:
+                        {t("quantity")}:
                     </Text>
                     <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-error">{leakageReason.value}</Text>
                 </View>
             }
         </View>}
         {catheterType &&    
-            <View className="items-start flex-1">
+            <View className="flex-1 items-center">
                 <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">
-                    {catheterType && t("journalScreen.recordTitles.catheterization")}
+                    {t("journalScreen.recordTitles.catheterization")}
                 </Text>
             </View>
         } 
-        {amountOfDrankFluids.value || amountOfReleasedUrine
-            ?   <View className="items-center flex-1">
-                    <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
-                        {amountOfDrankFluids ? t("journalScreen.recordTitles.drank_fluids") : amountOfReleasedUrine ? t("journalScreen.recordTitles.excreted_urine") : ''}:
-                    </Text>
-                    <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">
-                        {(amountOfDrankFluids.value || amountOfReleasedUrine) && (amountOfDrankFluids.value || amountOfReleasedUrine)}
-                    </Text>
-                </View> 
-            : ''
+        {amountOfDrankFluids && amountOfDrankFluids.value &&
+            <View className="items-center flex-1">
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
+                    {t("journalScreen.recordTitles.drank_fluids")}:
+                </Text>
+                <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">
+                    {amountOfDrankFluids.value}
+                </Text>
+            </View> 
         }
-        {amountOfDrankFluids.drinkName &&
-               <View className="items-center flex-1">
-                    <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
-                        Тип напитка:
-                    </Text>
-                    <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-[#3498db]">
-                        {amountOfDrankFluids.drinkName}
-                    </Text>
-                </View> 
+        {amountOfReleasedUrine &&
+            <View className="items-center flex-1">
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
+                    {t("journalScreen.recordTitles.excreted_urine")}:
+                </Text>
+                <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-black">
+                    {amountOfReleasedUrine}
+                </Text>
+            </View> 
+        }
+        {amountOfDrankFluids && amountOfDrankFluids.drinkName &&
+            <View className="items-center flex-1">
+                <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black">
+                    {t("journalScreen.recordTitles.type_of_drink")}:
+                </Text>
+                <Text style={{ fontFamily: "geometria-bold" }} className="text-sm text-[#3498db]">
+                    {amountOfDrankFluids.drinkName}
+                </Text>
+            </View> 
         }
 
         {catheterType && urineColor &&
-            <TouchableOpacity onPress={()=> console.log(urineColor.title)} className="items-center">
+            <View className="items-center">
                 <Text style={{ fontFamily: "geometria-regular" }} className="text-xs text-black mb-1">
-                    Цвет мочи:
+                    {t("journalScreen.recordTitles.urine_color")}:
                 </Text>
                 <View style={{backgroundColor: urineColor.color}} className="w-4 h-4 rounded-full border border-main-blue"></View>
-            </TouchableOpacity>
+            </View>
         }
     </View>
   );

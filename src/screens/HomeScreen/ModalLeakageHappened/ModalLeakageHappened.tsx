@@ -12,7 +12,6 @@ import { addBadgesJournalScreen } from "../../../store/slices/appStateSlicer";
 import { useAppDispatch } from "../../../store/hooks";
 import { dateFormat } from "../../../utils/const";
 import { ClosePopup } from "../../../assets/images/icons";
-import { Image } from "expo-image";
 
 interface iModalLeakageHappened{
     setToastOpened: (value:boolean) => void,
@@ -33,20 +32,18 @@ const ModalLeakageHappened = forwardRef<BottomSheetModal, iModalLeakageHappened>
       const leakageReason = reason?.title || inputLeakageValue.trim();
       const leakageValue = selectedLeakageValue && selectedLeakageValue;
 
-      const whenWasCanulisation = new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0');
-      dispatch(addUrineDiaryRecord(
-        { id: uuidv4(),
-          whenWasCanulisation,
-          leakageReason:{
-            reason: leakageReason,
-            value: leakageValue,
-          },
-          timeStamp: format(new Date(), dateFormat),
-          amountOfDrankFluids:{
-            value:'',
-          },
-          amountOfReleasedUrine: '',
-        }));
+      const whenWasCatheterization = new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0');
+
+      dispatch(addUrineDiaryRecord({
+        id: uuidv4(),
+        whenWasCatheterization: whenWasCatheterization,
+        leakageReason:{
+          reason: leakageReason,
+          value: leakageValue,
+        },
+        timeStamp: format(new Date(), dateFormat),
+      }));
+
       dispatch(addBadgesJournalScreen(1));
       setInputLeakageValue('');
       setToastOpened(true);
@@ -69,19 +66,19 @@ const ModalLeakageHappened = forwardRef<BottomSheetModal, iModalLeakageHappened>
     ];
 
     const leakageVolumes = [
-      {value: 'до 5 мл', text: 'Несколько капель: до 5 мл', description: 'Несколько капель (Few drops) – небольшие, почти незаметные утечки, которые составляют примерно до 5 мл.'},
-      {value: '5-20 мл', text: 'Немного: 5-20 мл', description: 'Немного (Small) – лёгкое подтекание, которое составляет примерно от 5 до 20 мл (около одной чайной ложки до половины столовой ложки).'},
-      {value: '20-50 мл', text: 'Средне: 20-50 мл', description: 'Средне (Moderate) – умеренные утечки, составляющие примерно 20-50 мл (около половины или чуть меньше объема рюмки).'},
-      {value: 'более 50 мл', text: 'Много: более 50 мл', description: 'Много (Large) – сильное подтекание, превышающее 50 мл (примерно половина стакана).'},
-    ]
+      { value: 'modalUrineLeakage.leakage.few_drops.value', text: 'modalUrineLeakage.leakage.few_drops.text', description: 'modalUrineLeakage.leakage.few_drops.description' },
+      { value: 'modalUrineLeakage.leakage.small.value', text: 'modalUrineLeakage.leakage.small.text', description: 'modalUrineLeakage.leakage.small.description' },
+      { value: 'modalUrineLeakage.leakage.moderate.value', text: 'modalUrineLeakage.leakage.moderate.text', description: 'modalUrineLeakage.leakage.moderate.description' },
+      { value: 'modalUrineLeakage.leakage.large.value', text: 'modalUrineLeakage.leakage.large.text', description: 'modalUrineLeakage.leakage.large.description' },
+    ];
 
     const renderBackdrop = useCallback(
       (props:any) => (
-          <BottomSheetBackdrop
+        <BottomSheetBackdrop
           disappearsOnIndex={-1}
           appearsOnIndex={0}
           {...props}
-          />
+        />
       ),[]);
   
 
@@ -106,7 +103,9 @@ const ModalLeakageHappened = forwardRef<BottomSheetModal, iModalLeakageHappened>
               />
             </View>
             <View className="py-1">
-              <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-1">Объем подтекания:</Text>
+              <Text style={{fontFamily:'geometria-bold'}} className="text-lg mb-1">
+                {t("modalUrineLeakage.leakage_volume")}:
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -114,14 +113,16 @@ const ModalLeakageHappened = forwardRef<BottomSheetModal, iModalLeakageHappened>
             {leakageVolumes.map((item) => (
               <View key={item.value} className="mb-2">
                 <TouchableOpacity
-                  onPress={() => setSelectedLeakageValue(item.value)}
-                  className={`border-[.2px] rounded-md p-2 m-1 ${selectedLeakageValue === item.value ? 'bg-main-blue' : 'bg-white'}`}
+                  onPress={() => setSelectedLeakageValue(t(item.value))}
+                  className={`border-[.2px] rounded-md p-2 m-1 ${selectedLeakageValue === t(item.value) ? 'bg-main-blue' : 'bg-white'}`}
                   >
-                  <Text style={{fontFamily:'geometria-regular'}} className={`text-lg  ${selectedLeakageValue === item.value ? 'text-white' : 'text-black'}`}>{item.text}</Text>
+                  <Text style={{fontFamily:'geometria-regular'}} className={`text-lg  ${selectedLeakageValue === t(item.value) ? 'text-white' : 'text-black'}`}>
+                    {t(item.text)}
+                  </Text>
                 </TouchableOpacity>
                 {showDescription && 
                 <Text style={{fontFamily:'geometria-regular'}} className="text-main-blue">
-                  {item.description}
+                  {t(item.description)}
                 </Text>}
               </View> 
             ))}

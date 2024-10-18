@@ -3,21 +3,21 @@ import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 import { setCalendarDay } from "../../../../store/slices/appStateSlicer";
-import { useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { iDay } from "../../../../types";
-import { day } from "../../../../utils/date";
 import { dateFormat } from "../../../../utils/const";
 
-type iCalendarDay = {e: iDay}
+type iCalendarDay = {day: iDay}
 
-const CalendarDay = ({e}:iCalendarDay) => {
-  const {t} = useTranslation()
-  const currentDay = format( new Date(e.year, e.month.index, e.dayNumber), dateFormat).slice(0,10);
-  
+const CalendarDay = ({day}:iCalendarDay) => {
+  const {t} = useTranslation();
+
+  const {calendarDay} = useAppSelector(state => state.appStateSlice);
+
+  const currentDay = format(new Date(day.year, day.month.index, day.dayNumber), dateFormat).slice(0,10);
+
   const dispatch = useAppDispatch();
-
-  let isCurrentDay = day.getDate() === e.dayNumber && day.getMonth() === e.month.index;
-
+  
   const selectDate = () => {
     dispatch(setCalendarDay(currentDay));
   }
@@ -30,22 +30,22 @@ const CalendarDay = ({e}:iCalendarDay) => {
     { value: t("weekDays.thu"), short: t("weekDays.thu") },
     { value: t("weekDays.fri"), short: t("weekDays.fri") },
     { value: t("weekDays.sat"), short: t("weekDays.sat") },
-];
+  ];
 
   return (
     <TouchableOpacity
-      onPress={() => selectDate()}
+      onPress={selectDate}
       activeOpacity={0.5}
-      className={`${isCurrentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mb-[20px] mr-[5px] items-center justify-center rounded-md`}>
+      className={`${calendarDay === currentDay ? 'bg-main-blue' : 'bg-[#4babc563]'} px-[14px] py-[5px] mr-[5px] flex-grow-0 items-center rounded-md`}>
         <Text
-          style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${isCurrentDay ? 'text-white' : 'text-black'} text-[10px]`}>
-            {daysOfWeek[e.weekNumber].short}
+          style={{ fontFamily: `${calendarDay === currentDay ? 'geometria-bold' : 'geometria-regular'}` }}
+          className={`${calendarDay === currentDay ? 'text-white' : 'text-black'} text-[10px]`}>
+            {daysOfWeek[day.weekNumber].short}
         </Text>
         <Text
-          style={{ fontFamily: `${isCurrentDay ? 'geometria-bold' : 'geometria-regular'}` }}
-          className={`${isCurrentDay ? 'text-white' : 'text-black'} font-normal text-xl`}>
-            {e.dayNumber}
+          style={{ fontFamily: `${calendarDay === currentDay ? 'geometria-bold' : 'geometria-regular'}` }}
+          className={`${calendarDay === currentDay ? 'text-white' : 'text-black'} font-normal text-xl`}>
+            {day.dayNumber}
         </Text>
     </TouchableOpacity>
   );

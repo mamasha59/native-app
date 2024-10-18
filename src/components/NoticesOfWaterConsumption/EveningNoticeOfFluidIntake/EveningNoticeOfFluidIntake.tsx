@@ -41,6 +41,7 @@ const EveningNoticeOfFluidIntake = () => {  // TODO test reset drank water when 
         if(eveningFluidIntakeNotice.state){
             if (eveningFluidIntakeNotice.identifierOfEveningFluidIntakeNotice){
                 await Notifications.cancelScheduledNotificationAsync(eveningFluidIntakeNotice.identifierOfEveningFluidIntakeNotice);
+                dispatch(setIdentifierOfEveningFluidIntakeNotice(''));
             }    
             const notificationId = await Notifications.scheduleNotificationAsync({
                 content: {

@@ -19,10 +19,12 @@ const ConsumableItemsWidget = () => {
   return (
     <>
       <View className="flex-row justify-between items-center">
-        <Text style={{ fontFamily: "geometria-bold"}} className="text-black text-base">Запасы:</Text>
+        <Text style={{ fontFamily: "geometria-bold"}} className="text-black text-base">
+          {t("catheterStockScreen.stocks")}:
+        </Text>
         <TouchableOpacity onPress={navigate} className="p-2">
           <Text className="text-black underline" style={{ fontFamily: "geometria-regular" }}>
-            управлять запасами
+            {t("catheterStockScreen.stock_management")}
           </Text>
         </TouchableOpacity>
       </View>

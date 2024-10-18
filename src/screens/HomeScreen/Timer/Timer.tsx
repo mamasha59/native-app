@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import IntervalUI from "./IntervalUI/IntervalUI";
 import { SvgComponentText } from "./SvgComponentText/SvgComponentText";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
+import { changePartTimeOfTimer, setIntervalDifference, setShowModalSuccess, whetherStartFromCountdown } from "../../../store/slices/timerStatesSlice";
 import { 
     addBadgesJournalScreen,
     changeStateOfTimerTitleForFirstTimeInApp,
@@ -33,7 +33,7 @@ const TimerT = () => {
   const settings = useAppSelector((state) => state.appStateSlice); // настройки приложения
   const journal = useAppSelector((state) => state.journal); // кол-во катетеров
   const settingsNighMode = useAppSelector((state) => state.nightOnBoarding); // кол-во катетеров
-  const {intervalDifference, interval, yellowInterval} = useAppSelector((state) => state.timerStates); // timer settings
+  const {intervalDifference, interval, yellowInterval, partTime} = useAppSelector((state) => state.timerStates); // timer settings
   const {consumablesItem} = useAppSelector((state) => state.consumablesSlice); // timer settings
 
   const [initialStrip, setInitialStrip] = useState<number>(0); // 105 полосок
@@ -42,12 +42,8 @@ const TimerT = () => {
   const [timerInterval, setTimerInterval] = useState<number>(interval); // интервал Нормальный 
   const [timerIntervalStopwatch, setTimerIntervalStopwatch] = useState<number>(interval); // интервал Крит.
   const [timerTitle, setTimerTitle] = useState<string>('');
+  const [prevArrayLength, setPrevArrayLength] = useState(journal.urineDiary.length);
 
-  const [partTime, setPartTime] = useState<{firstPartTime: boolean, secondPartTime: boolean, thirdPartTime: boolean}>({
-    firstPartTime: false,
-    secondPartTime: false,
-    thirdPartTime: false,
-  });
   const [loader, setLoader] = useState<boolean>(false);
   const [daysFromLastCannulation, setDaysFromLastCannulation] = useState<number>(0);
   const flipValue = useSharedValue<number>(0);
@@ -90,11 +86,11 @@ const TimerT = () => {
       expiryTimestamp,
       autoStart: false,
       onExpire: () => {
-      setInitialStrip(105);
-      dispatch(whetherStartFromCountdown(false));
-      setPartTime({firstPartTime: false , secondPartTime: false, thirdPartTime: true}); // делаем Нормальный интервал активным, там время идет на возрастание
-      setStartFromCountdown(false);
-      startStopwatch();
+        setInitialStrip(105);
+        dispatch(whetherStartFromCountdown(false));
+        dispatch(changePartTimeOfTimer({firstPartTime: false , secondPartTime: false, thirdPartTime: true})); // делаем Нормальный интервал активным, там время идет на возрастание
+        setStartFromCountdown(false);
+        startStopwatch();
       }
   });
 
@@ -111,13 +107,13 @@ const TimerT = () => {
       if(!settings.cannulationAtNight.value){
         if (intervalDifference && intervalDifference > timerInterval) {// с Крит. интервала, если разница в секундах с записью в журнале больше Оптимального интервала
           setStartFromCountdown(false);
-          setPartTime({firstPartTime: false, secondPartTime: false, thirdPartTime: true});
+          dispatch(changePartTimeOfTimer({firstPartTime: false, secondPartTime: false, thirdPartTime: true}));
           setInitialStrip(105);
           const expiryTimestampDifferenceStopWatch = new Date();
           expiryTimestampDifferenceStopWatch.setSeconds((expiryTimestampDifferenceStopWatch.getSeconds() + timerIntervalStopwatch + intervalDifference) - timerInterval);
           resetStopwatch(expiryTimestampDifferenceStopWatch);
         } else if(intervalDifference < timerInterval && intervalDifference > 0){// c Нормального интервала
-          setPartTime({firstPartTime: true, secondPartTime: false, thirdPartTime: false});
+          dispatch(changePartTimeOfTimer({firstPartTime: true, secondPartTime: false, thirdPartTime: false}));
           const expiryTimestampDifferenceTimer = new Date();
           expiryTimestampDifferenceTimer.setSeconds(expiryTimestampDifferenceTimer.getSeconds() + (timerInterval - intervalDifference));
           timerRestart(expiryTimestampDifferenceTimer);
@@ -135,9 +131,9 @@ const TimerT = () => {
       if(journal.urineDiary.length > 0) {
         const lastRecord = journal.urineDiary.find((e) => e.catheterType);
         if(lastRecord){
-          const targetDate = parse(lastRecord?.timeStamp!, dateFormat, new Date());
+          const targetDate = parse(lastRecord?.timeStamp, dateFormat, new Date());
           const currentDate = new Date();
-          const difference = differenceInSeconds(currentDate, targetDate);   
+          const difference = differenceInSeconds(currentDate, targetDate);          
           // Расчет дней, часов, минут и секунд
           const days = Math.floor(difference / (24 * 3600));
           setDaysFromLastCannulation(days);
@@ -150,7 +146,7 @@ const TimerT = () => {
   const activateYellowInterval = () => {
     const convertedYellowInterval = yellowInterval * 60;
     if(timerTotalSeconds === convertedYellowInterval){
-      setPartTime({firstPartTime: true, secondPartTime: true, thirdPartTime: false});
+      dispatch(changePartTimeOfTimer({firstPartTime: false, secondPartTime: true, thirdPartTime: false}));
     }
   }
 
@@ -164,18 +160,18 @@ const TimerT = () => {
     if (!settings.stateOfTimerTitleForFirstTimeInApp) {
       setTimerTitle(t("timer.titles.first_title"));
     } else if (partTime.firstPartTime && !partTime.secondPartTime) {
-      setTimerTitle(t("timer.titles.before_catheterization"));
-    } else if (partTime.secondPartTime && partTime.firstPartTime && !partTime.thirdPartTime) {
-      setTimerTitle('Самое время катетеризироваться!');
+      setTimerTitle(t("timer.titles.second_title_before_catheterization"));
+    } else if (partTime.secondPartTime && !partTime.firstPartTime && !partTime.thirdPartTime) {
+      setTimerTitle(t('timer.titles.third_title_time_to_catheterize'));
     } else if(partTime.thirdPartTime){
-      setTimerTitle(t("timer.titles.since_last_catheterization"));
+      setTimerTitle(t("timer.titles.last_title_critical_since_last_catheterization"));
     }
   }, [i18n.language, partTime, timerRunning, settings.stateOfTimerTitleForFirstTimeInApp]);
   
   useEffect(() => { // stop timer if turn on Night Mode
     const stopTimer = () => {
       if(settings.cannulationAtNight.value){
-        setPartTime({firstPartTime: false, secondPartTime: false, thirdPartTime: false});
+        dispatch(changePartTimeOfTimer({firstPartTime: false, secondPartTime: false, thirdPartTime: false}));
         if(timerRunning){
           const expiryTimestampReset = new Date();
           expiryTimestampReset.setSeconds(expiryTimestamp.getSeconds() + timerInterval);
@@ -189,9 +185,9 @@ const TimerT = () => {
     stopTimer()
   },[settings.cannulationAtNight]);
 
-  const requestNotificationPermission = async () => {
-    const status = await Notifications.getAllScheduledNotificationsAsync();
-    console.log('запланированы',status);
+  const requestNotificationPermission = async () => {//TODO delete on release
+    // const status = await Notifications.getAllScheduledNotificationsAsync();
+    // console.log('запланированы',status);
   };
 
   const triggerVibration = () => Vibration.vibrate(7, false);
@@ -222,16 +218,15 @@ const TimerT = () => {
     if (consumablesItem[0].quantity > 0) {
       dispatch(decreaseQuantityOFConsumableItem());
     }
-    if (!partTime.firstPartTime && !partTime.secondPartTime) { // start of the timer countdown
-      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
+    if (!partTime.firstPartTime && !partTime.secondPartTime && !partTime.thirdPartTime) { // start of the timer countdown
+      dispatch(changePartTimeOfTimer({ firstPartTime: true, secondPartTime: false, thirdPartTime: false }));
       startTimer();
     } else if (partTime.firstPartTime) {
       timerRestart(expiryTimestamp);
     }
-    if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {      
+    if (timerRunning || stopwatchRunning || !partTime.firstPartTime) {
       resetStopwatch(stopwatchOffset, false);
       setStartFromCountdown(true);
-      setPartTime({ firstPartTime: true, secondPartTime: false, thirdPartTime: false });
       timerRestart(expiryTimestamp);
       setInitialStrip(0); // обнуляем секундные полоски
     }
@@ -246,14 +241,14 @@ const TimerT = () => {
       if(!settings.urineMeasure){
         dispatch(addUrineDiaryRecord({
           id: uuidv4(),
-          whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
+          whenWasCatheterization: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`, 
           catheterType: t("nelaton"),
           timeStamp: format(new Date(), dateFormat),
-          amountOfDrankFluids: {value:''},
-          amountOfReleasedUrine: ''
+          partTime: partTime,
         }));
         dispatch(addBadgesJournalScreen(1));
       }
+      dispatch(changePartTimeOfTimer({ firstPartTime: true, secondPartTime: false, thirdPartTime: false }));
     }
   };
   
@@ -277,7 +272,7 @@ const TimerT = () => {
 
     if (timerRunning) {
       intervalId = setInterval(() => {          
-          setInitialStrip((prev) => Math.min(prev + 1, 105));
+        setInitialStrip((prev) => Math.min(prev + 1, 105));
       }, calculatedTimeToDrawSeconds);
     };
     return () => {
@@ -310,11 +305,8 @@ const TimerT = () => {
 
   return (
     <View className="flex-1 -mt-4 items-center justify-center w-full h-full relative">
-      <SvgComponentText
-        partTime={partTime}
-        start={timerRunning}
-        initialNumberOfStrip={initialStrip}
-      />
+      <SvgComponentText start={timerRunning} initialNumberOfStrip={initialStrip}/>
+
       <View className="absolute items-center justify-center flex-1">
         <View className="items-center">
           <Animated.View style={[styles.card, frontAnimatedStyleInnerCircle]} >

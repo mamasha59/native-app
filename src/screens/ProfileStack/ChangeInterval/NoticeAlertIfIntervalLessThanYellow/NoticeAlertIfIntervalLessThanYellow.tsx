@@ -25,21 +25,23 @@ const NoticeAlertIfIntervalLessThanYellow = ({newIntervalText, yellowInterval, h
                     </Text>
                 </View>
                 <Text className="text-center text-error" style={{fontFamily:'geometria-regular'}}>
-                    меньше чем интервал перед катетеризацией
+                    {t("modalNoticeAlertIfIntervalLessThanYellow.less_than_the_pre_catheterization_interval")}
                 </Text>
             </View>
             <Text className="w-full text-center underline text-base mb-3" style={{fontFamily:'geometria-bold'}}>
                 {yellowInterval} {t("min")}
             </Text>
             <Text className="w-full mb-2" style={{fontFamily:'geometria-bold'}}>
-                - либо измените интервал катетеризации;
+                - {t("modalNoticeAlertIfIntervalLessThanYellow.option_one")};
             </Text>
             <Text className="w-full mb-2" style={{fontFamily:'geometria-bold'}}>
-                - либо измените время "Уведомления перед катетеризацией" на экране "Уведомления";
+                - {t("modalNoticeAlertIfIntervalLessThanYellow.option_two")};
             </Text>
         </View>
         <TouchableOpacity onPress={handleModalAlert} className="px-8 rounded-md py-4 bg-main-blue">
-            <Text style={{fontFamily:'geometria-bold'}} className="w-full text-white">Я понял!</Text>
+            <Text style={{fontFamily:'geometria-bold'}} className="w-full text-white">
+                {t("modalNoticeAlertIfIntervalLessThanYellow.i_got_it")}
+            </Text>
         </TouchableOpacity>
     </View>
   );

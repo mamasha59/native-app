@@ -6,8 +6,11 @@ import ShowToast from "../../../components/ShowToast/ShowToast";
 import { focusInput } from "../../../utils/const";
 import ButtonBluBorder from "../../../components/ButtonBluBorder/ButtonBluBorder";
 import useBackHandler from "../../../hooks/useBackHandler";
+import { useTranslation } from "react-i18next";
 
 const FeedbackScreen = () => {
+  const {t} = useTranslation();
+
   const [text, setText] = useState<string>('');
   const [errorText, setErrorText] = useState<string>('');
   const [sendMessageError, setSendMessageError] = useState<boolean>(false);
@@ -47,30 +50,33 @@ const FeedbackScreen = () => {
   }
 
   const subjects = [
-    {title: 'Сообщить о проблеме'},
-    {title: 'Предложить улучшение'},
-    {title: 'Техническая поддержка'},
-    {title: 'Пожелания и отзывы'},
-    {title: 'Сообщить о проблеме'},
-  ]
+    { titleKey: 'recommendationScreen.subjects.report_issue' },
+    { titleKey: 'recommendationScreen.subjects.suggest_improvement' },
+    { titleKey: 'recommendationScreen.subjects.tech_support' },
+    { titleKey: 'recommendationScreen.subjects.feedback' },
+  ];
 
   return (
-    <MainLayout title="Написать разработчикам">
+    <MainLayout title={t("recommendationScreen.write_to_the_developers")}>
       <ScrollView className="flex-1">
-        <Text style={{fontFamily:'geometria-bold'}} className="text-base">Темы:</Text>
+        <Text style={{fontFamily:'geometria-bold'}} className="text-base">
+          {t("recommendationScreen.topics")}:
+        </Text>
         <View className="mb-4">
-          {subjects.map((e, index) => (
+          {subjects.map((item, index) => (
             <TouchableOpacity
               key={index}
               activeOpacity={1}
-              onPress={() => handlePressSubject(index, e.title)}
+              onPress={() => handlePressSubject(index, item.titleKey)}
               className={`p-3 border-b-[0.2px] border-main-blue rounded-md ${subjectIndex === index && 'bg-main-blue'}`}
               >
-              <Text style={{fontFamily:'geometria-regular'}} className={`text-base ${subjectIndex === index ? 'text-white' : 'text-black'}`}>- {e.title}</Text>
+              <Text style={{fontFamily:'geometria-regular'}} className={`text-base ${subjectIndex === index ? 'text-white' : 'text-black'}`}>
+              - {t(item.titleKey)}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
-        <Text className="text-main-blue text-sm leading-5 font-normal mb-5">Опишите что вы хотели</Text>
+        <Text className="text-main-blue text-sm leading-5 font-normal mb-5">{t("recommendationScreen.describe_what_you_wanted")}</Text>
         <TouchableOpacity
           onPress={() => focusInput(inputRef)}
           activeOpacity={1}
@@ -80,11 +86,11 @@ const FeedbackScreen = () => {
             multiline
             value={text}
             style={{fontFamily:'geometria-regular'}}
-            placeholder="Введите текст"
+            placeholder={t("recommendationScreen.enter_text")}
             onChangeText={setText}
           />
         </TouchableOpacity>
-        <ButtonBluBorder handlePressButton={handleSubmit} title={'Отправить'}/>
+        <ButtonBluBorder handlePressButton={handleSubmit} title={t("journalScreen.send")}/>
       </ScrollView>
       <ShowToast key={'feedback-error'} setShowToast={setSendMessageError} show={sendMessageError} text={errorText}/>
     </MainLayout>

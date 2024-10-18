@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, FlatList } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { ClosePopup } from "../../../../assets/images/icons";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -17,32 +18,33 @@ interface iDrinkTypeModal {
 }
 
 const DrinkTypeModal = ({modalDrinkType, close, liquidValue, setToastOpened}:iDrinkTypeModal) => {
+    const {t} = useTranslation();
+
     const dispatch = useAppDispatch();
     const {units} = useAppSelector(state => state.appStateSlice);
 
     const [selectedDrink, setSelectedDrink] = useState('');
 
     const drinks = [
-        {title: 'Вода'},
-        {title: 'Сок'},
-        {title: 'Газировка'},
-        {title: 'Кофе'},
-        {title: 'Чай'},
-        {title: 'Молоко'},
-        {title: 'Суп'},
-        {title: 'Алкоголь'},
-    ]
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.water')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.juice')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.soda')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.coffee')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.tea')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.milk')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.soup')},
+        { titleKey: t('modalFluidIntake.modal_type_of_drink.drinks.alcohol')}
+      ];
 
     const handleSubmitRecord = () => {
         dispatch(addBadgesJournalScreen(1));
         dispatch(addUrineDiaryRecord({
             id: uuidv4(),
-            whenWasCanulisation: new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
+            whenWasCatheterization: new Date().getHours() + ":" + new Date().getMinutes().toString().padStart(2,'0'),
             amountOfDrankFluids: {
                 value: `${liquidValue} ${units.title}`,
                 drinkName: selectedDrink
             },
-            amountOfReleasedUrine: '',
             timeStamp: format(new Date(), dateFormat),
         }));
         close();
@@ -74,17 +76,19 @@ const DrinkTypeModal = ({modalDrinkType, close, liquidValue, setToastOpened}:iDr
                     data={drinks}
                     renderItem={({item}) => 
                         <TouchableOpacity
-                            onPress={() => handleSelectDrink(item.title)}
-                            className={`border-[.2px] p-3 rounded-md mb-2 ${selectedDrink === item.title && 'bg-purple-button'}`}>
-                            <Text style={{fontFamily:'geometria-bold'}} className={`${selectedDrink === item.title && 'text-white'}`}>
-                                {item.title}
+                            onPress={() => handleSelectDrink(item.titleKey)}
+                            className={`border-[.2px] p-3 rounded-md mb-2 ${selectedDrink === item.titleKey && 'bg-purple-button'}`}>
+                            <Text style={{fontFamily:'geometria-bold'}} className={`${selectedDrink === item.titleKey && 'text-white'}`}>
+                                {item.titleKey}
                             </Text>
                         </TouchableOpacity>    
                     }
-                    keyExtractor={item => item.title}
+                    keyExtractor={item => item.titleKey}
                 />
                 <TouchableOpacity onPress={handleSubmitRecord} className="p-3 my-3 bg-main-blue rounded-md border-[.2px]">
-                    <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue text-white">Подтвердить</Text>
+                    <Text style={{fontFamily:'geometria-bold'}} className="text-lg text-main-blue text-white">
+                        {t("save")}
+                    </Text>
                 </TouchableOpacity>
             </View>
         </View>

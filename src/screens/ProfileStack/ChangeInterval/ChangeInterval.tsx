@@ -59,9 +59,9 @@ const ChangeInterval = () => {
   return (
     <>
     <TouchableOpacity onPress={() => handleModalChangeInterval()} activeOpacity={.6}>
-      <Text style={{fontFamily:'geometria-regular'}} className="text-sm text-start mb-1">
+      {/* <Text style={{fontFamily:'geometria-regular'}} className="text-sm text-start mb-1">
         {t("profileScreen.profileSettingsComponent.change_interval")}
-      </Text>
+      </Text> */}
     
       <View className="flex-row">
         <View className="bg-[#048eff] rounded-md flex-1 justify-center mr-[10px]">

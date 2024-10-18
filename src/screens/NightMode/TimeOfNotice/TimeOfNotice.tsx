@@ -108,7 +108,7 @@ const TimeOfNotice = () => {
           setNewInterval={setIntervalTimeOfNotice}
           showModalSetInterval={showModalSetTimeOfNotice}
           pressSaveButton={handleSetTimeOfNotice}
-          title="Выберите время когда показать уведомление"
+          title={t("nightModeScreen.modal_select_time_when_show_morning_notification")}
           is24Hours
         />
     </View>

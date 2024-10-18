@@ -85,7 +85,7 @@ const JournalScreen = () => {
         case 'amountOfReleasedUrine':
           return records.filter((e) => e.amountOfReleasedUrine && +e.amountOfReleasedUrine.split(' ')[0] > 0);
         case 'amountOfDrankFluids':
-          return records.filter((e) => e.amountOfDrankFluids.value && +e.amountOfDrankFluids.value.split(' ')[0] > 0);
+          return records.filter((e) => e.amountOfDrankFluids && +e.amountOfDrankFluids.value.split(' ')[0] > 0);
         case 'leakageReason':
           return records.filter((e) => e.leakageReason?.reason && e.leakageReason.reason.length > 0);
         case 'timeStamp':
@@ -112,18 +112,18 @@ const JournalScreen = () => {
     const leakageStaticPerDay = filteredRecords.filter(e => e.leakageReason); // фильтруем по причине подтекания, для статистики Подтекание:
 
     const amountOfDrankFluidsPerDay = filteredRecords
-      .filter(e => e && e.amountOfDrankFluids.value)
-      .map((e) => e.amountOfDrankFluids.value)
-      .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
+      .filter(e => e.amountOfDrankFluids && e.amountOfDrankFluids.value)
+      .map((e) => e.amountOfDrankFluids && e.amountOfDrankFluids.value)
+      .reduce((acc,e) => acc + (e && +e.split(' ')[0] || 0), 0);
 
     const amountOfReleasedUrinePerDay = filteredRecords
       .filter(e => e && e.amountOfReleasedUrine)
       .map((e) => e.amountOfReleasedUrine)
-      .reduce((acc,e) => acc + (+e.split(' ')[0] || 0), 0);
+      .reduce((acc,e) => acc + (e && +e.split(' ')[0] || 0), 0);
     
     const setStatistics = {
-      cannulation:cannulationStaticPerDay.length,
-      leakage:leakageStaticPerDay.length,
+      cannulation: cannulationStaticPerDay.length,
+      leakage: leakageStaticPerDay.length,
       amountOfDrankFluids: amountOfDrankFluidsPerDay!,
       amountOfReleasedUrine: amountOfReleasedUrinePerDay!,
     }
@@ -191,12 +191,13 @@ const JournalScreen = () => {
           <JournalRecord
             timeStamp={item.timeStamp}
             id={item.id}
-            whenWasCanulisation={item.whenWasCanulisation}
+            whenWasCatheterization={item.whenWasCatheterization}
             amountOfDrankFluids={item.amountOfDrankFluids}
             catheterType={item.catheterType}
             amountOfReleasedUrine={item.amountOfReleasedUrine}
             leakageReason={item.leakageReason}
             urineColor={item.urineColor}
+            partTime={item.partTime}
           />
           )
         }

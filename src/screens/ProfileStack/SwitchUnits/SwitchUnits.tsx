@@ -6,6 +6,7 @@ import ModalSelect from "../../../components/ModalSelect/ModalSelect";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { iUnits } from "../../../types";
 import { switchUnits } from "../../../store/slices/appStateSlicer";
+import { capitalizeFirstLetter } from "../../../utils/const";
 
 const SwitchUnits = () => {
     const {t, i18n} = useTranslation();
@@ -46,7 +47,7 @@ const SwitchUnits = () => {
     <ModalSelect
         height={3.4}
         showIcon={false}
-        title={t("change_units")}
+        title={capitalizeFirstLetter(t("change_units"))}
         openModal={openModalChangeUnits}
         setOpenModal={handleModalChangeLanguage}
         >

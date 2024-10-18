@@ -8,10 +8,11 @@ interface iHoursInterval {
     textColor: string,
     textAlert: {
         interval: string;
-    }
+    },
+    showDescription: () => void,
 }
 
-const HoursInterval = ({setTimeIntervalToShowResult, textColor, textAlert}:iHoursInterval) => {
+const HoursInterval = ({setTimeIntervalToShowResult, textColor, textAlert, showDescription}:iHoursInterval) => {
     const {t} = useTranslation();
     const [selectedHour, setSelectedHour] = useState<number>(12);
     const hours = [12, 24, 48];
@@ -36,22 +37,22 @@ const HoursInterval = ({setTimeIntervalToShowResult, textColor, textAlert}:iHour
                         onPress={() => handleSelectedHour(hour)}
                         activeOpacity={.9}
                         className={`rounded-full px-4 py-1 mr-2 mb-2 ${selectedHour === hour ? 'bg-main-blue' : 'bg-grey'}`}>
-                        <Text style={{fontFamily:'geometria-bold'}} className="text-base text-white">{hour} ч.</Text>
+                        <Text style={{fontFamily:'geometria-bold'}} className="text-base text-white">{hour} {t("hour")}</Text>
                     </TouchableOpacity>
                 ))}
             </View>
-            <View className="flex-row flex-wrap justify-start items-center">
+            <TouchableOpacity onPress={showDescription} className="flex-row flex-wrap py-2 justify-start items-center">
                 <View className="flex-row items-center">
-                    <View className="w-[20x] h-[20px]">
+                    <View className="w-[20px] h-[20px]">
                         <LottieView
                             source={require("../../../../assets/question-mark.json")}
-                            style={{width: 20, height: 20}}
+                            style={{width: '100%', height: '100%'}}
                             autoPlay
                         />
                     </View>
                 </View>
                 <Text style={{fontFamily:'geometria-bold', color: textColor}} className="text-sm">{textAlert.interval}</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     </View> 
   );

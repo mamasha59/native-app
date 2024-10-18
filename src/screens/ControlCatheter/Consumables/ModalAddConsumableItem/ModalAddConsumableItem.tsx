@@ -82,14 +82,14 @@ const ModalAddConsumableItem = ({handleModalConsumableItem, modalAddConsumableIt
                 </View>
                 <View style={{width: screen.width / 2}}>
                     <InputData
-                        key={"cunsumable-item-quantity"}
+                        key={"consumable-item-quantity"}
                         control={control}
                         errors={errors.quantity}
                         inputsValue={inputsValue.quantity}
                         placeholder={t("expense")}
                         name={"quantity"}
                         inputMode={Keyboard.Numeric}
-                        maxLength={4}
+                        maxLength={3}
                         isRequired
                         showPrompt
                         textPrompt={`${t("enter")} ${t("the")} ${t("expense")} ${t("per")} ${t("catheterization")}`}

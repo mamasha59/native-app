@@ -29,7 +29,7 @@ const WithoutMeasuring = ({handleModalAlert, modalAlert, setModalAlert}:iWithout
       dispatch(addUrineDiaryRecord({
         id: uuidv4(),
         catheterType: nelaton,
-        whenWasCanulisation: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
+        whenWasCatheterization: `${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}`,
         amountOfReleasedUrine: '',
         amountOfDrankFluids: '',
         timeStamp: format(new Date(), dateFormat)

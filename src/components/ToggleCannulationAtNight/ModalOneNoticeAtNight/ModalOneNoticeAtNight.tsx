@@ -117,8 +117,8 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                                 inputsValue={inputsValue.hours}
                                 errors={errors.hours}
                                 maxLength={1}
-                                name="hours"
-                                placeholder="hours"
+                                name={t("hour")}
+                                placeholder={t("hour")}
                                 marginBottom={0}
                                 isRequired
                                 showErrorText
@@ -132,8 +132,8 @@ const ModalOneNoticeAtNight = ({modalOnceAtNight,handleModalOnceAtNight}:iModalO
                                 inputsValue={inputsValue.minutes}
                                 errors={errors.minutes}
                                 maxLength={2}
-                                name="minutes"
-                                placeholder="minutes"
+                                name={t("min")}
+                                placeholder={t("min")}
                                 marginBottom={0}
                                 isRequired
                                 showErrorText

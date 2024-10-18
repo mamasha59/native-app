@@ -11,7 +11,7 @@ import NotificationsAtNight from "./NotificationsAtNight/NotificationsAtNight";
 import SleepTimeStartEnd from "./SleepTimeStartEnd/SleepTimeStartEnd";
 import { NavigationPropsRoot } from "../../components/RootNavigations/RootNavigations";
 import ClueAtTheBottom from "../../components/ClueAtTheBottom/ClueAtTheBottom";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { setWhetherDoCannulationAtNight } from "../../store/slices/nightStateSlice";
 import useBackHandler from "../../hooks/useBackHandler";
 

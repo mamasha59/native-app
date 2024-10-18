@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { iTimerPartTime } from "../../types";
 
 interface iTimerStatesSlice {
     startFromCountdown: boolean,
@@ -7,6 +8,7 @@ interface iTimerStatesSlice {
     interval: number,
     yellowInterval: number,
     showModalSuccess: boolean,
+    partTime: iTimerPartTime,
 }
 
 const initialState:iTimerStatesSlice = {
@@ -15,6 +17,11 @@ const initialState:iTimerStatesSlice = {
     interval: 14400,
     yellowInterval: 15,
     showModalSuccess: false,
+    partTime: {
+        firstPartTime: false,
+        secondPartTime: false,
+        thirdPartTime: false,
+    }
 }
 
 const timerStatesSlice = createSlice({
@@ -36,6 +43,9 @@ const timerStatesSlice = createSlice({
         changeYellowInterval: (state, action:PayloadAction<number>) => {
             state.yellowInterval = action.payload;
         },
+        changePartTimeOfTimer: (state, action:PayloadAction<iTimerPartTime>) => {
+            state.partTime = action.payload;
+        },
     }
 });
 
@@ -44,6 +54,7 @@ export const {
     setIntervalDifference,
     setInterval,
     setShowModalSuccess,
-    changeYellowInterval
+    changeYellowInterval,
+    changePartTimeOfTimer
 } = timerStatesSlice.actions;
 export default timerStatesSlice.reducer;

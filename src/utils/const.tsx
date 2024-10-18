@@ -102,3 +102,11 @@ export const capitalizeFirstLetter = (sentence:string) => {
   if (!sentence) return '';
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
 }
+
+
+export const partTimeColors = {
+  greyDark: '#7b7777',
+  yellow: '#FFB254',
+  blue: '#4BAAC5',
+  red: "#EA3737"
+}

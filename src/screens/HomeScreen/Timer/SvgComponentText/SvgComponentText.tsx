@@ -1,39 +1,36 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, useWindowDimensions } from 'react-native';
-import {Svg, Circle, Text, TextPath, TSpan, G, Path} from 'react-native-svg';
+import { useWindowDimensions } from 'react-native';
+import {Svg, Circle, Text, TextPath, TSpan, G} from 'react-native-svg';
+
+import { useAppSelector } from '../../../../store/hooks';
+import { partTimeColors } from '../../../../utils/const';
 
 interface iSvgComponentText {
   start: boolean,
   initialNumberOfStrip: number,
-  partTime: {
-    firstPartTime?: boolean | undefined,
-    secondPartTime?: boolean | undefined,
-    thirdPartTime?: boolean | undefined
-  },
 }
 
-const greyDark = '#7b7777';
-const blue = '#4BAAC5';
-const red = "#EA3737";
-
-export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgComponentText) => {
+export const SvgComponentText = ({start, initialNumberOfStrip}:iSvgComponentText) => {
   
   const {t} = useTranslation();
-  const [currentColor, setCurrentColor] = useState(blue); // начальное значение цвета
+
+  const {partTime} = useAppSelector(state => state.timerStates);
+
+  const [currentColor, setCurrentColor] = useState(partTimeColors.blue); // начальное значение цвета
   const {width} = useWindowDimensions();
 
   useEffect(() => { // изменяем цвет внешнего круга, пунктирные линии
-    if(start && partTime.firstPartTime && !partTime.thirdPartTime && !partTime.secondPartTime){
-      setCurrentColor(blue);
+    if(start && partTime.firstPartTime && !partTime.secondPartTime){
+      setCurrentColor(partTimeColors.blue);
       
-    } else if(partTime.secondPartTime && start) {
-      setCurrentColor('#FFB254');
+    } else if(partTime.secondPartTime) {
+      setCurrentColor(partTimeColors.yellow);
 
     } else if(partTime.thirdPartTime) {
-      setCurrentColor('#EA3737');
+      setCurrentColor(partTimeColors.red);
     }
-  },[start,partTime]);
+  },[start, partTime]);
   
   return (
   <Svg height={width / 1.2} width={width / 1.2} viewBox="0 0 300 300" rotation={-90}>
@@ -79,7 +76,7 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
         fill="none"
         stroke="#ffffff"
     />
-      <G fill={partTime.firstPartTime ? blue : greyDark}>
+      <G fill={partTime.firstPartTime || partTime.secondPartTime ? partTimeColors.blue : partTimeColors.greyDark}>
         <Text fontSize="12">
           <TextPath href="#circle" startOffset={4}>
             <TSpan dy={-22} > 
@@ -87,23 +84,20 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
             </TSpan>
           </TextPath>
         </Text>
-        <Text fill={partTime.thirdPartTime ? red : blue} fontSize="22"dy={-32} dx={-2.3}>
+        <Text fill={partTime.thirdPartTime ? partTimeColors.red : partTimeColors.blue} fontSize="22"dy={-32} dx={-2.3}>
           <TextPath href="#circle" >
             |
           </TextPath>
         </Text>
-        {/* {partTime.firstPartTime && <Path d={"M 260 151 A 109 110 0 0 1 100 245"} fill="none" stroke={`${partTime.thirdPartTime ? blue : blue}`} strokeWidth="4" />} */}
       </G>
-      <G fill={partTime.secondPartTime ? "#FFB254" : partTime.thirdPartTime ? red :"#7b7777"}>
+      <G fill={partTime.secondPartTime ? "#FFB254" : partTime.thirdPartTime ? partTimeColors.red :"#7b7777"}>
         <Text fontSize="22" dy={111} dx={209} translateY={128} translateX={-73}>
           <TextPath href="#circle" >
             |
           </TextPath>
         </Text>
-        {/* {partTime.secondPartTime 
-          && <Path d={"M 96 54 A 115 110 0 0 0 100 245"} fill="none" stroke={`${partTime.thirdPartTime ? '#FFB254' : '#FFB254'}`} strokeWidth="4"/>} */}
       </G>
-      <G fill={partTime.thirdPartTime ? red : greyDark}>
+      <G fill={partTime.thirdPartTime ? partTimeColors.red : partTimeColors.greyDark}>
         <Text fontSize="12">
           <TextPath href="#circle" startOffset={424}>
             <TSpan dy={-22}>
@@ -116,7 +110,6 @@ export const SvgComponentText = ({start, initialNumberOfStrip, partTime}:iSvgCom
             |
           </TextPath>
         </Text>
-        {/* {partTime.thirdPartTime && <Path d={"M 96 54 A 109 110 0 0 1 260 151"} fill="none" stroke="red" strokeWidth="4" />} */}
       </G>
     </G>
   </Svg>

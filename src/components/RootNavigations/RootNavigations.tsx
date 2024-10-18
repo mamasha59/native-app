@@ -50,7 +50,6 @@ import { popupLiquidState } from '../../store/slices/appStateSlicer';
     });
     // ниже метод, при клике на уведомление, когда пользователь взаимодействует с уведомлением
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response.notification.request.content.data);
       
       if(response.notification.request.content.data.title === 'timer'){
         navigation.navigate('HomeScreen');
@@ -69,7 +68,7 @@ import { popupLiquidState } from '../../store/slices/appStateSlicer';
     };
   }, []);
 
-  return (// все роуты стоят по порядку их появления при загрузке приложения
+  return (
     <Stack.Navigator initialRouteName={userData ? 'HomeScreen' : 'UserDataScreens'} screenOptions={{headerShown:false}}>
 
       <Stack.Screen name='HomeScreen' component={Home}/>

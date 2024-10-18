@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
 import { addDays, setHours, setMinutes } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import AppStateStatusContext from "../../../utils/AppStateStatusContext/AppState
 import { useSchedulePushNotificationTimerInterval } from "../../../hooks/notifications/useSchedulePushNotificationTimerInterval";
 
 const DoubleButtonOnceOrByInterval = () => {
+    const route = useRoute();
     const {t} = useTranslation();
     const { appStateStatus } = useContext(AppStateStatusContext);
     
@@ -78,9 +79,7 @@ const DoubleButtonOnceOrByInterval = () => {
             // "notification once at night" must not been less then "time start sleep - night" and must not been more than "time end sleep - morning"
             const now = new Date().getHours();
 
-            if(now > timeStartSleepObject.getHours() || now  < timeEndSleepObject.getHours()){
-                console.log('mi tut');
-                
+            if(now > timeStartSleepObject.getHours() || now  < timeEndSleepObject.getHours()){                
                 if(identifierOfCatheterizationNotice){
                     Notifications.cancelScheduledNotificationAsync(identifierOfCatheterizationNotice);
                 }
@@ -116,7 +115,7 @@ const DoubleButtonOnceOrByInterval = () => {
   return (
     <>
         <View className="w-full items-center mt-2">
-            {!toggleNightMode &&
+            {!toggleNightMode && route.name !== 'FirstDataScreen' &&
                 <TouchableOpacity className="p-2 bg-[#b5b8b933]" onPress={() => navigation.navigate('NightMode')}>
                     <Text style={{fontFamily:'geometria-bold'}} className="text-main-blue">
                         {t("nightModeScreen.title")}

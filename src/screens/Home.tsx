@@ -3,6 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { useAppSelector } from '../store/hooks';
 
@@ -12,7 +13,6 @@ import JournalScreen from './JournalScreen/JournalScreen';
 
 import JournalIcon from '../assets/images/iconsComponent/TabMenuIcons/JournalIcon';
 import HomeIcon from '../assets/images/iconsComponent/TabMenuIcons/HomeIcon';
-import ControllCatetor from '../assets/images/iconsComponent/TabMenuIcons/NelatonIcon';
 import ProfileIcon from '../assets/images/iconsComponent/TabMenuIcons/ProfileIcon';
 import NotificationIcon from '../assets/images/iconsComponent/TabMenuIcons/NotificationIcon';
 import WaterBalance from './WaterBalance/WaterBalance';
@@ -88,7 +88,7 @@ export default function Home() {
         options={{
           tabBarLabel:t("tabBar.water_balance"),
           tabBarIcon: ({ color, size }) => (
-            <ControllCatetor width={size} color={color}/>
+            <FontAwesome6 name="glass-water-droplet" size={30} color={color}/>
           ),
         }}
       />

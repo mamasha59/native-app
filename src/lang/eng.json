@@ -4,30 +4,30 @@
         "your_plan_is_ready": "I prepare a plan for you!",
         "firstDataScreen": {
             "title": "Welcome to the Nelaton Smart Assistant",
-            "description": "Please answer a few simple questions so I can set up a catheterization plan.",
+            "description": "Please answer a few simple questions so I can set up a procedure plan.",
             "setIntervalTitle": "Select new interval"
         },
 
         "secondDataScreen_description": "Measuring fluid intake and urine output helps maintain optimal hydration levels in the body.",
 
         "thirdDataScreen": {
-            "how_many_catheters_do_you_have": "How many catheters do you have?",
+            "how_many_catheters_do_you_have": "How many procedure do you have?",
             "press_to_write": "press to write",
-            "description": "One catheter will be discarded for each catheterization. You will always know exactly how many catheters you have in stock.",
-            "notification_description": "I will remind you to refill your catheters when there are less than a"
+            "description": "One procedure will be discarded for each procedure. You will always know exactly how many procedure you have in stock.",
+            "notification_description": "I will remind you to refill your procedure when there are less than a"
         },
         
         "fourthDataScreenScreen": {
-            "title": "Your Self-Catheterization Plan:",
-            "description": "This plan will be adapted to you. After each self-catheterization, the time until the next one will be calculated, and notifications will be activated. Always catheterize until the end of the interval.",
-            "cannulationEachTime": "Catheterization every",
-            "night_cannulation": "Night catheterization",
-            "notification_Description": "You will receive notifications to catheterize on time!",
-            "notice": "The optimal frequency of catheterizations is 4-6 times a day. If more than 400ml of urine is released per catheterization, it is recommended to increase the frequency of catheterizations. Adhere to the catheterization interval prescribed by your doctor.",
+            "title": "Your Self-procedure Plan:",
+            "description": "This plan will be adapted to you. After each self-procedure, the time until the next one will be calculated, and notifications will be activated. Always do it until the end of the interval.",
+            "cannulationEachTime": "procedure every",
+            "night_cannulation": "Night procedure",
+            "notification_Description": "You will receive notifications to procedure on time!",
+            "notice": "The optimal frequency of procedures is 4-6 times a day. If more than 400ml of urine is released per procedure, it is recommended to increase the frequency of procedures. Adhere to the procedure interval prescribed by your doctor.",
             "know_from_doctor": {
                 "title": "Consult your doctor about:",
-                "the_catheterization_interval": "the catheterization interval",
-                "the_possibility_of_not_catheterizing_at_night": "the possibility of not catheterizing at night",
+                "the_procedure_interval": "the procedure interval",
+                "the_possibility_of_not_catheterizing_at_night": "the possibility of not procedure at night",
                 "how_much_water_you_need_to_drink": "how much water you need to drink"
             }
         },
@@ -48,11 +48,11 @@
         "fl_oz": "fl oz",
 
         "day_one": "day",
-        "сatheter": "catheter",
+        "сatheter": "procedure",
 
         "blank": "",
         "in": "in",
-        "save": "Save",
+        "save": "Confirm",
         "exit": "Exit",
         "back": "Back",
         "nelaton": "Nelaton",
@@ -84,7 +84,7 @@
         "expense": "expense",
         "enter": "Enter",
         "the": "the",
-        "catheterization": "catheterization",
+        "procedure": "procedure",
         "edit": "edit",
 
         "componentSleepTimeStartEnd": {
@@ -92,11 +92,11 @@
             "select": "select",
             "from": "from",
             "to": "to",
-            "night_mode_description": "If you do not plan to catheterize at night, activate Night Mode during evening catheterization or by using the \"Night Mode\""
+            "night_mode_description": "If you do not plan to procedure at night, activate Night Mode during evening procedure or by using the \"Night Mode\""
         },
 
         "toggleCannulationAtNightComponent": {
-            "title": "Catheterization at night",
+            "title": "procedure at night",
             "once_at_night": {
                 "button_title": "Once at night",
                 "time_of_night_notification": "Time of night notification",
@@ -110,7 +110,7 @@
         },
 
         "setChangeIntervalComponent": {
-            "title": "Specify the catheterization interval:",
+            "title": "Specify the procedure interval:",
             "every": "every"
         },
 
@@ -137,15 +137,15 @@
         },
 
         "catheterizationReminder": {
-            "firstPartTitle": "We will remind you to catheterize",
+            "firstPartTitle": "We will remind you to procedure",
             "secondPartTitle": " minutes before the end of the interval. You can change these and other settings below."
         },
 
         "noticeOfCatheterizationComponent": {
-            "title": "Catheterization Notifications:",
-            "beforeCatheterization": "Before catheterization",
+            "title": "procedure Notifications:",
+            "beforeCatheterization": "Before procedure",
             "smartAlarm": "Smart Alarm Function",
-            "notice": "After the evening catheterization, we will calculate the time for the night catheterization and set the alarm."
+            "notice": "After the evening procedure, we will calculate the time for the night procedure and set the alarm."
         },
 
         "noticeOfWaterConsumptionComponents": {
@@ -156,7 +156,7 @@
         },
 
         "intervalInfoComponent": {
-            "title": "Catheterization Interval:"
+            "title": "procedure Interval:"
         },
 
         "homeScreen": {
@@ -178,10 +178,10 @@
             "start": "start",
             "completed": "Completed",
             "titles": {
-                "first_title": "Perform catheterization and press the button below to begin",
-                "catheterization_interval": "Time to catheterize:",
-                "since_last_catheterization": "You need to be catheterized! Since last catheterization:",
-                "before_catheterization": "Catheterize until the end of the interval:"
+                "first_title": "Perform procedure and press the button below to begin",
+                "second_title_before_catheterization": "Do it until the end of the interval:",
+                "third_title_time_to_catheterize": "Time to do it!",
+                "last_title_critical_since_last_catheterization": "You need to do it! Time since last procedure:"
             },
             "intervals": {
                 "normal": "n o r m a l     i n t e r v a l ",
@@ -194,7 +194,7 @@
             "no_records_for_the_selected_day": "No records for the selected day",
             "dailyStatistics": {
                 "daily_statistics": "Daily statistics",
-                "catheterizations": "Catheterizations",
+                "catheterizations": "Procedures",
                 "urine_leakages": "Urine Leakages:",
                 "fluid_intake": "Fluid Intake:",
                 "urine_output": "Urine Output:"
@@ -204,7 +204,7 @@
 
             "filters": {
                 "all": "all",
-                "catheterizations": "catheterizations",
+                "catheterizations": "procedures",
                 "urine_output": "urine output",
                 "fluid_intake": "fluid intake",
                 "urine_leakage": "urine leakage"
@@ -213,10 +213,64 @@
             "recordTitles": {
                 "time": "Time",
                 "leakage": "Leakage",
-                "catheterization": "Catheterization",
+                "catheterization": "procedure",
                 "drank_fluids": "Drank fluids",
-                "excreted_urine": "Excreted fluids"
+                "excreted_urine": "Excreted fluids",
+                "type_of_drink": "Type of drink",
+                "urine_color": "Urine color"
             }
+        },
+
+        "recommendationScreen": {
+            "title": "Recommendations",
+            "questionnaires": "Questionnaires",
+            "catheterization_satisfaction_questionnaire": "procedure satisfaction questionnaire",
+            "nelaton_app_description": "The Nelaton app is your personal assistant for self-procedure. Your doctor should have already explained the reasons why you need to do it and taught you how to perform the procedure. It is important to carefully read the instructions for the procedure you are going to use.",
+            "how_does_it_work": "How does it work?",
+            "faq": {
+                "timer": {
+                  "question": "How does the timer on the main screen work?",
+                  "answer": "The timer counts down to the next procedure. You need to do it before the timer runs out to stick to the schedule set by your doctor. If you miss the scheduled procedure, the timer will show the time that has passed since the last one. After each procedure, go into the app and press the 'Done' button to start the countdown for the next procedure."
+                },
+                "frequency": {
+                  "question": "How often do I need to do it?",
+                  "answer": "The frequency of procedure is determined by your doctor, based on your condition. It's also important to note that the frequency may change. We help you easily track your urination habits, which helps your doctor adjust the interval between procedures as needed. It’s recommended to perform self-procedure regularly throughout the day, depending on the volume of fluids you consume and your doctor’s recommendations. You may need to to it every 4-6 hours to ensure that the urine volume in the bladder does not exceed 400 ml. If you do not do it frequently enough and your bladder becomes overfilled, the risk of urinary tract infections and leakage increases. Prolonged bladder stretching can cause serious damage to the kidneys."
+                },
+                "water": {
+                  "question": "How much water should I drink?",
+                  "answer": "Adults should drink at least 1.5 liters of water a day. This is just a recommendation, and you should consult your doctor to know how much water is right for you. Remember, water is the best drink. It's recommended to avoid caffeinated drinks, as caffeine irritates the bladder. Drinking enough water helps flush the urinary system. The Nelaton app helps you track your hydration levels. You can log your water intake on the main screen using the '+Drank' button, and the 'Water Balance' screen lets you monitor your fluid intake and urine output."
+                },
+                "infection_prevention": {
+                  "question": "How can I prevent urinary tract infections?",
+                  "answer": "Maintain hygiene, regularly and completely empty your bladder, and drink enough fluids. We recommend filling out our procedure satisfaction survey at least once a month and sharing it with your doctor."
+                },
+                "night_catheterization": {
+                  "question": "Do I need to do it at night?",
+                  "answer": "Usually, it’s enough to do it before bed and right after waking up, then continue at intervals throughout the day. However, your doctor will advise you on what's best for you. The app helps you follow any schedule and interval of procedure. You can set up a nighttime procedure, follow the interval during the night, or even disable nighttime procedure by enabling sleep mode. It all depends on your doctor’s advice, and our app is ready to help you follow any schedule."
+                },
+                "catheters_tracking": {
+                  "question": "How do I track procedure usage?",
+                  "answer": "The app automatically tracks procedure usage. You need to specify how many procedure you have and whether you use additional supplies during procedure (such as aseptic wipes, urine bags, gloves, etc.). This will help you keep track of how many procedure and necessary supplies you have and replenish them in time. Every time you press the 'Done' button, the app will deduct the appropriate amount of supplies. When you purchase procedure and other supplies, don’t forget to update the quantity in the app."
+                },
+                "travel_abroad": {
+                  "question": "What should I do when traveling abroad?",
+                  "answer": "Take enough procedure with you and carry a medical certificate confirming their necessity. This certificate will help you pass security checks at airports or other events with heightened security measures. On the 'procedure Usage' tab, you can calculate how many procedure you need to take with you based on your average consumption."
+                },
+                "missing_feature": {
+                  "question": "What should I do if a feature is missing from the app?",
+                  "answer": "Write to us using the form on this page. Describe the situation you encountered and what functionality you feel is missing in the Nelaton app. We will consider your suggestions in future updates."
+                }
+            },
+            "write_to_the_developers": "Write to the developers",
+            "topics": "Topics",
+            "subjects": {
+                "report_issue": "Report an Issue",
+                "suggest_improvement": "Suggest an Improvement",
+                "tech_support": "Technical Support",
+                "feedback": "Feedback and Suggestions"
+            },
+            "describe_what_you_wanted": "Describe what you wanted",
+            "enter_text": "Enter text"
         },
 
         "questionnaireScreen": {
@@ -232,34 +286,36 @@
             "very_inconvenient": "Very Inconvenient",
             "reset_button": "Reset",
             "confirm_and_download_PDF": "Confirm and Download PDF",
-            "question_one": "How often do you experience pain or discomfort during catheterization?",
-            "question_two": "Have there been any cases of bleeding after catheterization?",
-            "question_three": "Have you experienced signs of infection after catheterization, such as fever, frequent urination, pain, or burning?",
-            "question_four": "Have you had any allergic reactions or skin irritation caused by the catheter or lubricants?",
-            "question_five": "How would you rate the ease of use of the catheter and lubricants?",
-            "question_six": "Did you experience any difficulties with catheterization due to insufficient training on the procedure?",
-            "question_seven": "Were there any instances where catheterization failed, requiring urgent medical attention?",
-            "question_eight": "Did you encounter any difficulties inserting the catheter? If yes, please describe the difficulties encountered.",
-            "question_nine": "What additional problems or complications related to catheterization would you like to mention?"
+            "question_one": "How often do you experience pain or discomfort during procedure?",
+            "question_two": "Have there been any cases of bleeding after procedure?",
+            "question_three": "Have you experienced signs of infection after procedure, such as fever, frequent urination, pain, or burning?",
+            "question_four": "Have you had any allergic reactions or skin irritation caused by the procedure or lubricants?",
+            "question_five": "How would you rate the ease of use of the procedure and lubricants?",
+            "question_six": "Did you experience any difficulties with procedure due to insufficient training on the procedure?",
+            "question_seven": "Were there any instances where procedure failed, requiring urgent medical attention?",
+            "question_eight": "Did you encounter any difficulties inserting the procedure? If yes, please describe the difficulties encountered.",
+            "question_nine": "What additional problems or complications related to procedure would you like to mention?"
         },
 
         "catheterStockScreen": {
-            "title": "Catheter flow control",
+            "title": "procedure flow control",
+            "stocks": "Stocks",
+            "stock_management": "stock management",
             "averageCatheterUsageComponent": {
-                "title": "Average catheter usage",
-                "catheter_per_day": "catheter per day",
-                "catheter_per_month": "catheter per month"
+                "title": "Average procedure usage",
+                "catheter_per_day": "procedure per day",
+                "catheter_per_month": "procedure per month"
             },
-            "perform_catheterization": "Perform catheterization",
+            "perform_catheterization": "Perform procedure",
             "consumableItems": {
-                "consumable_items_description": "If you use additional consumables during catheterization, you can account for their consumption. To do this, include what you need or add a new one.",
+                "consumable_items_description": "If you use additional consumables during procedure, you can account for their consumption. To do this, include what you need or add a new one.",
                 "manageConsumableItemsComponent": {
                     "change_the_amount": "change the amount"
                 }
             },
 
             "cathetersForRoadComponent": {
-                "calculate_catheters_for_travel": "Calculate catheters for travel:",
+                "calculate_catheters_for_travel": "Calculate procedure for travel:",
                 "you_will_need": "You will need",
                 "select_number_of_days": "Select number of days"
             }
@@ -269,26 +325,28 @@
             "title": "Your Profile",
             "profileSettingsComponent": {
                 "change_interval": "Change Interval",
-                "normal_interval": "Normal Interval",
+                "normal_interval": "Interval",
                 "confirm_new_interval": "Confirm new interval"
             },
             "personal_data_for_PDF": "Personal data for PDF"
         },
 
         "nightModeScreen": {
-            "title": "Night Mode Catheterization Settings",
+            "title": "Night Mode procedure Settings",
             "modal_title_set_time_of_start_sleep": "Pick a time when you go to bed",
             "modal_title_set_time_of_end_sleep": "Pick a time when you wake up",
+            "modal_ask_to_activate_after_time_title": "Select the time when you want to be asked to enable night mode",
+            "modal_select_time_when_show_morning_notification": "Select a time in the morning when to show the notification",
             "askActivateAfterTimeComponent": {
-                "askToActivate": "Ask to activate Night Mode after catheterization after"
+                "askToActivate": "Ask to activate Night Mode after procedure after"
             },
             "notificationsAtNightComponent": {
                 "night_time_notifications": "Nighttime Notifications:",
-                "description_first_part": "From the time of catheterization before sleep and activation of",
+                "description_first_part": "From the time of procedure before sleep and activation of",
                 "description_second_part": "until morning, notifications will not be sent."
             },
 
-            "morningCathNoticeDescription": "Would you like to receive morning notifications to remind you to catheterize?",
+            "morningCathNoticeDescription": "Would you like to receive morning notifications to remind you to do it?",
             
             "timeOfNoticeComponent": {
                 "specify_the_time": "Specify the time you would like to receive the notification."
@@ -298,7 +356,7 @@
                 "receive_notifications_to_reduce_fluid_intake": "Would you like to receive notifications to reduce fluid intake:"
             },
 
-            "notice": "Discuss the catheterization frequency and the possibility of excluding it at night with your doctor."
+            "notice": "Discuss the procedure frequency and the possibility of excluding it at night with your doctor."
         },
 
         "personalizationScreen": {
@@ -313,15 +371,38 @@
             "your_last_name": "Your Last Name*",
             "your_age": "Your Age*",
             "bladder_volume": "Bladder Volume",
-            "catheter_size": "Catheter Size Ch/FR",
-            "which_catheter_do_you_use": "Which catheter do you use? Model Name/Manufacturer",
-            "which_catheter_do_you_use_hint": "You can find this information on the catheter packaging you use",
+            "catheter_size": "procedure Size Ch/FR",
+            "which_catheter_do_you_use": "Which procedure do you use? Model Name/Manufacturer",
+            "which_catheter_do_you_use_hint": "You can find this information on the procedure packaging you use",
             "additional_information": "Here you can leave additional information for the doctor (diagnoses, types of injuries, medication intake)",
             "additional": "Additional",
             "volume_info": "\"general\" norms: Women - 250-500 ml, Men - 350-700 ml, Children - 35-400 ml (depending on age)"
         },
 
         "modalUrineLeakage": {
+            "leakage_volume": "Leakage volume",
+            "leakage": {
+                "few_drops": {
+                  "value": "up to 5 ml",
+                  "text": "Few drops: up to 5 ml",
+                  "description": "Few drops – minor, almost unnoticeable leakage that amounts to approximately up to 5 ml."
+                },
+                "small": {
+                  "value": "5-20 ml",
+                  "text": "Small: 5-20 ml",
+                  "description": "Small – light leakage that amounts to approximately 5 to 20 ml (about one teaspoon to half a tablespoon)."
+                },
+                "moderate": {
+                  "value": "20-50 ml",
+                  "text": "Moderate: 20-50 ml",
+                  "description": "Moderate – moderate leakage that amounts to approximately 20-50 ml (about half or slightly less than the volume of a shot glass)."
+                },
+                "large": {
+                  "value": "more than 50 ml",
+                  "text": "Large: more than 50 ml",
+                  "description": "Large – heavy leakage exceeding 50 ml (about half a glass)."
+                }
+            },
             "title": "Leakage occurred during:",
             "options": {
                 "rest": "Rest",
@@ -333,8 +414,8 @@
 
         "modalCatheterizationCompleted": {
             "excellent": "Excellent",
-            "catheterization_completed": "Catheterization Completed!",
-            "next_catheterization": "Next catheterization"
+            "catheterization_completed": "procedure Completed!",
+            "next_catheterization": "Next procedure"
         },
 
         "modalDocumentCreation": {
@@ -344,7 +425,7 @@
             "yyyy_mm_dd": "yyyy-mm-dd",
             "range_of_days": "range of days",
             "one_day": "one day",
-            "complete_and_include_PDF_questionnaire": "Complete and include the PDF Catheterization Satisfaction Questionnaire",
+            "complete_and_include_PDF_questionnaire": "Complete and include the PDF procedure Satisfaction Questionnaire",
             "fill_in_personal_data": "Fill in personal data",
             "generate_and": "Generate and",
             "share_document": "share",
@@ -352,7 +433,20 @@
         },
 
         "modalFluidIntake": {
-            "how_much_fluid_did_you_drink": "How much fluid did you drink?"
+            "how_much_fluid_did_you_drink": "How much fluid did you drink?",
+            "modal_type_of_drink": {
+                "type_of_drink_title": "Type of Drink",
+                "drinks": {
+                    "water": "Water",
+                    "juice": "Juice",
+                    "soda": "Soda",
+                    "coffee": "Coffee",
+                    "tea": "Tea",
+                    "milk": "Milk",
+                    "soup": "Soup",
+                    "alcohol": "Alcohol"
+                }
+            }
         },
 
         "modalUrineOutput": {
@@ -369,7 +463,20 @@
         "modalAlertChangeCatheterizationInterval": {
             "lets_be_clear": "Let's be clear",
             "interval_was": "The interval was a",
-            "next_catheterization_interval_will_be": "At the next catheterization, the interval will become"
+            "next_catheterization_interval_will_be": "At the next procedure, the interval will become"
+        },
+
+        "modalNoticeAlertIfIntervalLessThanYellow": {
+            "less_than_the_pre_catheterization_interval": "less than the pre-procedure interval",
+            "option_one": "or change the procedure interval",
+            "option_two": "or change the “Notify Before procedure” time on the “Notifications” screen",
+            "i_got_it": "I got it!"
+        },
+
+        "modalNightModeHomeScreen": {
+            "enable": "Enable",
+            "description": "The timer will stop and you will stop receiving notifications until your morning procedure.",
+            "hint": "the time can be changed on the screen"
         },
 
         "weekDays": {

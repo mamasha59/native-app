@@ -18,38 +18,28 @@ export const useUpdateChart = ({dispatchAction, category}:iUseUpdateChart) => { 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-      const amountOfDrankWaterPerDay = journalData.urineDiary // сложенное кол-во слитой мочи за текущий день
-          .filter(item => item.timeStamp.slice(0,10) === currentDate && item[category])
-          .map(e => {
-            if(category === 'amountOfDrankFluids'){
-              return e[category].value;
-            }else {
-              return e[category];
-            }
-          })
-          .reduce((acc, value) => {
-            if (typeof acc === 'number' && typeof value === 'string'){
-              return acc + +value.split(' ')[0];
-            }else {
-              return 0
-            }
-          },0)
-          console.log(amountOfDrankWaterPerDay);
-          
-      if (amountOfDrankWaterPerDay)
-        dispatch(dispatchAction({
-          timestamp: currentDate,
-          value: +amountOfDrankWaterPerDay,
+    const amountOfDrankWaterPerDay = journalData.urineDiary // сложенное кол-во слитой мочи за текущий день
+        .filter(item => item.timeStamp.slice(0,10) === currentDate && item[category])
+        .map(e => {
+          if(category === 'amountOfDrankFluids'){
+            return e[category]!.value;
+          }else {
+            return e[category];
+          }
         })
-      );
-
+        .reduce((acc, value) => {
+          if (typeof acc === 'number' && typeof value === 'string'){
+            return acc + +value.split(' ')[0];
+          }else {
+            return 0
+          }
+        },0)
+        
+    if (amountOfDrankWaterPerDay)
+      dispatch(dispatchAction({
+        timestamp: currentDate,
+        value: +amountOfDrankWaterPerDay,
+      })
+    );
   }, [journalData.urineDiary.length, currentDate]);
 }
-
-
-// .map(e => e[category])
-// .reduce((acc,value) => {
-//   if (typeof acc === 'number' && typeof value === 'string'){
-//       return acc + +value.split(' ')[0];
-//   } else {
-//       return 0;
